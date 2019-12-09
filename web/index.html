@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153528940-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-153528940-1');
+    </script>
+
+    <meta charset='utf-8' />
+    <title>Strona główna</title>
+
+<!--    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        #map { position:absolute; width:100%; height: 93%; };
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <div id="header" class="collapse navbar-collapse">
+            <button type="button" id="button-prg-dl" class="btn btn-light p-1 m-1">Pobierz adresy dla JOSM (do 50k obiektów)</button>
+            <button type="button" id="button-buildings-dl" class="btn btn-light p-1 m-1">Pobierz budynki dla JOSM (do 50k obiektów)</button>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki">Klauzula informacyjna o budynkach</a>
+                </li>
+                <li class="nav-item">
+                    <a id="faq" class="nav-link" href="/help.html" target="_blank">FAQ/Pomoc</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modalBudynki">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Klauzula informacyjna dla danych o obrysach budynków</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <dl>
+                        <dt>Zbiór</dt>
+                        <dd>Modele 3D Budynków</dd>
+                        <dt>Źródło</dt>
+                        <dd>www.geoportal.gov.pl</dd>
+                        <dt>Dysponent</dt>
+                        <dd>Główny Geodeta Kraju</dd>
+                        <dt>Data pobrania zbioru</dt>
+                        <dd>2019-11-10</dd>
+                        <dt>Zakres przetworzenia</dt>
+                        <dd>Geometria budynków została spłaszczona do 2D oraz wyekstrahowana została część poligonowa wykorzystana dalej jako obrys budynku.</dd>
+                        <dt>Informacja</dt>
+                        <dd>Modele 3D budynków nie stanowią rejestru publicznego ani elementu treści takiego rejestru. W konsekwencji czego mają wartość jedynie poglądową. Niezgodność Modeli 3D budynków ze stanem faktycznym lub prawnym, tak w postaci nieprzetworzonej jak i po ich ewentualnym przetworzeniu w procesie ponownego wykorzystania, nie może stanowić podstawy odpowiedzialności Głównego Geodety Kraju z jakiegokolwiek tytułu wobec jakiegokolwiek podmiotu.</dd>
+                        <dt>Licencja</dt>
+                        <dd><a href="https://integracja.gugik.gov.pl/Budynki3D/GUGiK_Licencja_na_Budynki3D.pdf" target="_blank">https://integracja.gugik.gov.pl/Budynki3D/GUGiK_Licencja_na_Budynki3D.pdf</a></dd>
+                    </dl>
+                    <a id="buildings-info-json" href="/lod1/not_in/osm/info.json" target="_blank">JSON</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map-container" class="bg-light">
+        <div id='map'></div>
+    </div>
+
+    <script src="/map.js"></script>
+</body>
+</html>

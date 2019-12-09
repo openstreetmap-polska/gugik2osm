@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>FAQ/Pomoc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<div class="container bg-light">
+    <h1 class="my-4">FAQ</h1>
+    <h2>Co ta strona robi?</h2>
+    <p class="lead">Na tej stronie można zobaczyć gdzie w OpenStreetMap brakuje danych (adresy, budynki) według rejestrów państwowych oraz pobrać te dane w formacie, który łatwo można zaimportować do OSM za pomocą programu JOSM.</p>
+    <p>Porównanie było dokonane według danych z sierpnia i na tę chwilę nie jest aktualizowane automatycznie.</p>
+    <h2>JOSM?</h2>
+    <p>JOSM to wielofunkcyjny edytor OpenStreetMap</p>
+    <p><a href="https://josm.openstreetmap.de/wiki/Pl%3AWikiStart" target="_blank">Strona programu</a></p>
+    <p>Niektóre z wielu możliwości jakie daje program to wczytanie danych przygotowanych w odpowiednim formacie (xml/osm), edycja tych danych (tagi, geometria) oraz upload tych danych do OpenStreetMap.</p>
+    <h1 class="my-4">Instrukcja dodawania danych przez JOSM</h1>
+    <ul>
+        <li><a href="#logowanie">Logowanie</a></li>
+        <li><a href="#wczytywanie">Wczytywanie danych</a></li>
+        <li><a href="#podklad">Podkład mapowy</a></li>
+        <li><a href="#narzedzia">Narzędzia dodatkowe</a></li>
+        <li><a href="#sprawdz">Zakładka "Sprawdź"</a></li>
+        <li><a href="#wyslanie">Wysłanie danych</a></li>
+        <li><a href="#pobieranie">Pobieranie danych</a></li>
+    </ul>
+    <div class="alert alert-warning" role="alert">
+      <h5>Pamiętaj, żeby nie dodawać danych do OSM bez sprawdzenia, czy są aktualne i nie zduplikują się z już istniejącymi w bazie danymi!</h5>
+    </div>
+    <h2 id="logowanie">Logowanie</h2>
+    <p>Po zainstalowaniu programu przy pierwszym uruchomieniu powinien on zapytać nas czy chcemy się zalogowac do OSM i wygenerować tokeny potrzebne do dodawania danych do OSM.</p>
+    <p>Można to też zrobić przechodząc do ustawień (Edycja -> Ustawienia) i tam w drugiej zakładce (globus) kliknąć "Nowy klucz dostępu".</p>
+    <img src="/screenshots/oauth.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący wygląd okna ustawień"/>
+    <h2 id="wczytywanie">Wczytywanie danych</h2>
+    <p>Plik pobrany ze strony głównej (adresy lub budynki) zapisywany jest w formacie xml o rozszerzeniu osm. W JOSM klikamy Plik -> Otwórz a następnie wybieramy pobrany plik.</p>
+    <p>W części głównej okna na czarnym tle powinny pojawić się nasze dane (obrysy budynków lub punkty adresowe).</p>
+    <img src="/screenshots/openfile.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący widok po wczytaniu danych"/>
+    <h2 id="podklad">Podkład mapowy</h2>
+    <p>JOSM pozwala nam na dodawanie różnych podkładów mapowych. Dwa które najbardziej się nam przydadzą to OpenStreetMap oraz Ortofotomapa.</p>
+    <p>Podkłady stanowią oddzielne warstwy. Ich widocznością można sterować w panelu w prawym górnym rogu.</p>
+    <p>Podkłady dodajemy w zakładce "Podkłady" w menu.</p>
+    <img src="/screenshots/basemap.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący dostępne podkłady mapowe"/>
+    <h2 id="narzedzia">Narzędzia dodatkowe</h2>
+    <p>JOSM posiada wiele narzędzi do edycji geometrii i tagów. Przykłady to uproszczenie geometrii, czy zrobienie poligonu bardziej "kwadratowym".</p>
+    <p>Możemy też ręcznie przesuwać, dodawać, usuwać węzły (node) lub linie/poligony (way).</p>
+    <p>Kopiowanie całych obiektów to zwykłe CTRL+C i CTRL+V. Jeżeli chcemy skopiować tylko tagi z jednego obiektu na drugi - na przykład dane z punktu adresowego na budynek - należy użyć skrótów CTRL+C do skopiowania i na zaznaczonym obiekcie CTRL+SHIFT+V.</p>
+    <img src="/screenshots/tools.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący narzędzia"/>
+    <p>Poniżej przykład usunięcia zbędnych punktów z obrysu poligonu. Można to zrobić przez narzędzie upraszczania geometrii, ale zazwyczaj łatwiej jest po prostu zaznaczyć zbędne węzły i je usunąć naciskając DELETE.</p>
+    <img src="/screenshots/select.jpg" class="img-fluid mb-4" alt="Zrzut pokazujący poligon ze zbędnymi węzłami"/>
+    <img src="/screenshots/simplified.jpg" class="img-fluid mb-4" alt="Zrzut pokazujący poligon po uproszczeniu geometrii przez usunięcie zbędnych węzłów"/>
+    <h2 id="sprawdz">Zakładka "Sprawdź"</h2>
+    <p>W prawym dolnym rogu jest panel z przyciskiem "Sprawdź". Narzędzie to pozwala sprawdzić dane pod kątem podstawowych błędów formalnych np. problemów z geometrią (obrys budynku jest niezamknięty, linie się przecinają etc/)</p>
+    <div class="alert alert-warning" role="alert">
+        <h5>Zawsze sprawdź dane przed wysłaniem!</h5>
+    </div>
+    <img src="/screenshots/check.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący narzędzie 'Sprawdź'"/>
+    <h2 id="wyslanie">Wysłanie danych</h2>
+    <p>W górnym lewym rogu na pasku mamy przyciski otwierania plików (niebieski folder), pobierania danych (dysk z zieloną strzałką w dół) oraz wysyłania danych (dysk z zieloną strzałką w górę).</p>
+    <img src="/screenshots/download_upload.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący przyciski pobierania i wysyłania danych"/>
+    <p>Żeby wysłać dane wybieramy aktywną warstwę z naszymi danymi, następnie sprawdzamy czy nie ma w nich jakichś podstawowych błędów <a href="#sprawdz">narzędziem "Sprawdź"</a>. Następnie klikamy na przycisk wysyłania. Pojawi się okno jak na zrzucie poniżej:</p>
+    <img src="/screenshots/upload_1.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący pierwsze okienko po naciśnięciu przycisku wysyłania danych"/>
+    <p>Wypełniamy opis dokonanych zmian np.: "Import adresów z PRG", "Import obrysów budynków", albo coś podobnego. Następnie klikamy guzik "Wyślij zmiany".</p>
+    <p>W przypadku niewypełnienia pola "źródło danych" może pojawić się następujący widok:</p>
+    <img src="/screenshots/upload_2.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący drugie okienko w procesie wysyłania danych"/>
+    <p>Można wrócić i wypełnić to pole lub kliknąć "Kontynuuj jak jest" i wysłać dane bez tego pola wypełnionego.</p>
+    <div class="alert alert-warning" role="alert">
+        <h5>Zawsze sprawdź dane przed wysłaniem!</h5>
+    </div>
+    <div class="alert alert-warning" role="alert">
+      <h5>Pamiętaj, żeby nie dodawać danych do OSM bez sprawdzenia, czy są aktualne i nie zduplikują się z już istniejącymi w bazie danymi!</h5>
+    </div>
+    <h2 id="pobieranie">Pobieranie danych</h2>
+    <p>W górnym lewym rogu na pasku mamy przyciski otwierania plików (niebieski folder), pobierania danych (dysk z zieloną strzałką w dół) oraz wysyłania danych (dysk z zieloną strzałką w górę).</p>
+    <img src="/screenshots/download_upload.png" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący przyciski pobierania i wysyłania danych"/>
+    <p>Pobieranie danych w tym przypadku pobiera fragment danych z OSM. Możemy te dane przerobić, zaktualizować i wysłać ponownie do bazy OSM.</p>
+    <p>Przykłady to pobranie istniejącego obrysu budynku który widzimy na podkładzie mapowym w celu dodania mu atrybutów adresowych.</p>
+    <br><br><br><br>
+</div>
+<button onclick="returnTop()" id="goTopBtn" title="Wróć na górę strony" class="btn btn-primary fixed-bottom m-2 float-right" style="display: none;">Wróć na górę strony</button>
+<script src="/goTop.js"></script>
+</body>
+</html>
