@@ -13,15 +13,6 @@ date >> $logpath$logfile 2>&1
 
 set -e
 
-onexit() {
-  local x=$?
-  if [ $x -ne 0 ]; then
-    tail -n 100 /home/osm/logs/$logfile|mail -s "Błąd replikacji danych OSM" linsysop@abakus.net.pl
-  fi
-    }
-
-trap "onexit" exit
-
 (
   # Try to lock on the lock file (fd 200)
 
@@ -34,7 +25,7 @@ trap "onexit" exit
   fi
 
   osm2pgsql \
-    --number-processes 1 -v -C 1000 -G -K -j -x -s \
+    --number-processes 1 -v -C 1000 -G -K -s \
     -S ./gugik2osm.style --append -d $PGDATABASE --bbox 13.50,48.50,24.50,55.50  \
     current.osc >> $logpath$logfile 2>&1
 
@@ -46,7 +37,7 @@ trap "onexit" exit
   else
     echo "ERROR - osm2pgsql failed"
   fi
-) 200>/home/osm/scripts/osm/.replication.lock
+) 200>.replication.lock
 
 date >> $logpath$logfile  2>&1
 echo '-------------------STOP' >> $logpath$logfile 2>&1

@@ -134,3 +134,4 @@ dmypy.json
 # OSM Extracts
 *.osm.pbf
 
+/db_scripts/state.txt
