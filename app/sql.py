@@ -26,3 +26,20 @@ from (
 ) a
 group by way_id
 '''
+
+sql_mvt = '''
+select ST_AsMVT(a.*)
+from (
+    select
+       d.lokalnyid,
+       d.teryt_msc,
+       d.teryt_simc,
+       d.teryt_ulica,
+       d.teryt_ulic,
+       d.nr,
+       d.pna,
+       ST_AsMVTGeom(ST_Transform(d.geom, 3857), ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d) AS geom
+    from prg.delta d
+    where ST_Transform(d.geom, 3857) && ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)
+) a
+'''
