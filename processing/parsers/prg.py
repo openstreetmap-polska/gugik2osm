@@ -392,7 +392,7 @@ class SQL:
         self.sql_drop: str = ''
         self.sql_create: str = ''
         self.tab_classifier: str = ''
-        if schema is not None and schema != '':
+        if schema is not None and schema not in ('', 'public'):
             self.sql_drop = 'DROP SCHEMA IF EXISTS {0} CASCADE;\n'.format(schema)
             self.sql_create = 'CREATE SCHEMA {0};\n'.format(schema)
             self.tab_classifier = schema + '.'
@@ -432,3 +432,71 @@ class SQL:
 
     def inserter(self, cursor, typ: str, vals: List[str]) -> None:
         cursor.execute(self.sql_insert.get(typ), vals)
+
+
+class PostgreSQLWriter(SQL):
+
+    def __init__(self, prg_file_path: str, dsn: str, schema: Union[str, None] = 'prg', only_basic_fields: bool = False):
+        self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
+        self.dsn: str = dsn
+        super().__init__(self.Parser.Tags, self.Parser.Fields, schema)
+
+    def run(self, prepare_tables: bool = False, commit_every: int = 50000) -> None:
+        import psycopg2
+        with psycopg2.connect(self.dsn) as conn:
+            cursor = conn.cursor()
+            if prepare_tables:
+                cursor.execute(self.sql_drop)
+                cursor.execute(self.sql_create)
+                conn.commit()
+
+            i = 0  # counter for inserts
+            for typ, vals in self.Parser.iterator():
+                cursor.execute(self.sql_insert.get(typ), vals)
+                if i % commit_every == 0:
+                    print(i, 'commit')
+                    conn.commit()
+                i += 1
+            conn.commit()
+            print(i, 'commit.')
+
+
+class SQLiteWriter(SQL):
+
+    def __init__(self, prg_file_path: str, db_file_path: str, only_basic_fields: bool = False):
+        self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
+        self.db_file_path: str = db_file_path
+        super().__init__(self.Parser.Tags, self.Parser.Fields, None)
+
+    def run(self, prepare_tables: bool = False, commit_every: int = 50000):
+        import sqlite3
+        with sqlite3.connect(self.db_file_path) as db:
+            cursor = db.cursor()
+            if prepare_tables:
+                db.executescript(self.sql_drop)
+                db.executescript('PRAGMA journal_mode=WAL;')  # enable WAL, supposedly faster
+                db.executescript(self.sql_create)
+                db.commit()
+
+            # counter for inserts
+            i = 0
+            for typ, vals in self.Parser.iterator():
+                cursor.execute(self.sql_insert.get(typ), vals)
+                if i % commit_every == 0:
+                    print(i, 'commit')
+                    db.commit()
+                i += 1
+            db.commit()
+            print(i, 'commit.')
+
+
+class CSVWriter:
+
+    def __init__(self, prg_file_path: str, output_directory: str, only_basic_fields: bool = False):
+        self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
+        self.output_dir: str = output_directory
+
+    def run(self, headers: bool = True):
+        pass
+        # todo: finish the csv writer and add main method allowing to run the program from console
+
