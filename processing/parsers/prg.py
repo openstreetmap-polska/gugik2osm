@@ -376,3 +376,59 @@ class Parser:
             print(self.file_path)
             print(context.error_log)
             raise
+
+
+class SQL:
+    """Base class for writer classes that put data into sql databases.
+    Currently syntax is compatible with PostgreSQL and SQLite. (For sqlite schema should be empty)"""
+    def __init__(self, tags: Tags, fields: Fields, schema: Union[str, None]):
+        self.table_name_mappings: Dict[str, str] = {
+            tags.JA: 'jednostki_administracyjne',
+            tags.MSC: 'miejscowosci',
+            tags.UL: 'ulice',
+            tags.PA: 'punkty_adresowe'
+        }
+
+        self.sql_drop: str = ''
+        self.sql_create: str = ''
+        self.tab_classifier: str = ''
+        if schema is not None and schema != '':
+            self.sql_drop = 'DROP SCHEMA IF EXISTS {0} CASCADE;\n'.format(schema)
+            self.sql_create = 'CREATE SCHEMA {0};\n'.format(schema)
+            self.tab_classifier = schema + '.'
+
+        for tag in tags.list():
+            self.sql_drop += 'DROP TABLE IF EXISTS prg.' + self.table_name_mappings.get(tag) + ';\n'
+            self.sql_create += 'CREATE TABLE prg.' + self.table_name_mappings.get(tag) + '('
+            for column in fields.tag[tag]:
+                self.sql_create += column + ' text, '  # all columns are text
+            # remove comma and a space at the end and add closing parenthesis
+            self.sql_create = self.sql_create[:-2] + ');\n'
+
+        self.sql_insert_ja: str = 'INSERT INTO {0}{1} VALUES ({2})'.format(self.tab_classifier,
+                                                                           self.table_name_mappings.get(tags.JA),
+                                                                           ('%s, ' * len(fields.JA))[:-2])
+        self.sql_insert_msc: str = 'INSERT INTO {0}{1} VALUES ({2})'.format(self.tab_classifier,
+                                                                            self.table_name_mappings.get(tags.MSC),
+                                                                            ('%s, ' * len(fields.MSC))[:-2])
+        self.sql_insert_ul: str = 'INSERT INTO {0}{1} VALUES ({2})'.format(self.tab_classifier,
+                                                                           self.table_name_mappings.get(tags.UL),
+                                                                           ('%s, ' * len(fields.UL))[:-2])
+        self.sql_insert_pa: str = 'INSERT INTO {0}{1} VALUES ({2})'.format(self.tab_classifier,
+                                                                           self.table_name_mappings.get(tags.PA),
+                                                                           ('%s, ' * len(fields.PA))[:-2])
+        self.sql_insert: Dict[str, str] = {
+            tags.no_ns[tags.PA]: self.sql_insert_pa,
+            tags.no_ns[tags.JA]: self.sql_insert_ja,
+            tags.no_ns[tags.MSC]: self.sql_insert_msc,
+            tags.no_ns[tags.UL]: self.sql_insert_ul
+        }
+
+    def create_tables(self, conn) -> None:
+        cursor = conn.cursor()
+        cursor.execute(self.sql_drop)
+        cursor.execute(self.sql_create)
+        conn.commit()
+
+    def inserter(self, cursor, typ: str, vals: List[str]) -> None:
+        cursor.execute(self.sql_insert.get(typ), vals)
