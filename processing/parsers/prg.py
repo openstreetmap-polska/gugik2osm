@@ -2,11 +2,12 @@
 https://www.ibm.com/developerworks/xml/library/x-hiperfparse/
 """
 
-from os.path import getsize
+from os.path import getsize, join
 import re
 from datetime import datetime
 from typing import List, Union, Dict, Set, Tuple
 from collections import OrderedDict
+import argparse
 
 from lxml import etree
 
@@ -96,6 +97,18 @@ class Tags:
             self.MSC: 'PRG_MiejscowoscNazwa',
             self.UL: 'PRG_UlicaNazwa',
             self.PA: 'PRG_PunktAdresowy'
+        }
+        self.with_ns: dict = {
+            'PRG_JednostkaAdministracyjnaNazwa': self.JA,
+            'PRG_MiejscowoscNazwa': self.MSC,
+            'PRG_UlicaNazwa': self.UL,
+            'PRG_PunktAdresowy': self.PA
+        }
+        self.no_ns2short: dict = {
+            'PRG_JednostkaAdministracyjnaNazwa': 'JA',
+            'PRG_MiejscowoscNazwa': 'MS',
+            'PRG_UlicaNazwa': 'UL',
+            'PRG_PunktAdresowy': 'PA'
         }
 
     def list(self, ja: bool = True, msc: bool = True, ul: bool = True, pa: bool = True) -> Set[str]:
@@ -478,8 +491,7 @@ class SQLiteWriter(SQL):
                 db.executescript(self.sql_create)
                 db.commit()
 
-            # counter for inserts
-            i = 0
+            i = 0  # counter for inserts
             for typ, vals in self.Parser.iterator():
                 cursor.execute(self.sql_insert.get(typ), vals)
                 if i % commit_every == 0:
@@ -495,8 +507,82 @@ class CSVWriter:
     def __init__(self, prg_file_path: str, output_directory: str, only_basic_fields: bool = False):
         self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
         self.output_dir: str = output_directory
+        self.output_file_paths: dict = {x: join(output_directory, x+'.csv') for x in self.Parser.Tags.list()}
 
     def run(self, headers: bool = True):
-        pass
-        # todo: finish the csv writer and add main method allowing to run the program from console
+        import csv
+        writers = {}
+        for typ, fp in self.output_file_paths.items():
+            if headers:
+                csv.DictWriter(
+                    open(fp, 'w', encoding='UTF-8', newline=''),
+                    self.Parser.Fields.tag.get(self.Parser.Tags.with_ns[typ])
+                ).writeheader()
 
+            writers[typ] = csv.writer(open(fp, 'w', encoding='UTF-8', newline=''))
+
+        for typ, vals in self.Parser.iterator():
+            writers[typ].writerow(vals)
+
+
+class StdOutWriter:
+
+    def __init__(self, prg_file_path: str, only_basic_fields: bool = False):
+        self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
+
+    def run(self, limit: Union[int, None] = None):
+        import csv
+        import os
+        from sys import stdout
+        from io import StringIO
+        strio = StringIO()
+        writer = csv.writer(strio, lineterminator=os.linesep)
+        i = 1  # counter for limit
+        for typ, vals in self.Parser.iterator():
+            if limit and i > limit:
+                break
+            writer.writerow(vals)
+            stdout.write(self.Parser.Tags.no_ns2short[typ]+'|'+strio.getvalue())
+            i += 1
+
+
+if __name__ == '__main__':
+    def str2bool(v) -> bool:
+        if isinstance(v, bool):
+            return v
+        if v.lower() in ('yes', 'true', 't', 'y', '1'):
+            return True
+        elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+            return False
+        else:
+            raise argparse.ArgumentTypeError('Boolean value expected.')
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', help='File path to the input file.', nargs=1)
+    parser.add_argument('--writer', help='Writer to use.', choices=('csv', 'sqlite', 'postgresql', 'stdout'), nargs=1)
+    parser.add_argument('--csv_directory', help='Directory for csv files when using csv writer.', nargs=1)
+    parser.add_argument('--sqlite_file', help='Filepath for SQLite database when using sqlite writer.', nargs=1)
+    parser.add_argument('--dsn', help='Connection string for PostgreSQL when using postgresql writer.', nargs=1)
+    parser.add_argument('--prep_tables', help='Drop and create tables when using db writers.',
+                        nargs='?',
+                        type=str2bool,
+                        const=True)
+    parser.add_argument('--limit', help='Limit number of parsed rows when using stdout writer. Mostly for testing.',
+                        nargs=1,
+                        type=int)
+    args = vars(parser.parse_args())
+
+    sqlparams = {}
+    if args['prep_tables']:
+        sqlparams['prepare_table'] = args['prep_tables']
+
+    if args['writer'][0] == 'stdout':
+        StdOutWriter(args['input'][0]).run(limit=args['limit'][0] if args['limit'] else None)
+    elif args['writer'][0] == 'csv':
+        CSVWriter(args['input'][0], args['csv_directory'][0]).run()
+    elif args['writer'][0] == 'sqlite':
+        SQLiteWriter(args['input'][0], args['sqlite_file'][0]).run(**sqlparams)
+    elif args['writer'][0] == 'postgresql':
+        PostgreSQLWriter(args['input'][0], args['dsn'][0]).run(**sqlparams)
+    else:
+        print(args)
