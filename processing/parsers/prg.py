@@ -519,7 +519,10 @@ class CSVWriter:
     def __init__(self, prg_file_path: str, output_directory: str, only_basic_fields: bool = False):
         self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
         self.output_dir: str = output_directory
-        self.output_file_paths: dict = {x: join(output_directory, x+'.csv') for x in self.Parser.Tags.list()}
+        self.output_file_paths: dict = {
+            self.Parser.Tags.no_ns[x]: join(output_directory, self.Parser.Tags.no_ns[x]+'.csv')
+            for x in self.Parser.Tags.list()
+        }
 
     def run(self, headers: bool = True):
         import csv
