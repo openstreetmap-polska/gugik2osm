@@ -536,7 +536,7 @@ class CSVWriter:
                     self.Parser.Fields.tag.get(self.Parser.Tags.with_ns[typ])
                 ).writeheader()
 
-            writers[typ] = csv.writer(open(fp, 'w', encoding='UTF-8', newline=''))
+            writers[typ] = csv.writer(open(fp, 'a', encoding='UTF-8', newline=''))
 
         for typ, vals in self.Parser.iterator():
             writers[typ].writerow(vals)
