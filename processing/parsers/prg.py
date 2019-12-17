@@ -429,8 +429,8 @@ class SQL:
             self.tab_classifier = schema + '.'
 
         for tag in tags.list():
-            self.sql_drop += 'DROP TABLE IF EXISTS prg.' + self.table_name_mappings.get(tag) + ';\n'
-            self.sql_create += 'CREATE TABLE prg.' + self.table_name_mappings.get(tag) + '('
+            self.sql_drop += 'DROP TABLE IF EXISTS ' + self.tab_classifier + self.table_name_mappings.get(tag) + ';\n'
+            self.sql_create += 'CREATE TABLE ' + self.tab_classifier + self.table_name_mappings.get(tag) + '('
             for column in fields.tag[tag]:
                 self.sql_create += column + ' text, '  # all columns are text
             # remove comma and a space at the end and add closing parenthesis
@@ -438,16 +438,16 @@ class SQL:
 
         self.sql_insert_ja: str = 'INSERT INTO {0}{1} VALUES ({2})'.format(self.tab_classifier,
                                                                            self.table_name_mappings.get(tags.JA),
-                                                                           ('%s, ' * len(fields.JA))[:-2])
+                                                                           ((prep_st_placeholder + ', ') * len(fields.JA))[:-2])
         self.sql_insert_msc: str = 'INSERT INTO {0}{1} VALUES ({2})'.format(self.tab_classifier,
                                                                             self.table_name_mappings.get(tags.MSC),
-                                                                            ('%s, ' * len(fields.MSC))[:-2])
+                                                                            ((prep_st_placeholder + ', ') * len(fields.MSC))[:-2])
         self.sql_insert_ul: str = 'INSERT INTO {0}{1} VALUES ({2})'.format(self.tab_classifier,
                                                                            self.table_name_mappings.get(tags.UL),
-                                                                           ('%s, ' * len(fields.UL))[:-2])
+                                                                           ((prep_st_placeholder + ', ') * len(fields.UL))[:-2])
         self.sql_insert_pa: str = 'INSERT INTO {0}{1} VALUES ({2})'.format(self.tab_classifier,
                                                                            self.table_name_mappings.get(tags.PA),
-                                                                           ('%s, ' * len(fields.PA))[:-2])
+                                                                           ((prep_st_placeholder + ', ') * len(fields.PA))[:-2])
         self.sql_insert: Dict[str, str] = {
             tags.no_ns[tags.PA]: self.sql_insert_pa,
             tags.no_ns[tags.JA]: self.sql_insert_ja,
@@ -470,7 +470,7 @@ class PostgreSQLWriter(SQL):
     def __init__(self, prg_file_path: str, dsn: str, schema: Union[str, None] = 'prg', only_basic_fields: bool = False):
         self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
         self.dsn: str = dsn
-        super().__init__(self.Parser.Tags, self.Parser.Fields, schema)
+        super().__init__(self.Parser.Tags, self.Parser.Fields, schema, '%s')
 
     def run(self, prepare_tables: bool = False, commit_every: int = 50000) -> None:
         import psycopg2
@@ -497,7 +497,7 @@ class SQLiteWriter(SQL):
     def __init__(self, prg_file_path: str, db_file_path: str, only_basic_fields: bool = False):
         self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
         self.db_file_path: str = db_file_path
-        super().__init__(self.Parser.Tags, self.Parser.Fields, None)
+        super().__init__(self.Parser.Tags, self.Parser.Fields, None, '?')
 
     def run(self, prepare_tables: bool = False, commit_every: int = 50000):
         import sqlite3
@@ -598,7 +598,7 @@ if __name__ == '__main__':
 
     sqlparams = {}
     if args['prep_tables']:
-        sqlparams['prepare_table'] = args['prep_tables']
+        sqlparams['prepare_tables'] = args['prep_tables']
 
     if args['writer'][0] == 'stdout':
         StdOutWriter(args['input'][0]).run(limit=args['limit'][0] if args['limit'] else None)
