@@ -533,17 +533,19 @@ class CSVWriter:
     def run(self, headers: bool = True):
         import csv
         writers: dict = {}
+        fcon: dict = {}
         for typ, fp in self.output_file_paths.items():
             if headers:
                 with open(fp, 'w', encoding='UTF-8', newline='') as f:
                     csv.DictWriter(f, self.Parser.Fields.tag.get(self.Parser.Tags.with_ns[typ])).writeheader()
 
-            writers[typ] = csv.writer(open(fp, 'a', encoding='UTF-8', newline=''))
+            fcon[typ] = open(fp, 'a', encoding='UTF-8', newline='')
+            writers[typ] = csv.writer(fcon[typ])
 
         for typ, vals in self.Parser.iterator():
             writers[typ].writerow(vals)
 
-        for f in writers.values():
+        for f in fcon.values():
             f.close()
 
 
