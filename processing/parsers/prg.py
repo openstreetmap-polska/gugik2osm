@@ -528,18 +528,19 @@ class CSVWriter:
 
     def run(self, headers: bool = True):
         import csv
-        writers = {}
+        writers: dict = {}
         for typ, fp in self.output_file_paths.items():
             if headers:
-                csv.DictWriter(
-                    open(fp, 'w', encoding='UTF-8', newline=''),
-                    self.Parser.Fields.tag.get(self.Parser.Tags.with_ns[typ])
-                ).writeheader()
+                with open(fp, 'w', encoding='UTF-8', newline='') as f:
+                    csv.DictWriter(f, self.Parser.Fields.tag.get(self.Parser.Tags.with_ns[typ])).writeheader()
 
             writers[typ] = csv.writer(open(fp, 'a', encoding='UTF-8', newline=''))
 
         for typ, vals in self.Parser.iterator():
             writers[typ].writerow(vals)
+
+        for f in writers.values():
+            f.close()
 
 
 class StdOutWriter:
