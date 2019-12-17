@@ -1,11 +1,11 @@
 """Based on:
 https://www.ibm.com/developerworks/xml/library/x-hiperfparse/
 """
-
+import zipfile
 from os.path import getsize, join
 import re
 from datetime import datetime
-from typing import List, Union, Dict, Set, Tuple
+from typing import List, Union, Dict, Set, Tuple, TextIO, BinaryIO
 from collections import OrderedDict
 import argparse
 
@@ -50,39 +50,38 @@ class Namespaces:
         self.NS_BT: str = r'urn:gugik:specyfikacje:gmlas:modelPodstawowy:1.0'
         self.NS_MUA: str = r'urn:gugik:specyfikacje:gmlas:ewidencjaMiejscowosciUlicAdresow:1.0'
 
-    def update_from_file(self, file_path: str) -> None:
+    def update_from_file(self, file_obj: Union[TextIO, BinaryIO]) -> None:
         """Updates namespaces in the class from xml file by looking at the file's first 15 lines."""
-        with open(file_path, 'r') as f:
-            for _ in range(15):
-                line = f.readline()
-                re_ns_prg = re.search(
-                    r'xmlns:prg-ad="(urn:gugik:specyfikacje:gmlas:panstwowyRejestrGranicAdresy:\d\.\d)"',
-                    line,
-                    flags=re.RegexFlag.IGNORECASE
-                )
-                re_ns_gml = re.search(
-                    r'xmlns:gml="(http://www\.opengis\.net/gml/\d\.\d)"',
-                    line,
-                    flags=re.RegexFlag.IGNORECASE
-                )
-                re_ns_bt = re.search(
-                    r'(urn:gugik:specyfikacje:gmlas:modelPodstawowy:\d\.\d)',
-                    line,
-                    flags=re.RegexFlag.IGNORECASE
-                )
-                re_ns_mua = re.search(
-                    r'(urn:gugik:specyfikacje:gmlas:ewidencjaMiejscowosciUlicAdresow:\d\.\d)',
-                    line,
-                    flags=re.RegexFlag.IGNORECASE
-                )
-                if re_ns_prg:
-                    self.NS_PRG = re_ns_prg.group(1)
-                if re_ns_gml:
-                    self.NS_GML = re_ns_gml.group(1)
-                if re_ns_bt:
-                    self.NS_BT = re_ns_bt.group(1)
-                if re_ns_mua:
-                    self.NS_MUA = re_ns_mua.group(1)
+        for _ in range(15):
+            line = file_obj.readline() if type(file_obj.readline()) == str else file_obj.readline().decode('UTF-8')
+            re_ns_prg = re.search(
+                r'xmlns:prg-ad="(urn:gugik:specyfikacje:gmlas:panstwowyRejestrGranicAdresy:\d\.\d)"',
+                line,
+                flags=re.RegexFlag.IGNORECASE
+            )
+            re_ns_gml = re.search(
+                r'xmlns:gml="(http://www\.opengis\.net/gml/\d\.\d)"',
+                line,
+                flags=re.RegexFlag.IGNORECASE
+            )
+            re_ns_bt = re.search(
+                r'(urn:gugik:specyfikacje:gmlas:modelPodstawowy:\d\.\d)',
+                line,
+                flags=re.RegexFlag.IGNORECASE
+            )
+            re_ns_mua = re.search(
+                r'(urn:gugik:specyfikacje:gmlas:ewidencjaMiejscowosciUlicAdresow:\d\.\d)',
+                line,
+                flags=re.RegexFlag.IGNORECASE
+            )
+            if re_ns_prg:
+                self.NS_PRG = re_ns_prg.group(1)
+            if re_ns_gml:
+                self.NS_GML = re_ns_gml.group(1)
+            if re_ns_bt:
+                self.NS_BT = re_ns_bt.group(1)
+            if re_ns_mua:
+                self.NS_MUA = re_ns_mua.group(1)
 
 
 class Tags:
@@ -351,8 +350,21 @@ class Parser:
         if len(file_path) == 0:
             raise AttributeError('List of file paths must not be empty.')
 
+        if file_path.endswith('.zip'):
+            with zipfile.ZipFile(file_path, 'r') as zip_file:
+                if len([file for file in zip_file.namelist() if file.endswith(".xml") or file.endswith(".gml")]) > 1:
+                    print('WARNING!!! Found more than one xml/gml file in zip. Going to use only the first one.')
+                for file in zip_file.namelist()[:1]:
+                    if file.endswith(".xml") or file.endswith(".gml"):
+                        self.file_obj: TextIO = zip_file.open(file, 'r')
+                    else:
+                        raise FileNotFoundError('did not find file with extensions xml or gml in provided zip')
+        else:
+            self.file_obj: BinaryIO = open(file_path, 'rb')
+
         self.NS: Namespaces = Namespaces()
-        self.NS.update_from_file(file_path)
+        self.NS.update_from_file(self.file_obj)
+        self.file_obj.seek(0)  # go back to beginning of file after reading first lines for updating namespaces
         self.Tags: Tags = Tags(self.NS)
         self.Fields: Fields = Fields(self.Tags, only_basic_fields)
         self.XML: XML = XML(self.NS, self.Tags, self.Fields)
@@ -367,7 +379,7 @@ class Parser:
 
         # create context for xml parser iterator
         context = etree.iterparse(
-            source=self.file_path,
+            source=self.file_obj,
             events=('end',),
             tag=tags_to_read,
             remove_blank_text=True
