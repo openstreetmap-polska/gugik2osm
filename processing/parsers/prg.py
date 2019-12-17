@@ -322,8 +322,12 @@ class XML:
                 if name in result:
                     last_name = sorted([x for x in result.keys() if str(x).startswith(name)], reverse=True)[0]
                     name = incremented_name(last_name)
-                if name.startswith('komponent') and x.text is not None:
-                    val = str(x.text)[35:]  # remove unnecessary string part: 'http://geoportal.gov.pl/PZGIK/dane/'
+                # if value or href link start with url 'http://geoportal.gov.pl/PZGIK/dane/',
+                # remove it as it is not necessary
+                if x.text and x.text.startswith('http://geoportal.gov.pl'):
+                    val = str(x.text)[35:]
+                elif x.text is None and x.get(self.NS.XLINK) and x.get(self.NS.XLINK).startswith('http://geoportal.gov.pl'):
+                    val = str(x.get(self.NS.XLINK))[35:]
                 else:
                     val = x.text
                 result[name] = x.get(self.NS.XLINK) if val is None and x.get(self.NS.XLINK) else val
