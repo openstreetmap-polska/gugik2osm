@@ -412,7 +412,8 @@ class Parser:
 class SQL:
     """Base class for writer classes that put data into sql databases.
     Currently syntax is compatible with PostgreSQL and SQLite. (For sqlite schema should be empty)"""
-    def __init__(self, tags: Tags, fields: Fields, schema: Union[str, None]):
+
+    def __init__(self, tags: Tags, fields: Fields, schema: Union[str, None], prep_st_placeholder: str):
         self.table_name_mappings: Dict[str, str] = {
             tags.JA: 'jednostki_administracyjne',
             tags.MSC: 'miejscowosci',
@@ -526,7 +527,7 @@ class CSVWriter:
         self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
         self.output_dir: str = output_directory
         self.output_file_paths: dict = {
-            self.Parser.Tags.no_ns[x]: join(output_directory, self.Parser.Tags.no_ns[x]+'.csv')
+            self.Parser.Tags.no_ns[x]: join(output_directory, self.Parser.Tags.no_ns[x] + '.csv')
             for x in self.Parser.Tags.list()
         }
 
@@ -566,7 +567,7 @@ class StdOutWriter:
             if limit and i > limit:
                 break
             writer.writerow(vals)
-            stdout.write(self.Parser.Tags.no_ns2short[typ]+'|'+strio.getvalue())
+            stdout.write(self.Parser.Tags.no_ns2short[typ] + '|' + strio.getvalue())
             i += 1
 
 
@@ -580,6 +581,7 @@ if __name__ == '__main__':
             return False
         else:
             raise argparse.ArgumentTypeError('Boolean value expected.')
+
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', help='File path to the input file.', nargs=1)
