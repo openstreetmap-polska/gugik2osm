@@ -321,10 +321,12 @@ class XML:
                 # then take that as a value
                 if name in result:
                     last_name = sorted([x for x in result.keys() if str(x).startswith(name)], reverse=True)[0]
-                    new_name = incremented_name(last_name)
-                    result[new_name] = x.get(self.NS.XLINK) if x.text is None and x.get(self.NS.XLINK) else x.text
+                    name = incremented_name(last_name)
+                if name.startswith('komponent') and x.text is not None:
+                    val = str(x.text)[35:]  # remove unnecessary string part: 'http://geoportal.gov.pl/PZGIK/dane/'
                 else:
-                    result[name] = x.get(self.NS.XLINK) if x.text is None and x.get(self.NS.XLINK) else x.text
+                    val = x.text
+                result[name] = x.get(self.NS.XLINK) if val is None and x.get(self.NS.XLINK) else val
             # if geometry
             # we want to preserve geometry string in GML format to parse it later
             elif x.tag in self.geometry_names:
