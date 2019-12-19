@@ -425,8 +425,7 @@ class SQL:
         self.sql_create: str = ''
         self.tab_classifier: str = ''
         if schema is not None and schema not in ('', 'public'):
-            self.sql_drop = 'DROP SCHEMA IF EXISTS {0} CASCADE;\n'.format(schema)
-            self.sql_create = 'CREATE SCHEMA {0};\n'.format(schema)
+            self.sql_create = 'CREATE SCHEMA IF NOT EXISTS {0};\n'.format(schema)
             self.tab_classifier = schema + '.'
 
         for tag in tags.list():
