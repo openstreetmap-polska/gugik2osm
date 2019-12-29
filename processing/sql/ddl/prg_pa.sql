@@ -1,5 +1,5 @@
 drop table if exists prg.pa;
-create table prg.pa (
+create unlogged table prg.pa (
 	lokalnyid uuid primary key,
 	woj text,
 	pow text,
