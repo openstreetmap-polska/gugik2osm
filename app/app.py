@@ -167,14 +167,22 @@ def buildings():
 
 @app.route("/tiles/<int:z>/<int:x>/<int:y>.pbf")
 def tile_server(z, x, y):
+    # calculate bbox
     tile = m.Tile(x, y, z)
     bbox = to_merc(m.bounds(tile))
+    # query db
     cur = pgdb().cursor()
-    response = list(cur.execute(sql_mvt, bbox))
-    layers = filter(None, list(itertools.chain.from_iterable(response)))
+    cur.execute(sql_mvt, {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']})
+    r = list(cur.fetchall())
+    # process tile?
+    layers = filter(None, list(itertools.chain.from_iterable(r))) if r else []
     final_tile = b''
     for layer in layers:
         final_tile = final_tile + io.BytesIO(layer).getvalue()
+    # prepare and return response
+    response = app.make_response(final_tile)
+    response.headers['Content-Type'] = 'application/x-protobuf'
+    response.headers['Access-Control-Allow-Origin'] = "*"
     return final_tile
 
 
