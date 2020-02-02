@@ -183,7 +183,7 @@ def tile_server(z, x, y):
     response = app.make_response(final_tile)
     response.headers['Content-Type'] = 'application/x-protobuf'
     response.headers['Access-Control-Allow-Origin'] = "*"
-    return final_tile
+    return response
 
 
 if __name__ == '__main__':
