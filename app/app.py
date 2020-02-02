@@ -3,10 +3,33 @@ from os import environ
 from lxml import etree
 import psycopg2 as pg
 from flask import Flask, request, abort, Response, jsonify
-from sql import sql_where_bbox, sql_buildings_where_bbox
+from sql import sql_where_bbox, sql_buildings_where_bbox, sql_mvt
+import mercantile as m
+from pyproj import Proj, transform
+import itertools
+import io
 
 conn = None
 app = Flask(__name__)
+
+
+def pgdb():
+    """Method returns connection to the DB. If there is no connection active it creates one."""
+    global conn
+    if conn:
+        return conn
+    else:
+        conn = pg.connect(dsn=environ['dsn'])
+        return conn
+
+
+def to_merc(bbox: m.LngLatBbox) -> dict:
+    in_proj = Proj('epsg:4326')
+    out_proj = Proj('epsg:3857')
+    res = dict()
+    res["west"], res["south"] = transform(in_proj, out_proj, bbox.south, bbox.west)
+    res["east"], res["north"] = transform(in_proj, out_proj, bbox.north, bbox.east)
+    return res
 
 
 @app.route('/prg/not_in/osm/', methods=['GET'])
@@ -22,7 +45,10 @@ def features_in():
     cur = pgdb().cursor()
     cur.execute(
         sql_where_bbox,
-        (float(request.args.get('xmin')), float(request.args.get('ymin')), float(request.args.get('xmax')), float(request.args.get('ymax')))
+        (float(request.args.get('xmin')),
+         float(request.args.get('ymin')),
+         float(request.args.get('xmax')),
+         float(request.args.get('ymax')))
     )
 
     if request.args.get('format') == 'osm':
@@ -139,16 +165,18 @@ def buildings():
         abort(400)
 
 
-def pgdb():
-    """Method returns connection to the DB. If there is no connection active it creates one."""
-    global conn
-    if conn:
-        return conn
-    else:
-        conn = pg.connect(dsn=environ['dsn'])
-        return conn
+@app.route("/tiles/<int:z>/<int:x>/<int:y>.pbf")
+def tile_server(z, x, y):
+    tile = m.Tile(x, y, z)
+    bbox = to_merc(m.bounds(tile))
+    cur = pgdb().cursor()
+    response = list(cur.execute(sql_mvt, bbox))
+    layers = filter(None, list(itertools.chain.from_iterable(response)))
+    final_tile = b''
+    for layer in layers:
+        final_tile = final_tile + io.BytesIO(layer).getvalue()
+    return final_tile
 
 
 if __name__ == '__main__':
     app.run()
-
