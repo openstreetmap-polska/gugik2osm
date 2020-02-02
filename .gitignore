@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# PyCharm environment
+/.idea
+
+# OSM Extracts
+*.osm.pbf
+
+/db_scripts/state.txt
