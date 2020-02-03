@@ -43,12 +43,14 @@ with a as (
        ) geom
     from prg.delta d
     where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
+    limit 500000
 ),
 b as (
   select
     ST_AsMVTGeom(ST_Transform(geom, 3857), ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d) geom
   from lod1_buildings
   where geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
+  limit 500000
 )
 select ST_AsMVT(a.*, 'prg2load')
 from a
