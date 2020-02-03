@@ -63,3 +63,16 @@ union
 select ST_AsMVT(b.*, 'lod1_buildings')
 from b
 '''
+
+sql_delta_point_info = '''
+select
+   lokalnyid,
+   teryt_msc,
+   teryt_simc,
+   teryt_ulica,
+   teryt_ulic,
+   nr,
+   pna
+from prg.delta
+where lokalnyid = cast(%s as uuid)
+'''
