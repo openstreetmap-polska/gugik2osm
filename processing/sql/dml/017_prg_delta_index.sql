@@ -1,0 +1,1 @@
+create index if not exists delta_lokalnyid on prg.delta using btree (lokalnyid);
