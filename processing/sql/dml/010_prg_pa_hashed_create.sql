@@ -3,7 +3,7 @@ create unlogged table prg.pa_hashed as
 select
     md5(concat(lower(prg.teryt_msc), coalesce(lower(prg.teryt_ulica), ''), prg.nr)),
     lokalnyid,
-    gml
+    gml geom
 from prg.pa prg
 join teryt.simc on prg.teryt_simc = simc.sym
 where
