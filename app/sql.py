@@ -37,7 +37,10 @@ with a as (
        d.teryt_ulic,
        d.nr,
        d.pna,
-       ST_AsMVTGeom(ST_Transform(d.geom, 3857), ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d) AS geom
+       ST_AsMVTGeom(
+         ST_Transform(d.geom, 3857), 
+         ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d
+       ) geom
     from prg.delta d
     where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
 ),
@@ -49,9 +52,11 @@ b as (
 )
 select ST_AsMVT(a.*, 'prg2load')
 from a
-union
-select ST_AsMVT(a.geom, 'prg2load_geomonly')
-from a
+-- this seems to cause a bug/error: pgis_asmvt_transfn: parameter row cannot be other than a rowtype
+-- mvt needs to be redesigned anyway to not store all the text attributes
+-- union
+-- select ST_AsMVT(a.geom, 'prg2load_geomonly')
+-- from a
 union
 select ST_AsMVT(b.*, 'lod1_buildings')
 from b
