@@ -40,6 +40,6 @@ from (
        d.pna,
        ST_AsMVTGeom(ST_Transform(d.geom, 3857), ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d) AS geom
     from prg.delta d
-    where ST_Transform(d.geom, 3857) && ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)
+    where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
 ) a
 '''
