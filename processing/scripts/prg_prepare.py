@@ -5,6 +5,8 @@ from os.path import join, dirname, abspath
 from os import walk
 from typing import Union
 
+import mercantile as m
+from pyproj import Proj, transform
 import psycopg2 as pg
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
@@ -14,12 +16,22 @@ dml_path = join(sql_path, 'dml')
 partial_update_path = join(sql_path, 'partial_update')
 
 
+def to_merc(bbox: m.LngLatBbox) -> dict:
+    in_proj = Proj('epsg:4326')
+    out_proj = Proj('epsg:3857')
+    res = dict()
+    res["west"], res["south"] = transform(in_proj, out_proj, bbox.south, bbox.west)
+    res["east"], res["north"] = transform(in_proj, out_proj, bbox.north, bbox.east)
+    return res
+
+
 def _read_and_execute(
     conn,
     path: str,
     vacuum: bool = True,
     temp_set_workmem: str = None,
-    query_parameters: Union[tuple, dict, None] = None
+    query_parameters: Union[tuple, dict, None] = None,
+    commit_mode: str = 'once'
 ) -> None:
     """Internal method that reads sql query from file, connects to the database, and executes it."""
 
@@ -38,11 +50,11 @@ def _read_and_execute(
         cur.execute(sql, query_parameters)
     else:
         cur.execute(sql)
-    conn.commit()
+    if commit_mode == 'always':
+        conn.commit()
     if temp_set_workmem is not None:
         print('Setting work_mem back to the previous value:', old_workmem)
         cur.execute('set work_mem = %s', (old_workmem,))
-        conn.commit()
     if vacuum:
         print('Vacuum analyze.')
         old_isolation_level = conn.isolation_level
@@ -58,29 +70,32 @@ def _read_and_execute(
 
 
 def execute_scripts_from_files(
-        dsn: str,
+        conn,
         paths: Union[str, list, tuple],
         vacuum: bool = True,
         temp_set_workmem: str = None,
-        query_parameters: Union[tuple, dict, None] = None
+        query_parameters: Union[tuple, dict, None] = None,
+        commit_mode: str = 'once'
 ) -> None:
     """Method executes sql script from given file path(s)."""
 
     if len(paths) == 0:
         raise AttributeError('You need to specify at least one path for file with an sql script.')
-    with pg.connect(dsn) as conn:
-        if type(paths) == str:
-            _read_and_execute(conn, paths, vacuum, temp_set_workmem)
-        elif type(paths) in (tuple, list):
-            if type(paths[0]) in (tuple, list):
-                for lst in paths:
-                    for path in lst:
-                        _read_and_execute(conn, path, vacuum, temp_set_workmem, query_parameters)
-            else:
-                for path in paths:
-                    _read_and_execute(conn, path, vacuum, temp_set_workmem, query_parameters)
+
+    if type(paths) == str:
+        _read_and_execute(conn, paths, vacuum, temp_set_workmem, query_parameters, commit_mode)
+    elif type(paths) in (tuple, list):
+        if type(paths[0]) in (tuple, list):
+            for lst in paths:
+                for path in lst:
+                    _read_and_execute(conn, path, vacuum, temp_set_workmem, query_parameters, commit_mode)
         else:
-            raise AttributeError(f'Wrong arguments should be strings with paths or list of strings (paths): {paths}')
+            for path in paths:
+                _read_and_execute(conn, path, vacuum, temp_set_workmem, query_parameters, commit_mode)
+    else:
+        raise AttributeError(f'Wrong arguments should be strings with paths or list of strings (paths): {paths}')
+    if commit_mode in ('always', 'once'):
+        conn.commit()
 
 
 def full_process(dsn: str) -> None:
@@ -100,12 +115,12 @@ def full_process(dsn: str) -> None:
     dmls = [x for x in sorted(dmls)]
 
     # execute sql scripts
-    # execute_scripts_from_files(dsn=dsn, vacuum=True, paths=[ddls, dmls])
-    execute_scripts_from_files(dsn=dsn, vacuum=True, paths=ddls)
-    execute_scripts_from_files(dsn=dsn, vacuum=True, paths=dmls, temp_set_workmem='2048MB')
+    with pg.connect(dsn) as conn:
+        execute_scripts_from_files(conn=conn, vacuum=True, paths=ddls, commit_mode='once')
+        execute_scripts_from_files(conn=conn, vacuum=True, paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
 
 
-def partial_update(dsn: str, bbox: dict) -> None:
+def partial_update(dsn: str) -> None:
     sql_queries = []
     # get paths of sql files
     # r=root, d=directories, f = files
@@ -114,24 +129,30 @@ def partial_update(dsn: str, bbox: dict) -> None:
             if file.endswith('.sql'):
                 sql_queries.append(join(r, file))
     sql_queries = [x for x in sorted(sql_queries)]
-    execute_scripts_from_files(dsn=dsn, vacuum=False, paths=sql_queries, query_parameters=bbox)
+    with pg.connect(dsn) as conn:
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM expired_tiles WHERE processed = false FOR UPDATE SKIP LOCKED;')
+        for row in cur.fetchall():
+            x, y, z = row[2], row[3], row[1]
+            tile = m.Tile(x, y, z)
+            bbox = to_merc(m.bounds(tile))
+            bbox = {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
+            execute_scripts_from_files(conn=conn, vacuum=False, paths=sql_queries, query_parameters=bbox, commit_mode='off')
+            cur.execute(
+                'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
+                (row[0], row[1], row[2], row[3])
+            )
+        conn.commit()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--full', help='Launch full process', nargs='?', const=True)
     parser.add_argument('--update', help='Launch partial update process', nargs='?', const=True)
-    parser.add_argument('--bbox', help='Bounding box for update. Provide 4 parameters: xmin, ymin, xmax, ymax', nargs=4)
     parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs=1)
     args = vars(parser.parse_args())
 
     if 'full' in args and args.get('full'):
         full_process(args['dsn'][0])
     elif 'update' in args and args.get('update'):
-        bbox = {
-            'xmin': float(args['bbox'][0]),
-            'ymin': float(args['bbox'][1]),
-            'xmax': float(args['bbox'][2]),
-            'ymax': float(args['bbox'][3])
-        }
-        partial_update(args['dsn'][0], bbox)
+        partial_update(args['dsn'][0])
