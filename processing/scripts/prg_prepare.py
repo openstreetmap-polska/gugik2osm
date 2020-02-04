@@ -125,9 +125,9 @@ if __name__ == '__main__':
     parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs=1)
     args = vars(parser.parse_args())
 
-    if 'full' in args:
+    if 'full' in args and args.get('full'):
         full_process(args['dsn'][0])
-    elif 'update' in args:
+    elif 'update' in args and args.get('update'):
         bbox = {
             'xmin': float(args['bbox'][0]),
             'ymin': float(args['bbox'][1]),
