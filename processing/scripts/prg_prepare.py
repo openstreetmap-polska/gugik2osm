@@ -90,11 +90,11 @@ def full_process(dsn: str) -> None:
     # r=root, d=directories, f = files
     for r, d, f in walk(ddl_path):
         for file in f:
-            if '.sql' in file:
+            if file.endswith('.sql'):
                 ddls.append(join(r, file))
     for r, d, f in walk(dml_path):
         for file in f:
-            if '.sql' in file:
+            if file.endswith('.sql'):
                 dmls.append(join(r, file))
     # make sure dml files are sorted by names, ddl files should not require any specific order
     dmls = [x for x in sorted(dmls)]
@@ -111,7 +111,7 @@ def partial_update(dsn: str, bbox: dict) -> None:
     # r=root, d=directories, f = files
     for r, d, f in walk(ddl_path):
         for file in f:
-            if '.sql' in file:
+            if file.endswith('.sql'):
                 sql_queries.append(join(r, file))
     sql_queries = [x for x in sorted(sql_queries)]
     execute_scripts_from_files(dsn=dsn, vacuum=False, paths=sql_queries, query_parameters=bbox)
@@ -125,9 +125,9 @@ if __name__ == '__main__':
     parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs=1)
     args = vars(parser.parse_args())
 
-    if args['full']:
+    if 'full' in args:
         full_process(args['dsn'][0])
-    elif args['update']:
+    elif 'update' in args:
         bbox = {
             'xmin': float(args['bbox'][0]),
             'ymin': float(args['bbox'][1]),
