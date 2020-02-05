@@ -124,7 +124,7 @@ def partial_update(dsn: str) -> None:
     sql_queries = []
     # get paths of sql files
     # r=root, d=directories, f = files
-    for r, d, f in walk(ddl_path):
+    for r, d, f in walk(partial_update_path):
         for file in f:
             if file.endswith('.sql'):
                 sql_queries.append(join(r, file))

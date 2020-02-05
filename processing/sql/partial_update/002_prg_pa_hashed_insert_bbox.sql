@@ -9,5 +9,5 @@ where
     gml && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
     and prg.teryt_msc is not null
     and not (prg.teryt_ulic is null and prg.ul is not null)
-    and not (simc.rm like '9%' and prg.teryt_ulica is null)
+    and not (simc.rm like '9%%' and prg.teryt_ulica is null)
 ;
