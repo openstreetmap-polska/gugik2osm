@@ -1,9 +1,10 @@
+import io
 from copy import deepcopy
 from os import environ
 from lxml import etree
 import psycopg2 as pg
 from flask import Flask, request, abort, Response, jsonify
-from sql import sql_where_bbox, sql_buildings_where_bbox, sql_mvt
+from sql import sql_where_bbox, sql_buildings_where_bbox, sql_mvt, sql_mvt_ll
 import mercantile as m
 from pyproj import Proj, transform
 
@@ -172,10 +173,20 @@ def tile_server(z, x, y):
 
     # query db
     cur = pgdb().cursor()
-    cur.execute(sql_mvt, {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']})
+    if 6 <= int(z) < 15:
+        cur.execute(
+            sql_mvt_ll,
+            {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
+        )
+    elif int(z) >= 15:
+        cur.execute(
+            sql_mvt,
+            {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
+        )
 
     # prepare and return response
-    response = app.make_response(cur.fetchone())
+    mvt = io.BytesIO(cur.fetchone()[0]).getvalue()
+    response = app.make_response(mvt)
     response.headers['Content-Type'] = 'application/x-protobuf'
     response.headers['Access-Control-Allow-Origin'] = "*"
     return response

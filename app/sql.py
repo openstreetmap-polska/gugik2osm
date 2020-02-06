@@ -52,16 +52,21 @@ b as (
   where geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
   limit 500000
 )
-select ST_AsMVT(a.*, 'prg2load')
-from a
--- this seems to cause a bug/error: pgis_asmvt_transfn: parameter row cannot be other than a rowtype
--- mvt needs to be redesigned anyway to not store all the text attributes
--- union
--- select ST_AsMVT(a.geom, 'prg2load_geomonly')
--- from a
-union
-select ST_AsMVT(b.*, 'lod1_buildings')
-from b
+select (select ST_AsMVT(a.*, 'prg2load') from a) || (select ST_AsMVT(b.*, 'lod1_buildings') from b)
+'''
+
+sql_mvt_ll = '''
+with a as (
+    select
+       ST_AsMVTGeom(
+         ST_Transform(d.geom, 3857), 
+         ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d
+       ) geom
+    from prg.delta d
+    where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
+    limit 500000
+)
+select ST_AsMVT(a.*, 'prg2load_geomonly') from a
 '''
 
 sql_delta_point_info = '''
