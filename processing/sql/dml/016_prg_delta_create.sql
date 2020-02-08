@@ -15,6 +15,3 @@ create unlogged table prg.delta as
         on (prg.hash = osm.hash and st_dwithin(st_transform(prg.geom, 2180), st_transform(osm.geom, 2180), 50))
     where osm.hash is null
 ;
-create index if not exists delta_gis on prg.delta using gist (geom);
-cluster prg.delta using delta_gis;
-alter table prg.delta set logged;
