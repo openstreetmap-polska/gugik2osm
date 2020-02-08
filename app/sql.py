@@ -28,45 +28,60 @@ group by way_id
 '''
 
 sql_mvt = '''
-with a as (
-    select
-       d.lokalnyid,
-       d.teryt_msc,
-       d.teryt_simc,
-       d.teryt_ulica,
-       d.teryt_ulic,
-       d.nr,
-       d.pna,
-       ST_AsMVTGeom(
-         ST_Transform(d.geom, 3857), 
-         ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d
-       ) geom
-    from prg.delta d
-    where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
-    limit 500000
-),
-b as (
-  select
-    ST_AsMVTGeom(ST_Transform(geom, 3857), ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d) geom
-  from lod1_buildings
-  where geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
-  limit 500000
-)
-select (select ST_AsMVT(a.*, 'prg2load') from a) || (select ST_AsMVT(b.*, 'lod1_buildings') from b)
+insert into tiles (mvt, z, x, y, bbox)
+    with a as (
+        select
+           d.lokalnyid,
+           d.teryt_msc,
+           d.teryt_simc,
+           d.teryt_ulica,
+           d.teryt_ulic,
+           d.nr,
+           d.pna,
+           ST_AsMVTGeom(
+             ST_Transform(d.geom, 3857), 
+             ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d
+           ) geom
+        from prg.delta d
+        where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
+        limit 500000
+    ),
+    b as (
+        select
+        ST_AsMVTGeom(ST_Transform(geom, 3857), ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d) geom
+        from lod1_buildings
+        where geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
+        limit 500000
+    )
+    select 
+        (select ST_AsMVT(a.*, 'prg2load') from a) || (select ST_AsMVT(b.*, 'lod1_buildings') from b) mvt,
+        %(z)s z,
+        %(x)s x,
+        %(y)s y,
+        ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857) bbox
+returning mvt
 '''
 
 sql_mvt_ll = '''
-with a as (
-    select
-       ST_AsMVTGeom(
-         ST_Transform(d.geom, 3857), 
-         ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d
-       ) geom
-    from prg.delta d
-    where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
-    limit 500000
-)
-select ST_AsMVT(a.*, 'prg2load_geomonly') from a
+insert into tiles (mvt, z, x, y, bbox)
+    with a as (
+        select
+           ST_AsMVTGeom(
+             ST_Transform(d.geom, 3857), 
+             ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d
+           ) geom
+        from prg.delta d
+        where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
+        limit 500000
+    )
+    select 
+        ST_AsMVT(a.*, 'prg2load_geomonly') mvt,
+        %(z)s z,
+        %(x)s x,
+        %(y)s y,
+        ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857) bbox
+    from a
+returning mvt
 '''
 
 sql_delta_point_info = '''
@@ -80,4 +95,10 @@ select
    pna
 from prg.delta
 where lokalnyid = cast(%s as uuid)
+'''
+
+sql_get_mvt_by_zxy = '''
+select mvt
+from tiles
+where z = %s and x = %s and y = %s
 '''

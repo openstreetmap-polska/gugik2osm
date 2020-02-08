@@ -4,7 +4,7 @@ from os import environ
 from lxml import etree
 import psycopg2 as pg
 from flask import Flask, request, abort, Response, jsonify
-from sql import sql_where_bbox, sql_buildings_where_bbox, sql_mvt, sql_mvt_ll
+from sql import *
 import mercantile as m
 from pyproj import Proj, transform
 
@@ -173,23 +173,48 @@ def tile_server(z, x, y):
 
     # query db
     cur = pgdb().cursor()
-    if 6 <= int(z) < 15:
-        cur.execute(
-            sql_mvt_ll,
-            {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
-        )
-    elif int(z) >= 15:
-        cur.execute(
-            sql_mvt,
-            {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
-        )
+    cur.execute(sql_get_mvt_by_zxy, (z, x, y))
+    tup = cur.fetchone()
+    if tup is None:
+        params = {
+                    'xmin': bbox['west'],
+                    'ymin': bbox['south'],
+                    'xmax': bbox['east'],
+                    'ymax': bbox['north'],
+                    'z': z,
+                    'x': x,
+                    'y': y
+                }
+        if 6 <= int(z) < 13:
+            cur.execute(sql_mvt_ll, params)
+        elif int(z) >= 13:
+            cur.execute(sql_mvt, params)
+        else:
+            abort(404)
+        conn.commit()
+        tup = cur.fetchone()
+    mvt = io.BytesIO(tup[0]).getvalue()
 
     # prepare and return response
-    mvt = io.BytesIO(cur.fetchone()[0]).getvalue()
     response = app.make_response(mvt)
     response.headers['Content-Type'] = 'application/x-protobuf'
     response.headers['Access-Control-Allow-Origin'] = "*"
     return response
+
+
+@app.route('/prg/<uuid>')
+def prg_address_point_info(uuid: str):
+    cur = pgdb().cursor()
+    cur.execute(sql_delta_point_info, (uuid,))
+    info = cur.fetchone()
+    if info:
+        return jsonify(
+            {
+                'lokalnyid': info[0], 'teryt_msc': info[1], 'teryt_simc': info[2],
+                'teryt_ulica': info[3], 'teryt_ulic': info[4], 'nr': info[5], 'pna': info[6]
+            })
+    else:
+        return jsonify({'Error': f'Address point with lokalnyid(uuid): {uuid} not found.'}), 404
 
 
 if __name__ == '__main__':

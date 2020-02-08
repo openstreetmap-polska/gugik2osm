@@ -21,7 +21,7 @@ var map = new mapboxgl.Map({
             "mvt-tiles": {
                 "type": "vector",
                 "tiles": [
-                    "https://budynki.openstreetmap.org.pl/mvt/{z}/{x}/{y}.pbf"
+                    "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf"
                 ]
             }
         },
@@ -39,7 +39,7 @@ var map = new mapboxgl.Map({
                 "source": "mvt-tiles",
                 "source-layer": "prg2load_geomonly",
                 "minzoom": 6,
-                "maxzoom": 15,
+                "maxzoom": 13,
                 "paint": {
                     "circle-radius": 3,
                     "circle-color": "purple",
@@ -52,7 +52,7 @@ var map = new mapboxgl.Map({
                 "type": "circle",
                 "source": "mvt-tiles",
                 "source-layer": "prg2load",
-                "minzoom": 15,
+                "minzoom": 13,
                 "paint": {
                     "circle-radius": 3,
                     "circle-color": "purple",
@@ -82,7 +82,7 @@ var map = new mapboxgl.Map({
                 "type": "fill",
                 "source": "mvt-tiles",
                 "source-layer": "lod1_buildings",
-                "minzoom": 14,
+                "minzoom": 13,
                 "paint": {
                     "fill-color": "red",
                     "fill-opacity": 0.7
