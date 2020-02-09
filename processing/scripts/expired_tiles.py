@@ -22,6 +22,21 @@ def expired_tiles_from_newest_file(base_dir: str) -> tuple:
     return newest_file, lines
 
 
+def expired_tiles_from_all_todays_files(base_dir: str) -> list:
+    temp = datetime.now()
+    today = str(temp.year) + str(temp.month).zfill(2) + str(temp.day).zfill(2)
+
+    path = join(base_dir, today)
+    files_with_tiles = [x for x in listdir(path) if x.endswith('.tiles')]
+
+    results = []
+    for file in files_with_tiles:
+        with open(join(path, file), 'r') as f:
+            lines = f.readlines()
+        results.append((file, lines))
+    return results
+
+
 def insert_tiles_into_db(file_name: str, tiles: list, dsn: str) -> None:
     if len(tiles) > 0:
         with pg.connect(dsn) as conn:
@@ -54,12 +69,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--remove-old-folders', help='Remove folders older than today', nargs='?', const=True)
     parser.add_argument('--insert-exp-tiles', help='Read and insert into db the expired tiles', nargs='?', const=True)
-    parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs=1)
+    parser.add_argument('--all', help='Read all todays tiles files (flag to be used in conjunction with insert)', nargs='?', const=True)
+    parser.add_argument('--dsn', help='Connection string for PostgreSQL DB. (flag to be used in conjunction with insert)', nargs=1)
     parser.add_argument('--dir', help='Base directory where folders/files with expired tiles are stored', nargs=1)
     args = vars(parser.parse_args())
 
-    if 'remove_old_folders' in args and args.get('remove_old_folders'):
+    if args.get('remove_old_folders'):
         remove_folder_older_than_today(args['dir'][0])
-    elif 'insert_exp_tiles' in args and args.get('insert_exp_tiles'):
-        file_name, tiles = expired_tiles_from_newest_file(args['dir'][0])
-        insert_tiles_into_db(file_name, tiles, args['dsn'][0])
+    elif args.get('insert_exp_tiles'):
+        if args.get('all'):
+            for tup in expired_tiles_from_all_todays_files(args['dir'][0]):
+                insert_tiles_into_db(tup[0], tup[1], args['dsn'][0])
+        else:
+            file_name, tiles = expired_tiles_from_newest_file(args['dir'][0])
+            insert_tiles_into_db(file_name, tiles, args['dsn'][0])
