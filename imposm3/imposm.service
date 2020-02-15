@@ -1,0 +1,16 @@
+[Unit]
+Description=IMPOSM3 service
+After=network.target
+After=postgresql.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+User=ttaras
+ExecStart=/bin/bash "/opt/gugik2osm/imposm3/imposm_run.sh"
+
+[Install]
+WantedBy=multi-user.target
+

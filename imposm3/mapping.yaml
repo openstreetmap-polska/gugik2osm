@@ -1,0 +1,80 @@
+areas:
+  area_tags: [buildings, addr_polygon]
+tables:
+  addr_polygon:
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - name: type
+      type: mapping_value
+    - key: addr:street
+      name: ulica
+      type: string
+    - key: addr:street:sym_ul
+      name: kod_ulic
+      type: string
+    - key: addr:city:simc
+      name: kod_simc
+      type: string
+    - key: addr:postcode
+      name: kod_pna
+      type: string
+    - key: addr:city
+      name: miejscowosc
+      type: string
+    - key: addr:place
+      name: cz_msc
+      type: string
+    # - name: nr_porzadkowy
+      # type: mapping_value
+    mapping:
+      addr:housenumber: [__any__]
+    type: polygon
+  buildings:
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    mapping:
+      building: [__any__]
+    type: polygon
+  addr_point:
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - key: name
+      name: name
+      type: string
+    - name: type
+      type: mapping_value
+    - key: addr:street
+      name: ulica
+      type: string
+    - key: addr:street:sym_ul
+      name: kod_ulic
+      type: string
+    - key: addr:city:simc
+      name: kod_simc
+      type: string
+    - key: addr:postcode
+      name: kod_pna
+      type: string
+    - key: addr:city
+      name: miejscowosc
+      type: string
+    - key: addr:place
+      name: cz_msc
+      type: string
+    # - name: nr_porzadkowy
+      # type: mapping_value
+    mapping:
+      addr:housenumber: [__any__]
+    type: point

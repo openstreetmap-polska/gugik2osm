@@ -1,0 +1,8 @@
+#<timing>   <user> <command>
+0 0 * * MON root /usr/sbin/service imposm start
+55 19 * * FRI root /usr/sbin/service imposm stop
+1 20 * * FRI ttaras /opt/gugik2osm/conf/prg_processing.sh
+0 1 * * MON-FRI ttaras /opt/gugik2osm/conf/teryt_processing.sh
+*/1 * * * MON-THU ttaras /opt/gugik2osm/conf/data_update.sh
+*/1 0-20 * * FRI ttaras /opt/gugik2osm/conf/data_update.sh
+0 1 * * * ttaras python3.7 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
