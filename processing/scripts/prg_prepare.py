@@ -103,10 +103,11 @@ def full_process(dsn: str, starting: str = '000') -> None:
     dmls = []
     # get paths of sql files
     # r=root, d=directories, f = files
-    for r, d, f in walk(ddl_path):
-        for file in f:
-            if file.endswith('.sql'):
-                ddls.append(join(r, file))
+    if starting == '000':
+        for r, d, f in walk(ddl_path):
+            for file in f:
+                if file.endswith('.sql'):
+                    ddls.append(join(r, file))
     for r, d, f in walk(dml_path):
         for file in f:
             if file.endswith('.sql') and file >= starting:
