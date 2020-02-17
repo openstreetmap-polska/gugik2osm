@@ -98,7 +98,7 @@ def execute_scripts_from_files(
         conn.commit()
 
 
-def full_process(dsn: str) -> None:
+def full_process(dsn: str, starting: str = '000') -> None:
     ddls = []
     dmls = []
     # get paths of sql files
@@ -109,7 +109,7 @@ def full_process(dsn: str) -> None:
                 ddls.append(join(r, file))
     for r, d, f in walk(dml_path):
         for file in f:
-            if file.endswith('.sql'):
+            if file.endswith('.sql') and file >= starting:
                 dmls.append(join(r, file))
     # make sure dml files are sorted by names, ddl files should not require any specific order
     dmls = [x for x in sorted(dmls)]
@@ -120,13 +120,13 @@ def full_process(dsn: str) -> None:
         execute_scripts_from_files(conn=conn, vacuum=True, paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
 
 
-def partial_update(dsn: str) -> None:
+def partial_update(dsn: str, starting: str = '000') -> None:
     sql_queries = []
     # get paths of sql files
     # r=root, d=directories, f = files
     for r, d, f in walk(partial_update_path):
         for file in f:
-            if file.endswith('.sql'):
+            if file.endswith('.sql') and file >= starting:
                 sql_queries.append(join(r, file))
     sql_queries = [x for x in sorted(sql_queries)]
     with pg.connect(dsn) as conn:
@@ -150,9 +150,17 @@ if __name__ == '__main__':
     parser.add_argument('--full', help='Launch full process', nargs='?', const=True)
     parser.add_argument('--update', help='Launch partial update process', nargs='?', const=True)
     parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs=1)
+    parser.add_argument('--starting', help='Start from this query (DML or Partial Update). Must match name exactly.', nargs=1)
     args = vars(parser.parse_args())
 
+    dsn = args['dsn'][0]
     if 'full' in args and args.get('full'):
-        full_process(args['dsn'][0])
+        if args.get('starting'):
+            full_process(dsn, args.get('starting'))
+        else:
+            full_process(dsn)
     elif 'update' in args and args.get('update'):
-        partial_update(args['dsn'][0])
+        if args.get('starting'):
+            partial_update(dsn, args.get('starting'))
+        else:
+            partial_update(dsn)
