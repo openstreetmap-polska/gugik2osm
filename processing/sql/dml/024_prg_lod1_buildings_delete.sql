@@ -1,4 +1,4 @@
-from prg.lod1_buildings a
+delete from prg.lod1_buildings a
 where exists (
         select 1
         from osm_buildings o
