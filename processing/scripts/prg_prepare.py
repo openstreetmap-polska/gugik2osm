@@ -117,7 +117,8 @@ def full_process(dsn: str, starting: str = '000') -> None:
 
     # execute sql scripts
     with pg.connect(dsn) as conn:
-        execute_scripts_from_files(conn=conn, vacuum=True, paths=ddls, commit_mode='once')
+        if len(ddls) > 0:
+            execute_scripts_from_files(conn=conn, vacuum=True, paths=ddls, commit_mode='once')
         execute_scripts_from_files(conn=conn, vacuum=True, paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
 
 
