@@ -156,11 +156,11 @@ if __name__ == '__main__':
     dsn = args['dsn'][0]
     if 'full' in args and args.get('full'):
         if args.get('starting'):
-            full_process(dsn, args.get('starting'))
+            full_process(dsn, args.get('starting')[0])
         else:
             full_process(dsn)
     elif 'update' in args and args.get('update'):
         if args.get('starting'):
-            partial_update(dsn, args.get('starting'))
+            partial_update(dsn, args.get('starting')[0])
         else:
             partial_update(dsn)
