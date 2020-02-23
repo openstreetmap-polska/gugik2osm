@@ -187,7 +187,7 @@ def tile_server(z, x, y):
                 }
         if 6 <= int(z) < 13:
             cur.execute(sql_mvt_ll, params)
-        elif int(z) >= 13:
+        elif 13 <= int(z) < 23:
             cur.execute(sql_mvt, params)
         else:
             abort(404)
