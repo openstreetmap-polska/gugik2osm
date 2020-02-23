@@ -1,7 +1,3 @@
-delete from prg.delta
-where lokalnyid in (
-    select delta.lokalnyid
-    from prg.delta
-    join prg.punkty_adresowe on delta.lokalnyid = punkty_adresowe.lokalnyid::uuid
-    where (punkty_adresowe.waznydo is not null and punkty_adresowe.waznydo::timestamptz < now()) or punkty_adresowe.koniecwersjiobiektu is not null
-);
+delete from prg.delta prg
+using osm_adr osm
+where st_dwithin(prg.geom, st_transform(osm.geom, 2180), 50) and prg.nr = osm.nr ;

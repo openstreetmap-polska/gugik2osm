@@ -1,12 +1,7 @@
-delete from prg.delta prg
-using (
-    select prg.lokalnyid
-    from prg.delta prg
-    join (
-        select teryt_simc, teryt_ulic, nr
-        from prg.delta
-        group by teryt_simc, teryt_ulic, nr
-        having count(*) > 1
-    ) dd using (teryt_simc, teryt_ulic, nr)
-) ddd
-where prg.lokalnyid = ddd.lokalnyid;
+delete from prg.delta
+where lokalnyid in (
+    select delta.lokalnyid
+    from prg.delta
+    join prg.punkty_adresowe on delta.lokalnyid = punkty_adresowe.lokalnyid::uuid
+    where (punkty_adresowe.waznydo is not null and punkty_adresowe.waznydo::timestamptz < now()) or punkty_adresowe.koniecwersjiobiektu is not null
+);

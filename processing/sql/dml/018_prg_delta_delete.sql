@@ -1,3 +1,6 @@
 delete from prg.delta prg
-using osm_adr osm
-where st_dwithin(prg.geom, st_transform(osm.geom, 2180), 50) and prg.nr = osm.nr ;
+where exists(
+    select 1
+    from osm_hashed osm
+    where st_dwithin(prg.geom, osm.geom, 5)
+);

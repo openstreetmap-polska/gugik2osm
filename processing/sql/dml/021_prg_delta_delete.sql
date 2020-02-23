@@ -1,8 +1,12 @@
-delete from prg.delta
+delete from prg.delta prg
 using (
-    SELECT prg.lokalnyid
-    FROM prg.delta prg
-    JOIN osm_addr_polygon osm
-        ON (st_intersects(prg.geom, st_transform(osm.geometry, 2180)) AND (osm.name IS NOT NULL)) -- name = nr
-) dd
-where delta.lokalnyid = dd.lokalnyid;
+    select prg.lokalnyid
+    from prg.delta prg
+    join (
+        select teryt_simc, teryt_ulic, nr
+        from prg.delta
+        group by teryt_simc, teryt_ulic, nr
+        having count(*) > 1
+    ) dd using (teryt_simc, teryt_ulic, nr)
+) ddd
+where prg.lokalnyid = ddd.lokalnyid;
