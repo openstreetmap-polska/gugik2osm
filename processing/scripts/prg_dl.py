@@ -28,7 +28,7 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
 
     if args.get('only'):
-        fn = '{0}_Punkty_Adresowe.zip'.format(args.get('only')[0])
+        fn = '{0}_Punkty_Adresowe.zip'.format(args.get('only'))
         url = BASE_URL + fn
         file_path = path.join(args['output_dir'][0], fn)
         download_file(url, file_path)
