@@ -7,10 +7,13 @@ import psycopg2 as pg
 
 
 def expired_tiles_from_newest_file(base_dir: str) -> tuple:
-    temp = datetime.now()
-    today = str(temp.year) + str(temp.month).zfill(2) + str(temp.day).zfill(2)
 
-    path = join(base_dir, today)
+    sorted_dirs = sorted(listdir(base_dir), reverse=True)
+    if len(sorted_dirs) == 0:
+        return tuple()
+    newest_dir = sorted_dirs[0]
+
+    path = join(base_dir, newest_dir)
     files_with_tiles = [x for x in listdir(path) if x.endswith('.tiles')]
 
     if len(files_with_tiles) == 0:
@@ -81,5 +84,9 @@ if __name__ == '__main__':
             for tup in expired_tiles_from_all_todays_files(args['dir'][0]):
                 insert_tiles_into_db(tup[0], tup[1], args['dsn'][0])
         else:
-            file_name, tiles = expired_tiles_from_newest_file(args['dir'][0])
-            insert_tiles_into_db(file_name, tiles, args['dsn'][0])
+            expt = expired_tiles_from_newest_file(args['dir'][0])
+            if len(expt) > 0:
+                file_name, tiles = expt
+                insert_tiles_into_db(file_name, tiles, args['dsn'][0])
+            else:
+                print(datetime.now(timezone.utc).astimezone().isoformat(), '- no expired tiles.')
