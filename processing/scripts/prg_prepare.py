@@ -117,9 +117,21 @@ def full_process(dsn: str, starting: str = '000') -> None:
 
     # execute sql scripts
     with pg.connect(dsn) as conn:
-        if len(ddls) > 0:
-            execute_scripts_from_files(conn=conn, vacuum=False, paths=ddls, commit_mode='once')
-        execute_scripts_from_files(conn=conn, vacuum=True, paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
+        cur = conn.cursor()
+        cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('prg_full_update',))
+        full_update_in_progress = cur.fetchone()[0]
+        if not full_update_in_progress:
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- starting full update process.')
+            cur.execute('UPDATE process_locks SET in_progress = true WHERE process_name = %s', ('prg_full_update',))
+            conn.commit()
+            if len(ddls) > 0:
+                execute_scripts_from_files(conn=conn, vacuum=False, paths=ddls, commit_mode='once')
+            execute_scripts_from_files(conn=conn, vacuum=True, paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
+            cur.execute('UPDATE process_locks SET in_progress = false WHERE process_name = %s', ('prg_full_update',))
+            conn.commit()
+        else:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  '- full update in progress already. Not starting another one.')
 
 
 def partial_update(dsn: str, starting: str = '000') -> None:
@@ -133,18 +145,24 @@ def partial_update(dsn: str, starting: str = '000') -> None:
     sql_queries = [x for x in sorted(sql_queries)]
     with pg.connect(dsn) as conn:
         cur = conn.cursor()
-        cur.execute('SELECT * FROM expired_tiles WHERE processed = false FOR UPDATE SKIP LOCKED;')
-        for row in cur.fetchall():
-            x, y, z = row[2], row[3], row[1]
-            tile = m.Tile(x, y, z)
-            bbox = to_merc(m.bounds(tile))
-            bbox = {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
-            execute_scripts_from_files(conn=conn, vacuum=False, paths=sql_queries, query_parameters=bbox, commit_mode='off')
-            cur.execute(
-                'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
-                (row[0], row[1], row[2], row[3])
-            )
-        conn.commit()
+        cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('prg_full_update',))
+        full_update_in_progress = cur.fetchone()[0]
+        if not full_update_in_progress:
+            cur.execute('SELECT * FROM expired_tiles WHERE processed = false FOR UPDATE SKIP LOCKED;')
+            for row in cur.fetchall():
+                x, y, z = row[2], row[3], row[1]
+                tile = m.Tile(x, y, z)
+                bbox = to_merc(m.bounds(tile))
+                bbox = {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
+                execute_scripts_from_files(conn=conn, vacuum=False, paths=sql_queries, query_parameters=bbox, commit_mode='off')
+                cur.execute(
+                    'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
+                    (row[0], row[1], row[2], row[3])
+                )
+            conn.commit()
+        else:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  '- full update in progress skipping partial update.')
 
 
 if __name__ == '__main__':
