@@ -206,9 +206,9 @@ def tile_server(z, x, y):
                     'y': y
                 }
         if 6 <= int(z) < 13:
-            cur.execute(sql_mvt_ll, params)
+            cur = execute_sql(cur, sql_mvt_ll, params)
         elif 13 <= int(z) < 23:
-            cur.execute(sql_mvt, params)
+            cur = execute_sql(cur, sql_mvt, params)
         else:
             abort(404)
         conn.commit()
