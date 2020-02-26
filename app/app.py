@@ -7,6 +7,8 @@ from flask import Flask, request, abort, Response, jsonify
 from sql import *
 import mercantile as m
 from pyproj import Proj, transform
+from typing import Union
+from datetime import datetime, timezone
 
 
 conn = None
@@ -21,6 +23,22 @@ def pgdb():
     else:
         conn = pg.connect(dsn=environ['dsn'])
         return conn
+
+
+def execute_sql(cursor, query: str, parameters: Union[tuple, dict]):
+    """Method executes SQL query in a given cursor with given parameters. Provides error handling.
+    In case of exception it rolls back transaction and closes the connection."""
+    try:
+        cursor.execute(query, parameters)
+    except:
+        global conn
+        print(datetime.now(timezone.utc).astimezone().isoformat(),
+              f'- Error while executing query: {query}, with parameters: {parameters}')
+        conn.rollback()
+        conn.close()
+        conn = None
+        raise
+    return cursor
 
 
 def to_merc(bbox: m.LngLatBbox) -> dict:
@@ -42,8 +60,8 @@ def features_in():
         ):
             abort(400)
 
-    cur = pgdb().cursor()
-    cur.execute(
+    cur = execute_sql(
+        pgdb().cursor(),
         sql_where_bbox,
         (float(request.args.get('xmin')),
          float(request.args.get('ymin')),
@@ -71,6 +89,7 @@ def features_in():
             i -= 1
 
         # etree.ElementTree(root).write(fpath, encoding='UTF-8')
+        cur.close()
         return Response(
             etree.tostring(root, encoding='UTF-8'),
             mimetype='text/xml',
@@ -82,6 +101,7 @@ def features_in():
                  'pna': x[6], 'longitude': x[7], 'latitude': x[8]} for x in cur
             ]
         }
+        cur.close()
         return jsonify(d)
     else:
         abort(400)
@@ -117,8 +137,8 @@ def buildings():
     else:
         abort(400)
 
-    cur = pgdb().cursor()
-    cur.execute(
+    cur = execute_sql(
+        pgdb().cursor(),
         sql_buildings_where_bbox,
         (float(request.args.get('xmin')), float(request.args.get('ymin')),
          float(request.args.get('xmax')), float(request.args.get('ymax')))
@@ -157,6 +177,7 @@ def buildings():
         for w in lst:
             root.append(w)
 
+        cur.close()
         return Response(
             etree.tostring(root, encoding='UTF-8'),
             mimetype='text/xml',
@@ -172,8 +193,7 @@ def tile_server(z, x, y):
     bbox = to_merc(m.bounds(tile))
 
     # query db
-    cur = pgdb().cursor()
-    cur.execute(sql_get_mvt_by_zxy, (z, x, y))
+    cur = execute_sql(pgdb().cursor(), sql_get_mvt_by_zxy, (z, x, y))
     tup = cur.fetchone()
     if tup is None:
         params = {
@@ -199,14 +219,15 @@ def tile_server(z, x, y):
     response = app.make_response(mvt)
     response.headers['Content-Type'] = 'application/x-protobuf'
     response.headers['Access-Control-Allow-Origin'] = "*"
+    cur.close()
     return response
 
 
 @app.route('/prg/<uuid>')
 def prg_address_point_info(uuid: str):
-    cur = pgdb().cursor()
-    cur.execute(sql_delta_point_info, (uuid,))
+    cur = execute_sql(pgdb().cursor(), sql_delta_point_info, (uuid,))
     info = cur.fetchone()
+    cur.close()
     if info:
         return jsonify(
             {
