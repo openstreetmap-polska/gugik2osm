@@ -10,6 +10,7 @@ from pyproj import Proj, transform
 from typing import Union
 from datetime import datetime, timezone
 from os.path import join, dirname, abspath
+from random import random, choice
 
 
 SQL_PATH = join(dirname(abspath(__file__)), 'queries')
@@ -248,6 +249,18 @@ def prg_address_point_info(uuid: str):
             })
     else:
         return jsonify({'Error': f'Address point with lokalnyid(uuid): {uuid} not found.'}), 404
+
+
+@app.route('/random/')
+def prg_address_point_info(uuid: str):
+    if random() > 0.1:
+        query = QUERIES['locations_most_count']
+    else:
+        query = QUERIES['locations_random']
+    cur = execute_sql(pgdb().cursor(), query)
+    x, y = choice(cur.fetchall())
+    cur.close()
+    return jsonify({'longitude': x, 'latitude': y})
 
 
 if __name__ == '__main__':
