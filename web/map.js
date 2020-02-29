@@ -119,6 +119,7 @@ map.scrollZoom.setWheelZoomRate(1/100);
 window.onload = function() {
   var a = document.getElementById("button-prg-dl");
   var b = document.getElementById("button-buildings-dl");
+  var c = document.getElementById("button-random-location");
 
   a.onclick = function() {
     var bounds = map.getBounds().toArray();
@@ -139,6 +140,13 @@ window.onload = function() {
     var theUrl = "/lod1/not_in/osm/?format=osm&filter_by=bbox&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax
     console.log(theUrl);
     window.open(theUrl);
+  }
+  c.onclick = async function() {
+    var response = await fetch('https://budynki.openstreetmap.org.pl/random/');
+    var location = await response.json();
+    console.log(location);
+    map.jumpTo({"center": location});
+    map.setZoom(14);
   }
 }
 
