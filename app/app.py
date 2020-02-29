@@ -252,7 +252,7 @@ def prg_address_point_info(uuid: str):
 
 
 @app.route('/random/')
-def prg_address_point_info(uuid: str):
+def random_location():
     if random() > 0.1:
         query = QUERIES['locations_most_count']
     else:
