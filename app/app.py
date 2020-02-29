@@ -260,7 +260,7 @@ def random_location():
     cur = execute_sql(pgdb().cursor(), query)
     x, y = choice(cur.fetchall())
     cur.close()
-    return jsonify({'longitude': x, 'latitude': y})
+    return jsonify({'lon': x, 'lat': y})
 
 
 if __name__ == '__main__':
