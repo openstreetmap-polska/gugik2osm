@@ -34,7 +34,8 @@ a as (
 SELECT a.*
 FROM a
 where
-  coalesce(msc, czmsc) is not null
-  and
+-- removed this condition as some addresses don't have either addr:city nor addr:place tags
+--  coalesce(msc, czmsc) is not null
+--  and
   nr is not null
 ;
