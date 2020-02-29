@@ -9,8 +9,20 @@ import mercantile as m
 from pyproj import Proj, transform
 from typing import Union
 from datetime import datetime, timezone
+from os.path import join, dirname, abspath
 
 
+SQL_PATH = join(dirname(abspath(__file__)), 'queries')
+QUERIES = {
+    'buildings_vertices': str(open(join(SQL_PATH, 'buildings_vertices.sql'), 'r').read()),
+    'cached_mvt': str(open(join(SQL_PATH, 'cached_mvt.sql'), 'r').read()),
+    'delta_point_info': str(open(join(SQL_PATH, 'delta_point_info.sql'), 'r').read()),
+    'delta_where_bbox': str(open(join(SQL_PATH, 'delta_where_bbox.sql'), 'r').read()),
+    'mvt_hl': str(open(join(SQL_PATH, 'mvt_hl.sql'), 'r').read()),
+    'mvt_ll': str(open(join(SQL_PATH, 'mvt_ll.sql'), 'r').read()),
+    'locations_random': str(open(join(SQL_PATH, 'locations_random.sql'), 'r').read()),
+    'locations_most_count': str(open(join(SQL_PATH, 'locations_most_count.sql'), 'r').read()),
+}
 conn = None
 app = Flask(__name__)
 
@@ -25,7 +37,7 @@ def pgdb():
         return conn
 
 
-def execute_sql(cursor, query: str, parameters: Union[tuple, dict]):
+def execute_sql(cursor, query: str, parameters: Union[tuple, dict] = tuple()):
     """Method executes SQL query in a given cursor with given parameters. Provides error handling.
     In case of exception it rolls back transaction and closes the connection."""
     try:
