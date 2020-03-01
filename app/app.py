@@ -38,11 +38,11 @@ def pgdb():
         return conn
 
 
-def execute_sql(cursor, query: str, parameters: Union[tuple, dict] = tuple()):
+def execute_sql(cursor, query: str, parameters: Union[tuple, dict] = None):
     """Method executes SQL query in a given cursor with given parameters. Provides error handling.
     In case of exception it rolls back transaction and closes the connection."""
     try:
-        cursor.execute(query, parameters)
+        cursor.execute(query, parameters) if parameters else cursor.execute(query)
     except:
         global conn
         print(datetime.now(timezone.utc).astimezone().isoformat(),
