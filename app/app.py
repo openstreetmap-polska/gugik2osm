@@ -87,6 +87,7 @@ def features_in():
         i = -1  # counter for fake ids
         for t in cur:
             el = etree.Element('node', id=str(i), lat=str(t[8]), lon=str(t[7]))
+            el.append(deepcopy(SOURCE_ADDR))
             el.append(etree.Element('tag', k='ref:addr', v=t[0]))
             el.append(etree.Element('tag', k='addr:city:simc', v=t[2]))
             if t[3]:
@@ -131,6 +132,7 @@ notes = {
 }
 bld = etree.Element('tag', k='building', v='yes')
 src = etree.Element('tag', k='source', v='www.geoportal.gov.pl')
+SOURCE_ADDR = etree.Element('tag', k='source:addr', v='gugik.gov.pl')
 
 
 @app.route('/lod1/not_in/osm/info.json', methods=['GET'])
