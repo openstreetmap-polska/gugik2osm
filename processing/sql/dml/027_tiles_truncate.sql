@@ -1,0 +1,1 @@
+delete from tiles where 1=1;

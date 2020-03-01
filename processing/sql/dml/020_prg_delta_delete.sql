@@ -1,4 +1,4 @@
-delete from prg.delta
+delete from prg.delta_new
 where lokalnyid in (
     select delta.lokalnyid
     from prg.delta

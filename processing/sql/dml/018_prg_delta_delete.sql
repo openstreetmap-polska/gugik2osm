@@ -1,4 +1,4 @@
-delete from prg.delta prg
+delete from prg.delta_new prg
 where exists(
     select 1
     from osm_hashed osm

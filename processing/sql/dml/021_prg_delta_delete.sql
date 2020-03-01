@@ -1,4 +1,4 @@
-delete from prg.delta prg
+delete from prg.delta_new prg
 using (
     select prg.lokalnyid
     from prg.delta prg

@@ -1,1 +1,1 @@
-alter table prg.delta set logged;
+alter table prg.delta_new set logged;
