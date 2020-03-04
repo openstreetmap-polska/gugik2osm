@@ -228,7 +228,7 @@ def tile_server(z, x, y):
             abort(404)
         conn.commit()
         tup = cur.fetchone()
-    mvt = io.BytesIO(tup[0]).getvalue()
+    mvt = io.BytesIO(tup[0]).getvalue() if tup else b''
 
     # prepare and return response
     response = app.make_response(mvt)
