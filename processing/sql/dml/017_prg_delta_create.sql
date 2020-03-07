@@ -15,6 +15,6 @@ create unlogged table prg.delta_new as
         on (prg.hash = osm.hash and st_dwithin(prg.geom, osm.geom, 50))
     where osm.hash is null
 ;
-create index if not exists delta_gis on prg.delta_new using gist (geom);
-cluster prg.delta_new using delta_gis;
-create index if not exists delta_lokalnyid on prg.delta_new using btree (lokalnyid);
+create index if not exists delta_gis_new on prg.delta_new using gist (geom);
+cluster prg.delta_new using delta_gis_new;
+create index if not exists delta_lokalnyid_new on prg.delta_new using btree (lokalnyid);
