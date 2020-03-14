@@ -34,3 +34,4 @@ where 1=1
 --             )
 --     )
 ;
+analyze prg.pa;

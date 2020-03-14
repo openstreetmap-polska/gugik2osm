@@ -4,3 +4,4 @@ where exists(
     from osm_hashed osm
     where st_dwithin(prg.geom, osm.geom, 5)
 );
+analyze prg.delta_new;

@@ -18,3 +18,4 @@ create unlogged table prg.delta_new as
 create index if not exists delta_gis_new on prg.delta_new using gist (geom);
 cluster prg.delta_new using delta_gis_new;
 create index if not exists delta_lokalnyid_new on prg.delta_new using btree (lokalnyid);
+analyze prg.delta_new;

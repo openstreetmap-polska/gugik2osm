@@ -33,3 +33,4 @@ INSERT INTO prg.pa
         and (u.nazwaglownaczesc is null or (u.nazwaglownaczesc is not null and u.nazwaglownaczesc <> '???'))
 ON CONFLICT DO NOTHING
 ;
+analyze prg.pa;

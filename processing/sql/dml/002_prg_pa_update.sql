@@ -23,3 +23,4 @@ where 1=1
         and not (prg.pa.msc ilike '%' || s1.nazwa or prg.pa.msc ilike s1.nazwa || '%')
     )
 ;
+analyze prg.pa;

@@ -10,3 +10,4 @@ using (
     ) dd using (teryt_simc, teryt_ulic, nr)
 ) ddd
 where prg.lokalnyid = ddd.lokalnyid;
+analyze prg.delta_new;

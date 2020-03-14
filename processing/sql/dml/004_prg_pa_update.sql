@@ -21,3 +21,4 @@ where
         and lower(prg.pa.msc) = lower(s1.nazwa)
     )
 ;
+analyze prg.pa;

@@ -33,3 +33,4 @@ where 1=1
             and u1.cecha = cm.cecha
     )
 ;
+analyze prg.pa;
