@@ -23,6 +23,7 @@ QUERIES = {
     'mvt_ll': str(open(join(SQL_PATH, 'mvt_ll.sql'), 'r').read()),
     'locations_random': str(open(join(SQL_PATH, 'locations_random.sql'), 'r').read()),
     'locations_most_count': str(open(join(SQL_PATH, 'locations_most_count.sql'), 'r').read()),
+    'processes': str(open(join(SQL_PATH, 'processes.sql'), 'r').read()),
 }
 conn = None
 app = Flask(__name__)
@@ -265,5 +266,17 @@ def random_location():
     return jsonify({'lon': x, 'lat': y})
 
 
+@app.route('/processes/')
+def processes():
+    cur = execute_sql(pgdb().cursor(), QUERIES['processes'])
+    list_of_processes = cur.fetchall()
+    result = {
+        'processes': [
+            {'name': x[0], 'in_progress': x[1], 'start_time': x[2], 'end_time': x[3]} for x in list_of_processes
+        ]
+    }
+    return jsonify(result)
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000, debug=True)
