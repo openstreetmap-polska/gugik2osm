@@ -135,6 +135,7 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
             cur.execute('UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
                         ('prg_full_update',))
             conn.commit()
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished full update process.')
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- full update in progress already. Not starting another one.')

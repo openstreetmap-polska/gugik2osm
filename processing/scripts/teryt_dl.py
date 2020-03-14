@@ -122,6 +122,7 @@ def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None)
                 'UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
                 ('teryt_update',))
             conn.commit()
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished TERYT update process.')
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- TERYT update in progress already. Not starting another one.')
