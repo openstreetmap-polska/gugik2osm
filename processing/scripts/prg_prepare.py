@@ -28,7 +28,7 @@ def to_merc(bbox: m.LngLatBbox) -> dict:
 def _read_and_execute(
     conn,
     path: str,
-    vacuum: bool = True,
+    vacuum: str = 'once',
     temp_set_workmem: str = None,
     query_parameters: Union[tuple, dict, None] = None,
     commit_mode: str = 'once'
@@ -55,7 +55,7 @@ def _read_and_execute(
     if temp_set_workmem is not None:
         print('Setting work_mem back to the previous value:', old_workmem)
         cur.execute('set work_mem = %s', (old_workmem,))
-    if vacuum:
+    if vacuum == 'always':
         print('Vacuum analyze.')
         old_isolation_level = conn.isolation_level
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
@@ -72,7 +72,7 @@ def _read_and_execute(
 def execute_scripts_from_files(
         conn,
         paths: Union[str, list, tuple],
-        vacuum: bool = True,
+        vacuum: str = 'once',
         temp_set_workmem: str = None,
         query_parameters: Union[tuple, dict, None] = None,
         commit_mode: str = 'once'
@@ -94,8 +94,12 @@ def execute_scripts_from_files(
                 _read_and_execute(conn, path, vacuum, temp_set_workmem, query_parameters, commit_mode)
     else:
         raise AttributeError(f'Wrong arguments should be strings with paths or list of strings (paths): {paths}')
+
     if commit_mode in ('always', 'once'):
         conn.commit()
+    if vacuum in ('always', 'once'):
+        with conn.cursor() as cur:
+            cur.execute('VACUUM ANALYZE;')
 
 
 def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
@@ -125,8 +129,8 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
             cur.execute('UPDATE process_locks SET in_progress = true WHERE process_name = %s', ('prg_full_update',))
             conn.commit()
             if len(ddls) > 0:
-                execute_scripts_from_files(conn=conn, vacuum=False, paths=ddls, commit_mode='once')
-            execute_scripts_from_files(conn=conn, vacuum=True, paths=dmls, temp_set_workmem='2048MB', commit_mode='once')
+                execute_scripts_from_files(conn=conn, vacuum='never', paths=ddls, commit_mode='once')
+            execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
             cur.execute('UPDATE process_locks SET in_progress = false WHERE process_name = %s', ('prg_full_update',))
             conn.commit()
         else:
