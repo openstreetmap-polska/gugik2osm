@@ -160,7 +160,7 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                 tile = m.Tile(x, y, z)
                 bbox = to_merc(m.bounds(tile))
                 bbox = {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
-                execute_scripts_from_files(conn=conn, vacuum=False, paths=sql_queries, query_parameters=bbox, commit_mode='off')
+                execute_scripts_from_files(conn=conn, vacuum='never', paths=sql_queries, query_parameters=bbox, commit_mode='off')
                 cur.execute(
                     'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
                     (row[0], row[1], row[2], row[3])
