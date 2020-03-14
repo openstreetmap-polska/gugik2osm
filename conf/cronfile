@@ -1,5 +1,5 @@
 #<timing>   <user> <command>
-1 22 * * FRI ttaras /opt/gugik2osm/conf/prg_processing.sh
+1 20 * * FRI ttaras /opt/gugik2osm/conf/prg_processing.sh
 0 1 * * MON-FRI ttaras /opt/gugik2osm/conf/teryt_processing.sh
 */1 * * * * ttaras /opt/gugik2osm/conf/data_update.sh
 0 1 * * * ttaras python3.7 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
