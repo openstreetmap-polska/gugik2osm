@@ -3,7 +3,7 @@ import zipfile
 from base64 import b64decode
 from io import BytesIO, TextIOWrapper, StringIO
 from os.path import join, dirname, abspath
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from zeep import Client
 from zeep.wsse.username import UsernameToken
 import psycopg2 as pg
@@ -94,22 +94,37 @@ def readfile(f: BytesIO) -> StringIO:
                 return StringIO(TextIOWrapper(zf.open(filename, 'r'), encoding='utf-8-sig', newline=None).read().rstrip())
 
 
-def load2pg(file: StringIO, key: str, dsn: str, prepare_tables: bool = False) -> None:
-    with pg.connect(dsn) as conn:
-        cur = conn.cursor()
-        if prepare_tables:
-            cur.execute(sql_prepare_tables)
-        cur.copy_expert(sql=teryt[key]['copy'], file=file)
-        conn.commit()
+def load2pg(conn, file: StringIO, key: str, prepare_tables: bool = False) -> None:
+    cur = conn.cursor()
+    if prepare_tables:
+        cur.execute(sql_prepare_tables)
+    cur.copy_expert(sql=teryt[key]['copy'], file=file)
+    conn.commit()
 
 
 def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None) -> None:
     date = date if date else datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
-    for i, key in enumerate(teryt.keys()):
-        client = Client(url[env], wsse=UsernameToken(api_user, api_password))
-        r = client.service[teryt[key]['api_method']](DataStanu=date)
-        f = BytesIO(b64decode(r['plik_zawartosc']))
-        load2pg(readfile(f), key, dsn, prepare_tables=i == 0)
+    with pg.connect(dsn) as conn:
+        cur = conn.cursor()
+        cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('teryt_update',))
+        teryt_update_in_progress = cur.fetchone()[0]
+        if not teryt_update_in_progress:
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- starting TERYT update process.')
+            cur.execute('UPDATE process_locks SET (in_progress, start_time) = (true, \'now\') WHERE process_name = %s',
+                        ('teryt_update',))
+            conn.commit()
+            for i, key in enumerate(teryt.keys()):
+                client = Client(url[env], wsse=UsernameToken(api_user, api_password))
+                r = client.service[teryt[key]['api_method']](DataStanu=date)
+                f = BytesIO(b64decode(r['plik_zawartosc']))
+                load2pg(conn, readfile(f), key, prepare_tables=i == 0)
+            cur.execute(
+                'UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
+                ('teryt_update',))
+            conn.commit()
+        else:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  '- TERYT update in progress already. Not starting another one.')
 
 
 if __name__ == '__main__':

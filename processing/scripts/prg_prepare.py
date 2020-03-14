@@ -126,12 +126,14 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
         full_update_in_progress = cur.fetchone()[0] if not force else False
         if not full_update_in_progress:
             print(datetime.now(timezone.utc).astimezone().isoformat(), '- starting full update process.')
-            cur.execute('UPDATE process_locks SET in_progress = true WHERE process_name = %s', ('prg_full_update',))
+            cur.execute('UPDATE process_locks SET (in_progress, start_time) = (true, \'now\') WHERE process_name = %s',
+                        ('prg_full_update',))
             conn.commit()
             if len(ddls) > 0:
                 execute_scripts_from_files(conn=conn, vacuum='never', paths=ddls, commit_mode='once')
             execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
-            cur.execute('UPDATE process_locks SET in_progress = false WHERE process_name = %s', ('prg_full_update',))
+            cur.execute('UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
+                        ('prg_full_update',))
             conn.commit()
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
