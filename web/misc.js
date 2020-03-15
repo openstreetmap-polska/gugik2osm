@@ -14,6 +14,5 @@ function processesInfo () {
             });
             temp += '</table>';
             $('#procinfo').html(temp);
-        }
     });
 }
