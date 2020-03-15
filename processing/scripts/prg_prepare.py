@@ -152,9 +152,15 @@ def partial_update(dsn: str, starting: str = '000') -> None:
     sql_queries = [x for x in sorted(sql_queries)]
     with pg.connect(dsn) as conn:
         cur = conn.cursor()
-        cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('prg_full_update',))
-        full_update_in_progress = cur.fetchone()[0]
-        if not full_update_in_progress:
+        cur.execute('SELECT in_progress FROM process_locks WHERE process_name in (%s, %s)',
+                    ('prg_full_update', 'prg_partial_update'))
+        update_in_progress = [x[0] for x in cur.fetchall()]
+        if not any(update_in_progress):
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- starting partial update process.')
+            cur.execute('UPDATE process_locks SET (in_progress, start_time, end_time) = (true, \'now\', null) ' +
+                        'WHERE process_name = %s',
+                        ('prg_partial_update',))
+            conn.commit()
             cur.execute('SELECT * FROM expired_tiles WHERE processed = false FOR UPDATE SKIP LOCKED;')
             for row in cur.fetchall():
                 x, y, z = row[2], row[3], row[1]
@@ -167,9 +173,13 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                     (row[0], row[1], row[2], row[3])
                 )
             conn.commit()
+            cur.execute('UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
+                        ('prg_partial_update',))
+            conn.commit()
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished partial update process.')
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
-                  '- full update in progress skipping partial update.')
+                  '- update in progress skipping partial update.')
 
 
 if __name__ == '__main__':

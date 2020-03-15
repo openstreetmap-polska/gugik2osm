@@ -7,4 +7,5 @@ alter table process_locks add column if not exists start_time timestamp with tim
 alter table process_locks add column if not exists end_time timestamp with time zone;
 
 insert into process_locks values ('prg_full_update', false, null, null) on conflict do nothing;
+insert into process_locks values ('prg_partial_update', false, null, null) on conflict do nothing;
 insert into process_locks values ('teryt_update', false, null, null) on conflict do nothing;
