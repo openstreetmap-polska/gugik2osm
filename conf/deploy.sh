@@ -12,3 +12,10 @@ cp /opt/gugik2osm/git/conf/*.sh /opt/gugik2osm/conf/
 chmod 775 /opt/gugik2osm/conf/*.sh
 sudo cp /opt/gugik2osm/git/conf/cronfile /opt/gugik2osm/conf/
 cp /opt/gugik2osm/git/conf/*.conf /opt/gugik2osm/conf/
+
+cp /opt/gugik2osm/git/imposm3/mapping.yaml /opt/gugik2osm/imposm3/
+cp /opt/gugik2osm/git/imposm3/poland.geojson /opt/gugik2osm/imposm3/
+cp /opt/gugik2osm/git/imposm3/imposm.service /opt/gugik2osm/imposm3/
+sudo cp /opt/gugik2osm/imposm3/imposm.service /etc/systemd/system/imposm.service
+sudo chmod 600 /etc/systemd/system/imposm.service
+sudo systemctl daemon-reload
