@@ -110,7 +110,8 @@ def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None)
         teryt_update_in_progress = cur.fetchone()[0]
         if not teryt_update_in_progress:
             print(datetime.now(timezone.utc).astimezone().isoformat(), '- starting TERYT update process.')
-            cur.execute('UPDATE process_locks SET (in_progress, start_time) = (true, \'now\') WHERE process_name = %s',
+            cur.execute('UPDATE process_locks SET (in_progress, start_time, end_time) = (true, \'now\', null) ' +
+                        'WHERE process_name = %s',
                         ('teryt_update',))
             conn.commit()
             for i, key in enumerate(teryt.keys()):
