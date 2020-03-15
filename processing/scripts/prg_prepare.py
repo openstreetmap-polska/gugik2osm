@@ -163,7 +163,7 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                         ('prg_partial_update',))
             conn.commit()
             cur.execute('SELECT * FROM expired_tiles WHERE processed = false FOR UPDATE SKIP LOCKED;')
-            for row in cur.fetchall():
+            for i, row in enumerate(cur.fetchall()):
                 x, y, z = row[2], row[3], row[1]
                 tile = m.Tile(x, y, z)
                 bbox = to_merc(m.bounds(tile))
@@ -173,7 +173,8 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                     'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
                     (row[0], row[1], row[2], row[3])
                 )
-            conn.commit()
+                if i % 10 == 0:
+                    conn.commit()
             cur.execute('UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
                         ('prg_partial_update',))
             conn.commit()
