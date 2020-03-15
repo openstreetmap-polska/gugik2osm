@@ -36,7 +36,7 @@
             <button type="button" id="button-random-location" class="btn btn-light p-1 m-1">Losuj lokalizację</button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki">Klauzula informacyjna o budynkach</a>
+                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki" onclick="processesInfo()">Klauzula informacyjna o budynkach</a>
                 </li>
                 <li class="nav-item">
                     <a id="faq" class="nav-link" href="/help.html" target="_blank">FAQ/Pomoc</a>
@@ -49,13 +49,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Klauzula informacyjna dla danych o obrysach budynków</h5>
+                    <h5 class="modal-title">Klauzula informacyjna</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <dl>
+                    <p><b>Status procesów ładowania danych</b></p>
+                    <dl id="procinfo"></dl>
+                    <hr>
+                    <p><b>Informacja o wykorzystanym zbiorze budynków 3D</b></p>
+                    <dl id="lodinfo">
                         <dt>Zbiór</dt>
                         <dd>Modele 3D Budynków</dd>
                         <dt>Źródło</dt>
@@ -85,5 +89,6 @@
     </div>
 
     <script src="/map.js"></script>
+    <script src="/misc.js"></script>
 </body>
 </html>
