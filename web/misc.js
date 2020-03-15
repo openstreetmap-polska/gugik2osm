@@ -11,7 +11,7 @@ function processesInfo () {
                 temp += `<tr><td>Czy w trakcie:</td><td>${el.in_progress}</td>`;
                 temp += `<tr><td>Czas rozpoczęcia:</td><td>${el.start_time}</td>`;
                 temp += `<tr><td>Czas zakończenia:</td><td>${el.end_time}</td>`;
-                if (el.no_of_tiles_to_process >= 0) {
+                if (el.no_of_tiles_to_process != null && el.no_of_tiles_to_process >= 0) {
                     temp += `<tr><td>Kafle pozostałe do przetworzenia:</td><td>${el.no_of_tiles_to_process}</td>`;
                 }
             });
