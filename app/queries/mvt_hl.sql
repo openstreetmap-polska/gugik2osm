@@ -30,4 +30,4 @@ insert into tiles (mvt, z, x, y, bbox)
         %(y)s y,
         ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857) bbox
 returning mvt
-on conflict do nothing;
+;
