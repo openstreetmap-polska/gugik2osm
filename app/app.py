@@ -4,7 +4,6 @@ from os import environ
 from lxml import etree
 import psycopg2 as pg
 from flask import Flask, request, abort, Response, jsonify
-from sql import *
 import mercantile as m
 from pyproj import Proj, transform
 from typing import Union
@@ -137,7 +136,7 @@ def features_in():
 
     cur = execute_sql(
         pgdb().cursor(),
-        sql_where_bbox,
+        QUERIES['delta_where_bbox'],
         (float(request.args.get('xmin')),
          float(request.args.get('ymin')),
          float(request.args.get('xmax')),
@@ -197,7 +196,7 @@ def buildings():
 
     cur = execute_sql(
         pgdb().cursor(),
-        sql_buildings_where_bbox,
+        QUERIES['buildings_vertices'],
         (float(request.args.get('xmin')), float(request.args.get('ymin')),
          float(request.args.get('xmax')), float(request.args.get('ymax')))
     )
@@ -220,7 +219,7 @@ def tile_server(z, x, y):
     bbox = to_merc(m.bounds(tile))
 
     # query db
-    cur = execute_sql(pgdb().cursor(), sql_get_mvt_by_zxy, (z, x, y))
+    cur = execute_sql(pgdb().cursor(), QUERIES['cached_mvt'], (z, x, y))
     tup = cur.fetchone()
     if tup is None:
         params = {
@@ -233,9 +232,9 @@ def tile_server(z, x, y):
                     'y': y
                 }
         if 6 <= int(z) < 13:
-            cur = execute_sql(cur, sql_mvt_ll, params)
+            cur = execute_sql(cur, QUERIES['mvt_ll'], params)
         elif 13 <= int(z) < 23:
-            cur = execute_sql(cur, sql_mvt, params)
+            cur = execute_sql(cur, QUERIES['mvt_hl'], params)
         else:
             abort(404)
         conn.commit()
@@ -256,7 +255,7 @@ def tile_server(z, x, y):
 
 @app.route('/prg/<uuid>')
 def prg_address_point_info(uuid: str):
-    cur = execute_sql(pgdb().cursor(), sql_delta_point_info, (uuid,))
+    cur = execute_sql(pgdb().cursor(), QUERIES['delta_point_info'], (uuid,))
     info = cur.fetchone()
     cur.close()
     if info:
