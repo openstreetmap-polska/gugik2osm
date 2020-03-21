@@ -4,4 +4,4 @@ drop table prg.delta_old;
 alter index prg.delta_gis_new rename to delta_gis;
 alter index prg.delta_lokalnyid_new rename to delta_lokalnyid;
 alter index prg.delta_simc_new rename to delta_simc;
-vacuum analyze prg.delta;
+analyze prg.delta;
