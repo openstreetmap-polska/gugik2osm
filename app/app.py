@@ -21,6 +21,8 @@ QUERIES = {
     'mvt_hl': str(open(join(SQL_PATH, 'mvt_hl.sql'), 'r').read()),
     'mvt_ll': str(open(join(SQL_PATH, 'mvt_ll.sql'), 'r').read()),
     'mvt_ll_aggr_simc': str(open(join(SQL_PATH, 'mvt_ll_aggr_simc.sql'), 'r').read()),
+    'mvt_ll_aggr_simc_ulic': str(open(join(SQL_PATH, 'mvt_ll_aggr_simc_ulic.sql'), 'r').read()),
+    'mvt_ll_aggr_terc': str(open(join(SQL_PATH, 'mvt_ll_aggr_terc.sql'), 'r').read()),
     'locations_random': str(open(join(SQL_PATH, 'locations_random.sql'), 'r').read()),
     'locations_most_count': str(open(join(SQL_PATH, 'locations_most_count.sql'), 'r').read()),
     'processes': str(open(join(SQL_PATH, 'processes.sql'), 'r').read()),
@@ -232,9 +234,13 @@ def tile_server(z, x, y):
                     'x': x,
                     'y': y
                 }
-        if 6 <= int(z) < 10:
+        if 6 <= int(z) <= 7:
+            cur = execute_sql(cur, QUERIES['mvt_ll_aggr_terc'], params)
+        elif 8 <= int(z) <= 9:
             cur = execute_sql(cur, QUERIES['mvt_ll_aggr_simc'], params)
-        elif 10 <= int(z) < 13:
+        elif 10 <= int(z) <= 11:
+            cur = execute_sql(cur, QUERIES['mvt_ll_aggr_simc_ulic'], params)
+        elif 12 <= int(z) <= 13:
             cur = execute_sql(cur, QUERIES['mvt_ll'], params)
         elif 13 <= int(z) < 23:
             cur = execute_sql(cur, QUERIES['mvt_hl'], params)
