@@ -20,6 +20,7 @@ QUERIES = {
     'delta_where_bbox': str(open(join(SQL_PATH, 'delta_where_bbox.sql'), 'r').read()),
     'mvt_hl': str(open(join(SQL_PATH, 'mvt_hl.sql'), 'r').read()),
     'mvt_ll': str(open(join(SQL_PATH, 'mvt_ll.sql'), 'r').read()),
+    'mvt_ll_aggr_simc': str(open(join(SQL_PATH, 'mvt_ll_aggr_simc.sql'), 'r').read()),
     'locations_random': str(open(join(SQL_PATH, 'locations_random.sql'), 'r').read()),
     'locations_most_count': str(open(join(SQL_PATH, 'locations_most_count.sql'), 'r').read()),
     'processes': str(open(join(SQL_PATH, 'processes.sql'), 'r').read()),
@@ -231,7 +232,9 @@ def tile_server(z, x, y):
                     'x': x,
                     'y': y
                 }
-        if 6 <= int(z) < 13:
+        if 6 <= int(z) < 10:
+            cur = execute_sql(cur, QUERIES['mvt_ll_aggr_simc'], params)
+        elif 10 <= int(z) < 13:
             cur = execute_sql(cur, QUERIES['mvt_ll'], params)
         elif 13 <= int(z) < 23:
             cur = execute_sql(cur, QUERIES['mvt_hl'], params)
