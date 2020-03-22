@@ -1,3 +1,4 @@
+drop table if exists prng_new;
 create unlogged table prng_new AS
 SELECT
     prng.id,
@@ -8,10 +9,9 @@ CROSS JOIN lateral (select count(*) liczba_adresow from prg.delta a where st_dwi
 CROSS JOIN lateral (select count(*) liczba_budynkow from prg.lod1_buildings b where st_dwithin(prng.geom, b.geom, 0.01)) bud
 ;
 
-create index idx_prng_geom_new on prng using gist (geom);
-cluster prng using idx_prng_geom_new;
-create index idx_prng_count_new on prng using btree (count desc);
---create index idx_prng_id on prng using btree (id);
+create index idx_prng_geom_new on prng_new using gist (geom);
+cluster prng_new using idx_prng_geom_new;
+create index idx_prng_count_new on prng_new using btree (count desc);
 alter table prng_new set logged;
 
 alter table prng rename to prng_old;
