@@ -240,7 +240,7 @@ def tile_server(z, x, y):
             cur = execute_sql(cur, QUERIES['mvt_ll_aggr_simc'], params)
         elif 10 <= int(z) <= 11:
             cur = execute_sql(cur, QUERIES['mvt_ll_aggr_simc_ulic'], params)
-        elif 12 <= int(z) <= 13:
+        elif 12 <= int(z) <= 12:
             cur = execute_sql(cur, QUERIES['mvt_ll'], params)
         elif 13 <= int(z) < 23:
             cur = execute_sql(cur, QUERIES['mvt_hl'], params)
