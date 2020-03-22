@@ -99,7 +99,11 @@ def execute_scripts_from_files(
         conn.commit()
     if vacuum in ('always', 'once'):
         with conn.cursor() as cur:
+            print('Vacuum analyze.')
+            old_isolation_level = conn.isolation_level
+            conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cur.execute('VACUUM ANALYZE;')
+            conn.set_isolation_level(old_isolation_level)
 
 
 def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
