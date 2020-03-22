@@ -5,5 +5,5 @@
 */1 * * * * ttaras curl -s localhost/random/ > /dev/null
 0 1 * * * ttaras python3.7 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
 0 1 * * * ttaras truncate -s 20000000 /opt/gugik2osm/log/data_update.log
-0 0 * * MON-FRI postgres /opt/gugik2osm/conf/export_osm_addresses.sh
+0 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_osm_addresses.sh
 0 23 * * SUN postgres /opt/gugik2osm/conf/export_prg_addresses.sh
