@@ -14,6 +14,7 @@ insert into tiles (mvt, z, x, y, bbox)
             , count(*) no_of_points
         from a
         join prg.delta d using(teryt_simc)
+        group by teryt_simc
     )
     select
         ST_AsMVT(b.*, 'prg2load_geomonly') mvt,
