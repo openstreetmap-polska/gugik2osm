@@ -1,3 +1,4 @@
+mapboxgl.accessToken = 'pk.eyJ1IjoidG9tYXN6dCIsImEiOiJjazg2Nno3ZWswZDZ5M2ZvdHdxejFnbGNmIn0.P4_K-eykAt7kpVVq0GrESQ';
 var map = new mapboxgl.Map({
     "container": "map",
     "hash": "map",
@@ -93,6 +94,16 @@ var map = new mapboxgl.Map({
 });
 
 map.addControl(new mapboxgl.NavigationControl());
+
+map.addControl(
+    new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            countries: 'pl',
+            language: 'pl-PL',
+            types: 'country,region,postcode,district,place,locality,neighborhood,address'
+        })
+);
 
 // When a click event occurs on a feature in the states layer, open a popup at the
 // location of the click, with description HTML from its properties.
