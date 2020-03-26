@@ -156,8 +156,10 @@ window.onload = function() {
     var response = await fetch('https://budynki.openstreetmap.org.pl/random/');
     var location = await response.json();
     console.log(location);
-    map.jumpTo({"center": location});
-    map.setZoom(14);
+    //changed the way view is moved to the new location to flyTo method instead of jumpTo
+    //map.jumpTo({"center": location});
+    //map.setZoom(14);
+    map.flyTo({"center": location, "zoom": 14});
   }
 }
 
