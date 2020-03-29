@@ -15,6 +15,7 @@
     <title>FAQ/Pomoc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
 </head>
 <body>
 <div class="container bg-light">
@@ -88,7 +89,20 @@
     <p>Przykłady to pobranie istniejącego obrysu budynku który widzimy na podkładzie mapowym w celu dodania mu atrybutów adresowych.</p>
     <br><br><br><br>
 </div>
+
+    <!-- START Bootstrap-Cookie-Alert -->
+    <!--  thanks to https://github.com/Wruczek/Bootstrap-Cookie-Alert  -->
+    <div class="alert text-center cookiealert" role="alert">
+        &#x1F36A; Używamy cookies żeby monitorować popularność strony.
+        <a href="https://cookiesandyou.com/" target="_blank">Czym są cookies?</a>
+        <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
+            OK
+        </button>
+    </div>
+    <!-- END Bootstrap-Cookie-Alert -->
+
 <button onclick="returnTop()" id="goTopBtn" title="Wróć na górę strony" class="btn btn-primary fixed-bottom m-2 float-right" style="display: none;">Wróć na górę strony</button>
 <script src="/goTop.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
 </body>
 </html>

@@ -37,6 +37,7 @@
     <style>
         #map { position:absolute; width:100%; height: 93%; };
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
 </head>
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -98,7 +99,19 @@
         <div id='map'></div>
     </div>
 
+    <!-- START Bootstrap-Cookie-Alert -->
+    <!--  thanks to https://github.com/Wruczek/Bootstrap-Cookie-Alert  -->
+    <div class="alert text-center cookiealert" role="alert">
+        &#x1F36A; Używamy cookies żeby monitorować popularność strony.
+        <a href="https://cookiesandyou.com/" target="_blank">Czym są cookies?</a>
+        <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
+            OK
+        </button>
+    </div>
+    <!-- END Bootstrap-Cookie-Alert -->
+
     <script src="/map.js"></script>
     <script src="/misc.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
 </body>
 </html>
