@@ -74,7 +74,8 @@ def addresses_xml(list_of_tuples):
     for t in list_of_tuples:
         el = etree.Element('node', id=str(i), lat=str(t[8]), lon=str(t[7]))
         el.append(deepcopy(SOURCE_ADDR))
-        el.append(etree.Element('tag', k='ref:addr', v=t[0]))
+        # do not add 'ref:addr' tag
+        # el.append(etree.Element('tag', k='ref:addr', v=t[0]))
         el.append(etree.Element('tag', k='addr:city:simc', v=t[2]))
         if t[3]:
             el.append(etree.Element('tag', k='addr:city', v=t[1]))
