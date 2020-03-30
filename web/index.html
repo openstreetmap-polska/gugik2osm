@@ -42,12 +42,14 @@
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <div id="header" class="collapse navbar-collapse">
-            <button type="button" id="button-prg-dl" class="btn btn-light p-1 m-1">Pobierz adresy dla JOSM (do 50k obiektów)</button>
-            <button type="button" id="button-buildings-dl" class="btn btn-light p-1 m-1">Pobierz budynki dla JOSM (do 50k obiektów)</button>
-            <button type="button" id="button-random-location" class="btn btn-light p-1 m-1">Losuj lokalizację</button>
+            <button type="button" id="downloadButton" class="btn btn-light p-1 m-1" data-toggle="tooltip" title="Limit do 50k obiektów">Pobierz dane dla JOSM</button>
+            <button type="button" id="randomLocationButton" class="btn btn-light p-1 m-1">Losuj lokalizację</button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki" onclick="processesInfo()">Klauzula informacyjna</a>
+                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki">Klauzula informacyjna</a>
+                </li>
+                <li class="nav-item">
+                    <a id="status-info" class="nav-link" data-toggle="modal" data-target="#modalStatus" onclick="processesInfo()">Status</a>
                 </li>
                 <li class="nav-item">
                     <a id="faq" class="nav-link" href="/help.html" target="_blank">FAQ/Pomoc</a>
@@ -55,6 +57,26 @@
             </ul>
         </div>
     </nav>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modalStatus">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Status</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Status procesów ładowania danych</b></p>
+                    <dl id="procinfo"></dl>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="modalBudynki">
         <div class="modal-dialog" role="document">
@@ -66,9 +88,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p><b>Status procesów ładowania danych</b></p>
-                    <dl id="procinfo"></dl>
-                    <hr>
                     <p><b>Informacja o wykorzystanym zbiorze budynków 3D</b></p>
                     <dl id="lodinfo">
                         <dt>Zbiór</dt>

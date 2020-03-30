@@ -93,8 +93,6 @@ var map = new mapboxgl.Map({
     }
 });
 
-map.addControl(new mapboxgl.NavigationControl());
-
 map.addControl(
     new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
@@ -104,6 +102,8 @@ map.addControl(
             types: 'country,region,postcode,district,place,locality,neighborhood,address'
         })
 );
+
+map.addControl(new mapboxgl.NavigationControl());
 
 // When a click event occurs on a feature in the states layer, open a popup at the
 // location of the click, with description HTML from its properties.
@@ -128,30 +128,10 @@ map.on("mouseleave", "prg2load", function () {
 map.scrollZoom.setWheelZoomRate(1/100);
 
 window.onload = function() {
-  var a = document.getElementById("button-prg-dl");
-  var b = document.getElementById("button-buildings-dl");
-  var c = document.getElementById("button-random-location");
 
-  a.onclick = function() {
-    var bounds = map.getBounds().toArray();
-    var xmin = bounds[0][0];
-    var xmax = bounds[1][0];
-    var ymin = bounds[0][1];
-    var ymax = bounds[1][1];
-    var theUrl = "/prg/not_in/osm/?format=osm&filter_by=bbox&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax
-    console.log(theUrl);
-    window.open(theUrl);
-  }
-  b.onclick = function() {
-    var bounds = map.getBounds().toArray();
-    var xmin = bounds[0][0];
-    var xmax = bounds[1][0];
-    var ymin = bounds[0][1];
-    var ymax = bounds[1][1];
-    var theUrl = "/lod1/not_in/osm/?format=osm&filter_by=bbox&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax
-    console.log(theUrl);
-    window.open(theUrl);
-  }
+  var c = document.getElementById("randomLocationButton");
+  var d = document.getElementById("downloadButton");
+
   c.onclick = async function() {
     var response = await fetch('https://budynki.openstreetmap.org.pl/random/');
     var location = await response.json();
@@ -160,6 +140,16 @@ window.onload = function() {
     //map.jumpTo({"center": location});
     //map.setZoom(14);
     map.flyTo({"center": location, "zoom": 14});
+  }
+  d.onclick = function() {
+    var bounds = map.getBounds().toArray();
+    var xmin = bounds[0][0];
+    var xmax = bounds[1][0];
+    var ymin = bounds[0][1];
+    var ymax = bounds[1][1];
+    var theUrl = "/josm_data?filter_by=bbox&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax
+    console.log(theUrl);
+    window.open(theUrl);
   }
 }
 
