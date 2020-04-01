@@ -11,5 +11,6 @@
 17 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_gmi.sh
 18 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_msc.sh
 19 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_cz_msc.sh
+20 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_ul.sh
 25 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_osm_buildings.sh
 0 23 * * SUN postgres /opt/gugik2osm/conf/export_prg_addresses.sh
