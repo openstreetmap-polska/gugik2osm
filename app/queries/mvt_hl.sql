@@ -22,12 +22,15 @@ insert into tiles (mvt, z, x, y, bbox)
         from prg.lod1_buildings
         where geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 4326)
         limit 500000
+    ),
+    result as (
+        select
+            (select ST_AsMVT(a.*, 'prg2load') from a) || (select ST_AsMVT(b.*, 'lod1_buildings') from b) mvt,
+            %(z)s z,
+            %(x)s x,
+            %(y)s y,
+            ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857) bbox
     )
-    select
-        (select ST_AsMVT(a.*, 'prg2load') from a) || (select ST_AsMVT(b.*, 'lod1_buildings') from b) mvt,
-        %(z)s z,
-        %(x)s x,
-        %(y)s y,
-        ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857) bbox
-returning mvt
+    select * from result
+on conflict do nothing
 ;
