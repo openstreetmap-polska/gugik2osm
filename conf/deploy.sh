@@ -19,3 +19,4 @@ cp /opt/gugik2osm/git/imposm3/imposm.service /opt/gugik2osm/imposm3/
 sudo cp /opt/gugik2osm/imposm3/imposm.service /etc/systemd/system/imposm.service
 sudo chmod 600 /etc/systemd/system/imposm.service
 sudo systemctl daemon-reload
+sudo service nginx restart
