@@ -362,7 +362,7 @@ def tile_server(z, x, y):
     return response
 
 
-@app.route('/prg/<uuid>')
+@app.route('/delta/<uuid>')
 def prg_address_point_info(uuid: str):
     cur = execute_sql(pgdb().cursor(), QUERIES['delta_point_info'], (uuid,))
     info = cur.fetchone()
