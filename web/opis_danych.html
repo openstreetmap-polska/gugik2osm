@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153528940-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-153528940-1');
+    </script>
+
+    <meta charset="UTF-8">
+    <title>Opis danych</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
+    <link rel="stylesheet" href="./extras.css">
+</head>
+<body>
+<div class="container bg-light">
+
+    <h1 class="my-4">Opis danych dostępnych do pobrania</h1>
+    <p>Wszystkie dane znajdują się pod linkiem: <a href="https://budynki.openstreetmap.org.pl/dane/">https://budynki.openstreetmap.org.pl/dane/</a> , a poniżej opis zawartości.</p>
+
+    <h2>LOD1 - obrysy budynków</h2>
+    <p>Zbiór do pobrania zawiera obrysy budynków. Dane pochodzą z przetworzenia modeli budynków 3D udostępnianych przez Główny Urząd Geodezji i Kartografii w geoportalu krajowym.</p>
+    <p>Format danych to spakowany plik Geopackage (gpkg) zawierający geometrie poligonowe.</p>
+    <p>Link: <a href="https://budynki.openstreetmap.org.pl/dane/lod1_buildings.zip">https://budynki.openstreetmap.org.pl/dane/lod1_buildings.zip</a></p>
+    <img src="/screenshots/lod1_budynki_przyklad.jpg" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący obrysy budynków na tle ortofotomapy."/>
+    <p>Poniżej klauzula informacyjna zgodnie z licencją zbioru.</p>
+    <p><b>Informacja o wykorzystanym zbiorze budynków 3D</b></p>
+    <dl id="lodinfo">
+        <dt>Zbiór</dt>
+        <dd>Modele 3D Budynków</dd>
+        <dt>Źródło</dt>
+        <dd>www.geoportal.gov.pl</dd>
+        <dt>Dysponent</dt>
+        <dd>Główny Geodeta Kraju</dd>
+        <dt>Data pobrania zbioru</dt>
+        <dd>2019-11-10</dd>
+        <dt>Zakres przetworzenia</dt>
+        <dd>Geometria budynków została spłaszczona do 2D oraz wyekstrahowana została część poligonowa wykorzystana dalej jako obrys budynku.</dd>
+        <dt>Informacja</dt>
+        <dd>Modele 3D budynków nie stanowią rejestru publicznego ani elementu treści takiego rejestru. W konsekwencji czego mają wartość jedynie poglądową. Niezgodność Modeli 3D budynków ze stanem faktycznym lub prawnym, tak w postaci nieprzetworzonej jak i po ich ewentualnym przetworzeniu w procesie ponownego wykorzystania, nie może stanowić podstawy odpowiedzialności Głównego Geodety Kraju z jakiegokolwiek tytułu wobec jakiegokolwiek podmiotu.</dd>
+        <dt>Licencja</dt>
+        <dd><a href="https://integracja.gugik.gov.pl/Budynki3D/GUGiK_Licencja_na_Budynki3D.pdf" target="_blank">https://integracja.gugik.gov.pl/Budynki3D/GUGiK_Licencja_na_Budynki3D.pdf</a></dd>
+    </dl>
+
+    <h2>PRG - dane adresowe</h2>
+    <p>Dane adresowe z Państwowego Rejestru Granic. Dane przetworzone, wybrano tylko adresy, gdzie udało się dopasować do rejestru TERYT oraz numer porządkowy spełniał pewne wymagania.</p>
+    <p>Format danych to spakowany plik CSV rozdzielany przecinkiem kodowanie UTF-8.</p>
+    <p>Link: <a href="https://budynki.openstreetmap.org.pl/dane/prg_addresses.zip">https://budynki.openstreetmap.org.pl/dane/prg_addresses.zip</a></p>
+    <p>Przykład:</p>
+    <pre class="pre-x-scrollable">lokalnyid,wojewodztwo,powiat,kod_gminy,gmina,kod_miejscowosci,miejscowosc,kod_ulicy,ulica,nr,pna,x_2180,y_2180,x_4326,y_4326
+c9375d20-be43-4753-b4c6-e0be27e89c22,PODKARPACKIE,tarnobrzeski,1820044,Nowa Dęba,0980636,Nowa Dęba,01528,Boczna,2,39-460,695062.377,288055.247,21.7472156487785,50.427158025868
+61b79b8c-f2de-455c-8c0a-d70b9d7dcd84,PODKARPACKIE,tarnobrzeski,1820044,Nowa Dęba,0980636,Nowa Dęba,03839,Długa,16,39-460,696832.9578,286059.107899999,21.7710738037879,50.4086304487115
+4ba56c67-98a6-429e-8110-eeeb77b41e56,PODKARPACKIE,tarnobrzeski,1820044,Nowa Dęba,0980636,Nowa Dęba,03839,Długa,5,39-460,696848.018,286014.901000001,21.7712623760618,50.4082281761482
+6bd88659-63a0-42cc-bc22-e966f4a1825e,PODKARPACKIE,tarnobrzeski,1820044,Nowa Dęba,0980636,Nowa Dęba,03839,Długa,8,39-460,696664.18,285708.622,21.7685170083056,50.4055376625793
+6f776d57-cd98-469d-b1c3-516aabef8ad9,PODKARPACKIE,tarnobrzeski,1820044,Nowa Dęba,0980636,Nowa Dęba,03839,Długa,10,39-460,696738.525,285968.081,21.7696982864516,50.4078441597302
+    </pre>
+
+    <h2>OSM - dane adresowe</h2>
+    <p>Dane adresowe z OpenStreetMap. Dla adresów przypisanych do obrysów budynków wyciągnięto centroid geometrii.</p>
+    <p>Format danych to spakowany plik CSV rozdzielany przecinkiem kodowanie UTF-8.</p>
+    <p>Link: <a href="https://budynki.openstreetmap.org.pl/dane/osm_addresses.zip">https://budynki.openstreetmap.org.pl/dane/osm_addresses.zip</a></p>
+    <p>Przykład:</p>
+    <pre class="pre-x-scrollable">miejscowosc,czesc_miejscowosci,ulica,nr,pna,kod_ulic,kod_miejscowosci,x_4326,y_4326
+Poznań,,Ostatnia,14,,,,16.8733883064414,52.3706387086838
+Warszawa,,Górnośląska,31,00-432,05976,0918123,21.033970837956,52.2245169905113
+Warszawa,,Jazdów,2,00-467,,,21.0307457847444,52.2195121275527
+Warszawa,,Nowy Świat,6/12,00-497,14535,0918123,21.0223631203198,52.2310387072317
+Warszawa,,Myśliwiecka,6,00-459,13562,0918123,21.0344455719963,52.2228133201634
+    </pre>
+
+    <h2>OSM - obrysy budynków</h2>
+    <p></p>
+    <p>Format danych to spakowany plik Geopackage (gpkg) zawierający geometrie poligonowe.</p>
+    <img src="/screenshots/osm_budynki_przyklad.jpg" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący obrysy budynków na tle ortofotomapy."/>
+    <p>Link: <a href="https://budynki.openstreetmap.org.pl/dane/osm_buildings.zip">https://budynki.openstreetmap.org.pl/dane/osm_buildings.zip</a></p>
+
+    <h2>TERYT - nazwy jednostek administracyjnych, miejscowości i ich części oraz ulic</h2>
+    <p></p>
+    <p>Format danych to plik CSV z nagłówkiem rozdzielany przecinkiem kodowanie UTF-8. Wszystkie pola powinny być traktowane jako tekst.</p>
+    <p>Link województwa: <a href="https://budynki.openstreetmap.org.pl/dane/teryt_woj.csv">https://budynki.openstreetmap.org.pl/dane/teryt_woj.csv</a></p>
+    <p>Link powiaty: <a href="https://budynki.openstreetmap.org.pl/dane/teryt_pow.csv">https://budynki.openstreetmap.org.pl/dane/teryt_pow.csv</a></p>
+    <p>Link gminy: <a href="https://budynki.openstreetmap.org.pl/dane/teryt_gmi.csv">https://budynki.openstreetmap.org.pl/dane/teryt_gmi.csv</a></p>
+    <p>Link miejscowości: <a href="https://budynki.openstreetmap.org.pl/dane/teryt_msc.csv">https://budynki.openstreetmap.org.pl/dane/teryt_msc.csv</a></p>
+    <p>Link części miejscowości: <a href="https://budynki.openstreetmap.org.pl/dane/teryt_cz_msc.csv">https://budynki.openstreetmap.org.pl/dane/teryt_cz_msc.csv</a></p>
+    <p>Link ulice : <a href="https://budynki.openstreetmap.org.pl/dane/teryt_ul.csv">https://budynki.openstreetmap.org.pl/dane/teryt_ul.csv</a></p>
+    <p>Przykład województwa:</p>
+    <pre class="pre-x-scrollable">kod_woj,wojewodztwo,nazdod,stan_na
+02,Dolnośląskie,województwo,2020-01-01
+04,Kujawsko-Pomorskie,województwo,2020-01-01
+06,Lubelskie,województwo,2020-01-01
+08,Lubuskie,województwo,2020-01-01
+10,Łódzkie,województwo,2020-01-01
+    </pre>
+    <p>Przykład powiaty:</p>
+    <pre class="pre-x-scrollable">kod_woj,wojewodztwo,kod_pow,powiat,nazdod,stan_na
+02,Dolnośląskie,0201,Bolesławiecki,powiat,2020-01-01
+02,Dolnośląskie,0202,Dzierżoniowski,powiat,2020-01-01
+02,Dolnośląskie,0203,Głogowski,powiat,2020-01-01
+02,Dolnośląskie,0204,Górowski,powiat,2020-01-01
+02,Dolnośląskie,0205,Jaworski,powiat,2020-01-01
+    </pre>
+    <p>Przykład gminy:</p>
+    <pre class="pre-x-scrollable">kod_woj,wojewodztwo,kod_pow,powiat,kod_gmi,gmina,nazdod,stan_na
+02,Dolnośląskie,0201,Bolesławiecki,0201011,Bolesławiec,gmina miejska,2020-01-01
+02,Dolnośląskie,0201,Bolesławiecki,0201022,Bolesławiec,gmina wiejska,2020-01-01
+02,Dolnośląskie,0201,Bolesławiecki,0201032,Gromadka,gmina wiejska,2020-01-01
+02,Dolnośląskie,0201,Bolesławiecki,0201043,Nowogrodziec,gmina miejsko-wiejska,2020-01-01
+02,Dolnośląskie,0201,Bolesławiecki,0201052,Osiecznica,gmina wiejska,2020-01-01
+    </pre>
+    <p>Przykład miejscowości:</p>
+    <pre class="pre-x-scrollable">kod_woj,wojewodztwo,kod_pow,powiat,kod_gmi,gmina,rodz_gminy,kod_cz_gmi,rodz_cz_gmi,kod_rodz_msc,rodzaj_msc,kod_msc,miejscowosc,stan_na
+02,Dolnośląskie,0226,Złotoryjski,0226062,Złotoryja,gmina wiejska,,,01,wieś,0368639,Nowa Wieś Złotoryjska,2020-01-01
+02,Dolnośląskie,0217,Strzeliński,0217043,Strzelin,gmina miejsko-wiejska,0217045,obszar wiejski,01,wieś,0880685,Szczodrowice,2020-01-01
+02,Dolnośląskie,0217,Strzeliński,0217043,Strzelin,gmina miejsko-wiejska,0217045,obszar wiejski,01,wieś,0880722,Żeleźnik,2020-01-01
+02,Dolnośląskie,0226,Złotoryjski,0226062,Złotoryja,gmina wiejska,,,01,wieś,0368616,Łaźniki,2020-01-01
+02,Dolnośląskie,0217,Strzeliński,0217053,Wiązów,gmina miejsko-wiejska,0217055,obszar wiejski,01,wieś,0882164,Bryłówek,2020-01-01
+    </pre>
+    <p>Przykład części miejscowości:</p>
+    <pre class="pre-x-scrollable">kod_woj,wojewodztwo,kod_pow,powiat,kod_gmi,gmina,rodz_gminy,kod_cz_gmi,rodz_cz_gmi,kod_rodz_msc,rodzaj_msc,kod_msc,miejscowosc,kod_rodz_cz_msc,rodzaj_cz_msc,kod_cz_msc,czesc_miejscowosci,stan_na
+02,Dolnośląskie,0264,Wrocław,0264011,Wrocław,gmina miejska,0264029,delegatura,96,miasto,0986283,Wrocław,99,część miasta,1064189,Ownia,2020-01-01
+02,Dolnośląskie,0264,Wrocław,0264011,Wrocław,gmina miejska,0264069,delegatura,96,miasto,0986283,Wrocław,99,część miasta,1005034,Śródmieście,2020-01-01
+02,Dolnośląskie,0264,Wrocław,0264011,Wrocław,gmina miejska,0264029,delegatura,96,miasto,0986283,Wrocław,99,część miasta,1005028,Osiniec,2020-01-01
+02,Dolnośląskie,0264,Wrocław,0264011,Wrocław,gmina miejska,0264029,delegatura,96,miasto,0986283,Wrocław,99,część miasta,1005011,Fabryczna,2020-01-01
+02,Dolnośląskie,0264,Wrocław,0264011,Wrocław,gmina miejska,0264049,delegatura,96,miasto,0986283,Wrocław,99,część miasta,0986834,Poświętne,2020-01-01
+    </pre>
+    <p>Przykład ulice:</p>
+    <pre class="pre-x-scrollable">kod_woj,wojewodztwo,kod_pow,powiat,kod_gmi,gmina,rodz_gminy,kod_cz_gmi,rodz_cz_gmi,kod_rodz_msc,rodzaj_msc,kod_msc,miejscowosc,kod_rodz_cz_msc,rodzaj_cz_msc,kod_cz_msc,czesc_miejscowosci,kod_ul,rodzaj_ul,ulica,stan_na
+14,Mazowieckie,1432,Warszawski Zachodni,1432013,Błonie,gmina miejsko-wiejska,1432015,obszar wiejski,01,wieś,0000046,Bieniewice,,,,,25305,ul.,Zachodnia,2020-04-02
+14,Mazowieckie,1432,Warszawski Zachodni,1432013,Błonie,gmina miejsko-wiejska,1432015,obszar wiejski,01,wieś,0000046,Bieniewice,,,,,05527,ul.,Gimnazjalna,2020-04-02
+14,Mazowieckie,1432,Warszawski Zachodni,1432013,Błonie,gmina miejsko-wiejska,1432015,obszar wiejski,01,wieś,0000046,Bieniewice,,,,,17390,ul.,Poziomkowa,2020-04-02
+14,Mazowieckie,1432,Warszawski Zachodni,1432013,Błonie,gmina miejsko-wiejska,1432015,obszar wiejski,01,wieś,0000046,Bieniewice,,,,,00157,ul.,Akacjowa,2020-04-02
+14,Mazowieckie,1432,Warszawski Zachodni,1432013,Błonie,gmina miejsko-wiejska,1432015,obszar wiejski,01,wieś,0000046,Bieniewice,,,,,24879,ul.,Wschodnia,2020-04-02
+    </pre>
+
+    <br>
+    <hr>
+    <h2>Wszystkie pliki:</h2>
+    <p><a href="https://budynki.openstreetmap.org.pl/dane/">https://budynki.openstreetmap.org.pl/dane/</a></p>
+</div>
+
+    <!-- START Bootstrap-Cookie-Alert -->
+    <!--  thanks to https://github.com/Wruczek/Bootstrap-Cookie-Alert  -->
+    <div class="alert text-center cookiealert" role="alert">
+        &#x1F36A; Używamy cookies żeby monitorować popularność strony.
+        <a href="https://cookiesandyou.com/" target="_blank">Czym są cookies?</a>
+        <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
+            OK
+        </button>
+    </div>
+    <!-- END Bootstrap-Cookie-Alert -->
+    <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
+</body>
+</html>
