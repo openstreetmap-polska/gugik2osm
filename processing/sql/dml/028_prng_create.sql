@@ -1,5 +1,5 @@
 drop table if exists prng_new;
-create unlogged table prng_new AS
+create table prng_new AS
 SELECT
     prng.id,
     prng.geom,
@@ -12,7 +12,6 @@ CROSS JOIN lateral (select count(*) liczba_budynkow from prg.lod1_buildings b wh
 create index idx_prng_geom_new on prng_new using gist (geom);
 cluster prng_new using idx_prng_geom_new;
 create index idx_prng_count_new on prng_new using btree (count desc);
-alter table prng_new set logged;
 
 alter table prng rename to prng_old;
 alter table prng_new rename to prng;
