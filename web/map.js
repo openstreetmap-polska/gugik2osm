@@ -6,6 +6,7 @@ var map = new mapboxgl.Map({
     "center": [19.76231, 52.51863],
     "minZoom": 6,
     "maxZoom": 19,
+    "maxPitch": 0,
     "style": {
         "version": 8,
         "sources": {
