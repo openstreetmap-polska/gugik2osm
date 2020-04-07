@@ -7,6 +7,7 @@ var map = new mapboxgl.Map({
     "minZoom": 6,
     "maxZoom": 19,
     "maxPitch": 0,
+    "dragRotate": false,
     "style": {
         "version": 8,
         "sources": {
@@ -105,6 +106,13 @@ map.addControl(
 );
 
 map.addControl(new mapboxgl.NavigationControl());
+
+map.addControl(new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    }
+}));
+
 
 // When a click event occurs on a feature in the states layer, open a popup at the
 // location of the click, with description HTML from its properties.
