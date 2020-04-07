@@ -15,5 +15,5 @@ left join (
     select 'prg_partial_update' process_name, 'Cominutowa aktualizacja danych' pretty_name
     union all
     select 'teryt_update' process_name, 'Codzienna aktualizacja danych TERYT' pretty_name
-) using (process_name)
+) n using (process_name)
 ;
