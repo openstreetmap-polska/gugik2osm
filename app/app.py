@@ -395,7 +395,10 @@ def processes():
     list_of_processes = cur.fetchall()
     result = {
         'processes': [
-            {'name': x[0], 'in_progress': x[1], 'start_time': x[2], 'end_time': x[3], 'no_of_tiles_to_process': x[4]}
+            {
+                'name': x[0], 'in_progress': x[1], 'start_time': x[2], 'end_time': x[3],
+                'no_of_tiles_to_process': x[4], 'abbr_name': x[5]
+            }
             for x in list_of_processes
         ]
     }
