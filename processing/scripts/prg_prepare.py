@@ -82,18 +82,23 @@ def execute_scripts_from_files(
     if len(paths) == 0:
         raise AttributeError('You need to specify at least one path for file with an sql script.')
 
-    if type(paths) == str:
-        _read_and_execute(conn, paths, vacuum, temp_set_workmem, query_parameters, commit_mode)
-    elif type(paths) in (tuple, list):
-        if type(paths[0]) in (tuple, list):
-            for lst in paths:
-                for path in lst:
+    try:
+        if type(paths) == str:
+            _read_and_execute(conn, paths, vacuum, temp_set_workmem, query_parameters, commit_mode)
+        elif type(paths) in (tuple, list):
+            if type(paths[0]) in (tuple, list):
+                for lst in paths:
+                    for path in lst:
+                        _read_and_execute(conn, path, vacuum, temp_set_workmem, query_parameters, commit_mode)
+            else:
+                for path in paths:
                     _read_and_execute(conn, path, vacuum, temp_set_workmem, query_parameters, commit_mode)
         else:
-            for path in paths:
-                _read_and_execute(conn, path, vacuum, temp_set_workmem, query_parameters, commit_mode)
-    else:
-        raise AttributeError(f'Wrong arguments should be strings with paths or list of strings (paths): {paths}')
+            raise AttributeError(f'Wrong arguments should be strings with paths or list of strings (paths): {paths}')
+    except FileNotFoundError:
+        print(datetime.now(timezone.utc).astimezone().isoformat(), '- Query file not found. Last transaction rolled back.')
+        conn.rollback()
+        raise
 
     if commit_mode in ('always', 'once'):
         conn.commit()
@@ -107,8 +112,9 @@ def execute_scripts_from_files(
 
 
 def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
-    ddls = []
-    dmls = []
+    final_status: str = 'SUCCESS'
+    ddls: list = []
+    dmls: list = []
     # get paths of sql files
     # r=root, d=directories, f = files
     if starting == '000':
@@ -134,11 +140,15 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
                         'WHERE process_name = %s',
                         ('prg_full_update',))
             conn.commit()
-            if len(ddls) > 0:
-                execute_scripts_from_files(conn=conn, vacuum='never', paths=ddls, commit_mode='once')
-            execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
-            cur.execute('UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
-                        ('prg_full_update',))
+            try:
+                if len(ddls) > 0:
+                    execute_scripts_from_files(conn=conn, vacuum='never', paths=ddls, commit_mode='once')
+                execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
+            except FileNotFoundError:
+                final_status = 'FAIL'
+            cur.execute('UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
+                        'WHERE process_name = %s',
+                        (final_status, 'prg_full_update'))
             conn.commit()
             print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished full update process.')
         else:
@@ -147,7 +157,8 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
 
 
 def partial_update(dsn: str, starting: str = '000') -> None:
-    sql_queries = []
+    final_status: str = 'SUCCESS'
+    sql_queries: list = []
     # get paths of sql files
     # r=root, d=directories, f = files
     for r, d, f in walk(partial_update_path):
@@ -172,15 +183,26 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                 tile = m.Tile(x, y, z)
                 bbox = to_merc(m.bounds(tile))
                 bbox = {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
-                execute_scripts_from_files(conn=conn, vacuum='never', paths=sql_queries, query_parameters=bbox, commit_mode='off')
+                try:
+                    execute_scripts_from_files(conn=conn, vacuum='never', paths=sql_queries,
+                                               query_parameters=bbox, commit_mode='off')
+                except FileNotFoundError:
+                    final_status = 'FAIL'
+                    cur.execute(
+                        'UPDATE expired_tiles SET processed = false ' +
+                        'WHERE file_name = %s and z = %s and x = %s and y = %s;',
+                        (row[0], row[1], row[2], row[3])
+                    )
+                    break
                 cur.execute(
                     'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
                     (row[0], row[1], row[2], row[3])
                 )
                 if i % 10 == 0:
                     conn.commit()
-            cur.execute('UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
-                        ('prg_partial_update',))
+            cur.execute(
+                'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) WHERE process_name = %s',
+                (final_status, 'prg_partial_update',))
             conn.commit()
             print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished partial update process.')
         else:

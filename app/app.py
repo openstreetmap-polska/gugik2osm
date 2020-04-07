@@ -397,7 +397,7 @@ def processes():
         'processes': [
             {
                 'name': x[0], 'in_progress': x[1], 'start_time': x[2], 'end_time': x[3],
-                'no_of_tiles_to_process': x[4], 'abbr_name': x[5]
+                'no_of_tiles_to_process': x[4], 'abbr_name': x[5], 'last_status': x[6]
             }
             for x in list_of_processes
         ]
