@@ -144,7 +144,7 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
                 if len(ddls) > 0:
                     execute_scripts_from_files(conn=conn, vacuum='never', paths=ddls, commit_mode='once')
                 execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
-            except FileNotFoundError:
+            except:
                 final_status = 'FAIL'
             cur.execute('UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
                         'WHERE process_name = %s',
@@ -186,7 +186,7 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                 try:
                     execute_scripts_from_files(conn=conn, vacuum='never', paths=sql_queries,
                                                query_parameters=bbox, commit_mode='off')
-                except FileNotFoundError:
+                except:
                     final_status = 'FAIL'
                     cur.execute(
                         'UPDATE expired_tiles SET processed = false ' +
