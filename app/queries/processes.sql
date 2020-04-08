@@ -10,11 +10,4 @@ from process_locks pl
 left join (
     select count(*) no_of_tiles_to_process from expired_tiles where not processed
 ) t on pl.process_name = 'prg_partial_update'
-left join (
-    select 'prg_full_update' process_name, 'Cotygodniowa aktualizacja danych PRG' pretty_name
-    union all
-    select 'prg_partial_update' process_name, 'Cominutowa aktualizacja danych' pretty_name
-    union all
-    select 'teryt_update' process_name, 'Codzienna aktualizacja danych TERYT' pretty_name
-) n using (process_name)
 ;
