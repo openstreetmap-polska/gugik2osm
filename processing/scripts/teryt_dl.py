@@ -104,6 +104,7 @@ def load2pg(conn, file: StringIO, key: str, prepare_tables: bool = False) -> Non
 
 def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None) -> None:
     date = date if date else datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
+    final_status: str = 'SUCCESS'
     with pg.connect(dsn) as conn:
         cur = conn.cursor()
         cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('teryt_update',))
@@ -114,14 +115,20 @@ def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None)
                         'WHERE process_name = %s',
                         ('teryt_update',))
             conn.commit()
-            for i, key in enumerate(teryt.keys()):
-                client = Client(url[env], wsse=UsernameToken(api_user, api_password))
-                r = client.service[teryt[key]['api_method']](DataStanu=date)
-                f = BytesIO(b64decode(r['plik_zawartosc']))
-                load2pg(conn, readfile(f), key, prepare_tables=i == 0)
+            try:
+                for i, key in enumerate(teryt.keys()):
+                    client = Client(url[env], wsse=UsernameToken(api_user, api_password))
+                    r = client.service[teryt[key]['api_method']](DataStanu=date)
+                    f = BytesIO(b64decode(r['plik_zawartosc']))
+                    load2pg(conn, readfile(f), key, prepare_tables=i == 0)
+            except:
+                conn.rollback()
+                final_status = 'FAIL'
+                print(datetime.now(timezone.utc).astimezone().isoformat(), '- error during TERYT update process.')
             cur.execute(
-                'UPDATE process_locks SET (in_progress, end_time) = (false, \'now\') WHERE process_name = %s',
-                ('teryt_update',))
+                'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
+                'WHERE process_name = %s',
+                (final_status, 'teryt_update',))
             conn.commit()
             print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished TERYT update process.')
         else:
