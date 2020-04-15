@@ -3,6 +3,7 @@
 0 1 * * MON-FRI ttaras /opt/gugik2osm/conf/teryt_processing.sh
 */1 * * * * ttaras /opt/gugik2osm/conf/data_update.sh
 */1 * * * * ttaras curl -s localhost/random/ > /dev/null
+*/1 * * * * ttaras curl -s localhost/processes/ > /dev/null
 0 1 * * * ttaras python3.7 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
 0 1 * * * ttaras truncate -s 20000000 /opt/gugik2osm/log/data_update.log
 0 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_osm_addresses.sh
