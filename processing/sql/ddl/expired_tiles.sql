@@ -1,5 +1,4 @@
-drop table if exists expired_tiles;
-create table expired_tiles (
+create table if not exists expired_tiles (
     file_name text not null,
     z int not null,
     x int not null,
@@ -7,3 +6,4 @@ create table expired_tiles (
     processed bool not null default false,
     constraint expired_tiles_pk primary key (file_name, z, x, y)
 );
+delete from expired_tiles where 1=1;

@@ -1,5 +1,4 @@
-drop table if exists teryt.cecha_mapping;
-create table teryt.cecha_mapping (
+create table if not exists teryt.cecha_mapping (
     cecha text primary key,
     m text not null
 );
@@ -20,4 +19,5 @@ insert into teryt.cecha_mapping values
 ('wyspa', 'wyspa'),
 ('wyb.', 'wybrzeże'),
 ('inne', '')
+on conflict do nothing
 ;
