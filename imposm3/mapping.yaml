@@ -41,6 +41,24 @@ tables:
       type: id
     - name: geometry
       type: geometry
+    - key: building
+      name: budynek
+      type: string
+    - key: building:levels
+      name: kondygnacje
+      type: string
+    - key: roof:shape
+      name: ksztalt_dachu
+      type: string
+    - key: building:flats
+      name: liczba_mieszkan
+      type: string
+    - key: building:levels:underground
+      name: kondygnacje_podziemne
+      type: string
+    - key: height
+      name: wysokosc_npg
+      type: string
     mapping:
       building: [__any__]
     type: polygon
