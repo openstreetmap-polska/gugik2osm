@@ -6,4 +6,3 @@ create table if not exists expired_tiles (
     processed bool not null default false,
     constraint expired_tiles_pk primary key (file_name, z, x, y)
 );
-delete from expired_tiles where 1=1;
