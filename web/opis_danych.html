@@ -23,6 +23,7 @@
 
     <h1 class="my-4">Opis danych dostępnych do pobrania</h1>
     <p>Wszystkie dane znajdują się pod linkiem: <a href="https://budynki.openstreetmap.org.pl/dane/">https://budynki.openstreetmap.org.pl/dane/</a> , a poniżej opis zawartości.</p>
+    <p>W przypadku problemów technicznych najlepiej utworzyć zgłoszenie <a href="https://github.com/openstreetmap-polska/gugik2osm/issues">na GitHub.</a></p>
 
     <h2>LOD1 - obrysy budynków</h2>
     <p>Zbiór do pobrania zawiera obrysy budynków. Dane pochodzą z przetworzenia modeli budynków 3D udostępnianych przez Główny Urząd Geodezji i Kartografii w geoportalu krajowym.</p>
@@ -76,12 +77,12 @@ Warszawa,,Myśliwiecka,6,00-459,13562,0918123,21.0344455719963,52.2228133201634
 
     <h2>OSM - obrysy budynków</h2>
     <p></p>
-    <p>Format danych to spakowany plik Geopackage (gpkg) zawierający geometrie poligonowe.</p>
+    <p>Format danych to spakowany plik Geopackage (gpkg) zawierający geometrie poligonowe oraz kilka atrybutów o wysokości budynku lub liczbie kondygnacji (tam gdzie te dane są w OSM).</p>
     <img src="/screenshots/osm_budynki_przyklad.jpg" class="img-fluid mb-4" alt="Zrzut ekranu pokazujący obrysy budynków na tle ortofotomapy."/>
     <p>Link: <a href="https://budynki.openstreetmap.org.pl/dane/osm_buildings.zip">https://budynki.openstreetmap.org.pl/dane/osm_buildings.zip</a></p>
 
     <h2>TERYT - nazwy jednostek administracyjnych, miejscowości i ich części oraz ulic</h2>
-    <p></p>
+    <p>Nazwy zestandaryzowane do tzw. Title Case (pierwsza litera słowa wielka reszta mała). Dane zmodyfikowane w zakresie kodów podstawowych dla dzielnic Warszawy i delegatur 4 miast. Oryginalnie w TERYT kod podstawowy miejscowości wskazuje na siebie samą ie. Bemowo to samodzielna miejscowość co może jest zgodne z pewnymi założeniami odwzorowania stanu prawnego to jest niepraktyczne przy prawie każdym normalnym zastosowaniu. Dzielnice Warszawy potraktowano jako części gminy M. St. Warszawa we wpisach TERC oraz jako części miejscowości Warszawa we wpisach SIMC. Powinno to ułatwić pracę. W razie znalezienia błędów proszę o zgłoszenie np <a href="https://github.com/openstreetmap-polska/gugik2osm/issues">na GitHub.</a></p>
     <p>Format danych to plik CSV z nagłówkiem rozdzielany przecinkiem kodowanie UTF-8. Wszystkie pola powinny być traktowane jako tekst.</p>
     <p>Link województwa: <a href="https://budynki.openstreetmap.org.pl/dane/teryt_woj.csv">https://budynki.openstreetmap.org.pl/dane/teryt_woj.csv</a></p>
     <p>Link powiaty: <a href="https://budynki.openstreetmap.org.pl/dane/teryt_pow.csv">https://budynki.openstreetmap.org.pl/dane/teryt_pow.csv</a></p>
@@ -142,6 +143,7 @@ Warszawa,,Myśliwiecka,6,00-459,13562,0918123,21.0344455719963,52.2228133201634
     <hr>
     <h2>Wszystkie pliki:</h2>
     <p><a href="https://budynki.openstreetmap.org.pl/dane/">https://budynki.openstreetmap.org.pl/dane/</a></p>
+    <br><br><br><br>
 </div>
 
     <!-- START Bootstrap-Cookie-Alert -->
