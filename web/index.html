@@ -17,6 +17,8 @@
 <!--    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <script src="https://kit.fontawesome.com/c495f0c7c2.js" crossorigin="anonymous"></script>
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -42,20 +44,23 @@
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <div id="header" class="collapse navbar-collapse">
-            <button type="button" id="downloadButton" class="btn btn-light p-1 m-1" data-toggle="tooltip" title="Limit do 50k obiektów">Pobierz dane dla JOSM</button>
-            <button type="button" id="randomLocationButton" class="btn btn-light p-1 m-1">Losuj lokalizację</button>
+            <button type="button" id="downloadButton" class="btn btn-light py-1 px-2 mx-2" data-toggle="tooltip" title="Limit do 50k obiektów"><i class="fas fa-file-download"></i> Pobierz dane dla JOSM</button>
+            <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2"><i class="fas fa-random"></i> Losuj lokalizację</button>
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki">Klauzula informacyjna</a>
+                <li class="nav-item px-2">
+                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki"><i class="fas fa-align-left"></i> Klauzula informacyjna</a>
                 </li>
-                <li class="nav-item">
-                    <a id="status-info" class="nav-link" data-toggle="modal" data-target="#modalStatus" onclick="processesInfo()">Status</a>
+                <li class="nav-item px-2">
+                    <a id="status-info" class="nav-link" data-toggle="modal" data-target="#modalStatus" onclick="processesInfo()"><i class="fas fa-info-circle"></i> Status</a>
                 </li>
-                <li class="nav-item">
-                    <a id="faq" class="nav-link" href="/help.html" target="_blank">FAQ/Pomoc</a>
+                <li class="nav-item px-2">
+                    <a id="faq" class="nav-link" href="/help.html" target="_blank"><i class="fas fa-question-circle"></i> FAQ/Pomoc</a>
                 </li>
-                <li class="nav-item">
-                    <a id="data-info" class="nav-link" href="/opis_danych.html" target="_blank">Dane GIS</a>
+                <li class="nav-item px-2">
+                    <a id="data-info" class="nav-link" href="/opis_danych.html" target="_blank"><i class="fas fa-download"></i> Dane GIS</a>
+                </li>
+                <li class="nav-item px-2">
+                    <a id="gh-link" class="nav-link" href="https://github.com/openstreetmap-polska/gugik2osm"><i class="fab fa-github fa-lg" title="Icon linking to GitHub"></i></a>
                 </li>
             </ul>
         </div>
