@@ -15,3 +15,4 @@
 20 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_ul.sh
 25 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_osm_buildings.sh
 0 23 * * SUN postgres /opt/gugik2osm/conf/export_prg_addresses.sh
+0 1 * * MON postgres /opt/gugik2osm/conf/export_db_backup.sh
