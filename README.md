@@ -85,3 +85,5 @@ i zamieniamy url na:
 (port podajemy taki jaki ustawiliśmy w parametrze -p dla kontenera aplikacji).
 
 Wszystkie zmiany dla plików HTML/JS i Python powinny być automatycznie widoczne po odśiweżeniu strony (rzeczy typu pliki js mogą wymagać odświeżenia wraz z usunięciem cache: ctrl+f5).
+
+W przeglądarce przejdź do http://localhost:45000 (lub pod innym portem zależnie od tego co zostało ustawione w komendzie docker run).
