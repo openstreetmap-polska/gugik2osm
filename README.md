@@ -61,7 +61,7 @@ docker run --rm -p 45000:80 --mount type=bind,source=C:/Users/Tomasz/PycharmProj
 --mount type=bind,source=C:/Users/Tomasz/PycharmProjects/gugik2osm/app,target=/opt/gugik2osm/app - montuje katalog z naszej maszyny w określonym miejscu w kontenerze, trzeba podawać ścieżki absolutne, zmień lewą część na swoją ścieżkę tak by prowadziła do folderów app i web w sklonowanym repozytorium  
 --mount type=bind,source=C:/Users/Tomasz/PycharmProjects/gugik2osm/web,target=/opt/gugik2osm/web - j.w.  
 -e dsn="host=172.17.0.2 port=5432 user=postgres password=1234 dbname=gis" - dodaj parametr z danymi do połączenia do bazy danych, ip podajemy dla kontenera od bazy danych (jeżeli baza była uruchamiana instrukcjami powyżej). Można to sprawdzić komendą: 
-```docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgis ``` (gdzie postgis to nazwa kontenera z bazą danych)  
+```docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgis ``` (gdzie postgis to nazwa kontenera z bazą danych). Zwróć uwagę że podajemy port pod którym postgres jest uruchomiony w kontenerze, ponieważ kontenery rozmawiają ze sobą w jednej sieci wirtualnej, trochę inaczej niż kontener z hostem.  
 -it - przeciwieństwo -d, uruchamia kontener "na pierwszym planie", dzięki czemu będziemy mogli wykonywać w nim komendy w razie potrzeby  
 gugik2osm - nazwa obrazu który zbudowaliśmy w poprzednim kroku  
 
