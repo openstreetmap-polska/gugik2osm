@@ -3,7 +3,9 @@ insert into tiles (mvt, z, x, y, bbox)
     a as (
         select distinct teryt_simc
         from prg.delta d
+        left join exclude_prg on d.lokalnyid=exclude_prg.id
         where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
+            and exclude_prg.id is null
     ),
     b as (
         select

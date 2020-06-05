@@ -13,14 +13,19 @@ insert into tiles (mvt, z, x, y, bbox)
              ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d
            ) geom
         from prg.delta d
+        left join exclude_prg on d.lokalnyid = exclude_prg.id
         where d.geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180)
+            and exclude_prg.id is null
         limit 500000
     ),
     b as (
         select
-        ST_AsMVTGeom(ST_Transform(geom, 3857), ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d) geom
+            id,
+            ST_AsMVTGeom(ST_Transform(geom, 3857), ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857)::box2d) geom
         from prg.lod1_buildings
+        left join exclude_lod1 using(id)
         where geom && ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 4326)
+            and exclude_lod1.id is null
         limit 500000
     ),
     result as (

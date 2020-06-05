@@ -123,14 +123,30 @@ map.on("click", "prg2load", function (e) {
     .setHTML(getPopupText(e))
     .addTo(map);
 });
+map.on("click", "buildings", function (e) {
+    var s = "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
+    s += "<button type=\"button\" class=\"btn btn-primary\" onclick=reportLOD1(\""
+    s += e.features[0].properties.id
+    s += "\"); >Zgłoś</button>"
+    new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(s)
+    .addTo(map);
+});
 
 // Change the cursor to a pointer when the mouse is over the states layer.
 map.on("mouseenter", "prg2load", function () {
     map.getCanvas().style.cursor = "pointer";
 });
+map.on("mouseenter", "buildings", function () {
+    map.getCanvas().style.cursor = "pointer";
+});
 
 // Change it back to a pointer when it leaves.
 map.on("mouseleave", "prg2load", function () {
+    map.getCanvas().style.cursor = "";
+});
+map.on("mouseleave", "buildings", function () {
     map.getCanvas().style.cursor = "";
 });
 
@@ -175,5 +191,30 @@ function getPopupText(element) {
     if (element.features[0].properties.pna) {
         s += "<tr><td>kod pocztowy:</td><td>" + element.features[0].properties.pna + "</td></tr>"
     }
-    return s += "</table>"
+    s += "</table>"
+    s += "<br><h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
+    s += "<button type=\"button\" class=\"btn btn-primary\" onclick=reportPRG(\""
+    s += element.features[0].properties.lokalnyid
+    s += "\"); >Zgłoś</button>"
+    return s
+}
+
+function reportPRG(id){
+    $.post({
+        type: "POST",
+        url: "/exclude/",
+        data: JSON.stringify({"prg_ids": [id,]}),
+        contentType: "application/json",
+        complete: function (r, status) {$("#modalExclude").modal();},
+    })
+}
+
+function reportLOD1(id){
+    $.post({
+        type: "POST",
+        url: "/exclude/",
+        data: JSON.stringify({"lod1_ids": [id,]}),
+        contentType: "application/json",
+        complete: function (r, status) {$("#modalExclude").modal();},
+    })
 }

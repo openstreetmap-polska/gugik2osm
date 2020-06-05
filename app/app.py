@@ -26,6 +26,10 @@ QUERIES = {
     'locations_random': str(open(join(SQL_PATH, 'locations_random.sql'), 'r').read()),
     'locations_most_count': str(open(join(SQL_PATH, 'locations_most_count.sql'), 'r').read()),
     'processes': str(open(join(SQL_PATH, 'processes.sql'), 'r').read()),
+    'insert_to_exclude_prg': str(open(join(SQL_PATH, 'insert_to_exclude_prg.sql'), 'r').read()),
+    'insert_to_exclude_lod1': str(open(join(SQL_PATH, 'insert_to_exclude_lod1.sql'), 'r').read()),
+    'delete_tiles_excluded_prg': str(open(join(SQL_PATH, 'delete_tiles_excluded_prg.sql'), 'r').read()),
+    'delete_tiles_excluded_lod1': str(open(join(SQL_PATH, 'delete_tiles_excluded_lod1.sql'), 'r').read()),
 }
 conn = None
 app = Flask(__name__)
@@ -321,7 +325,8 @@ def tile_server(z, x, y):
     bbox = to_merc(m.bounds(tile))
 
     # query db
-    cur = execute_sql(pgdb().cursor(), QUERIES['cached_mvt'], (z, x, y))
+    conn = pgdb()
+    cur = execute_sql(conn.cursor(), QUERIES['cached_mvt'], (z, x, y))
     tup = cur.fetchone()
     if tup is None:
         params = {
@@ -403,6 +408,30 @@ def processes():
         ]
     }
     return jsonify(result)
+
+
+@app.route('/exclude/', methods=['POST'])
+def add_to_exclude_filter():
+    r = request.get_json()
+    if r is None:
+        raise ValueError(request.form)
+    if r is None or (r.get('prg_ids') is None and r.get('lod1_ids') is None):
+        abort(400)
+    conn = pgdb()
+    cur = conn.cursor()
+    prg_counter, lod1_counter = 0, 0
+    if r.get('prg_ids'):
+        for id in r['prg_ids']:
+            execute_sql(cur, QUERIES['insert_to_exclude_prg'], (id,))
+            prg_counter += 1
+            execute_sql(cur, QUERIES['delete_tiles_excluded_prg'], (id,))
+    if r.get('lod1_ids'):
+        for id in r['lod1_ids']:
+            execute_sql(cur, QUERIES['insert_to_exclude_lod1'], (id,))
+            lod1_counter += 1
+            execute_sql(cur, QUERIES['delete_tiles_excluded_lod1'], (id,))
+    conn.commit()
+    return jsonify({'prg_ids_inserted': prg_counter, 'lod1_ids_inserted': lod1_counter}), 201
 
 
 if __name__ == '__main__':

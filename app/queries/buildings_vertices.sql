@@ -4,7 +4,9 @@ select
 from (
     select row_number() over() * -1 - 100000 as way_id, ST_DumpPoints(geom) dp
     from prg.lod1_buildings
+    left join exclude_lod1 using(id)
     where geom && ST_MakeEnvelope(%s, %s, %s, %s, 4326)
+        and exclude_lod1.id is null
     limit 50000
 ) a
 group by way_id;
