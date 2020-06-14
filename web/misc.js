@@ -1,5 +1,5 @@
 function processesInfo () {
-    fetch('https://budynki.openstreetmap.org.pl/processes/')
+    fetch('/processes/')
         .then((response) => {
           return response.json();
         })
