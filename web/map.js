@@ -90,6 +90,30 @@ var map = new mapboxgl.Map({
                     "fill-color": "red",
                     "fill-opacity": 0.7
                 }
+            }, {
+                "id": "buildings-highlighted",
+                "type": "fill",
+                "source": "mvt-tiles",
+                "source-layer": "lod1_buildings",
+                "paint": {
+                    "fill-outline-color": "#484896",
+                    "fill-color": "#6e599f",
+                    "fill-opacity": 0.75
+                },
+                "filter": ["in", "id", ""]
+            }, {
+                "id": "addresses-highlighted",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "prg2load",
+                "paint": {
+                    "circle-radius": 3,
+                    "circle-color": "yellow",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 1,
+                    "circle-opacity": 0.9
+                },
+                "filter": ["in", "lokalnyid", ""]
             }
         ]
     }
@@ -113,6 +137,18 @@ map.addControl(new mapboxgl.GeolocateControl({
     }
 }));
 
+var draw = new MapboxDraw({
+    displayControlsDefault: false,
+    controls: {
+        polygon: true,
+        trash: true
+    }
+});
+map.addControl(draw);
+
+map.on('draw.create', selectFeaturesWithPolygon);
+map.on('draw.update', selectFeaturesWithPolygon);
+map.on('draw.delete', selectFeaturesWithPolygon);
 
 // When a click event occurs on a feature in the states layer, open a popup at the
 // location of the click, with description HTML from its properties.
@@ -217,4 +253,79 @@ function reportLOD1(id){
         contentType: "application/json",
         complete: function (r, status) {$("#modalExclude").modal();},
     })
+}
+
+function reportBoth(encodedStringifiedPayload){
+    $.post({
+        type: "POST",
+        url: "/exclude/",
+        data: decodeURIComponent(encodedStringifiedPayload),
+        contentType: "application/json",
+        complete: function (r, status) {$("#modalExclude").modal();},
+    })
+}
+
+function selectFeaturesWithPolygon(e) {
+    // get polygons drawn
+    var data = draw.getAll();
+
+    var filterBuildings = ["in", "id"];
+    var tempSetBuildings = new Set();
+    var filterAddresses = ["in", "lokalnyid"];
+    var tempSetAddresses = new Set();
+
+    // for each drawn polygon
+    data.features.forEach(function(userPolygon){
+        // generate bounding box from polygon the user drew
+        var polygonBoundingBox = turf.bbox(userPolygon);
+
+        var southWest = [polygonBoundingBox[0], polygonBoundingBox[1]];
+        var northEast = [polygonBoundingBox[2], polygonBoundingBox[3]];
+
+        var northEastPointPixel = map.project(northEast);
+        var southWestPointPixel = map.project(southWest);
+
+        // first select features by bounding box
+        var featuresBuildings = map.queryRenderedFeatures([southWestPointPixel, northEastPointPixel], { layers: ['buildings'] });
+        var featuresAddresses = map.queryRenderedFeatures([southWestPointPixel, northEastPointPixel], { layers: ['prg2load'] });
+
+        // then for each selected feature verify if it intersects the polygon and add it's id to the list of selected features
+        var temp = featuresBuildings.reduce(function(memo, feature) {
+            if (!turf.booleanDisjoint(feature, userPolygon)) {
+                memo.push(feature.properties.id);
+            }
+            return memo;
+        }, []);
+        temp.forEach(function(e){tempSetBuildings.add(e)});
+
+        var temp = featuresAddresses.reduce(function(memo, feature) {
+            if (!turf.booleanDisjoint(feature, userPolygon)) {
+                memo.push(feature.properties.lokalnyid);
+            }
+            return memo;
+        }, []);
+        temp.forEach(function(e){tempSetAddresses.add(e)});
+    });
+
+    // prepare filters for the highlight layers
+    filterBuildings = filterBuildings.concat(...tempSetBuildings);
+    filterAddresses = filterAddresses.concat(...tempSetAddresses);
+
+    // apply filters showing selected objects via the highlight layers
+    map.setFilter("buildings-highlighted", filterBuildings);
+    map.setFilter("addresses-highlighted", filterAddresses);
+
+    // set modal's content
+    var noOfBuildingsHTML = "<p>Zaznaczono " + tempSetBuildings.size + " budynków.</p>"
+    var noOfAddressesHTML = "<p>Zaznaczono " + tempSetAddresses.size + " adresów.</p>"
+    var buttonHTML = "<br><h6>Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:</h6>"
+        buttonHTML += "<button type=\"button\" class=\"btn btn-primary\" onclick=reportBoth(\""
+        buttonHTML += encodeURIComponent(JSON.stringify({
+            "prg_ids": [...tempSetAddresses],
+            "lod1_ids": [...tempSetBuildings]
+        }))
+        buttonHTML += "\"); >Zgłoś</button>"
+    $("#modalSelectedBody").html(noOfBuildingsHTML + noOfAddressesHTML + buttonHTML);
+    // show modal
+    $("#modalSelected").modal();
 }
