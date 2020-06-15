@@ -194,7 +194,7 @@ window.onload = function() {
   var d = document.getElementById("downloadButton");
 
   c.onclick = async function() {
-    var response = await fetch('https://budynki.openstreetmap.org.pl/random/');
+    var response = await fetch('/random/');
     var location = await response.json();
     console.log(location);
     //changed the way view is moved to the new location to flyTo method instead of jumpTo
