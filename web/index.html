@@ -49,7 +49,16 @@
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <div id="header" class="collapse navbar-collapse">
-            <button type="button" id="downloadButton" class="btn btn-light py-1 px-2 mx-2" data-toggle="tooltip" title="Limit do 50k obiektów"><i class="fas fa-file-download"></i> Pobierz dane dla JOSM</button>
+            <div class="btn-group py-1 px-2 mx-2" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" id="downloadButton" class="btn btn-light" data-toggle="tooltip" title="Limit do 50k obiektów"><i class="fas fa-file-download"></i> Pobierz dane dla JOSM</button>
+                <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                    <div class="dropdown-menu btn-light" aria-labelledby="btnGroupDrop1">
+                        <button class="dropdown-item" id="downloadAddressesButton" onclick="downloadVisibleAddresses();">Pobierz tylko adresy</button>
+                        <button class="dropdown-item" id="downloadBuildingsButton" onclick="downloadVisibleBuildings();">Pobierz tylko budynki</button>
+                    </div>
+                </div>
+            </div>
             <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2"><i class="fas fa-random"></i> Losuj lokalizację</button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-2">
