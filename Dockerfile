@@ -32,7 +32,7 @@ RUN rm /etc/nginx/sites-available/default
 RUN mkdir /run/gugik2osm/
 
 # change placeholder dsn in supervisord config
-RUN sed -i "s/dsn=\"host=localhost port=5432 user=user password=password dbname=db\"/dsn=\"%(ENV_dsn)s\"/" /opt/gugik2osm/conf/supervisord.conf
+RUN sed -i "s/dsn=\"host=localhost port=5432 user=user password=password dbname=db\",reCaptchaSecretToken=\"\"/dsn=\"%(ENV_dsn)s\",reCaptchaSecretToken=\"%(ENV_reCaptchaSecretToken)s\"/" /opt/gugik2osm/conf/supervisord.conf
 
 # create a script starting services and keeping container running (bash will wait for commands)
 RUN echo "supervisord && service nginx restart && bash" > ./start.sh

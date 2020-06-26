@@ -60,7 +60,7 @@ docker build -t gugik2osm .
 
 Następnie uruchamiamy kontener:
 ```
-docker run --rm -p 45000:80 --mount type=bind,source=C:/Users/Tomasz/PycharmProjects/gugik2osm/app,target=/opt/gugik2osm/app --mount type=bind,source=C:/Users/Tomasz/PycharmProjects/gugik2osm/web,target=/opt/gugik2osm/web -e dsn="host=172.17.0.2 port=5432 user=postgres password=1234 dbname=gis" -it gugik2osm
+docker run --rm -p 45000:80 --mount type=bind,source=C:/Users/Tomasz/PycharmProjects/gugik2osm/app,target=/opt/gugik2osm/app --mount type=bind,source=C:/Users/Tomasz/PycharmProjects/gugik2osm/web,target=/opt/gugik2osm/web -e dsn="host=172.17.0.2 port=5432 user=postgres password=1234 dbname=gis" -e reCaptchaSecretToken="twojTokenPrywatnyCaptcha" -it gugik2osm
 ```
 --rm - powoduje że po wyłączeniu kontenera jest on automatycznie usuwany  
 -p 45000:80 - mapowanie portów, numer po lewej oznacza pod jakim portem będziemy mogli się połączyć do kontenera z "zewnątrz" czyli naszej maszyny  
@@ -68,6 +68,7 @@ docker run --rm -p 45000:80 --mount type=bind,source=C:/Users/Tomasz/PycharmProj
 --mount type=bind,source=C:/Users/Tomasz/PycharmProjects/gugik2osm/web,target=/opt/gugik2osm/web - j.w.  
 -e dsn="host=172.17.0.2 port=5432 user=postgres password=1234 dbname=gis" - dodaj parametr z danymi do połączenia do bazy danych, ip podajemy dla kontenera od bazy danych (jeżeli baza była uruchamiana instrukcjami powyżej). Można to sprawdzić komendą: 
 ```docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgis ``` (gdzie postgis to nazwa kontenera z bazą danych). Zwróć uwagę że podajemy port pod którym postgres jest uruchomiony w kontenerze, ponieważ kontenery rozmawiają ze sobą w jednej sieci wirtualnej, trochę inaczej niż kontener z hostem.  
+-e reCaptchaSecretToken="twojTokenPrywatnyCaptcha" - jeżeli chcesz używać funkcji zgłaszania adresów/budynków wstaw tutaj swój token captcha v2 utworzony dla domeny localhost  
 -it - przeciwieństwo -d, uruchamia kontener "na pierwszym planie", dzięki czemu będziemy mogli wykonywać w nim komendy w razie potrzeby  
 gugik2osm - nazwa obrazu który zbudowaliśmy w poprzednim kroku  
 
@@ -90,6 +91,8 @@ i zamieniamy url na:
 ```
 (port podajemy taki jaki ustawiliśmy w parametrze -p dla kontenera aplikacji).
 
-Wszystkie zmiany dla plików HTML/JS i Python powinny być automatycznie widoczne po odśiweżeniu strony (rzeczy typu pliki js mogą wymagać odświeżenia wraz z usunięciem cache: ctrl+f5).
+Jeżeli używasz swojego tokenu captcha to zmień też token publiczny w pliku map.js
+
+Wszystkie zmiany dla plików HTML/JS i Python powinny być automatycznie widoczne po odświeżeniu strony (rzeczy typu pliki js mogą wymagać odświeżenia wraz z usunięciem cache: ctrl+f5).
 
 W przeglądarce przejdź do http://localhost:45000 (lub pod innym portem zależnie od tego co zostało ustawione w komendzie docker run).
