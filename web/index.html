@@ -45,6 +45,8 @@
         #map { position:absolute; width:100%; height: 93%; };
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
+
+    <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
 </head>
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -147,6 +149,25 @@
                 </div>
                 <div class="modal-body">
                     Dziękujemy za zgłoszenie! Po odświeżeniu strony obiekt już nie powinien się pojawiać.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modalExcludeFail">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ups..</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Coś poszło nie tak podczas zgłaszania. Czy na pewno uzupełniłeś/aś captcha?. Spróbuj jeszcze raz.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>

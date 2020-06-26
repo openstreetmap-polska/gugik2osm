@@ -10,6 +10,7 @@ from typing import Union
 from datetime import datetime, timezone
 from os.path import join, dirname, abspath
 from random import random, choice
+import requests as requests_lib
 
 
 SQL_PATH = join(dirname(abspath(__file__)), 'queries')
@@ -412,11 +413,27 @@ def processes():
 
 @app.route('/exclude/', methods=['POST'])
 def add_to_exclude_filter():
+    """Endpoint for reporting addresses or buildings that are not fit for import into OSM. Requires captcha token."""
     r = request.get_json()
+    captcha_user_token = request.headers.get('reCaptchaUserToken')
+    # verify if request is correct
+    if captcha_user_token is None:
+        abort(400)
     if r is None:
         raise ValueError(request.form)
     if r is None or (r.get('prg_ids') is None and r.get('lod1_ids') is None):
         abort(400)
+    # verify captcha token
+    response = requests_lib.post(
+        url='https://www.google.com/recaptcha/api/siteverify',
+        data={
+            'secret': environ.get('reCaptchaSecretToken'),
+            'response': captcha_user_token
+        }
+    )
+    if not(response.ok and response.json().get('success')):
+        abort(400)
+
     conn = pgdb()
     cur = conn.cursor()
     prg_counter, lod1_counter = 0, 0
