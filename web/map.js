@@ -300,6 +300,11 @@ function selectFeaturesWithPolygon(e) {
     // get polygons drawn
     var data = draw.getAll();
 
+    if (e.type === "draw.delete" && e.features.length === 1){
+        draw.delete(e.features[0].id);
+        return
+    }
+
     var filterBuildings = ["in", "id"];
     var tempSetBuildings = new Set();
     var filterAddresses = ["in", "lokalnyid"];
