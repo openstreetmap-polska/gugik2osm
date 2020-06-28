@@ -126,7 +126,9 @@ map.addControl(
             mapboxgl: mapboxgl,
             countries: 'pl',
             language: 'pl-PL',
-            types: 'country,region,postcode,district,place,locality,neighborhood,address'
+            types: 'country,region,postcode,district,place,locality,neighborhood,address',
+            limit: 10,
+            localGeocoder: customGeocode
         })
 );
 
@@ -371,4 +373,53 @@ function selectFeaturesWithPolygon(e) {
     });
     // show modal
     $("#modalSelected").modal();
+}
+
+function coordinateFeature(lng, lat) {
+    return {
+        center: [lng, lat],
+        geometry: {
+            type: 'Point',
+            coordinates: [lng, lat]
+        },
+        place_name: `Współrzędne: ${lat} ${lng}`,
+        place_type: ['coordinate'],
+        properties: {},
+        type: 'Feature'
+    };
+}
+
+function prepareCoordinateList(x, y){
+    if (x >= 14.0 && x <= 25.0 && y >= 49.0 && y <= 55.0) {
+        // x = longitude, y = latitude
+        return [coordinateFeature(x, y)]
+    } else if (y >= 14.0 && y <= 25.0 && x >= 49.0 && x <= 55.0) {
+        // y = longitude, x = latitude
+        return [coordinateFeature(y, x)]
+    } else {
+        // if we can't determine order present both options to the user
+        return [coordinateFeature(x, y), coordinateFeature(y, x)]
+    }
+}
+
+function customGeocode(query) {
+    // match anything which looks like a decimal degrees coordinate pair
+    // try matching numbers that are a pair of decimal numbers (with comma) separated by space
+    var matchesCommaSeparated = query.match(
+        /^[ ]*(?:Współrzędne: )?(\d{2}(?:,\d+)?){1}[ ]+(\d{2}(?:,\d+)?){1}[ ]*$/
+    );
+    // try matching numbers that are a pair of decimal numbers (with period) separated by space or comma
+    var matchesPeriodSeparated = query.match(
+        /^[ ]*(?:Współrzędne: )?(\d{2}(?:\.\d+)?){1}[, ]+(\d{2}(?:\.\d+)?){1}[ ]*$/
+    );
+    var matches = matchesPeriodSeparated ? matchesPeriodSeparated : matchesCommaSeparated;
+    if (matches) {
+        var coord1 = Number(matches[1]);
+        var coord2 = Number(matches[2]);
+        return prepareCoordinateList(coord1, coord2)
+    }
+
+    // in case nothing matches patterns return empty list
+    return []
+
 }
