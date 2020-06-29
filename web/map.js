@@ -354,18 +354,25 @@ function selectFeaturesWithPolygon(e) {
     map.setFilter("addresses-highlighted", filterAddresses);
 
     // set modal's content
-    var widget4multiSelectId;
     var noOfBuildingsHTML = "<p>Zaznaczono " + tempSetBuildings.size + " budynków.</p>"
     var noOfAddressesHTML = "<p>Zaznaczono " + tempSetAddresses.size + " adresów.</p>"
-    var buttonHTML = "<br><h6>Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:</h6>"
-        buttonHTML += "<div id=\"recaptcha4multiselect\"></div>"
-        buttonHTML += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBoth(\""
-        buttonHTML += encodeURIComponent(JSON.stringify({
+    var downloadSelectedButton = "<br><a id=\"downloadSelectedButton\" class=\"btn btn-primary\" href=/josm_data?filter_by=id"
+    if (tempSetAddresses) {
+        downloadSelectedButton += "&addresses_ids=" + [...tempSetAddresses].join(",")
+    }
+    if (tempSetBuildings) {
+        downloadSelectedButton += "&buildings_ids=" + [...tempSetBuildings].join(",")
+    }
+        downloadSelectedButton += ">Pobierz paczkę JOSM</a><br>"
+    var reportButton = "<br><h6>Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:</h6>"
+        reportButton += "<div id=\"recaptcha4multiselect\"></div>"
+        reportButton += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBoth(\""
+        reportButton += encodeURIComponent(JSON.stringify({
             "prg_ids": [...tempSetAddresses],
             "lod1_ids": [...tempSetBuildings]
         }))
-        buttonHTML += "\"); disabled>Zgłoś</button>"
-    $("#modalSelectedBody").html(noOfBuildingsHTML + noOfAddressesHTML + buttonHTML);
+        reportButton += "\"); disabled>Zgłoś</button>"
+    $("#modalSelectedBody").html(noOfBuildingsHTML + noOfAddressesHTML + downloadSelectedButton + reportButton);
     grecaptcha.render(
         "recaptcha4multiselect", {
         "sitekey": reCaptchaPublicToken,

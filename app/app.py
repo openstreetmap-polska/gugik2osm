@@ -16,9 +16,11 @@ import requests as requests_lib
 SQL_PATH = join(dirname(abspath(__file__)), 'queries')
 QUERIES = {
     'buildings_vertices': str(open(join(SQL_PATH, 'buildings_vertices.sql'), 'r').read()),
+    'buildings_vertices_where_id': str(open(join(SQL_PATH, 'buildings_vertices_where_id.sql'), 'r').read()),
     'cached_mvt': str(open(join(SQL_PATH, 'cached_mvt.sql'), 'r').read()),
     'delta_point_info': str(open(join(SQL_PATH, 'delta_point_info.sql'), 'r').read()),
     'delta_where_bbox': str(open(join(SQL_PATH, 'delta_where_bbox.sql'), 'r').read()),
+    'delta_where_id': str(open(join(SQL_PATH, 'delta_where_id.sql'), 'r').read()),
     'mvt_hl': str(open(join(SQL_PATH, 'mvt_hl.sql'), 'r').read()),
     'mvt_ll': str(open(join(SQL_PATH, 'mvt_ll.sql'), 'r').read()),
     'mvt_ll_aggr_simc': str(open(join(SQL_PATH, 'mvt_ll_aggr_simc.sql'), 'r').read()),
@@ -200,28 +202,37 @@ def download_josm_data():
             abort(400)
 
     root = etree.Element('osm', version='0.6')
+    cur = pgdb().cursor()
 
-    cur = execute_sql(
-        pgdb().cursor(),
-        QUERIES['delta_where_bbox'],
-        (float(request.args.get('xmin')),
-         float(request.args.get('ymin')),
-         float(request.args.get('xmax')),
-         float(request.args.get('ymax')))
-    )
+    if request.args.get('filter_by') == 'bbox':
+        addresses_query = QUERIES['delta_where_bbox']
+        addresses_params = (float(request.args.get('xmin')),
+                            float(request.args.get('ymin')),
+                            float(request.args.get('xmax')),
+                            float(request.args.get('ymax')))
+        buildings_query = QUERIES['buildings_vertices']
+        buildings_params = addresses_params
+    elif request.args.get('filter_by') == 'id':
+        addresses_query = QUERIES['delta_where_id']
+        temp1 = request.args.get('addresses_ids')
+        addresses_params = (tuple(temp1.split(',')),) if temp1 else None  # tuple of tuples was needed
+        buildings_query = QUERIES['buildings_vertices_where_id']
+        temp2 = request.args.get('buildings_ids')
+        buildings_params = (tuple(temp2.split(',')),) if temp2 else None  # tuple of tuples was needed
+    else:
+        abort(400)
 
-    for an in addresses_nodes(cur.fetchall()):
-        root.append(an)
+    if addresses_query and addresses_params and len(addresses_params) > 0:
+        cur = execute_sql(cur, addresses_query, addresses_params)
 
-    cur = execute_sql(
-        cur,
-        QUERIES['buildings_vertices'],
-        (float(request.args.get('xmin')), float(request.args.get('ymin')),
-         float(request.args.get('xmax')), float(request.args.get('ymax')))
-    )
+        for an in addresses_nodes(cur.fetchall()):
+            root.append(an)
 
-    for bn in buildings_nodes(cur.fetchall()):
-        root.append(bn)
+    if buildings_query and buildings_params and len(buildings_params) > 0:
+        cur = execute_sql(cur, buildings_query, buildings_params)
+
+        for bn in buildings_nodes(cur.fetchall()):
+            root.append(bn)
 
     cur.close()
 
