@@ -190,7 +190,7 @@ def buildings_xml(list_of_tuples):
     return root
 
 
-@app.route('/josm_data', methods=['GET'])
+@app.route('/josm_data', methods=['GET', 'POST'])
 def download_josm_data():
     """Newer version of the function returning data as osm file with the new endpoint."""
 
@@ -215,11 +215,18 @@ def download_josm_data():
         buildings_params = addresses_params
     elif request.args.get('filter_by') == 'id':
         addresses_query = QUERIES['delta_where_id']
-        temp1 = request.args.get('addresses_ids')
-        addresses_params = (tuple(temp1.split(',')),) if temp1 else None  # tuple of tuples was needed
         buildings_query = QUERIES['buildings_vertices_where_id']
-        temp2 = request.args.get('buildings_ids')
-        buildings_params = (tuple(temp2.split(',')),) if temp2 else None  # tuple of tuples was needed
+        if request.method == 'GET':
+            temp1 = request.args.get('addresses_ids')
+            addresses_params = (tuple(temp1.split(',')),) if temp1 else None  # tuple of tuples was needed
+            temp2 = request.args.get('buildings_ids')
+            buildings_params = (tuple(temp2.split(',')),) if temp2 else None  # tuple of tuples was needed
+        else:
+            temp = request.get_json()
+            temp1 = temp.get('addresses_ids')
+            temp2 = temp.get('buildings_ids')
+            addresses_params = (tuple(temp1),) if temp1 and len(temp1) > 0 else None
+            buildings_params = (tuple(temp2),) if temp2 and len(temp2) > 0 else None
     else:
         abort(400)
 
