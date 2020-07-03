@@ -22,6 +22,14 @@ var map = new mapboxgl.Map({
             "tileSize": 256,
             "attribution": "© <a href=https://www.openstreetmap.org/copyright>OpenStreetMap</a> contributors"
             },
+            "geoportal": {
+                "type": "raster",
+                "tileSize": 256,
+                "tiles": [
+                    "https://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?bbox={bbox-epsg-3857}&FORMAT=image/jpeg&STYLES=&service=WMS&version=1.3.0&request=GetMap&crs=EPSG:3857&width=256&height=256&LAYERS=Raster"
+                ],
+                "attribution": "© <a href=https://geoportal.gov.pl>geoportal.gov.pl</a>"
+            },
             "mvt-tiles": {
                 "type": "vector",
                 "tiles": [
@@ -231,6 +239,7 @@ window.onload = function() {
 
   var a = document.getElementById("addressesLayerToggle");
   var b = document.getElementById("buildingsLayerToggle");
+  var o = document.getElementById("ortoLayerToggle");
 
   a.onclick = function(e) {
     var toggleValue = a.checked ? 'on' : 'off';
@@ -248,6 +257,31 @@ window.onload = function() {
     [
         {id: 'buildings', toggle: toggleValue},
         {id: 'buildings-highlighted', toggle: toggleValue}
+    ].forEach(toggleMapLayer);
+  }
+  o.onclick = function(e) {
+    // switch the background layers
+    var ortoToggleValue = b.checked ? 'on' : 'off';
+    var osmToggleValue = b.checked ? 'off' : 'on';
+    var ortoLayerDefinition = {
+        "id": "orto",
+        "type": "raster",
+        "source": "geoportal",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "visibility": "none"
+    };
+
+    // seems like mapbox gl js library still requests tiles even if layer
+    // is not visible so we'll just add and remove the layer as needed
+    if (o.checked) {
+        map.addLayer(ortoLayerDefinition, "simple-tiles");
+    } else {
+        map.removeLayer(ortoLayerDefinition.id);
+    }
+
+    [
+        {id: 'simple-tiles', toggle: osmToggleValue}
     ].forEach(toggleMapLayer);
   }
 }
