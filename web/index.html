@@ -47,6 +47,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
 
     <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
+
+    <link href="./custom.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -193,7 +195,41 @@
         </div>
     </div>
 
+    <div id="layerMenu" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Warstwy:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label class="switch">
+                    <input id="addressesLayerToggle" type="checkbox" checked>
+                    <span class="slider round"></span>
+                    </label>
+                    <label for="addressesLayerToggle">Adresy</label>
+                    <br>
+                    <label class="switch">
+                        <input id="buildingsLayerToggle" type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <label for="buildingsLayerToggle">Budynki</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="map-container" class="bg-light">
+        <button id="layerButton"
+                type="button"
+                class="btn btn-light"
+                data-toggle="modal"
+                data-target="#layerMenu"><i class="fas fa-layer-group"></i></button>
         <div id='map'></div>
     </div>
 

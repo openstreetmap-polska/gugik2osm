@@ -166,6 +166,8 @@ map.on("click", "prg2load", function (e) {
         "sitekey": reCaptchaPublicToken,
         "callback": activateReportButton
     });
+    e.preventDefault();
+    e.stopPropagation();
 });
 map.on("click", "buildings", function (e) {
     var s = "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
@@ -226,7 +228,41 @@ window.onload = function() {
     console.log(theUrl);
     window.open(theUrl);
   }
+
+  var a = document.getElementById("addressesLayerToggle");
+  var b = document.getElementById("buildingsLayerToggle");
+
+  a.onclick = function(e) {
+    var toggleValue = a.checked ? 'on' : 'off';
+
+    [
+        {id: 'prg2load', toggle: toggleValue},
+        {id: 'prg2load_general', toggle: toggleValue},
+        {id: 'addresses-highlighted', toggle: toggleValue},
+        {id: 'house-numbers', toggle: toggleValue}
+    ].forEach(toggleMapLayer);
+  }
+  b.onclick = function(e) {
+    var toggleValue = b.checked ? 'on' : 'off';
+
+    [
+        {id: 'buildings', toggle: toggleValue},
+        {id: 'buildings-highlighted', toggle: toggleValue}
+    ].forEach(toggleMapLayer);
+  }
 }
+
+function toggleMapLayer(params){
+    var layerId = params.id;
+    var toggle = params.toggle;
+
+    if (toggle === 'off') {
+        map.setLayoutProperty(layerId, 'visibility', 'none');
+    } else {
+        map.setLayoutProperty(layerId, 'visibility', 'visible');
+    }
+}
+
 
 function getPopupText(element) {
     var s = "<table>"
