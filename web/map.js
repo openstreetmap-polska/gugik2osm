@@ -26,7 +26,7 @@ var map = new mapboxgl.Map({
                 "type": "raster",
                 "tileSize": 256,
                 "tiles": [
-                    "https://mapy.geoportal.gov.pl/wss/service/img/guest/ORTO/MapServer/WMSServer?bbox={bbox-epsg-3857}&FORMAT=image/jpeg&STYLES=&service=WMS&version=1.3.0&request=GetMap&crs=EPSG:3857&width=256&height=256&LAYERS=Raster"
+                    "https://budynki.openstreetmap.org.pl/orto?bbox={bbox-epsg-3857}&FORMAT=image/jpeg&STYLES=&service=WMS&version=1.3.0&request=GetMap&crs=EPSG:3857&width=256&height=256&LAYERS=Raster"
                 ],
                 "attribution": "© <a href=https://geoportal.gov.pl>geoportal.gov.pl</a>"
             },
@@ -221,9 +221,14 @@ window.onload = function() {
     var response = await fetch('/random/');
     var location = await response.json();
     console.log(location);
-    //changed the way view is moved to the new location to flyTo method instead of jumpTo
-    //map.jumpTo({"center": location});
-    //map.setZoom(14);
+    //disable orto layer if present
+    var o = document.getElementById("ortoLayerToggle");
+    if (o.checked) {
+        map.removeLayer("orto");
+        toggleMapLayer("simple-tiles", "on");
+        o.removeAttribute("checked");
+    }
+
     map.flyTo({"center": location, "zoom": 14});
   }
   d.onclick = function() {
@@ -260,9 +265,6 @@ window.onload = function() {
     ].forEach(toggleMapLayer);
   }
   o.onclick = function(e) {
-    // switch the background layers
-    var ortoToggleValue = b.checked ? 'on' : 'off';
-    var osmToggleValue = b.checked ? 'off' : 'on';
     var ortoLayerDefinition = {
         "id": "orto",
         "type": "raster",
@@ -276,13 +278,11 @@ window.onload = function() {
     // is not visible so we'll just add and remove the layer as needed
     if (o.checked) {
         map.addLayer(ortoLayerDefinition, "simple-tiles");
+        toggleMapLayer({id: "simple-tiles", toggle: "off"});
     } else {
         map.removeLayer(ortoLayerDefinition.id);
+        toggleMapLayer({id: "simple-tiles", toggle: "on"});
     }
-
-    [
-        {id: 'simple-tiles', toggle: osmToggleValue}
-    ].forEach(toggleMapLayer);
   }
 }
 
