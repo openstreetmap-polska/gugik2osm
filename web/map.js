@@ -225,7 +225,7 @@ window.onload = function() {
     var o = document.getElementById("ortoLayerToggle");
     if (o.checked) {
         map.removeLayer("orto");
-        toggleMapLayer("simple-tiles", "on");
+        toggleMapLayer({id: "simple-tiles", toggle: "on"});
         o.removeAttribute("checked");
     }
 
