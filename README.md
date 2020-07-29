@@ -1,13 +1,65 @@
 # gugik2osm
-Narzędzie do porównywania i przygotowywania importów uwolnionych danych państwowych do OpenStreetMap (OSM). 
+_ENG: Tool that prepares packages for JOSM (OpenStreetMap data editor) for easy imports of data from Polish government registries._
 
-## Prace w trakcie
+Narzędzie do porównywania i przygotowywania importów uwolnionych danych państwowych do OpenStreetMap (OSM). 
 
 Pełny opis w dziale [FAQ/Pomocy](https://budynki.openstreetmap.org.pl/help.html). Zachęcamy do korzystania i zgłaszania uwag oraz pomysłów.
 
 Mamy nadzieję uczynić z tego pomocne narzędzie dla edytorów, które ułatwi import danych z otwartych danych urzędowych do OSM.
 
 https://budynki.openstreetmap.org.pl
+
+## Narzędzia pomocnicze
+
+Przy okazji tworzenia tej aplikacji napisałem kilka skryptów pomocniczych do importu danych z plików XML (GML) z adresami z PRG czy łączenia się z do API GUS w celu pobrania plików z nazwami gmin, miejscowości, ulic (TERYT).
+
+Poniżej krótki opis, może komuś przydadzą się te skrypty w innym celu.
+
+### Plik:
+#### processing/scripts/prg_dl.py
+Pobiera spakowane pliki XML (GML) z danymi adresowymi (PRG) z geoportalu.
+
+Użycie (windows):
+```
+python prg_dl.py --output_dir "D:/temp/"
+```
+
+Dostępny parametry:
+- --output_dir - ścieżka gdzie chcesz zapisać pliki.
+- --only - pobierz tylko plik dla wybranego województwa. Podaj dwucyfrowy kod TERYT.
+
+#### processing/parsers/prg.py
+Parsuje pliki XML (GML) z danymi adresowymi (PRG). Może zapisać dane wynikowe do bazy PostgreSQL, SQLite, plików CSV lub wydrukuje w konsoli (stdout). Parsowanie metodą SAX dzięki czemu zużycie pamięci RAM jest bardzo niewielkie (50-100mb).
+
+Użycie (windows):
+```
+python prg.py --input "D:/ścieżka/do/pliku/02_PunktyAdresowe.zip --writer stdout --limit 5
+```
+
+Dostępne parametry:
+- --input - ścieżka do pliku do przetworzenia
+- --writer - której metody zapisu danych wyjściowych chcemy użyć (postgresql, sqlite, csv, stdout)
+- --csv_directory - w przypadku wybrania _writer csv_ ten parametr ustawia ścieżkę (folder) gdzie pliki wyjściowe będą zapisane
+- --sqlite_file - w przypadku wybrania _writer sqlite_ ten parametr ustawia ścieżkę do bazy sqlite gdzie będą zapisywane dane 
+- --dsn - w przypadku wybrania _writer postgresql_ 
+- --prep_tables - jeżeli zapisujemy do bazy danych (postgresql lub sqlite) to ten parametr (wystarczy że sam jest obecny nie trzeba mu nic dodatkowo podawać typu true, 1 etc.) powoduje że najpierw tabele w bazie będą usunięte i odtworzone, przydatne przy ładowaniu pierwszego z serii plików
+- --limit - przetwórz tylko tyle wierszy. Przydatne do testowania.
+
+#### processing/scripts/teryt_dl.py
+Pobiera spakowane pliki z nazwami gmin, miejscowości, ulic z API rejestru TERYT prowadzonego przez GUS i ładuje je do bazy PostgreSQL.
+
+API GUS dla rejestru TERYT: https://api.stat.gov.pl/Home/TerytApi
+
+Użycie (windows):
+```
+python teryt_dl.py --api_env test --api_user UzytkownikTestowy --api_password demo1234 --dsn "host=localhost port=5432 dbname=test user=test password=test"
+```
+
+Dostępne parametry:
+- --api_env - środowisko API (prod, test)
+- --api_user - użytkownik do API, którego zakłada nam GUS
+- --api_password - hasło do użytkownika API
+- --dsn - dane do połączenia się z bazą PostgreSQL (parametr przekazywany do metody connect biblioteki psycopg2, szczegóły: https://www.psycopg.org/docs/module.html#psycopg2.connect )
 
 ## Lokalne środowisko
 
