@@ -175,7 +175,6 @@ map.on("click", "prg2load", function (e) {
         "callback": activateReportButton
     });
     e.preventDefault();
-    e.stopPropagation();
 });
 map.on("click", "buildings", function (e) {
     var s = "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
