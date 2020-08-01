@@ -1,0 +1,21 @@
+tags:
+  load_all: true
+  exclude: [created_by, source]
+
+tables:
+  all:
+    type: geometry
+    columns:
+      - name: osm_id
+        type: id
+      - name: tags
+        type: hstore_tags
+      - name: geometry
+        type: geometry
+    type_mappings:
+      points:
+        __any__: [__any__]
+      linestrings:
+        __any__: [__any__]
+      polygons:
+        __any__: [__any__]
