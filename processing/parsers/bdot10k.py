@@ -1,7 +1,6 @@
 """Modified version of prg.py script. Currently quite hacky..."""
 import os
 import zipfile
-from glob import glob
 from os.path import getsize, join
 import re
 from datetime import datetime
@@ -793,7 +792,7 @@ if __name__ == '__main__':
 
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', help='File path to the input file. Supports wildcards (glob syntax).', nargs=1)
+    parser.add_argument('--input', help='File paths to the input files. (provide one or more)', nargs='+')
     parser.add_argument('--writer', help='Writer to use.', choices=('csv', 'sqlite', 'postgresql', 'stdout'), nargs=1)
     parser.add_argument('--csv_directory', help='Directory for csv files when using csv writer.', nargs=1)
     parser.add_argument('--sqlite_file', help='Filepath for SQLite database when using sqlite writer.', nargs=1)
@@ -821,7 +820,7 @@ if __name__ == '__main__':
 
     params = {}
 
-    file_paths = glob(args['input'][0])
+    file_paths = args['input']
 
     for idx, file_path in enumerate(file_paths):
         print(str(idx+1).zfill(3), '-', file_path)
