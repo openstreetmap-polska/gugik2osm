@@ -5,7 +5,7 @@ source /opt/gugik2osm/conf/.env
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
-ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg PG:"dbname='$PGDATABASE' host='$PGHOSTADDR' port='$PGPORT' user='$PGUSER' password='$PGPASSWORD'" "bdot.v_bubd_a" -nln "bubd_a" -gt 65536 -overwrite --config OGR_SQLITE_CACHE=1000 --config OGR_SQLITE_SYNCHRONOUS=OFF >> /opt/gugik2osm/log/bdot_processing.log 2>&1
+ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg PG:"dbname='$PGDATABASE' host='$PGHOSTADDR' port='$PGPORT' user='$PGUSER' password='$PGPASSWORD'" -sql "select * from bdot.v_bubd_a" -nln "bubd_a" -gt 65536 -overwrite --config OGR_SQLITE_CACHE=1000 --config OGR_SQLITE_SYNCHRONOUS=OFF >> /opt/gugik2osm/log/bdot_processing.log 2>&1
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg
 mv /opt/gugik2osm/temp/export/bdot10k_bubd_a.zip /var/www/data/bdot10k_bubd_a.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg
