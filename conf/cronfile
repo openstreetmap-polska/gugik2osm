@@ -16,3 +16,4 @@
 25 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_osm_buildings.sh
 0 23 * * SUN postgres /opt/gugik2osm/conf/export_prg_addresses.sh
 0 1 * * MON postgres /opt/gugik2osm/conf/export_db_backup.sh
+0 4 * *  TUE root /opt/gugik2osm/conf/services_restart.sh
