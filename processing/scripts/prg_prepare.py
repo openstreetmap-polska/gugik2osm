@@ -145,12 +145,15 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
                     execute_scripts_from_files(conn=conn, vacuum='never', paths=ddls, commit_mode='once')
                 execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
             except:
+                print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in full update process.')
                 final_status = 'FAIL'
-            cur.execute('UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
-                        'WHERE process_name = %s',
-                        (final_status, 'prg_full_update'))
-            conn.commit()
-            print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished full update process.')
+                conn.rollback()
+            finally:
+                cur.execute('UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
+                            'WHERE process_name = %s',
+                            (final_status, 'prg_full_update'))
+                conn.commit()
+                print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished full update process.')
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- full update in progress already. Not starting another one.')
@@ -187,12 +190,15 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                     execute_scripts_from_files(conn=conn, vacuum='never', paths=sql_queries,
                                                query_parameters=bbox, commit_mode='off')
                 except:
+                    print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in partial update process.')
                     final_status = 'FAIL'
+                    conn.rollback()
                     cur.execute(
                         'UPDATE expired_tiles SET processed = false ' +
                         'WHERE file_name = %s and z = %s and x = %s and y = %s;',
                         (row[0], row[1], row[2], row[3])
                     )
+                    conn.commit()
                     break
                 cur.execute(
                     'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
