@@ -1,3 +1,4 @@
+delete from prg.pa;
 INSERT INTO prg.pa
     SELECT
        pa.lokalnyid::uuid                                                                    lokalnyid,
