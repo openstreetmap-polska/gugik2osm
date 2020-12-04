@@ -39,7 +39,7 @@ where
       where
         st_dwithin(osm.geom, ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180), 150)
         and
-        st_dwithin(d.geom, st_transform(osm.geom, 2180), 40) and d.nr = osm.nr
+        st_dwithin(d.geom, st_transform(osm.geom, 2180), 40) and d.nr_standaryzowany = osm.nr
     )
     or
     exists (
@@ -48,7 +48,7 @@ where
       where
         st_dwithin(osm.geometry, ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180), 150)
         and
-        st_intersects(d.geom, st_transform(osm.geometry, 2180)) AND (osm.name = d.nr) -- name = nr
+        st_intersects(d.geom, st_transform(osm.geometry, 2180)) AND (osm.name = d.nr_standaryzowany) -- name = nr
     )
     or
     exists (
@@ -57,7 +57,7 @@ where
       where
         st_dwithin(osm.geometry, ST_Transform(ST_MakeEnvelope(%(xmin)s, %(ymin)s, %(xmax)s, %(ymax)s, 3857), 2180), 150)
         and
-        st_dwithin(d.geom, st_transform(osm.geometry, 2180), 15) AND (osm.name = d.nr) -- name = nr
+        st_dwithin(d.geom, st_transform(osm.geometry, 2180), 15) AND (osm.name = d.nr_standaryzowany) -- name = nr
     )
   )
 ;

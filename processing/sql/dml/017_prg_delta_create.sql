@@ -6,9 +6,10 @@ create unlogged table prg.delta_new as
         pa.teryt_simc,
         coalesce(pa.osm_ulica, pa.teryt_ulica) teryt_ulica,
         pa.teryt_ulic,
-        pa.nr,
+        pa.numerporzadkowy nr,
         pa.pna,
-        pa.gml geom
+        pa.gml geom,
+        pa.nr nr_standaryzowany
     from prg.pa_hashed prg
     join prg.pa using (lokalnyid)
     left join osm_hashed osm
