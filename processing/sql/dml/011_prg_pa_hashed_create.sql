@@ -1,7 +1,7 @@
 drop table if exists prg.pa_hashed;
 create table prg.pa_hashed as
 select
-    md5(concat(lower(prg.teryt_msc), coalesce(lower(prg.teryt_ulica), ''), prg.nr)) hash,
+    md5(concat(lower(prg.teryt_msc), lower(coalesce(prg.osm_ulica, prg.teryt_ulica, '')), prg.nr)) hash,
     lokalnyid,
     gml geom
 from prg.pa prg

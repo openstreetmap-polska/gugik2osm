@@ -4,7 +4,7 @@ create unlogged table prg.delta_new as
         pa.lokalnyid,
         pa.teryt_msc,
         pa.teryt_simc,
-        pa.teryt_ulica,
+        coalesce(pa.osm_ulica, pa.teryt_ulica) teryt_ulica,
         pa.teryt_ulic,
         pa.nr,
         pa.pna,

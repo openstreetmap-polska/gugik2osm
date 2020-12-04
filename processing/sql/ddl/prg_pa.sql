@@ -16,6 +16,6 @@ create unlogged table prg.pa (
 	teryt_msc text,
 	teryt_simc text,
 	teryt_ulica text,
-	teryt_ulic text
+	teryt_ulic text,
+	osm_ulica text
 );
-
