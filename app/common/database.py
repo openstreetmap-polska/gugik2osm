@@ -55,10 +55,15 @@ def close_db_connection():
 def execute_sql(cursor, query: str, parameters: Union[tuple, dict] = None):
     """Method executes SQL query in a given cursor with given parameters. Provides error handling.
     In case of exception it rolls back transaction and closes the connection."""
+    global conn
     try:
         cursor.execute(query, parameters) if parameters else cursor.execute(query)
+    except psycopg2.InterfaceError:
+        print(datetime.now(timezone.utc).astimezone().isoformat(),
+              f'- Error while executing query: {query}, with parameters: {parameters}')
+        conn = None
+        raise
     except:
-        global conn
         print(datetime.now(timezone.utc).astimezone().isoformat(),
               f'- Error while executing query: {query}, with parameters: {parameters}')
         conn.rollback()
