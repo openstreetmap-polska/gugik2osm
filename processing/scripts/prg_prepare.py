@@ -15,6 +15,13 @@ ddl_path = join(sql_path, 'ddl')
 dml_path = join(sql_path, 'dml')
 partial_update_path = join(sql_path, 'partial_update')
 
+keepalive_kwargs = {
+    "keepalives": 1,
+    "keepalives_idle": 30,
+    "keepalives_interval": 5,
+    "keepalives_count": 5,
+}
+
 
 def to_merc(bbox: m.LngLatBbox) -> dict:
     in_proj = Proj('epsg:4326')
@@ -130,7 +137,7 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
     dmls = [x for x in sorted(dmls)]
 
     # execute sql scripts
-    with pg.connect(dsn) as conn:
+    with pg.connect(dsn, **keepalive_kwargs) as conn:
         cur = conn.cursor()
         cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('prg_full_update',))
         full_update_in_progress = cur.fetchone()[0] if not force else False
@@ -169,7 +176,7 @@ def partial_update(dsn: str, starting: str = '000') -> None:
             if file.endswith('.sql') and file >= starting:
                 sql_queries.append(join(r, file))
     sql_queries = [x for x in sorted(sql_queries)]
-    with pg.connect(dsn) as conn:
+    with pg.connect(dsn, **keepalive_kwargs) as conn:
         cur = conn.cursor()
         cur.execute('SELECT in_progress FROM process_locks WHERE process_name in (%s, %s)',
                     ('prg_full_update', 'prg_partial_update'))
