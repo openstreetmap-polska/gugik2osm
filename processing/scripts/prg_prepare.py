@@ -63,7 +63,7 @@ def _read_and_execute(
         print('Setting work_mem back to the previous value:', old_workmem)
         cur.execute('set work_mem = %s', (old_workmem,))
     if vacuum == 'always':
-        print('Vacuum analyze.')
+        print(datetime.now(timezone.utc).astimezone().isoformat(), '- running vacuum analyze...')
         old_isolation_level = conn.isolation_level
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cur.execute('VACUUM ANALYZE;')
@@ -106,16 +106,20 @@ def execute_scripts_from_files(
         print(datetime.now(timezone.utc).astimezone().isoformat(), '- Query file not found. Last transaction rolled back.')
         conn.rollback()
         raise
+    except:
+        conn.rollback()
+        raise
 
     if commit_mode in ('always', 'once'):
         conn.commit()
     if vacuum in ('always', 'once'):
         with conn.cursor() as cur:
-            print('Vacuum analyze.')
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- running vacuum analyze...')
             old_isolation_level = conn.isolation_level
             conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cur.execute('VACUUM ANALYZE;')
             conn.set_isolation_level(old_isolation_level)
+    print(datetime.now(timezone.utc).astimezone().isoformat(), '- Done.')
 
 
 def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
@@ -151,8 +155,9 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
                 if len(ddls) > 0:
                     execute_scripts_from_files(conn=conn, vacuum='never', paths=ddls, commit_mode='once')
                 execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
-            except:
+            except Exception as e:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in full update process.')
+                print(e)
                 final_status = 'FAIL'
                 conn.rollback()
             finally:
