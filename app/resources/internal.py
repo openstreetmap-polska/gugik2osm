@@ -57,15 +57,11 @@ class Excluded(Resource):
             prg_counter, lod1_counter = 0, 0
             if r.get('prg_ids'):
                 prg_ids = [(x,) for x in r['prg_ids']]
-                prg_ids_tuple = (tuple(r['prg_ids']),)
                 execute_values(cur, QUERIES['insert_to_exclude_prg'], prg_ids)
-                execute_sql(cur, QUERIES['delete_tiles_excluded_prg'], prg_ids_tuple)
                 prg_counter = len(prg_ids)
             if r.get('lod1_ids'):
                 lod1_ids = [(x,) for x in r['lod1_ids']]
-                lod1_ids_tuple = (tuple(r['lod1_ids']),)
                 execute_values(cur, QUERIES['insert_to_exclude_lod1'], lod1_ids)
-                execute_sql(cur, QUERIES['delete_tiles_excluded_lod1'], lod1_ids_tuple)
                 lod1_counter = len(lod1_ids)
             conn.commit()
         return {'prg_ids_inserted': prg_counter, 'lod1_ids_inserted': lod1_counter}, 201
