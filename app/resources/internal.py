@@ -315,13 +315,13 @@ class LatestUpdates(Resource):
     def get(self):
         ts = request.args.get('after')
         if ts is None:
-            ts = datetime.now() - timedelta(minutes=10)
+            ts = datetime.now() - timedelta(minutes=30)
         else:
             try:
                 ts = datetime.fromisoformat(ts)
             except:
                 abort(400)
-        if ts - datetime.now() > timedelta(minutes=30):
+        if ts - datetime.now() > timedelta(minutes=120):
             abort(400)
 
         with pgdb().cursor() as cur:
