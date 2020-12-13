@@ -1,6 +1,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidG9tYXN6dCIsImEiOiJjazg2Nno3ZWswZDZ5M2ZvdHdxejFnbGNmIn0.P4_K-eykAt7kpVVq0GrESQ';
 var reCaptchaPublicToken = "6Lfwg6kZAAAAAAh5yX3y0Nk4XWK-i9tMThhhHgRW";
 var updatesLayerURL = "https://budynki.openstreetmap.org.pl/updates.geojson";
+var vectorTilesURL = "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf";
 var map = new mapboxgl.Map({
     "container": "map",
     "hash": "map",
@@ -34,7 +35,7 @@ var map = new mapboxgl.Map({
             "mvt-tiles": {
                 "type": "vector",
                 "tiles": [
-                    "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf"
+                    vectorTilesURL
                 ]
             },
             "updates": {
@@ -245,8 +246,6 @@ map.on('mousemove', function (e) {
     var features = map.queryRenderedFeatures(e.point, {
         layers: ['osm-updates', 'gugik2osm-exports']
     });
-    // Change the cursor style as a UI indicator.
-    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
 
     if (!features.length) {
         updates_popup.remove();
