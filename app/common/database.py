@@ -30,6 +30,8 @@ QUERIES = {
     'insert_to_exclude_lod1': str(open(join(SQL_PATH, 'insert_to_exclude_lod1.sql'), 'r').read()),
     'delete_tiles_excluded_prg': str(open(join(SQL_PATH, 'delete_tiles_excluded_prg.sql'), 'r').read()),
     'delete_tiles_excluded_lod1': str(open(join(SQL_PATH, 'delete_tiles_excluded_lod1.sql'), 'r').read()),
+    'insert_to_package_exports': str(open(join(SQL_PATH, 'insert_to_package_exports.sql'), 'r').read()),
+    'latest_updates': str(open(join(SQL_PATH, 'latest_updates.sql'), 'r').read()),
 }
 conn: psycopg2.extensions.connection = None
 

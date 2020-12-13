@@ -1,5 +1,6 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidG9tYXN6dCIsImEiOiJjazg2Nno3ZWswZDZ5M2ZvdHdxejFnbGNmIn0.P4_K-eykAt7kpVVq0GrESQ';
 var reCaptchaPublicToken = "6Lfwg6kZAAAAAAh5yX3y0Nk4XWK-i9tMThhhHgRW";
+var updatesLayerURL = "https://budynki.openstreetmap.org.pl/updates.geojson";
 var map = new mapboxgl.Map({
     "container": "map",
     "hash": "map",
@@ -35,6 +36,10 @@ var map = new mapboxgl.Map({
                 "tiles": [
                     "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf"
                 ]
+            },
+            "updates": {
+                "type": "geojson",
+                "data": updatesLayerURL
             }
         },
         "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
@@ -123,6 +128,24 @@ var map = new mapboxgl.Map({
                     "circle-opacity": 0.9
                 },
                 "filter": ["in", "lokalnyid", ""]
+            }, {
+                "id": "osm-updates",
+                "type": "fill",
+                "source": "updates",
+                "paint": {
+                "fill-color": "#0099ff",
+                "fill-opacity": 0.6
+                },
+                "filter": ["==", "dataset", "osm"]
+            }, {
+                "id": "gugik2osm-exports",
+                "type": "fill",
+                "source": "updates",
+                "paint": {
+                "fill-color": "#ff6600",
+                "fill-opacity": 0.6
+                },
+                "filter": ["==", "dataset", "exports"]
             }
         ]
     }
@@ -208,6 +231,44 @@ map.on("mouseleave", "prg2load", function () {
 map.on("mouseleave", "buildings", function () {
     map.getCanvas().style.cursor = "";
 });
+
+// Create a popup, but don't add it to the map yet.
+var updates_popup = new mapboxgl.Popup({
+    closeButton: false
+});
+
+// Add popup when hovering over updates layer
+map.on('mousemove', function (e) {
+    // update less frequently for less cpu load
+    if (Date.now() % 2 === 0) return;
+
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['osm-updates', 'gugik2osm-exports']
+    });
+    // Change the cursor style as a UI indicator.
+    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+
+    if (!features.length) {
+        updates_popup.remove();
+        return;
+    }
+
+    var popup_text = "";
+    var osm_notification = 0;
+    var export_notification = 0;
+    features.forEach(function(f){
+        if (f.properties.dataset === "osm") osm_notification = 1;
+        if (f.properties.dataset === "exports") export_notification = 1;
+    });
+    if (osm_notification > 0) popup_text += "Ktoś niedawno modyfikował OSM w tym miejscu!\n";
+    if (export_notification > 0) popup_text += "Ktoś niedawno eksportował paczkę danych w tym miejscu!\n";
+
+    updates_popup
+    .setLngLat(e.lngLat)
+    .setText(popup_text)
+    .addTo(map);
+});
+//
 
 map.scrollZoom.setWheelZoomRate(1/100);
 
@@ -547,3 +608,12 @@ function customGeocode(query) {
     return []
 
 }
+
+// refresh updates layer every 60s
+window.setInterval(
+    function () {
+        console.log("Refreshing layers with updates...")
+        map.getSource('updates').setData(updatesLayerURL);
+    },
+    60000
+);

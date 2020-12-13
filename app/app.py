@@ -4,7 +4,7 @@ from flask_restful import Api
 from flask import Flask
 
 from resources.internal import JosmData, PrgAddressesNotInOSM, Lod1LegalInfo, Lod1BuildingsNotInOSM, MapboxVectorTile, \
-    AddressPointInfo, RandomLocation, Excluded, Processes
+    AddressPointInfo, RandomLocation, Excluded, Processes, LatestUpdates
 
 app = Flask(__name__)
 api = Api(app)
@@ -19,6 +19,7 @@ api.add_resource(AddressPointInfo, '/delta/<string:uuid>/')
 api.add_resource(RandomLocation, '/random/')
 api.add_resource(Excluded, '/exclude/')
 api.add_resource(Processes, '/processes/')
+api.add_resource(LatestUpdates, '/updates.geojson')
 
 
 if __name__ == '__main__':

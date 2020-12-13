@@ -1,4 +1,5 @@
 import io
+from datetime import datetime, timedelta
 from random import choice, random
 from os import environ
 from typing import Tuple, Optional
@@ -151,6 +152,7 @@ class JosmData(Resource):
     def get(self):
         addresses_query, buildings_query = self.queries()
         addresses_params, buildings_params = None, None
+        package_export_params = None
         root = etree.Element('osm', version='0.6')
         if request.args.get('filter_by') == 'bbox':
             addresses_params = (float(request.args.get('xmin')),
@@ -158,6 +160,10 @@ class JosmData(Resource):
                                 float(request.args.get('xmax')),
                                 float(request.args.get('ymax')))
             buildings_params = addresses_params
+            package_export_params = {'xmin': addresses_params[0],
+                                     'ymin': addresses_params[1],
+                                     'xmax': addresses_params[2],
+                                     'ymax': addresses_params[3]}
         elif request.args.get('filter_by') == 'id':
             temp1 = request.args.get('addresses_ids')
             addresses_params = (tuple(temp1.split(',')),) if temp1 else None  # tuple of tuples was needed
@@ -165,6 +171,13 @@ class JosmData(Resource):
             buildings_params = (tuple(temp2.split(',')),) if temp2 else None  # tuple of tuples was needed
 
         a, b = self.data(addresses_query, addresses_params, buildings_query, buildings_params)
+        if package_export_params:
+            package_export_params['lb_adresow'] = len(a)
+            package_export_params['lb_budynkow'] = len(b)
+            conn = pgdb()
+            with pgdb().cursor() as cur:
+                cur.execute(QUERIES['insert_to_package_exports'], package_export_params)
+                conn.commit()
         root = self.prepare_xml_tree(root, a, b)
 
         return Response(
@@ -296,3 +309,34 @@ class Lod1BuildingsNotInOSM(Resource):
             etree.tostring(root, encoding='UTF-8'),
             mimetype='text/xml',
             headers={'Content-disposition': 'attachment; filename=buildings.osm'})
+
+
+class LatestUpdates(Resource):
+    def get(self):
+        ts = request.args.get('after')
+        if ts is None:
+            ts = datetime.now() - timedelta(minutes=10)
+        else:
+            try:
+                ts = datetime.fromisoformat(ts)
+            except:
+                abort(400)
+        if ts - datetime.now() > timedelta(minutes=30):
+            abort(400)
+
+        with pgdb().cursor() as cur:
+            execute_sql(
+                cur,
+                QUERIES['latest_updates'],
+                {'ts': ts}
+            )
+            data = cur.fetchall()
+        response_dict = {
+            'type': 'FeatureCollection',
+            'features': [
+                {'type': 'Feature', 'geometry': bbox, 'properties': {'dataset': dataset, 'created_at': created_at}}
+                for dataset, created_at, bbox in data
+            ]
+        }
+
+        return response_dict
