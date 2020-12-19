@@ -6,7 +6,10 @@ set (
     teryt_ulica,
     teryt_ulic
 ) = (
-    s1.nazwa,
+    case
+      when substring(prg.pa.terc6, 1, 4) in ('0264', '1061', '1261', '1465', '3064') then prg.pa.msc
+      else s1.nazwa
+    end,
     case
       when substring(prg.pa.terc6, 1, 4) in ('0264', '1061', '1261', '1465', '3064') then prg.pa.simc
       else s1.sym
