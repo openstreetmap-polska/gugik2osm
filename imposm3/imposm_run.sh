@@ -11,5 +11,4 @@ PGPASSWORD=""
 
 DSN="postgis://$PGUSER:$PGPASSWORD@$PGHOSTADDR:$PGPORT/$PGDATABASE"
 
-/opt/gugik2osm/imposm3/imposm-0.10.0-linux-x86-64/imposm run -mapping /opt/gugik2osm/imposm3/mapping.yaml -cachedir /opt/gugik2osm/imposm3/cache/ -connection "$DSN" -limitto /opt/gugik2osm/imposm3/poland.geojson -srid 4326 -expiretiles-dir /opt/gugik2osm/imposm3/exptiles/ -expiretiles-zoom 18
-
+/opt/gugik2osm/imposm3/imposm-0.10.0-linux-x86-64/imposm run -mapping /opt/gugik2osm/imposm3/mapping.yaml -cachedir /opt/gugik2osm/imposm3/cache/ -connection "$DSN" -limitto /opt/gugik2osm/imposm3/poland.geojson -srid 4326 -expiretiles-dir /opt/gugik2osm/imposm3/exptiles/ -expiretiles-zoom 17
