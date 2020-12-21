@@ -9,6 +9,10 @@ Mamy nadzieję uczynić z tego pomocne narzędzie dla edytorów, które ułatwi 
 
 https://budynki.openstreetmap.org.pl
 
+## Lista rzeczy do zrobienia:
+- Integracja danych budynków Bdot10k
+- Integracja danych adresowych w tym algorytm wyszukiwania adresów zdublowanych i błednych
+
 ## Narzędzia pomocnicze
 
 Przy okazji tworzenia tej aplikacji napisałem kilka skryptów pomocniczych do importu danych z plików XML (GML) z adresami z PRG czy łączenia się z do API GUS w celu pobrania plików z nazwami gmin, miejscowości, ulic (TERYT).
