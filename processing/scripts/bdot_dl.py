@@ -6,7 +6,7 @@ import shutil
 from os import path
 
 
-BASE_URL = 'https://integracja.gugik.gov.pl/PRG/pobierz.php?bdot10k&teryt='
+BASE_URL = 'https://opendata.geoportal.gov.pl/bdot10k/{woj}/{pow}_GML.zip'
 
 
 def download_file(url: str, file_path: str):
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     if args.get('only'):
         teryt_code = args.get('only')
         fn = 'BDOT10k_{0}.zip'.format(teryt_code)
-        url = BASE_URL + teryt_code
+        url = BASE_URL.format(woj=teryt_code[:2], pow=teryt_code)
         file_path = path.join(args['output_dir'][0], fn)
         download_file(url, file_path)
     else:
