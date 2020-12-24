@@ -49,6 +49,6 @@ if __name__ == '__main__':
             for tup in cur.fetchall():
                 teryt_code = tup[0]
                 fn = 'BDOT10k_{0}.zip'.format(teryt_code)
-                url = BASE_URL + teryt_code
+                url = BASE_URL.format(woj=teryt_code[:2], pow=teryt_code)
                 file_path = path.join(args['output_dir'][0], fn)
                 download_file(url, file_path)
