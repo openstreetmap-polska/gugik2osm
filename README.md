@@ -96,7 +96,7 @@ psql -d gis -h localhost -p 25432 -U postgres -c "create schema teryt;"
 ```
 Następnie przywracamy kilka wybranych tabel i indeksów do schematów public i prg:
 ```
-pg_restore --jobs 2 --no-owner -n public -t tiles -t expired_tiles -t exclude_prg -t exclude_lod1 -t prng -t process_locks  -I tiles_zxy_pk -I expired_tiles_pk -I idx_tiles_bbox -I process_locks_pkey -I idx_prng_geom -I idx_prng_count -d gis -h localhost -p 25432 -U postgres db.bak
+pg_restore --jobs 2 --no-owner -n public -d gis -h localhost -p 25432 -U postgres db.bak
 ```
 ```
 pg_restore --jobs 2 --no-owner -n prg -t delta -t lod1_buildings -I delta_gis -I delta_lokalnyid -I delta_simc -I lod1_buildings_geom_idx -I lod1_buildings_pkey -d gis -h localhost -p 25432 -U postgres db.bak
