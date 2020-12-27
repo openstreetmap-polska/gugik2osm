@@ -34,7 +34,6 @@ def download_file(url: str, file_path: str, _try_number: int = 1) -> None:
 
 
 def prepare_url_and_filepath(teryt_code: str) -> Tuple[str, str]:
-    teryt_code = args.get('only')
     fn = 'BDOT10k_{0}.zip'.format(teryt_code)
     url = BASE_URL.format(woj=teryt_code[:2], pow=teryt_code)
     file_path = path.join(args['output_dir'][0], fn)
