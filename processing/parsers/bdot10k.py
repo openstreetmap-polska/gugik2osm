@@ -734,8 +734,9 @@ class CSVWriter:
     def __init__(self, prg_file_path: str, output_directory: str, only_basic_fields: bool = False):
         self.Parser: Parser = Parser(prg_file_path, only_basic_fields)
         self.output_dir: str = output_directory
+        prg_fn = os.path.basename(prg_file_path).split('.')[0]
         self.output_file_paths: dict = {
-            self.Parser.Tags.no_ns[x]: join(output_directory, self.Parser.Tags.no_ns[x] + '.csv')
+            self.Parser.Tags.no_ns[x]: join(output_directory, prg_fn + self.Parser.Tags.no_ns[x] + '.csv')
             for x in self.Parser.Tags.list()
         }
 
@@ -816,6 +817,10 @@ if __name__ == '__main__':
     parser.add_argument('--limit', help='Limit number of parsed rows when using stdout writer. Mostly for testing.',
                         nargs=1,
                         type=int)
+    parser.add_argument('--csv_headers', help='Add headers while writing csv files (enabled by default).',
+                        nargs='?',
+                        type=str2bool,
+                        const=True)
     args = vars(parser.parse_args())
 
     params = {}
@@ -833,7 +838,7 @@ if __name__ == '__main__':
         if args['writer'][0] == 'stdout':
             StdOutWriter(file_path, only_basic_fields=args['basic_fields']).run(limit=args['limit'][0] if args['limit'] else None)
         elif args['writer'][0] == 'csv':
-            CSVWriter(file_path, args['csv_directory'][0], only_basic_fields=args['basic_fields']).run()
+            CSVWriter(file_path, args['csv_directory'][0], only_basic_fields=args['basic_fields']).run(headers=args['csv_headers'][0] if args['csv_headers'] else True)
         elif args['writer'][0] == 'sqlite':
             SQLiteWriter(file_path, args['sqlite_file'][0], only_basic_fields=args['basic_fields']).run(**params)
         elif args['writer'][0] == 'postgresql':
