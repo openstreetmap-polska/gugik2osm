@@ -736,7 +736,7 @@ class CSVWriter:
         self.output_dir: str = output_directory
         prg_fn = os.path.basename(prg_file_path).split('.')[0]
         self.output_file_paths: dict = {
-            self.Parser.Tags.no_ns[x]: join(output_directory, prg_fn + self.Parser.Tags.no_ns[x] + '.csv')
+            self.Parser.Tags.no_ns[x]: join(output_directory, prg_fn + '_' + self.Parser.Tags.no_ns[x] + '.csv')
             for x in self.Parser.Tags.list()
         }
 
