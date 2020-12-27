@@ -1,14 +1,15 @@
 COPY (
     with
     tab as (
-        select miejscowosc, cz_msc, ulica, type as nr_porzadkowy, kod_pna, kod_ulic, kod_simc, ST_Centroid(geometry) geom
+        select osm_id, miejscowosc, cz_msc, ulica, type as nr_porzadkowy, kod_pna, kod_ulic, kod_simc, ST_Centroid(geometry) geom
         from osm_addr_polygon
         union all
-        select miejscowosc, cz_msc, ulica, type as nr_porzadkowy, kod_pna, kod_ulic, kod_simc, geometry
+        select osm_id, miejscowosc, cz_msc, ulica, type as nr_porzadkowy, kod_pna, kod_ulic, kod_simc, geometry
         from osm_addr_point
     ),
     a as (
         select
+          osm_id,
           case when miejscowosc = '' then null else trim(miejscowosc) end msc,
           case when cz_msc = '' then null else trim(cz_msc) end czmsc,
           case when ulica = '' then null else trim(ulica) end ul,
@@ -20,6 +21,7 @@ COPY (
         from tab
     )
     SELECT
+        osm_id,
         msc miejscowosc,
         czmsc czesc_miejscowosci,
         ul ulica,
@@ -31,7 +33,7 @@ COPY (
         st_y(geom) y_4326
     FROM a
     where
-    -- removed this condition as some addresses don't have either addr:city nor addr:place tags
+    -- removed this condition as some addresses don't have neither addr:city nor addr:place tags
     --  coalesce(msc, czmsc) is not null
     --  and
         nr is not null
