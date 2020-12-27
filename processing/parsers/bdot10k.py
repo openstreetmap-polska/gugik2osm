@@ -838,7 +838,8 @@ if __name__ == '__main__':
         if args['writer'][0] == 'stdout':
             StdOutWriter(file_path, only_basic_fields=args['basic_fields']).run(limit=args['limit'][0] if args['limit'] else None)
         elif args['writer'][0] == 'csv':
-            CSVWriter(file_path, args['csv_directory'][0], only_basic_fields=args['basic_fields']).run(headers=args['csv_headers'][0] if args['csv_headers'] else True)
+            CSVWriter(file_path, args['csv_directory'][0], only_basic_fields=args['basic_fields']).run(
+                headers=args['csv_headers'][0] if args['csv_headers'] is not None else True)
         elif args['writer'][0] == 'sqlite':
             SQLiteWriter(file_path, args['sqlite_file'][0], only_basic_fields=args['basic_fields']).run(**params)
         elif args['writer'][0] == 'postgresql':
