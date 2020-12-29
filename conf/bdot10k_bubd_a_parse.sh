@@ -3,6 +3,16 @@
 source /opt/gugik2osm/conf/.env
 
 date >> /opt/gugik2osm/log/bdot_processing.log
-echo "Processing BDOT files..." >> /opt/gugik2osm/log/bdot_processing.log
-python3.7 -u /opt/gugik2osm/git/processing/parsers/bdot10k.py --input /opt/gugik2osm/tempbdot/BDOT10k_*.zip --writer postgresql --dsn "host=$PGHOSTADDR port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" --prep_tables --basic_fields --create_lookup_tables --create_view >> /opt/gugik2osm/log/bdot_processing.log 2>&1
+echo "BDOT2CSV" >> /opt/gugik2osm/log/bdot_processing.log
+python3.7 -u /opt/gugik2osm/git/processing/parsers/bdot10k.py --input /opt/gugik2osm/tempbdot/BDOT10k_*.zip --writer csv --csv_directory /opt/gugik2osm/tempbdot2/ --basic_fields >> /opt/gugik2osm/log/bdot_processing.log 2>&1
+date >> /opt/gugik2osm/log/bdot_processing.log
+echo "CSV2PGSQL" >> /opt/gugik2osm/log/bdot_processing.log
+psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -c "truncate table bdot.stg_budynki_ogolne_poligony" >> /opt/gugik2osm/log/bdot_processing.log 2>&1
+for infile in /opt/gugik2osm/tempbdot2/*.csv
+do
+  cat $infile | psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -c "copy bdot.stg_budynki_ogolne_poligony FROM stdin with CSV header delimiter ','" >> /opt/gugik2osm/log/bdot_processing.log 2>&1
+done
+date >> /opt/gugik2osm/log/bdot_processing.log
+echo "Cleaning temp csv files..." >> /opt/gugik2osm/log/bdot_processing.log
+rm /opt/gugik2osm/tempbdot2/*.csv
 date >> /opt/gugik2osm/log/bdot_processing.log
