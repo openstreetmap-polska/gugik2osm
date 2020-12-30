@@ -81,7 +81,7 @@ INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1263', 'budynki szkół i inst
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1264', 'budynki szpitali i zakładów opieki medyczne') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1265', 'budynki kultury fizycznej') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1271', 'budynki gospodarstwa rolnego') on conflict do nothing;
-INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1272', ' budynki kultu religijnego') on conflict do nothing;
+INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1272', 'budynki kultu religijnego') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1273', 'budynek zabytkowy') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1274', 'pozostałe budynki niemieszkalne') on conflict do nothing;
 

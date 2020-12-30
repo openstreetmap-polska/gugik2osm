@@ -62,7 +62,7 @@ lookup_funOgolnaBudynku = {
     '1264': 'budynki szpitali i zakładów opieki medyczne',
     '1265': 'budynki kultury fizycznej',
     '1271': 'budynki gospodarstwa rolnego',
-    '1272': ' budynki kultu religijnego',
+    '1272': 'budynki kultu religijnego',
     '1273': 'budynek zabytkowy',
     '1274': 'pozostałe budynki niemieszkalne',
 }
