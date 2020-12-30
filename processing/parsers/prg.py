@@ -610,7 +610,7 @@ if __name__ == '__main__':
     if args['writer'][0] == 'stdout':
         StdOutWriter(args['input'][0]).run(limit=args['limit'][0] if args['limit'] else None)
     elif args['writer'][0] == 'csv':
-        CSVWriter(args['input'][0], args['csv_directory'][0], only_basic_fields=args['basic_fields']).run(
+        CSVWriter(args['input'][0], args['csv_directory'][0]).run(
             headers=args['csv_headers'][0] if args['csv_headers'] is not None else True)
     elif args['writer'][0] == 'sqlite':
         SQLiteWriter(args['input'][0], args['sqlite_file'][0]).run(**sqlparams)
