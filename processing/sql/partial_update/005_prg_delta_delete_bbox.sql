@@ -30,7 +30,7 @@ where
         and
         d.lokalnyid = prg.lokalnyid
         and
-        st_dwithin(prg.geom, osm.geom, 5)
+        st_dwithin(prg.geom, osm.geom, 2)
     )
     or
     exists (
