@@ -135,7 +135,7 @@ var map = new mapboxgl.Map({
                 "source": "updates",
                 "paint": {
                 "fill-color": "#0099ff",
-                "fill-opacity": 0.6
+                "fill-opacity": 0.4
                 },
                 "filter": ["==", "dataset", "osm"]
             }, {
@@ -144,7 +144,7 @@ var map = new mapboxgl.Map({
                 "source": "updates",
                 "paint": {
                 "fill-color": "#ff6600",
-                "fill-opacity": 0.6
+                "fill-opacity": 0.4
                 },
                 "filter": ["==", "dataset", "exports"]
             }
@@ -304,6 +304,7 @@ window.onload = function() {
   var a = document.getElementById("addressesLayerToggle");
   var b = document.getElementById("buildingsLayerToggle");
   var o = document.getElementById("ortoLayerToggle");
+  var u = document.getElementById("updatesLayerToggle");
 
   a.onclick = function(e) {
     var toggleValue = a.checked ? 'on' : 'off';
@@ -321,6 +322,14 @@ window.onload = function() {
     [
         {id: 'buildings', toggle: toggleValue},
         {id: 'buildings-highlighted', toggle: toggleValue}
+    ].forEach(toggleMapLayer);
+  }
+  u.onclick = function(e) {
+    var toggleValue = u.checked ? 'on' : 'off';
+
+    [
+        {id: 'osm-updates', toggle: toggleValue},
+        {id: 'gugik2osm-exports', toggle: toggleValue}
     ].forEach(toggleMapLayer);
   }
   o.onclick = function(e) {
