@@ -43,15 +43,15 @@ class Excluded(Resource):
         if r is None or (r.get('prg_ids') is None and r.get('bdot_ids') is None):
             abort(400)
         # verify captcha token
-        # response = requests_lib.post(
-        #     url='https://www.google.com/recaptcha/api/siteverify',
-        #     data={
-        #         'secret': environ.get('reCaptchaSecretToken'),
-        #         'response': captcha_user_token
-        #     }
-        # )
-        # if not(response.ok and response.json().get('success')):
-        #     abort(400)
+        response = requests_lib.post(
+            url='https://www.google.com/recaptcha/api/siteverify',
+            data={
+                'secret': environ.get('reCaptchaSecretToken'),
+                'response': captcha_user_token
+            }
+        )
+        if not(response.ok and response.json().get('success')):
+            abort(400)
 
         conn = pgdb()
         with conn.cursor() as cur:
