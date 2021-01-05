@@ -10,7 +10,7 @@ import requests as requests_lib
 from lxml import etree
 
 from common.database import pgdb, execute_sql, QUERIES, execute_values, pg
-from common.util import to_merc, Tile, bounds, buildings_xml, notes, addresses_xml, addresses_nodes, buildings_nodes
+from common.util import to_merc, Tile, bounds, buildings_xml, addresses_xml, addresses_nodes, buildings_nodes
 
 
 class Processes(Resource):
