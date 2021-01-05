@@ -17,21 +17,21 @@ insert into exclude_prg (id)
 on conflict do nothing
 ;
 
-with lod1_ids as (
-  delete from exclude_lod1_queue
+with b_ids as (
+  delete from exclude_bdot_buildings_queue
   where processed = false
   returning id
 ),
 delete_tiles as (
   delete from tiles t
-  using prg.lod1_buildings b, lod1_ids
+  using bdot_buildings b, b_ids
   where 1=1
     and z >= 13
-    and t.bbox && st_transform(b.geom, 3857)
-    and b.id = lod1_ids.id
+    and t.bbox && st_transform(b.geom_4326, 3857)
+    and b.lokalnyid = b_ids.id
 )
-insert into exclude_lod1 (id)
+insert into exclude_bdot_buildings (id)
   select id
-  from lod1_ids
+  from b_ids
 on conflict do nothing
 ;

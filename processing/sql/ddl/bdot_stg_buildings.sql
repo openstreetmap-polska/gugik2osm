@@ -60,6 +60,7 @@ CREATE OR REPLACE VIEW bdot.v_bubd_a as
     LEFT JOIN bdot.lookup_x_katistnienia using (x_katIstnienia)
     LEFT JOIN bdot.lookup_funogolnabudynku using (funOgolnaBudynku)
     LEFT JOIN bdot.lookup_funszczegolowabudynku using (funSzczegolowaBudynku)
+    WHERE lokalnyid ~ E'^[[:xdigit:]]{8}-([[:xdigit:]]{4}-){3}[[:xdigit:]]{12}$' -- check if uuid is valid
 ;
 
 

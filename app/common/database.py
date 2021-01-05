@@ -27,9 +27,7 @@ QUERIES = {
     'locations_most_count': str(open(join(SQL_PATH, 'locations_most_count.sql'), 'r').read()),
     'processes': str(open(join(SQL_PATH, 'processes.sql'), 'r').read()),
     'insert_to_exclude_prg': str(open(join(SQL_PATH, 'insert_to_exclude_prg.sql'), 'r').read()),
-    'insert_to_exclude_lod1': str(open(join(SQL_PATH, 'insert_to_exclude_lod1.sql'), 'r').read()),
-    'delete_tiles_excluded_prg': str(open(join(SQL_PATH, 'delete_tiles_excluded_prg.sql'), 'r').read()),
-    'delete_tiles_excluded_lod1': str(open(join(SQL_PATH, 'delete_tiles_excluded_lod1.sql'), 'r').read()),
+    'insert_to_exclude_bdot_buildings': str(open(join(SQL_PATH, 'insert_to_exclude_bdot_buildings.sql'), 'r').read()),
     'insert_to_package_exports': str(open(join(SQL_PATH, 'insert_to_package_exports.sql'), 'r').read()),
     'latest_updates': str(open(join(SQL_PATH, 'latest_updates.sql'), 'r').read()),
 }

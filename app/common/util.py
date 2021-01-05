@@ -5,15 +5,6 @@ from mercantile import Tile, bounds
 from pyproj import Proj, transform
 
 
-notes = {
-    'zbior': 'Modele 3D Budynków',
-    'zrodlo': 'www.geoportal.gov.pl',
-    'dysponent': 'Główny Geodeta Kraju',
-    'data_pobrania_zbioru': '2019-11-10',
-    'zakres_przetworzenia': 'Geometria budynków została spłaszczona do 2D oraz wyekstrahowana została część poligonowa wykorzystana dalej jako obrys budynku.',
-    'informacja': '''Modele 3D budynków nie stanowią rejestru publicznego ani elementu treści takiego rejestru. W konsekwencji czego mają wartość jedynie poglądową. Niezgodność Modeli 3D budynków ze stanem faktycznym lub prawnym, tak w postaci nieprzetworzonej jak i po ich ewentualnym przetworzeniu w procesie ponownego wykorzystania, nie może stanowić podstawy odpowiedzialności Głównego Geodety Kraju z jakiegokolwiek tytułu wobec jakiegokolwiek podmiotu.''',
-    'licencja': r'https://integracja.gugik.gov.pl/Budynki3D/GUGiK_Licencja_na_Budynki3D.pdf'
-}
 BUILDING_TAG = etree.Element('tag', k='building', v='yes')
 SOURCE_BUILDING = etree.Element('tag', k='source', v='www.geoportal.gov.pl')
 SOURCE_ADDR = etree.Element('tag', k='source:addr', v='gugik.gov.pl')
@@ -58,8 +49,21 @@ def buildings_nodes(list_of_tuples: list) -> etree.Element:
     for t in list_of_tuples:
         # create 'way' node for xml tree
         way = etree.Element('way', id=str(t[0]))
-        way.append(deepcopy(BUILDING_TAG))
         way.append(deepcopy(SOURCE_BUILDING))
+
+        way.append(etree.Element('tag', k='building', v=t[2]))
+        if t[3]:
+            way.append(etree.Element('tag', k='amenity', v=t[3]))
+        if t[4]:
+            way.append(etree.Element('tag', k='man_made', v=t[4]))
+        if t[5]:
+            way.append(etree.Element('tag', k='leisure', v=t[5]))
+        if t[6]:
+            way.append(etree.Element('tag', k='historic', v=t[6]))
+        if t[7]:
+            way.append(etree.Element('tag', k='tourism', v=t[7]))
+        if t[8]:
+            way.append(etree.Element('tag', k='building:levels', v=str(t[8])))
 
         # iterate over array of points that make the polygon and add references to them to the way xml node
         for xy in t[1]:
@@ -117,8 +121,21 @@ def buildings_xml(list_of_tuples):
     for t in list_of_tuples:
         # create 'way' node for xml tree
         way = etree.Element('way', id=str(t[0]))
-        way.append(deepcopy(BUILDING_TAG))
         way.append(deepcopy(SOURCE_BUILDING))
+
+        way.append(etree.Element('tag', k='building', v=t[2]))
+        if t[3]:
+            way.append(etree.Element('tag', k='amenity', v=t[3]))
+        if t[4]:
+            way.append(etree.Element('tag', k='man_made', v=t[4]))
+        if t[5]:
+            way.append(etree.Element('tag', k='leisure', v=t[5]))
+        if t[6]:
+            way.append(etree.Element('tag', k='historic', v=t[6]))
+        if t[7]:
+            way.append(etree.Element('tag', k='tourism', v=t[7]))
+        if t[8]:
+            way.append(etree.Element('tag', k='building:levels', v=str(t[8])))
 
         # iterate over array of points that make the polygon and add references to them to the way xml node
         for xy in t[1]:

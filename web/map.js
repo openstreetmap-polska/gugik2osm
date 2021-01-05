@@ -99,7 +99,7 @@ var map = new mapboxgl.Map({
                 "id": "buildings",
                 "type": "fill",
                 "source": "mvt-tiles",
-                "source-layer": "lod1_buildings",
+                "source-layer": "buildings",
                 "minzoom": 13,
                 "paint": {
                     "fill-color": "red",
@@ -109,7 +109,7 @@ var map = new mapboxgl.Map({
                 "id": "buildings-highlighted",
                 "type": "fill",
                 "source": "mvt-tiles",
-                "source-layer": "lod1_buildings",
+                "source-layer": "buildings",
                 "paint": {
                     "fill-outline-color": "#484896",
                     "fill-color": "#6e599f",
@@ -201,9 +201,48 @@ map.on("click", "prg2load", function (e) {
     e.preventDefault();
 });
 map.on("click", "buildings", function (e) {
-    var s = "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
+    var s = "<table>"
+    s += "<tr><td>lokalnyid:</td><td>" + e.features[0].properties.lokalnyid + "</td></tr>"
+    s += "<tr><td>status_bdot:</td><td>" + e.features[0].properties.status_bdot + "</td></tr>"
+    s += "<tr><td>kategoria_bdot:</td><td>" + e.features[0].properties.kategoria_bdot + "</td></tr>"
+    if (e.features[0].properties.funkcja_ogolna_budynku) {
+        s += "<tr><td>funkcja_ogolna_budynku:</td><td>" + e.features[0].properties.funkcja_ogolna_budynku + "</td></tr>"
+    }
+    if (e.features[0].properties.funkcja_szczegolowa_budynku) {
+        s += "<tr><td>funkcja_szczegolowa_budynku:</td><td>" + e.features[0].properties.funkcja_szczegolowa_budynku + "</td></tr>"
+    }
+    if (e.features[0].properties.aktualnosc_geometrii) {
+        s += "<tr><td>aktualnosc_geometrii:</td><td>" + e.features[0].properties.aktualnosc_geometrii + "</td></tr>"
+    }
+    if (e.features[0].properties.aktualnosc_atrybutow) {
+        s += "<tr><td>aktualnosc_atrybutow:</td><td>" + e.features[0].properties.aktualnosc_atrybutow + "</td></tr>"
+    }
+    if (e.features[0].properties.building) {
+        s += "<tr><td>building:</td><td>" + e.features[0].properties.building + "</td></tr>"
+    }
+    if (e.features[0].properties.amenity) {
+        s += "<tr><td>amenity:</td><td>" + e.features[0].properties.amenity + "</td></tr>"
+    }
+    if (e.features[0].properties.man_made) {
+        s += "<tr><td>man_made:</td><td>" + e.features[0].properties.man_made + "</td></tr>"
+    }
+    if (e.features[0].properties.leisure) {
+        s += "<tr><td>leisure:</td><td>" + e.features[0].properties.leisure + "</td></tr>"
+    }
+    if (e.features[0].properties.historic) {
+        s += "<tr><td>historic:</td><td>" + e.features[0].properties.historic + "</td></tr>"
+    }
+    if (e.features[0].properties.tourism) {
+        s += "<tr><td>:</td><td>" + e.features[0].properties.tourism + "</td></tr>"
+    }
+    if (e.features[0].properties.building_levels) {
+        s += "<tr><td>building_levels:</td><td>" + e.features[0].properties.building_levels + "</td></tr>"
+    }
+    s += "</table><br>"
+
+    s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
     s += "<div id=\"recaptcha4buildings\"></div>"
-    s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportLOD1(\""
+    s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBuilding(\""
     s += e.features[0].properties.id
     s += "\"); disabled>Zgłoś</button>"
     new mapboxgl.Popup({"maxWidth": "320px"})
@@ -414,11 +453,11 @@ function reportPRG(id){
     })
 }
 
-function reportLOD1(id){
+function reportBuilding(id){
     $.ajax({
         type: "POST",
         url: "/exclude/",
-        data: JSON.stringify({"lod1_ids": [id,]}),
+        data: JSON.stringify({"bdot_ids": [id,]}),
         contentType: "application/json",
         headers: {"reCaptchaUserToken": grecaptcha.getResponse()},
         complete: onReportComplete
@@ -491,11 +530,11 @@ function selectFeaturesWithPolygon(e) {
     var data = draw.getAll();
 
     if (e.type === "draw.delete" && e.features.length === 1){
-        draw.delete(e.features[0].id);
+        draw.delete(e.features[0].lokalnyid);
         return
     }
 
-    var filterBuildings = ["in", "id"];
+    var filterBuildings = ["in", "lokalnyid"];
     var tempSetBuildings = new Set();
     var filterAddresses = ["in", "lokalnyid"];
     var tempSetAddresses = new Set();
@@ -518,7 +557,7 @@ function selectFeaturesWithPolygon(e) {
         // then for each selected feature verify if it intersects the polygon and add it's id to the list of selected features
         var temp = featuresBuildings.reduce(function(memo, feature) {
             if (!turf.booleanDisjoint(feature, userPolygon)) {
-                memo.push(feature.properties.id);
+                memo.push(feature.properties.lokalnyid);
             }
             return memo;
         }, []);
@@ -555,7 +594,7 @@ function selectFeaturesWithPolygon(e) {
         reportButton += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBoth(\""
         reportButton += encodeURIComponent(JSON.stringify({
             "prg_ids": [...tempSetAddresses],
-            "lod1_ids": [...tempSetBuildings]
+            "bdot_ids": [...tempSetBuildings]
         }))
         reportButton += "\"); disabled>Zgłoś</button>"
     $("#modalSelectedBody").html(noOfBuildingsHTML + noOfAddressesHTML + downloadSelectedButton + reportButton);

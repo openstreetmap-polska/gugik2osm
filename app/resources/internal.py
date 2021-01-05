@@ -40,18 +40,18 @@ class Excluded(Resource):
             abort(400)
         if r is None:
             raise ValueError(request.form)
-        if r is None or (r.get('prg_ids') is None and r.get('lod1_ids') is None):
+        if r is None or (r.get('prg_ids') is None and r.get('bdot_ids') is None):
             abort(400)
         # verify captcha token
-        response = requests_lib.post(
-            url='https://www.google.com/recaptcha/api/siteverify',
-            data={
-                'secret': environ.get('reCaptchaSecretToken'),
-                'response': captcha_user_token
-            }
-        )
-        if not(response.ok and response.json().get('success')):
-            abort(400)
+        # response = requests_lib.post(
+        #     url='https://www.google.com/recaptcha/api/siteverify',
+        #     data={
+        #         'secret': environ.get('reCaptchaSecretToken'),
+        #         'response': captcha_user_token
+        #     }
+        # )
+        # if not(response.ok and response.json().get('success')):
+        #     abort(400)
 
         conn = pgdb()
         with conn.cursor() as cur:
@@ -60,12 +60,12 @@ class Excluded(Resource):
                 prg_ids = [(x,) for x in r['prg_ids']]
                 execute_values(cur, QUERIES['insert_to_exclude_prg'], prg_ids)
                 prg_counter = len(prg_ids)
-            if r.get('lod1_ids'):
-                lod1_ids = [(x,) for x in r['lod1_ids']]
-                execute_values(cur, QUERIES['insert_to_exclude_lod1'], lod1_ids)
+            if r.get('bdot_ids'):
+                lod1_ids = [(x,) for x in r['bdot_ids']]
+                execute_values(cur, QUERIES['insert_to_exclude_bdot_buildings'], lod1_ids)
                 lod1_counter = len(lod1_ids)
             conn.commit()
-        return {'prg_ids_inserted': prg_counter, 'lod1_ids_inserted': lod1_counter}, 201
+        return {'prg_ids_inserted': prg_counter, 'bdot_ids_inserted': lod1_counter}, 201
 
 
 class RandomLocation(Resource):
@@ -277,12 +277,7 @@ class PrgAddressesNotInOSM(Resource):
             headers={'Content-disposition': 'attachment; filename=prg_addresses.osm'})
 
 
-class Lod1LegalInfo(Resource):
-    def get(self):
-        return notes
-
-
-class Lod1BuildingsNotInOSM(Resource):
+class BuildingsNotInOSM(Resource):
     def get(self):
         if request.args.get('filter_by') == 'bbox':
             if not (
