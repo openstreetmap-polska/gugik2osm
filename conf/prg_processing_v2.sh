@@ -45,13 +45,14 @@ for infile in /opt/gugik2osm/tempprg2/*PRG_PunktAdresowy*.csv
 do
   cat $infile | psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -c "copy prg.punkty_adresowe FROM stdin with CSV header delimiter ','" >> /opt/gugik2osm/log/prg_processing.log 2>&1
 done
-date >> /opt/gugik2osm/log/prg_processing.log
-echo "Cleaning temp csv files..." >> /opt/gugik2osm/log/prg_processing.log
-rm /opt/gugik2osm/tempprg2/*.csv
-date >> /opt/gugik2osm/log/prg_processing.log
 python3.7 -u /opt/gugik2osm/git/processing/scripts/prg_prepare.py --full --dsn "host=$PGHOSTADDR port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" --starting 001_prg_pa_insert.sql >> /opt/gugik2osm/log/prg_processing.log 2>&1
 echo "Finished preparing data" >> /opt/gugik2osm/log/prg_processing.log
 date >> /opt/gugik2osm/log/prg_processing.log
 bash /opt/gugik2osm/conf/cache_low_zoom_tiles.sh
 echo "Finished caching low zoom tiles" >> /opt/gugik2osm/log/prg_processing.log
+date >> /opt/gugik2osm/log/prg_processing.log
+date >> /opt/gugik2osm/log/prg_processing.log
+echo "Cleaning temp csv files..." >> /opt/gugik2osm/log/prg_processing.log
+rm /opt/gugik2osm/tempprg2/*.csv
+echo "Done." >> /opt/gugik2osm/log/prg_processing.log
 date >> /opt/gugik2osm/log/prg_processing.log
