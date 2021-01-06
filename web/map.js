@@ -243,7 +243,7 @@ map.on("click", "buildings", function (e) {
     s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
     s += "<div id=\"recaptcha4buildings\"></div>"
     s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBuilding(\""
-    s += e.features[0].properties.id
+    s += e.features[0].properties.lokalnyid
     s += "\"); disabled>Zgłoś</button>"
     new mapboxgl.Popup({"maxWidth": "320px"})
     .setLngLat(e.lngLat)
