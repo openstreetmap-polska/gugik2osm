@@ -664,3 +664,16 @@ window.setInterval(
     },
     60000
 );
+
+// link to osm that should get updated when user moves around on the map
+var osm_link = "https://www.openstreetmap.org/";
+window.setInterval(
+    function () {
+        $("#osm-link")[0].href = osm_link + window.location.hash;
+    },
+    500
+);
+//$(window).on('hashchange', function() {
+//    console.log('TEST');
+//    console.log(window.location.hash);
+//});
