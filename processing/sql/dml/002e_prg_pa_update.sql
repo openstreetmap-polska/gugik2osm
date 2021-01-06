@@ -1,4 +1,4 @@
--- dodaj simc i ulic jeżeli zgadzają się z teryt - WARSZAWA
+-- dodaj simc i ulic jeżeli zgadzają się z teryt - POZNAŃ
 update prg.pa
 set (
     teryt_msc,
@@ -19,8 +19,8 @@ from (
 where 1=1
     and prg.pa.simc is not null and prg.pa.teryt_simc is null
     and prg.pa.ulic is not null and prg.pa.teryt_ulic is null
-    and substring(prg.pa.terc6, 1, 4) = '1465'
-    and u1.woj = '14' and u1.pow = '65'
+    and substring(prg.pa.terc6, 1, 4) = '3064'
+    and u1.woj = '30' and u1.pow = '64'
     and prg.pa.ulic = u1.sym_ul
     and u1.cecha = cm.cecha
 ;

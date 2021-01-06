@@ -1,4 +1,4 @@
--- dodaj simc i ulic jeżeli zgadzają się z teryt i nazwa msc ok - bez miejscowości: Warszawa, Kraków, Łódź, Poznań i Wrocław
+-- dodaj simc i ulic jeżeli zgadzają się z teryt - ŁÓDŹ
 update prg.pa
 set (
     teryt_msc,
@@ -6,22 +6,21 @@ set (
     teryt_ulica,
     teryt_ulic
 ) = (
-    s1.nazwa,
-    s1.sym,
+    initcap(prg.pa.msc),
+    prg.pa.simc,
     trim(concat(cm.m, ' ', (u1.nazwa_2 || ' '), u1.nazwa_1)),
     u1.sym_ul
 )
-from teryt.simc s1, teryt.ulic u1, teryt.cecha_mapping cm
+from (
+    select woj, pow, sym_ul, nazwa_1, nazwa_2, cecha
+    from teryt.ulic
+    group by woj, pow, sym_ul, nazwa_1, nazwa_2, cecha
+) as u1, teryt.cecha_mapping cm
 where 1=1
     and prg.pa.simc is not null and prg.pa.teryt_simc is null
     and prg.pa.ulic is not null and prg.pa.teryt_ulic is null
-    and substring(prg.pa.terc6, 1, 4) not in ('0264', '1061', '1261', '1465', '3064')
-    and prg.pa.simc = s1.sym
-    and prg.pa.ulic = u1.sym_ul and u1.sym = s1.sym
+    and substring(prg.pa.terc6, 1, 4) = '1061'
+    and u1.woj = '10' and u1.pow = '61'
+    and prg.pa.ulic = u1.sym_ul
     and u1.cecha = cm.cecha
-    and not (
-        replace(lower(s1.nazwa), '-', ' ') <> replace(lower(prg.pa.msc), '-', ' ')
-        and not (prg.pa.msc ilike '%' || s1.nazwa or prg.pa.msc ilike s1.nazwa || '%')
-    )
 ;
-analyze prg.pa;

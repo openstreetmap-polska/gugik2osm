@@ -1,4 +1,4 @@
--- dodaj simc i ulic jeżeli zgadzają się z teryt - Kraków, Łódź, Poznań i Wrocław
+-- dodaj simc i ulic jeżeli zgadzają się z teryt - WROCŁAW
 update prg.pa
 set (
     teryt_msc,
@@ -6,27 +6,21 @@ set (
     teryt_ulica,
     teryt_ulic
 ) = (
-    case
-      when substring(prg.pa.terc6, 1, 4) in ('0264', '1061', '1261', '1465', '3064') then prg.pa.msc
-      else s1.nazwa
-    end,
-    case
-      when substring(prg.pa.terc6, 1, 4) in ('0264', '1061', '1261', '1465', '3064') then prg.pa.simc
-      else s1.sym
-    end,
+    initcap(prg.pa.msc),
+    prg.pa.simc,
     trim(concat(cm.m, ' ', (u1.nazwa_2 || ' '), u1.nazwa_1)),
     u1.sym_ul
 )
-from teryt.simc s1, teryt.ulic u1, teryt.cecha_mapping cm
+from (
+    select woj, pow, sym_ul, nazwa_1, nazwa_2, cecha
+    from teryt.ulic
+    group by woj, pow, sym_ul, nazwa_1, nazwa_2, cecha
+) as u1, teryt.cecha_mapping cm
 where 1=1
     and prg.pa.simc is not null and prg.pa.teryt_simc is null
     and prg.pa.ulic is not null and prg.pa.teryt_ulic is null
-    and substring(prg.pa.terc6, 1, 4) in ('0264', '1061', '1261', '3064')
-    and (
-        lower(s1.nazwa) = lower(prg.pa.msc)
-        or
-        lower(s1.nazwa) like lower(prg.pa.msc) || '-%'
-    )
-    and prg.pa.ulic = u1.sym_ul and u1.sym = s1.sym
+    and substring(prg.pa.terc6, 1, 4) = '0264'
+    and u1.woj = '02' and u1.pow = '64'
+    and prg.pa.ulic = u1.sym_ul
     and u1.cecha = cm.cecha
 ;
