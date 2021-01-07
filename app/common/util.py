@@ -51,7 +51,8 @@ def buildings_nodes(list_of_tuples: list) -> etree.Element:
         way = etree.Element('way', id=str(t[0]))
         way.append(deepcopy(SOURCE_BUILDING))
 
-        way.append(etree.Element('tag', k='building', v=t[2]))
+        if t[2]:
+            way.append(etree.Element('tag', k='building', v=t[2]))
         if t[3]:
             way.append(etree.Element('tag', k='amenity', v=t[3]))
         if t[4]:
@@ -123,7 +124,8 @@ def buildings_xml(list_of_tuples):
         way = etree.Element('way', id=str(t[0]))
         way.append(deepcopy(SOURCE_BUILDING))
 
-        way.append(etree.Element('tag', k='building', v=t[2]))
+        if t[2]:
+            way.append(etree.Element('tag', k='building', v=t[2]))
         if t[3]:
             way.append(etree.Element('tag', k='amenity', v=t[3]))
         if t[4]:
