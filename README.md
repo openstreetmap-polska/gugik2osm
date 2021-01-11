@@ -10,7 +10,6 @@ Mamy nadzieję uczynić z tego pomocne narzędzie dla edytorów, które ułatwi 
 https://budynki.openstreetmap.org.pl
 
 ## Lista rzeczy do zrobienia:
-- Integracja danych budynków Bdot10k
 - Integracja danych adresowych w tym algorytm wyszukiwania adresów zdublowanych i błednych
 
 ## Narzędzia pomocnicze
