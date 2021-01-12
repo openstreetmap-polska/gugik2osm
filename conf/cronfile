@@ -1,4 +1,6 @@
 #<timing>   <user> <command>
+0 20 * * WED ttaras /opt/gugik2osm/conf/bdot10k_bubd_a_parse.sh
+0 20 * * THU ttaras /opt/gugik2osm/conf/bdot10k_bubd_a_export.sh
 1 18 * * FRI ttaras /opt/gugik2osm/conf/prg_processing_v2.sh
 0 1 * * MON-FRI ttaras /opt/gugik2osm/conf/teryt_processing.sh
 */1 * * * * ttaras /opt/gugik2osm/conf/data_update.sh
