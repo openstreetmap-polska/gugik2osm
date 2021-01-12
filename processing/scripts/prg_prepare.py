@@ -227,12 +227,6 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                     print(e)
                     final_status = 'FAIL'
                     conn.rollback()
-                    cur.execute(
-                        'UPDATE expired_tiles SET processed = false ' +
-                        'WHERE file_name = %s and z = %s and x = %s and y = %s;',
-                        (row[0], row[1], row[2], row[3])
-                    )
-                    conn.commit()
                     break
                 cur.execute(
                     'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
