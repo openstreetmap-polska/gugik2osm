@@ -1,6 +1,7 @@
-rm -rf /opt/gugik2osm/git/
-mkdir /opt/gugik2osm/git/
-git clone https://github.com/openstreetmap-polska/gugik2osm.git /opt/gugik2osm/git/
+#!/bin/bash
+
+cd /opt/gugik2osm/git/
+git pull
 
 sudo -H python3.7 -m pip install -r /opt/gugik2osm/git/requirements.txt
 
