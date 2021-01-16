@@ -30,6 +30,8 @@ RUN rm /etc/nginx/sites-enabled/default
 RUN rm /etc/nginx/sites-available/default
 # make directory for socket used by gunicorn
 RUN mkdir /run/gugik2osm/
+# make directory for overpass layers
+RUN mkdir /var/www/overpass-layers/
 
 # change placeholder dsn in supervisord config
 RUN sed -i "s/dsn=\"host=localhost port=5432 user=user password=password dbname=db\",reCaptchaSecretToken=\"\"/dsn=\"%(ENV_dsn)s\",reCaptchaSecretToken=\"%(ENV_reCaptchaSecretToken)s\"/" /opt/gugik2osm/conf/supervisord.conf

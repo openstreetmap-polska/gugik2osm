@@ -20,3 +20,4 @@
 0 1 * * MON postgres /opt/gugik2osm/conf/export_db_backup.sh
 0 4 * *  TUE root /opt/gugik2osm/conf/services_restart.sh
 0 20 * * * postgres /opt/gugik2osm/conf/export_osm_stats.sh
+0 0 */1 * * ttaras python3.7 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
