@@ -1,0 +1,22 @@
+{
+  "sources": [
+    {
+      "id": "olayer-addr-interpolation",
+      "name": "Linie interpolacji adresów",
+      "url": "https://budynki.openstreetmap.org.pl/overpass-layers/addr_interpolation.geojson",
+      "layers": [
+        {
+          "id": "olayer-addr-interpolation-lines",
+          "type": "line",
+          "source": "olayer-addr-interpolation",
+          "paint": {
+            "line-color": "orange",
+            "line-opacity": 0.8,
+            "line-width": 5
+          },
+          "filter": ["==", "$type", "LineString"]
+        }
+      ]
+    }
+  ]
+}

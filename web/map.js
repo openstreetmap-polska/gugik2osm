@@ -2,6 +2,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidG9tYXN6dCIsImEiOiJjazg2Nno3ZWswZDZ5M2ZvdHdxe
 var reCaptchaPublicToken = "6Lfwg6kZAAAAAAh5yX3y0Nk4XWK-i9tMThhhHgRW";
 var updatesLayerURL = "https://budynki.openstreetmap.org.pl/updates.geojson";
 var vectorTilesURL = "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf";
+var overpass_layers_url = "https://budynki.openstreetmap.org.pl/overpass-layers.json";
 var map = new mapboxgl.Map({
     "container": "map",
     "hash": "map",
@@ -391,6 +392,66 @@ window.onload = function() {
         toggleMapLayer({id: "simple-tiles", toggle: "on"});
     }
   }
+
+  // add overpass layers
+  fetch(overpass_layers_url)
+      .then(response => response.json())
+      .then(addOverpassSources)
+      .then(insertLayersTogglesIntoDOM);
+}
+
+function insertLayersTogglesIntoDOM (data) {
+    var html_element = document.getElementById("overpass-layers-placeholder");
+    html_element.insertAdjacentHTML("beforeend", data.html);
+    data.layers.forEach(addListenerToLayerToggle);
+}
+
+function addListenerToLayerToggle(data) {
+    var x = document.getElementById(data.htmlId);
+    x.onclick = function(e) {
+        var toggleValue = x.checked ? 'on' : 'off';
+        data.layersIds.map(id => {return {"id": id, "toggle": toggleValue}}).forEach(toggleMapLayer);
+    }
+}
+
+function prepareLayersIds(source) {
+    return {
+        "htmlId": source.id,
+        "layersIds": source.layers.map(x => x.id)
+    }
+}
+
+function addOverpassSources(s) {
+    s.sources.forEach(addOverpassSource);
+    s.sources.forEach(addOverpassLayers);
+    return {
+        "html": s.sources.map(prepareSourceHTML).join("\n"),
+        "layers": s.sources.map(prepareLayersIds)
+    }
+}
+
+function addOverpassSource(data) {
+    var definition = {
+        "type": "geojson",
+        "data": data.url
+    };
+    map.addSource(data.id, definition);
+}
+
+function addOverpassLayers(data) {
+    data.layers.forEach(addOverpassLayer);
+}
+
+function addOverpassLayer(layer) {
+    map.addLayer(layer);
+    map.setLayoutProperty(layer.id, 'visibility', 'none');
+}
+
+function prepareSourceHTML(el) {
+    var temp = "<br><label class=\"switch\"><input id=" + el.id + " type=\"checkbox\">";
+    temp += "<span class=\"slider round\"></span></label>";
+    temp += "<label for=" + el.id + ">" + el.name + "</label>";
+    return temp
 }
 
 function toggleMapLayer(params){

@@ -64,6 +64,63 @@ Dostępne parametry:
 - --api_password - hasło do użytkownika API
 - --dsn - dane do połączenia się z bazą PostgreSQL (parametr przekazywany do metody connect biblioteki psycopg2, szczegóły: https://www.psycopg.org/docs/module.html#psycopg2.connect )
 
+## Dodawanie warstw opartych na skryptach Overpass API
+
+Jedną z funkcji strony jest pobieranie danych z Overpass API, konwersja ich do formatu GeoJSON i prezentacja na stronie w okienku wyboru warstw.
+
+Warstwy odświeżane są raz na dzień.
+
+Dodawanie nowych warstw wymaga dodania kwerendy w języku Overpassa do folderu: _processing/overpass/_ oraz wpisu w pliku konfiguracyjnym: _web/overpass-layers.json_
+
+Wpis wymaga podania stylu warstwy w formacie Mapbox. Opis w dokumentacji: https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#type
+
+Kwerendy Overpass nie mogą zawierać elementów obsługiwanych tylko przez stronę overpass-turbo.eu, czyli tych zawartych w znakach __"{{ }}"__.
+
+Przykład kwerendy:
+
+```
+[out:json][timeout:250];
+// area(3600049715) = Polska
+area(3600336075)->.searchArea;
+(
+  way["addr:interpolation"](area.searchArea);
+);
+out body;
+>;
+out skel qt;
+```
+
+Przykład konfiguracji:
+
+```json
+{
+  "sources": [
+    {
+      "id": "test-olayer",
+      "name": "Testowa warstwa Overpass",
+      "url": "https://budynki.openstreetmap.org.pl/overpass-layers/test.geojson",
+      "layers": [
+        {
+          "id": "test-olayer-lines",
+          "type": "line",
+          "source": "test-olayer",
+          "paint": {
+            "line-color": "orange",
+            "line-opacity": 0.8,
+            "line-width": 5
+          },
+          "filter": ["==", "$type", "LineString"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Nazwa pliku geojson będzie taka sama jak nazwa pliku z kwerendą Overpass. ID warstw i źródeł mogą być dowolne (poza już istniejącymi w pliku map.js), ale lepiej, żeby nawiązywały do tego, co się w nich znajduje. 
+
+Jedno źródło może mieć wiele warstw (np. punkty i poligony albo punkty prezentowane jako kropka plus punkty prezentowane jako napis).
+
 ## Lokalne środowisko
 
 Lokalne środowisko deweloperskie można uruchomić w kontenerach Docker. Kontener nie jest w pełni funkcjonalny w porównaniu do środowiska produkcyjnego, ale podstawowe rzeczy poza aktualizacją danych powinny działać.
