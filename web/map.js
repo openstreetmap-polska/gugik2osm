@@ -731,8 +731,10 @@ var osm_link = "https://www.openstreetmap.org/";
 window.setInterval(
     function () {
         $("#osm-link")[0].href = osm_link + window.location.hash;
+        $("#osm-link-edit-id")[0].href = osm_link + "edit?editor=id" + window.location.hash;
+        $("#osm-link-edit-remote")[0].href = osm_link + "edit?editor=remote" + window.location.hash;
     },
-    500
+    333
 );
 //$(window).on('hashchange', function() {
 //    console.log('TEST');

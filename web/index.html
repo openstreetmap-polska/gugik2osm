@@ -92,10 +92,21 @@
                     </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a id="osm-link" class="nav-link" href="https://www.openstreetmap.org/" target="_blank">
-                        <img height="30px" title="Link do tej lokalizacji w OpenStreetMap"
-                             src="https://wiki.openstreetmap.org/w/images/7/79/Public-images-osm_logo.svg"/>
-                    </a>
+                    <div class="btn-group ">
+                        <a id="osm-link" class="btn btn-outline-secondary" href="https://www.openstreetmap.org/" target="_blank">
+                            <img height="30px" title="Link do tej lokalizacji w OpenStreetMap"
+                                 src="https://wiki.openstreetmap.org/w/images/7/79/Public-images-osm_logo.svg"/>
+                        </a>
+                        <a class='btn btn-outline-secondary dropdown-toggle dropdown-toggle-split' data-toggle='dropdown' href="#"></a>
+                        <ul class='dropdown-menu'>
+                            <li>
+                              <a id="osm-link-edit-id" target="_blank" class="dropdown-item" href="https://www.openstreetmap.org/edit?editor=id">Edytuj ten obszar w iD</a>
+                            </li>
+                            <li>
+                              <a id="osm-link-edit-remote" target="_blank" class="dropdown-item" href="https://www.openstreetmap.org/edit?editor=remote">Edytuj ten obszar używając zewnętrznego edytora (JOSM, Potlatch, Merkaartor)</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </div>
