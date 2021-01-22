@@ -31,7 +31,8 @@ def addresses_nodes(list_of_tuples: list) -> etree.Element:
         if t[3]:
             el.append(etree.Element('tag', k='addr:city', v=t[1]))
             el.append(etree.Element('tag', k='addr:street', v=t[3]))
-            el.append(etree.Element('tag', k='addr:street:sym_ul', v=t[4]))
+            # do not add TERYT ULIC code
+            # el.append(etree.Element('tag', k='addr:street:sym_ul', v=t[4]))
         else:
             el.append(etree.Element('tag', k='addr:place', v=t[1]))
         el.append(etree.Element('tag', k='addr:housenumber', v=t[5]))
@@ -101,7 +102,8 @@ def addresses_xml(list_of_tuples):
         if t[3]:
             el.append(etree.Element('tag', k='addr:city', v=t[1]))
             el.append(etree.Element('tag', k='addr:street', v=t[3]))
-            el.append(etree.Element('tag', k='addr:street:sym_ul', v=t[4]))
+            # do not add TERYT ULIC code
+            # el.append(etree.Element('tag', k='addr:street:sym_ul', v=t[4]))
         else:
             el.append(etree.Element('tag', k='addr:place', v=t[1]))
         el.append(etree.Element('tag', k='addr:housenumber', v=t[5]))
