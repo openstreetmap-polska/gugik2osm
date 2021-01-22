@@ -16,6 +16,21 @@
           },
           "filter": ["==", "$type", "LineString"]
         }
+        {
+          "id": "olayer-fixme-way",
+          "name": "Linie fixme ",
+          "url": "https://budynki.openstreetmap.org.pl/overpass-layers/nw_fixme.geojson",
+          "layers": [
+            {
+              "id": "olayer-fixme-way",
+              "type": "line",
+              "source": "olayer-fixme-way",
+              "paint": {
+                "line-color": "red",
+                "line-opacity": 0.8,
+                "line-width": 5
+              }
+        }
       ]
     }
   ]
