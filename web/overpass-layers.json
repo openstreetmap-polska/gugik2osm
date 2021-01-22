@@ -31,7 +31,8 @@
             "line-color": "red",
             "line-opacity": 0.8,
             "line-width": 5
-          }
+          },
+          "filter": ["==", "$type", "LineString"]
         },
         {
           "id": "olayer-fixme-node-way",
