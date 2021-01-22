@@ -15,23 +15,31 @@
             "line-width": 5
           },
           "filter": ["==", "$type", "LineString"]
-        }
-        {
-          "id": "olayer-fixme-way",
-          "name": "Linie fixme ",
-          "url": "https://budynki.openstreetmap.org.pl/overpass-layers/nw_fixme.geojson",
-          "layers": [
-            {
-              "id": "olayer-fixme-way",
-              "type": "line",
-              "source": "olayer-fixme-way",
-              "paint": {
-                "line-color": "red",
-                "line-opacity": 0.8,
-                "line-width": 5
-              }
-        }
+        }      
       ]
-    }
+    },
+    {     
+      "id": "olayer-fixme-node-way",
+      "name": "Linie fixme ",
+      "url": "https://budynki.openstreetmap.org.pl/overpass-layers/nw_fixme.geojson",
+      "layers": [
+        {
+          "id": "olayer-fixme-node-way",
+          "type": "line",
+          "source": "olayer-fixme-node-way",
+          "paint": {
+            "line-color": "red",
+            "line-opacity": 0.8,
+            "line-width": 5
+          }
+          {
+            "id": "olayer-fixme-node-way",
+            "type": "circle",
+            "source": "olayer-fixme-node-way",
+            "paint": {
+              "circle-radius": 4,
+              "circle-color": "red",
+            },
+            "filter": ["==", "$type", "Point"]}
   ]
 }
