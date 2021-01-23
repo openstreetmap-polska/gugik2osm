@@ -1,7 +1,7 @@
 [out:json][timeout:900];
 area(3600049715)->.a;
 (
-  nw["fixme"](area.a);
+  way["fixme"](area.a);
 );
 out body;
 >;

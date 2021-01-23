@@ -19,28 +19,46 @@
       ]
     },
     {
-      "id": "olayer-fixme-node-way",
-      "name": "Linie i węzły fixme ",
-      "url": "https://budynki.openstreetmap.org.pl/overpass-layers/nw_fixme.geojson",
+      "id": "olayer-fixme-way",
+      "name": "WAY oznaczone fixme ",
+      "url": "https://budynki.openstreetmap.org.pl/overpass-layers/w_fixme.geojson",
       "layers": [
         {
-          "id": "olayer-fixme-way",
+          "id": "olayer-fixme-way-line",
           "type": "line",
-          "source": "olayer-fixme-node-way",
+          "source": "olayer-fixme-way",
           "paint": {
-            "line-color": "red",
-            "line-opacity": 0.8,
+            "line-color": "rgba(199,0,0,0.7)",
             "line-width": 5
           },
           "filter": ["==", "$type", "LineString"]
         },
         {
           "id": "olayer-fixme-node",
-          "type": "circle",
-          "source": "olayer-fixme-node-way",
+          "type": "fill",
+          "source": "olayer-fixme-way",
           "paint": {
-            "circle-radius": 4,
-            "circle-color": "red"
+            "fill-color": "rgba(199,0,0,0.3)",
+            "fill-outline-color": "rgba(199,0,0,0.7)"
+          },
+          "filter": ["==", "$type", "Polygon"]
+        }
+      ]
+    },
+    {
+      "id": "olayer-fixme-node",
+      "name": "NODE oznaczone fixme ",
+      "url": "https://budynki.openstreetmap.org.pl/overpass-layers/n_fixme.geojson",
+      "layers": [
+        {
+          "id": "olayer-fixme-node-only",
+          "type": "line",
+          "source": "olayer-fixme-node",
+          "paint": {
+            "circle-color": "rgba(199,0,0,0.3)",
+            "circle-radius": 12,
+            "circle-stroke-color": "rgba(199,0,0,0.7)",
+            "circle-stroke-width": 2
           },
           "filter": ["==", "$type", "Point"]
         }
