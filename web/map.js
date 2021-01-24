@@ -199,6 +199,7 @@ map.on("click", "prg2load", function (e) {
         "sitekey": reCaptchaPublicToken,
         "callback": activateReportButton
     });
+    // todo: implement recaptcha v3
     e.preventDefault();
 });
 map.on("click", "buildings", function (e) {
@@ -255,6 +256,7 @@ map.on("click", "buildings", function (e) {
         "sitekey": reCaptchaPublicToken,
         "callback": activateReportButton
     });
+    // todo: implement recaptcha v3
 });
 
 // Change the cursor to a pointer when the mouse is over the states layer.
@@ -485,6 +487,7 @@ function getPopupText(element) {
     s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportPRG(\""
     s += element.features[0].properties.lokalnyid
     s += "\"); disabled>Zgłoś</button>"
+    // todo: implement recaptcha v3
     return s
 }
 
@@ -664,6 +667,7 @@ function selectFeaturesWithPolygon(e) {
         "sitekey": reCaptchaPublicToken,
         "callback": activateReportButton
     });
+    // todo: implement recaptcha v3
     // show modal
     $("#modalSelected").modal();
 }
