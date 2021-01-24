@@ -433,6 +433,7 @@ function addOverpassSources(s) {
 }
 
 function addOverpassSource(data) {
+    // todo: add support for other values for source parameters (cluster etc)
     var definition = {
         "type": "geojson",
         "data": data.url
