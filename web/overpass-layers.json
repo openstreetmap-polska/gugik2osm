@@ -35,7 +35,7 @@
         },
         {
           "id": "olayer-fixme-node",
-          "type": "fill",
+          "type": "polygon",
           "source": "olayer-fixme-way",
           "paint": {
             "fill-color": "rgba(199,0,0,0.3)",
@@ -52,7 +52,7 @@
       "layers": [
         {
           "id": "olayer-fixme-node-only",
-          "type": "line",
+          "type": "point",
           "source": "olayer-fixme-node",
           "paint": {
             "circle-color": "rgba(199,0,0,0.3)",
