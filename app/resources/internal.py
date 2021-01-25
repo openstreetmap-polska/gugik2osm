@@ -146,6 +146,24 @@ class MapboxVectorTile(Resource):
         return response
 
 
+class Layers(Resource):
+    """Provides list of available layers with data to download. Current implementation needs refactoring."""
+
+    layer_query_mapping = [
+        {'name': 'buildings', 'active': True,
+            'queries': {'bbox': QUERIES['buildings_vertices'], 'id': QUERIES['buildings_vertices_where_id']}
+        },
+        {'name': 'addresses', 'active': True,
+            'queries': {'bbox': QUERIES['delta_where_bbox'], 'id': QUERIES['delta_where_id']}
+        },
+    ]
+
+    def get(self):
+        return {
+            'available_layers': [x['name'] for x in self.layer_query_mapping if x['active']]
+        }
+
+
 class JosmData(Resource):
     """Newer version of the function returning data as osm file with the new endpoint."""
 

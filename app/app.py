@@ -4,12 +4,13 @@ from flask_restful import Api
 from flask import Flask
 
 from resources.internal import (JosmData, PrgAddressesNotInOSM, BuildingsNotInOSM, MapboxVectorTile, AddressPointInfo,
-                                RandomLocation, Excluded, Processes, LatestUpdates)
+                                RandomLocation, Excluded, Processes, LatestUpdates, Layers)
 
 app = Flask(__name__)
 api = Api(app)
 
 api.add_resource(JosmData, '/josm_data')
+api.add_resource(Layers, '/layers/')
 api.add_resource(PrgAddressesNotInOSM, '/prg/not_in/osm/')
 api.add_resource(BuildingsNotInOSM, '/lod1/not_in/osm/')
 api.add_resource(MapboxVectorTile, '/tiles/<int:z>/<int:x>/<int:y>.pbf')
