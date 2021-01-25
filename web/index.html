@@ -52,16 +52,7 @@
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <div id="header" class="collapse navbar-collapse">
-            <div class="btn-group py-1 px-2 mx-2" role="group" aria-label="Button group with nested dropdown">
-                <button type="button" id="downloadButton" class="btn btn-light" data-toggle="tooltip" title="Limit do 50k obiektów"><i class="fas fa-file-download"></i> Pobierz dane dla JOSM</button>
-                <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                    <div class="dropdown-menu btn-light" aria-labelledby="btnGroupDrop1">
-                        <button class="dropdown-item" id="downloadAddressesButton" onclick="downloadVisibleAddresses();">Pobierz tylko adresy</button>
-                        <button class="dropdown-item" id="downloadBuildingsButton" onclick="downloadVisibleBuildings();">Pobierz tylko budynki</button>
-                    </div>
-                </div>
-            </div>
+            <button type="button" id="downloadButton" class="btn btn-light py-1 px-2 mx-2" data-toggle="modal" data-target="#modalDownload" title="Limit do 50k obiektów"><i class="fas fa-file-download"></i> Pobierz dane dla JOSM</button>
             <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2"><i class="fas fa-random"></i> Losuj lokalizację</button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-2">
@@ -111,6 +102,37 @@
             </ul>
         </div>
     </nav>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modalDownload">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Pobieranie danych</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości albo, czy nie dublują już istniejących w bazie OSM.
+                      </div>
+                      <p><b>Wybierz warstwy do pobrania:</b></p>
+                      <form>
+                     <!-- Endpoint: -->
+                      <div class="ml-2 custom-control custom-switch custom-switch-md">
+                        <input type="checkbox" class="custom-control-input" id="downloadSwitch1">
+                        <label class="custom-control-label pt-1" for="downloadSwitch1">Adresy</label>
+                       </div>
+                      <!-- --> 
+                      <button type="button" class="btn btn-success btn-lg btn-block mt-4"><i class="fas fa-file-download"></i> Pobierz</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="modalStatus">
         <div class="modal-dialog" role="document">
