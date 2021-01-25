@@ -3,6 +3,6 @@ area(3600049715)->.a;
 (
   node["fixme"](area.a);
 );
-out body;
+out skel;
 >;
 out skel qt;
