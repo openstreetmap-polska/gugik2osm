@@ -154,6 +154,7 @@ class JosmData(Resource):
         addresses_params, buildings_params = None, None
         package_export_params = None
         root = etree.Element('osm', version='0.6')
+
         if request.args.get('filter_by') == 'bbox':
             addresses_params = (float(request.args.get('xmin')),
                                 float(request.args.get('ymin')),
@@ -169,15 +170,19 @@ class JosmData(Resource):
             addresses_params = (tuple(temp1.split(',')),) if temp1 else None  # tuple of tuples was needed
             temp2 = request.args.get('buildings_ids')
             buildings_params = (tuple(temp2.split(',')),) if temp2 else None  # tuple of tuples was needed
+        elif request.args.get('filter_by') == 'geom_wkt':
+            # not implemented yet
+            abort(400)
+        else:
+            abort(400)
 
         a, b = self.data(addresses_query, addresses_params, buildings_query, buildings_params)
+
         if package_export_params:
             package_export_params['lb_adresow'] = len(a)
             package_export_params['lb_budynkow'] = len(b)
-            conn = pgdb()
-            with pgdb().cursor() as cur:
-                cur.execute(QUERIES['insert_to_package_exports'], package_export_params)
-                conn.commit()
+            self.register_bbox_export(package_export_params)
+
         root = self.prepare_xml_tree(root, a, b)
 
         return Response(
@@ -206,7 +211,13 @@ class JosmData(Resource):
             mimetype='text/xml',
             headers={'Content-disposition': 'attachment; filename=paczka_danych.osm'})
 
-    def data(self, addresses_query, addresses_params, buildings_query, buildings_params):
+    def register_bbox_export(self, package_export_params: dict) -> None:
+        conn = pgdb()
+        with conn.cursor() as cur:
+            cur.execute(QUERIES['insert_to_package_exports'], package_export_params)
+            conn.commit()
+
+    def data(self, addresses_query: str, addresses_params: tuple, buildings_query: str, buildings_params: tuple) -> Tuple[list, list]:
         addresses, buildings = [], []
         with pgdb().cursor() as cur:
             if addresses_query and addresses_params and len(addresses_params) > 0:
@@ -219,7 +230,7 @@ class JosmData(Resource):
 
         return addresses, buildings
 
-    def prepare_xml_tree(self, root, addresses, buildings):
+    def prepare_xml_tree(self, root: etree.Element, addresses: list, buildings: list) -> etree.ElementTree:
         for an in addresses_nodes(addresses):
             root.append(an)
         for bn in buildings_nodes(buildings):
