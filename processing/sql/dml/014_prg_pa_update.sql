@@ -1,4 +1,4 @@
--- okreslenie nazwy ulic
+﻿-- okreslenie nazwy ulic
 -- zgodnosc simc, podobna nazwa ulicy
 
 drop table if exists teryt.temp_ulic;
@@ -6,7 +6,7 @@ drop table if exists teryt.temp_ulic;
 select pa.lokalnyid, teryt_msc, pa.ul, pa.ulic, pa.teryt_simc, simc_mapping.sym_czesc, null::text as teryt_ulic, null::text as teryt_ulica
 into teryt.temp_ulic 
 from prg.pa, 
-(select simc.woj, simc.pow, simc.gmi, simc.sym as sym_czesc, simc.sym, simc.nazwa
+(select simc.woj, simc.pow, simc.gmi, simc.sym, simc.sym as sym_czesc, simc.nazwa
 from teryt.simc
 where rodz_gmi not in ('8', '9')
 union
