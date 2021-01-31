@@ -1,10 +1,11 @@
-drop table if exists prg.pa;
+﻿drop table if exists prg.pa;
 create unlogged table prg.pa (
 	lokalnyid uuid primary key,
 	woj text,
 	pow text,
 	gmi text,
 	terc6 text,
+	teryt7 text,
 	msc text not null,
 	simc text,
 	ul text,
@@ -26,6 +27,7 @@ INSERT INTO prg.pa
        trim(ja3.nazwa)                                                                       pow,
        trim(ja4.nazwa)                                                                       gmi,
        case when length(ja4.idteryt) = 7 then substr(ja4.idteryt, 1, 6) else ja4.idteryt end terc6,
+       ja4.idteryt									     teryt7,
        trim(m.nazwa)                                                                         msc,
        case when m.idteryt ~ '^0+$' then null else m.idteryt end                             simc,
        trim(replace(replace(replace(replace(u.nazwaglownaczesc, '&quot;' , '"'), '`', '"'), '  ', ' '), 'ul. ', '')) ul,
