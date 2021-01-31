@@ -143,7 +143,7 @@ docker run --name "postgis" --shm-size=4g -e MAINTAINANCE_WORK_MEM=512MB -p 2543
 -t kartoza/postgis - nazwa obrazu do uruchomienia, korzystamy z obrazu od razu skonfigurowanego z bazą PostgreSQL i dodatkiem PostGIS  
 
 #### Przywrócenie niezbędnych tabel:
-Najpierw tworzymy schematy "prg" i "teryt:
+Najpierw tworzymy schematy „prg” i „teryt”:
 ```
 psql -d gis -h localhost -p 25432 -U postgres -c "create schema prg;"
 ```
@@ -155,12 +155,12 @@ Następnie przywracamy kilka wybranych tabel i indeksów do schematów public i 
 pg_restore --jobs 2 --no-owner -n public -d gis -h localhost -p 25432 -U postgres db.bak
 ```
 ```
-pg_restore --jobs 2 --no-owner -n prg -t delta -t lod1_buildings -I delta_gis -I delta_lokalnyid -I delta_simc -I lod1_buildings_geom_idx -I lod1_buildings_pkey -d gis -h localhost -p 25432 -U postgres db.bak
+pg_restore --jobs 2 --no-owner -n prg -t delta -I delta_gis -I delta_lokalnyid -I delta_simc -d gis -h localhost -p 25432 -U postgres db.bak
 ```
 ```
 pg_restore --jobs 2 --no-owner -n teryt -d gis -h localhost -p 25432 -U postgres db.bak
 ```
-Na końcu trzeba podać ścieżkę do pliku jeżeli nie znajduje się w tym folderze w którym mamy otworzoną konsole.
+Na końcu trzeba podać ścieżkę do pliku, jeżeli nie znajduje się w tym folderze, w którym mamy otworzoną konsole.
 
 #### Budowa i uruchomienie kontenera
 Przechodzimy w konsoli do folderu gdzie mamy sklonowane repozytorium (do folderu gdzie jest Dockerfile) i uruchamiamy:
