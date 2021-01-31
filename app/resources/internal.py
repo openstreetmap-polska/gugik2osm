@@ -2,15 +2,17 @@ import io
 from datetime import datetime, timedelta
 from random import choice, random
 from os import environ
-from typing import Tuple, Optional
+from typing import Tuple, Dict, List
 
 from flask import request, Response
 from flask_restful import Resource, abort
 import requests as requests_lib
 from lxml import etree
 
-from common.database import pgdb, execute_sql, QUERIES, execute_values, pg
-from common.util import to_merc, Tile, bounds, buildings_xml, addresses_xml, addresses_nodes, buildings_nodes
+from common.database import pgdb, execute_sql, QUERIES, execute_values, pg, QueryParametersType, QueryOutputType
+from common.util import to_merc, Tile, bounds, buildings_xml, addresses_xml, XMLElementType
+import common.util as util
+from common.objects import Layers, LayerDefinition
 
 
 class Processes(Resource):
@@ -146,21 +148,12 @@ class MapboxVectorTile(Resource):
         return response
 
 
-class Layers(Resource):
-    """Provides list of available layers with data to download. Current implementation needs refactoring."""
-
-    layer_query_mapping = [
-        {'name': 'buildings', 'active': True,
-            'queries': {'bbox': QUERIES['buildings_vertices'], 'id': QUERIES['buildings_vertices_where_id']}
-        },
-        {'name': 'addresses', 'active': True,
-            'queries': {'bbox': QUERIES['delta_where_bbox'], 'id': QUERIES['delta_where_id']}
-        },
-    ]
+class AvailableLayers(Resource):
+    """Provides list of ids of available layers with data to download."""
 
     def get(self):
         return {
-            'available_layers': [x['name'] for x in self.layer_query_mapping if x['active']]
+            'available_layers': Layers().active_ids_with_names
         }
 
 
@@ -168,40 +161,60 @@ class JosmData(Resource):
     """Newer version of the function returning data as osm file with the new endpoint."""
 
     def get(self):
-        addresses_query, buildings_query = self.queries()
-        addresses_params, buildings_params = None, None
         package_export_params = None
         root = etree.Element('osm', version='0.6')
+        layers = Layers()
 
+        if request.args.get('layers', '') == '':
+            selected_layers = layers.active
+        else:
+            selected_layers = [
+                layers[layer_id] for layer_id in request.args.get('layers').split(',')
+                if str(layer_id).lower() in layers.active_ids
+            ]
+            if len(selected_layers) == 0:
+                abort(400)
+
+        selected_layers = list(set(selected_layers))  # remove duplicates if any
+
+        data = {}
         if request.args.get('filter_by') == 'bbox':
-            addresses_params = (float(request.args.get('xmin')),
-                                float(request.args.get('ymin')),
-                                float(request.args.get('xmax')),
-                                float(request.args.get('ymax')))
-            buildings_params = addresses_params
-            package_export_params = {'xmin': addresses_params[0],
-                                     'ymin': addresses_params[1],
-                                     'xmax': addresses_params[2],
-                                     'ymax': addresses_params[3]}
+            bbox = (
+                float(request.args.get('xmin')), float(request.args.get('ymin')),
+                float(request.args.get('xmax')), float(request.args.get('ymax'))
+            )
+            package_export_params = {'xmin': bbox[0], 'ymin': bbox[1], 'xmax': bbox[2], 'ymax': bbox[3]}
+            data = self.data_for_layers([(layer, bbox) for layer in selected_layers], 'bbox')
         elif request.args.get('filter_by') == 'id':
+            selected_layers_and_params = []
             temp1 = request.args.get('addresses_ids')
             addresses_params = (tuple(temp1.split(',')),) if temp1 else None  # tuple of tuples was needed
+            if addresses_params:
+                selected_layers_and_params.append((layers['addresses_to_import'], addresses_params))
             temp2 = request.args.get('buildings_ids')
             buildings_params = (tuple(temp2.split(',')),) if temp2 else None  # tuple of tuples was needed
+            if buildings_params:
+                selected_layers_and_params.append((layers['buildings_to_import'], buildings_params))
+            data = self.data_for_layers(selected_layers_and_params, 'id')
         elif request.args.get('filter_by') == 'geom_wkt':
             # not implemented yet
             abort(400)
         else:
             abort(400)
 
-        a, b = self.data(addresses_query, addresses_params, buildings_query, buildings_params)
+        xml_children = []
+        for k, v in data.items():
+            xml_children.extend(v['data'])
+            if package_export_params and layers[k].export_parameter_name:
+                package_export_params[layers[k].export_parameter_name] = v['count']
+        root = util.prepare_xml_tree(root, xml_children)
 
         if package_export_params:
-            package_export_params['lb_adresow'] = len(a)
-            package_export_params['lb_budynkow'] = len(b)
+            required_parameters = ['lb_adresow', 'lb_budynkow']
+            for param in required_parameters:
+                if package_export_params.get(param) is None:
+                    package_export_params[param] = 0
             self.register_bbox_export(package_export_params)
-
-        root = self.prepare_xml_tree(root, a, b)
 
         return Response(
             etree.tostring(root, encoding='UTF-8'),
@@ -212,8 +225,8 @@ class JosmData(Resource):
         if request.args.get('filter_by') != 'id':
             abort(400)
 
-        addresses_query, buildings_query = self.queries()
         root = etree.Element('osm', version='0.6')
+        layers = Layers()
 
         temp = request.get_json()
         temp1 = temp.get('addresses_ids')
@@ -221,8 +234,17 @@ class JosmData(Resource):
         addresses_params = (tuple(temp1),) if temp1 and len(temp1) > 0 else None
         buildings_params = (tuple(temp2),) if temp2 and len(temp2) > 0 else None
 
-        a, b = self.data(addresses_query, addresses_params, buildings_query, buildings_params)
-        root = self.prepare_xml_tree(root, a, b)
+        selected_layers_and_params = []
+        if addresses_params:
+            selected_layers_and_params.append((layers['addresses_to_import'], addresses_params))
+        if buildings_params:
+            selected_layers_and_params.append((layers['buildings_to_import'], buildings_params))
+
+        data = self.data_for_layers(selected_layers_and_params, 'id')
+        xml_children = []
+        for k, v in data.items():
+            xml_children.extend(v['data'])
+        root = util.prepare_xml_tree(root, xml_children)
 
         return Response(
             etree.tostring(root, encoding='UTF-8'),
@@ -235,46 +257,25 @@ class JosmData(Resource):
             cur.execute(QUERIES['insert_to_package_exports'], package_export_params)
             conn.commit()
 
-    def data(self, addresses_query: str, addresses_params: tuple, buildings_query: str, buildings_params: tuple) -> Tuple[list, list]:
-        addresses, buildings = [], []
+    def data_for_layers(self, layers: List[Tuple[LayerDefinition, QueryParametersType]], filter_by: str) -> Dict[str, XMLElementType]:
+        data = {}
+
         with pgdb().cursor() as cur:
-            if addresses_query and addresses_params and len(addresses_params) > 0:
-                cur = execute_sql(cur, addresses_query, addresses_params)
-                addresses = cur.fetchall()
+            for layer, params in layers:
+                if filter_by == 'bbox':
+                    query = layer.query_by_bbox
+                elif filter_by == 'id':
+                    query = layer.query_by_id
+                else:
+                    raise NotImplementedError()
+                cur = execute_sql(cur, query, params)
+                temp = cur.fetchall()
+                data[layer.id] = {
+                    'count': len(temp),
+                    'data': layer.convert_to_xml_element(temp)
+                }
 
-            if buildings_query and buildings_params and len(buildings_params) > 0:
-                cur = execute_sql(cur, buildings_query, buildings_params)
-                buildings = cur.fetchall()
-
-        return addresses, buildings
-
-    def prepare_xml_tree(self, root: etree.Element, addresses: list, buildings: list) -> etree.ElementTree:
-        for an in addresses_nodes(addresses):
-            root.append(an)
-        for bn in buildings_nodes(buildings):
-            root.append(bn)
-        return root
-
-    def queries(self) -> Tuple[Optional[str], Optional[str]]:
-        if request.args.get('filter_by') == 'bbox':
-            if not (
-                    'xmin' in request.args and 'xmax' in request.args
-                    and
-                    'ymin' in request.args and 'ymax' in request.args
-            ):
-                abort(400)
-        if request.args.get('filter_by') not in {'bbox', 'id'}:
-            abort(400)
-
-        addresses_query, buildings_query = None, None
-        if request.args.get('filter_by') == 'bbox':
-            addresses_query = QUERIES['delta_where_bbox']
-            buildings_query = QUERIES['buildings_vertices']
-        elif request.args.get('filter_by') == 'id':
-            addresses_query = QUERIES['delta_where_id']
-            buildings_query = QUERIES['buildings_vertices_where_id']
-
-        return addresses_query, buildings_query
+        return data
 
 
 class PrgAddressesNotInOSM(Resource):

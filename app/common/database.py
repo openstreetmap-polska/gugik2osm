@@ -1,13 +1,18 @@
 from os import environ
 from os.path import join, dirname, abspath
 import atexit
-from typing import Union
+from typing import Union, Any, Dict, Optional, Tuple, List, Iterable
 from datetime import datetime, timezone
 
 import psycopg2 as pg
 import psycopg2.extensions
 import psycopg2.errors
 from psycopg2.extras import execute_values
+
+QueryParametersType = Union[Iterable, Dict[str, Any]]
+QueryOutputType = List[Optional[Tuple[Any]]]
+PGCursor = psycopg2.extensions.cursor
+PGConnection = psycopg2.extensions.connection
 
 
 SQL_PATH = join(dirname(abspath(__file__)), 'queries')
@@ -31,10 +36,10 @@ QUERIES = {
     'insert_to_package_exports': str(open(join(SQL_PATH, 'insert_to_package_exports.sql'), 'r').read()),
     'latest_updates': str(open(join(SQL_PATH, 'latest_updates.sql'), 'r').read()),
 }
-conn: psycopg2.extensions.connection = None
+conn: Union[PGConnection, None] = None
 
 
-def pgdb() -> psycopg2.extensions.connection:
+def pgdb() -> PGConnection:
     """Method returns connection to the DB. If there is no connection active it creates one."""
     global conn
     if conn:
@@ -52,7 +57,7 @@ def close_db_connection():
         conn.close()
 
 
-def execute_sql(cursor, query: str, parameters: Union[tuple, dict] = None):
+def execute_sql(cursor: PGCursor, query: str, parameters: QueryParametersType = None) -> PGCursor:
     """Method executes SQL query in a given cursor with given parameters. Provides error handling.
     In case of exception it rolls back transaction and closes the connection."""
     global conn
@@ -66,8 +71,9 @@ def execute_sql(cursor, query: str, parameters: Union[tuple, dict] = None):
     except:
         print(datetime.now(timezone.utc).astimezone().isoformat(),
               f'- Error while executing query: {query}, with parameters: {parameters}')
-        conn.rollback()
-        conn.close()
+        if conn:
+            conn.rollback()
+            conn.close()
         conn = None
         raise
     return cursor
