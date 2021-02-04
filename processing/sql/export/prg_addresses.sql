@@ -14,7 +14,8 @@ COPY (
         st_x(gml) x_2180,
         st_y(gml) y_2180,
         st_x(st_transform(gml, 4326)) x_4326,
-        st_y(st_transform(gml, 4326)) y_4326
+        st_y(st_transform(gml, 4326)) y_4326,
+        osm_ulica
     from prg.pa prg
     join teryt.simc on prg.teryt_simc = simc.sym
     join teryt.terc on simc.woj=terc.woj and simc.pow=terc.pow and simc.gmi=terc.gmi and simc.rodz_gmi=terc.rodz
