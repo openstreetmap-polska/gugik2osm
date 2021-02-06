@@ -235,6 +235,27 @@ lookup_funSzczegolowaBudynku = {
 }
 
 
+def incremented_name(name: str) -> str:
+    """Helper function. Returns name with the next number.
+       Examples:
+        test -> test_01
+        test_01 -> test_02
+        test_02 -> test_03
+        etc.
+    """
+    digits: str = ''
+    for c in reversed(name):
+        if c.isdigit():
+            digits = c + digits
+        else:
+            break
+    if len(digits) > 0:
+        no: int = int(digits)
+        return name[:-1 * len(digits)] + str(no + 1).rjust(2, '0')
+    else:
+        return name + '_01'
+
+
 class Namespaces:
 
     def __init__(self):
@@ -357,6 +378,16 @@ class Fields:
             'x_kodKarto1000k',
             'funOgolnaBudynku',
             'funSzczegolowaBudynku',
+            'funSzczegolowaBudynku_01',
+            'funSzczegolowaBudynku_02',
+            'funSzczegolowaBudynku_03',
+            'funSzczegolowaBudynku_04',
+            'funSzczegolowaBudynku_05',
+            'funSzczegolowaBudynku_06',
+            'funSzczegolowaBudynku_07',
+            'funSzczegolowaBudynku_08',
+            'funSzczegolowaBudynku_09',
+            'funSzczegolowaBudynku_10',
             'liczbaKondygnacji',
             'kodKst',
             'nazwa',
@@ -446,27 +477,17 @@ class XML:
             # if no children and fields in the list of fields we want the values of
             # add data to dictionary
             if len(list(x)) == 0 and name in self.Fields.tag[typ]:
-                # lokalnyid tag exists twice within a record, we will keep only the first
+                # some tags appear multiple times with different values
+                # but no attribute to make them distinct
+                # so if we already have a key present
+                # create new key with appended 2 digit number
                 if name in result:
-                    continue
-                # old stuff from prg parser
-                # # some tags appear multiple times with different values
-                # # but not attribute to make them distinct
-                # # so if we already have a key present
-                # # create new key with appended 2 digit number
-                # # if tag has empty text but contains xlink xref attribute
-                # # then take that as a value
-                # if name in result:
-                #     last_name = sorted([x for x in result.keys() if str(x).startswith(name)], reverse=True)[0]
-                #     name = incremented_name(last_name)
-                # # if value or href link start with url 'http://geoportal.gov.pl/PZGIK/dane/',
-                # # remove it as it is not necessary
-                # if x.text and x.text.startswith('http://geoportal.gov.pl'):
-                #     val = str(x.text)[35:]
-                # elif x.text is None and x.get(self.NS.XLINK) and x.get(self.NS.XLINK).startswith('http://geoportal.gov.pl'):
-                #     val = str(x.get(self.NS.XLINK))[35:]
-                # else:
-                #     val = x.text
+                    if name == 'lokalnyId':
+                        continue
+                    else:
+                        last_name = sorted([x for x in result.keys() if str(x).startswith(name)], reverse=True)[0]
+                        name = incremented_name(last_name)
+
                 val = x.text
                 result[name] = x.get(self.NS.XLINK) if val is None and x.get(self.NS.XLINK) else val
             # if geometry
@@ -501,13 +522,13 @@ class Parser:
         else:
             self.file_obj: BinaryIO = open(file_path, 'rb')
 
-        self.powiat = re.search(r'BDOT10k_(\d{4})\.zip',
+        self.powiat = re.search(r'.*(\d{4}).*',
                                 os.path.basename(file_path),
                                 flags=re.RegexFlag.IGNORECASE
                                 ).group(1)
 
         self.NS: Namespaces = Namespaces()
-        self.NS.update_from_file(self.file_obj)
+        # self.NS.update_from_file(self.file_obj)
         self.file_obj.seek(0)  # go back to beginning of file after reading first lines for updating namespaces
         self.Tags: Tags = Tags(self.NS)
         self.Fields: Fields = Fields(self.Tags, only_basic_fields)
