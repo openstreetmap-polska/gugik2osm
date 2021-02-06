@@ -1,4 +1,4 @@
-﻿-- okreslenie nazwy ulic
+-- okreslenie nazwy ulic
 -- zgodnosc simc, podobna nazwa ulicy
 
 drop table if exists teryt.temp_ulic;

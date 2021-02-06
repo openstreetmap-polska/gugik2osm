@@ -1,4 +1,4 @@
-﻿-- aktualizacja simc na podstawie terytu
+-- aktualizacja simc na podstawie terytu
 -- jezeli nadal simc jest nieokreslone, to wybieramy na zasadzie podobienstwa nazwy miejscowosci
 update prg.pa
 set teryt_simc = (
