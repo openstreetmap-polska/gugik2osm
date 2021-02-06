@@ -25,7 +25,10 @@ insert into bdot_buildings_new (
     b.funkcja_szczegolowa_budynku,
     b.aktualnosc_geometrii,
     b.aktualnosc_atrybutow,
-    m.building,
+    case
+      when coalesce(building, amenity, man_made, leisure, historic, tourism) is null then 'yes'
+      else m.building
+    end building,
     m.amenity,
     m.man_made,
     m.leisure,
