@@ -1,4 +1,4 @@
-﻿-- okreslenie nazwy ulic
+-- okreslenie nazwy ulic
 -- zgodnosc simc, nazwa ulicy (nazwa_1)
 update prg.pa as pa
 set teryt_ulica = trim(concat(cm.m, ' ', (u1.nazwa_2 || ' '), u1.nazwa_1)), teryt_ulic = u1.sym_ul
