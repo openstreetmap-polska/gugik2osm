@@ -49,7 +49,7 @@ python3.7 -u /opt/gugik2osm/git/processing/scripts/prg_prepare.py --full --dsn "
 echo "Finished preparing data" >> /opt/gugik2osm/log/prg_processing.log
 date >> /opt/gugik2osm/log/prg_processing.log
 echo "Exporting unmatched streets" >> /opt/gugik2osm/log/prg_processing.log
-psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -f /opt/gugik2osm/git/processing/sql/export/osm_street_mappings.sql > /opt/gugik2osm/temp/export/unmatched_osm_street_mappings.csv
+psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -f /opt/gugik2osm/git/processing/sql/export/osm_street_mapping.sql > /opt/gugik2osm/temp/export/unmatched_osm_street_mappings.csv
 mv /opt/gugik2osm/temp/export/unmatched_osm_street_mappings.csv /var/www/data/unmatched_osm_street_mappings.csv
 date >> /opt/gugik2osm/log/prg_processing.log
 echo "Caching low zoom tiles" >> /opt/gugik2osm/log/prg_processing.log
