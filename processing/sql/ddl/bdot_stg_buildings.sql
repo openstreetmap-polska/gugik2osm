@@ -99,7 +99,7 @@ CREATE OR REPLACE VIEW bdot.v_bubd_a as
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1110', 'budynki mieszkalne jednorodzinne') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1121', 'budynki o dwóch mieszkaniach') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1122', 'budynki o trzech i więcej mieszkaniach') on conflict do nothing;
-INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1130', 'budynki zbiorowego zamieszkani') on conflict do nothing;
+INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1130', 'budynki zbiorowego zamieszkania') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1211', 'budynki hoteli') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1212', 'pozostałe budynki zakwaterowania turystycznego') on conflict do nothing;
 INSERT INTO bdot.lookup_funogolnabudynku VALUES ('1220', 'budynki biurowe') on conflict do nothing;

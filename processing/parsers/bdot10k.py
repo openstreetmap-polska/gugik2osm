@@ -47,7 +47,7 @@ lookup_funOgolnaBudynku = {
     '1110': 'budynki mieszkalne jednorodzinne',
     '1121': 'budynki o dwóch mieszkaniach',
     '1122': 'budynki o trzech i więcej mieszkaniach',
-    '1130': 'budynki zbiorowego zamieszkani',
+    '1130': 'budynki zbiorowego zamieszkania',
     '1211': 'budynki hoteli',
     '1212': 'pozostałe budynki zakwaterowania turystycznego',
     '1220': 'budynki biurowe',
