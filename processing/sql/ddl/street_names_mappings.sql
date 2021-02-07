@@ -1,4 +1,4 @@
-﻿drop table if exists street_names_mappings;
+drop table if exists street_names_mappings;
 
 create table street_names_mappings (
   teryt_simc_code text not null,
@@ -10894,3 +10894,28 @@ insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt
 insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0930800', '55853', 'Z. Padlewskiego', 'Zygmunta Padlewskiego');
 insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0944534', '47960', 'Generała Ch. de Gaulle''a', 'Generała Charlsa de Gaulle''a');
 
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0987897', '57249', 'Hieronima Miąca ps. Korsarz', 'Hieronima Miąca "Korsarza"');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585868', '38970', 'Ignacego D. Kaczmarka', 'Ignacego Kaczmarka');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0734771', '48112', 'Ks. Jerzego Popiełuszki', 'Księdza Jerzego Popiełuszki');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0847096', '56202', 'P. J. Działyńskiego', 'Pawła Jana Działyńskiego');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0343912', '57141', 'im. Kardynała Adama Sapiehy.', 'Kardynała Adama Sapiehy');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585957', '55802', 'kpt. Antoniego Szyftera', 'Kapitana Antoniego Szyftera');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585868', '32048', 'ks. Gładysza', 'Księdza Stanisława Kostki Gładysza');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0363234', '40976', 'ks. Kardynała Stefana Wyszyńskiego', 'Księdza Kardynała Stefana Wyszyńskiego');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585868', '12072', 'ks. Malinowskiego', 'Księdza Franciszka Ksawerego Malinowskiego');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585868', '23758', 'ks. Piotra Wawrzyniaka', 'Księdza Piotra Wawrzyniaka');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0942765', '57229', 'plac Teatralny im. Kazimierza Kutza', 'Plac Teatralny Imienia Kazimierza Kutza');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0972750', '45534', 'por. Ostrego', 'Porucznika "Ostrego"');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585897', '43303', 'prof. Jana Kozłowskiego', 'Profesora Jana Kozłowskiego');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585897', '39264', 'prof. Wacława Strażewicza', 'Profesora Wacława Strażewicza');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585839', '36087', 'płk. Andrzeja Kopy', 'Pułkownika Andrzeja Kopy');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0166835', '03653', 'płk. Dąbka', 'Pułkownika Stanisława Dąbka');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0973375', '56630', 'płk. Rębajło', 'Pułkownika Karola Kality "Rębajło"');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0931862', '36707', 'rynek im. Powstańców 1863', 'Rynek Imienia Powstańców 1863');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0315991', '52365', 'Św. Józefa', 'Świętego Józefa');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0597890', '53702', 'Św. Marcina', 'Świętego Marcina');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0585868', '48221', 'Św. Rocha', 'Świętego Rocha');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0316051', '57337', 'Św. Weroniki', 'Świętej Weroniki');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0920284', '07492', 'św. Jerzego', 'Świętego Jerzego');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0920284', '07626', 'św. Józefa', 'Świętego Józefa');
+insert into public.street_names_mappings(teryt_simc_code, teryt_ulic_code, teryt_street_name, osm_street_name) values ('0586098', '12351', 'św. Marii Magdaleny', 'Świętej Marii Magdaleny');
