@@ -166,7 +166,7 @@ class JosmData(Resource):
         layers = Layers()
 
         if request.args.get('layers', '') == '':
-            selected_layers = layers.active
+            selected_layers = layers.default
         else:
             selected_layers = [
                 layers[layer_id] for layer_id in request.args.get('layers').split(',')

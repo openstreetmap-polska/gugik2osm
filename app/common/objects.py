@@ -14,6 +14,7 @@ class LayerDefinition:
     convert_to_xml_element: Callable
     export_parameter_name: str
     active: bool = True
+    default: bool = False
 
     def __hash__(self):
         return hash(self.id)
@@ -39,7 +40,8 @@ class Layers:
             query_by_bbox=QUERIES['delta_where_bbox'],
             convert_to_xml_element=addresses_nodes,
             export_parameter_name='lb_adresow',
-            active=True
+            active=True,
+            default=True
         ),
         LayerDefinition(
             id='buildings_to_import',
@@ -48,7 +50,8 @@ class Layers:
             query_by_bbox=QUERIES['buildings_vertices'],
             convert_to_xml_element=buildings_nodes,
             export_parameter_name='lb_budynkow',
-            active=True
+            active=True,
+            default=True
         ),
     ]
     _dict_of_layers = {layer.id: layer for layer in _list_of_layers}
@@ -56,6 +59,10 @@ class Layers:
     @property
     def active(self) -> List[LayerDefinition]:
         return [layer for layer in self._list_of_layers if layer.active]
+
+    @property
+    def default(self) -> List[LayerDefinition]:
+        return [layer for layer in self._list_of_layers if layer.default]
 
     @property
     def all(self) -> List[LayerDefinition]:
