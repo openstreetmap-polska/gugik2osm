@@ -68,7 +68,7 @@
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <div id="header" class="collapse navbar-collapse">
-            <button type="button" id="downloadButton" class="btn btn-light py-1 px-2 mx-2" data-toggle="modal"
+            <button type="button" class="btn btn-light py-1 px-2 mx-2" data-toggle="modal"
                 data-target="#modalDownload" title="Limit do 50k obiektów"><i class="fas fa-file-download"></i> Pobierz
                 dane dla JOSM</button>
             <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2"><i
@@ -148,16 +148,11 @@
                         albo, czy nie dublują już istniejących w bazie OSM.
                     </div>
                     <p><b>Wybierz warstwy do pobrania:</b></p>
-                    <form>
-                        <!-- Endpoint: -->
-                        <div class="ml-2 custom-control custom-switch custom-switch-md">
-                            <input type="checkbox" class="custom-control-input" id="downloadSwitch1">
-                            <label class="custom-control-label pt-1" for="downloadSwitch1">Adresy</label>
-                        </div>
-                        <!-- -->
-                        <button type="button" class="btn btn-success btn-lg btn-block mt-4"><i
-                                class="fas fa-file-download"></i> Pobierz</button>
-                    </form>
+                    <div>
+                        <div id="layerPicker"></div>
+                        <button type="button" class="btn btn-success btn-lg btn-block mt-4" id="downloadButton">
+                            <i class="fas fa-file-download"></i> Pobierz</button>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>

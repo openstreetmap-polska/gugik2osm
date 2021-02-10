@@ -3,6 +3,7 @@ var reCaptchaPublicToken = "6Lfwg6kZAAAAAAh5yX3y0Nk4XWK-i9tMThhhHgRW";
 var updatesLayerURL = "https://budynki.openstreetmap.org.pl/updates.geojson";
 var vectorTilesURL = "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf";
 var overpass_layers_url = "https://budynki.openstreetmap.org.pl/overpass-layers.json";
+var downloadable_layers_url = "https://budynki.openstreetmap.org.pl/layers/";
 var map = new mapboxgl.Map({
     "container": "map",
     "hash": "map",
@@ -338,7 +339,14 @@ window.onload = function() {
     var xmax = bounds[1][0];
     var ymin = bounds[0][1];
     var ymax = bounds[1][1];
-    var theUrl = "/josm_data?filter_by=bbox&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax
+    var html_elements = document.getElementById("layerPicker").getElementsByTagName("input");
+    var layerIds = [];
+    for (i = 0; i < html_elements.length; i++) {
+        var temp = html_elements.item(i);
+        if (temp.checked) layerIds.push(temp.getAttribute("id"));
+    }
+    console.log(layerIds);
+    var theUrl = "/josm_data?filter_by=bbox&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax+"&layers="+layerIds.join(",");
     console.log(theUrl);
     window.open(theUrl);
   }
@@ -400,6 +408,33 @@ window.onload = function() {
       .then(response => response.json())
       .then(addOverpassSources)
       .then(insertLayersTogglesIntoDOM);
+
+  // add layers to layer picker in download modal
+  fetch(downloadable_layers_url)
+    .then(response => response.json())
+    .then(insertDownloadableLayersIntoDOM);
+
+}
+
+function prepareDownloadableLayerHTML (layer) {
+//    var temp = "<br><label class=\"switch\"><input id=" + layer.id + " type=\"checkbox\"";
+//    if (layer.default) temp += " checked ";
+//    temp += "><span class=\"slider round\"></span></label>";
+//    temp += "<label for=" + layer.id + ">" + layer.name + "</label>";
+
+    var temp = "<div class=\"ml-2 custom-control custom-switch custom-switch-md\">";
+    temp += "<input type=\"checkbox\" class=\"custom-control-input\" id=\"" + layer.id + "\"";
+    if (layer.default) temp += " checked ";
+    temp += "><label class=\"custom-control-label pt-1\" for=\"" + layer.id + "\">"+ layer.name + "</label></div>";
+    return temp
+}
+
+function insertDownloadableLayersIntoDOM (data) {
+    var raw_html = data.available_layers.map(prepareDownloadableLayerHTML).join("\n");
+    var html_element = document.getElementById("layerPicker");
+    console.log(data);
+    console.log(raw_html);
+    html_element.insertAdjacentHTML("beforeend", raw_html);
 }
 
 function insertLayersTogglesIntoDOM (data) {
