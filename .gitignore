@@ -135,3 +135,5 @@ dmypy.json
 *.osm.pbf
 
 /db_scripts/state.txt
+/workspace.code-workspace
+.vscode/settings.json
