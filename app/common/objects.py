@@ -74,7 +74,7 @@ class Layers:
 
     @property
     def active_ids_with_names(self) -> List[Dict[str, str]]:
-        return [{'id': layer.id, 'name': layer.name} for layer in self.active]
+        return [{'id': layer.id, 'name': layer.name, 'default': layer.default} for layer in self.active]
 
     def __getitem__(self, item) -> LayerDefinition:
         return self._dict_of_layers[item]
