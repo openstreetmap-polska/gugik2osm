@@ -28,8 +28,6 @@ RUN ln -sf /opt/gugik2osm/conf/supervisord.conf /etc/supervisor/conf.d/gugik2osm
 # remove default nginx config
 RUN rm /etc/nginx/sites-enabled/default
 RUN rm /etc/nginx/sites-available/default
-# make directory for socket used by gunicorn
-RUN mkdir /run/gugik2osm/
 # make directory for overpass layers
 RUN mkdir /var/www/overpass-layers/
 
