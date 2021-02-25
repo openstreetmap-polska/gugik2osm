@@ -1,0 +1,9 @@
+[Unit]
+Description=Skrypt tworzący folder dla socketu używanego do komunikacji między nginx i gunicorn. Do uruchomienia przy starcie systemu.
+
+[Service]
+User=root
+ExecStart=/opt/gugik2osm/conf/create_socket_folder.sh
+
+[Install]
+WantedBy=multi-user.target

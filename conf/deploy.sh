@@ -19,6 +19,8 @@ cp /opt/gugik2osm/git/imposm3/poland.geojson /opt/gugik2osm/imposm3/
 cp /opt/gugik2osm/git/imposm3/imposm.service /opt/gugik2osm/imposm3/
 sudo cp /opt/gugik2osm/imposm3/imposm.service /etc/systemd/system/imposm.service
 sudo chmod 600 /etc/systemd/system/imposm.service
+sudo cp /opt/gugik2osm/conf/create_socket_folder.service /etc/systemd/system/create_socket_folder.service
+sudo chmod 600 /etc/systemd/system/create_socket_folder.service
 sudo systemctl daemon-reload
 sudo service nginx restart
 
