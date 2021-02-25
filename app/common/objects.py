@@ -15,6 +15,7 @@ class LayerDefinition:
     export_parameter_name: str
     active: bool = True
     default: bool = False
+    warning: str = ''
 
     def __hash__(self):
         return hash(self.id)
@@ -53,6 +54,32 @@ class Layers:
             active=True,
             default=True
         ),
+        # LayerDefinition(
+        #     id='addresses',
+        #     name='Wszystkie adresy z PRG',
+        #     query_by_id=QUERIES['delta_where_id'],
+        #     query_by_bbox=QUERIES['delta_where_bbox'],
+        #     convert_to_xml_element=addresses_nodes,
+        #     export_parameter_name='lb_adresow',
+        #     active=False,
+        #     default=False,
+        #     warning='Dla zaawansowanych edytorów. ' +
+        #             'Ta warstwa zawiera wszystkie adresy z PRG na danym obszarze i nie nadaje się do bezpośredniego ' +
+        #             'importu. Używaj z rozwagą.'
+        # ),
+        LayerDefinition(
+            id='buildings',
+            name='Wszystkie budynki z BDOT10k',
+            query_by_id=QUERIES['buildings_all_id'],
+            query_by_bbox=QUERIES['buildings_all_bbox'],
+            convert_to_xml_element=buildings_nodes,
+            export_parameter_name='lb_budynkow',
+            active=False,
+            default=False,
+            warning='Nie nadaje się do bezpośredniego importu. ' +
+                    'Ta warstwa zawiera wszystkie budynki (z warstwy BUBD) z BDOT10k na danym obszarze ' +
+                    'i służy do podmieniania geometrii istniejących w OSM budynków. Dla zaawansowanych edytorów.'
+        ),
     ]
     _dict_of_layers = {layer.id: layer for layer in _list_of_layers}
 
@@ -74,7 +101,10 @@ class Layers:
 
     @property
     def active_ids_with_names(self) -> List[Dict[str, str]]:
-        return [{'id': layer.id, 'name': layer.name, 'default': layer.default} for layer in self.active]
+        return [
+            {'id': layer.id, 'name': layer.name, 'default': layer.default, 'warning': layer.warning}
+            for layer in self.active
+        ]
 
     def __getitem__(self, item) -> LayerDefinition:
         return self._dict_of_layers[item]

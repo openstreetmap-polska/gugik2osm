@@ -425,7 +425,12 @@ function prepareDownloadableLayerHTML (layer) {
     var temp = "<div class=\"ml-2 custom-control custom-switch custom-switch-md\">";
     temp += "<input type=\"checkbox\" class=\"custom-control-input\" id=\"" + layer.id + "\"";
     if (layer.default) temp += " checked ";
-    temp += "><label class=\"custom-control-label pt-1\" for=\"" + layer.id + "\">"+ layer.name + "</label></div>";
+    temp += "><label class=\"custom-control-label pt-1\" for=\"" + layer.id + "\">"+ layer.name + " ";
+    if (layer.warning != "") {
+        temp += "<i class=\"fa fa-exclamation-triangle\" style=\"color:orange\" aria-hidden=\"true\"></i><em class=\"text-muted\">";
+        temp += " " + layer.warning + "</em></label>";
+    }
+    temp += "</div>";
     return temp
 }
 
