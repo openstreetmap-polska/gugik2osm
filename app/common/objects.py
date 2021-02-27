@@ -74,7 +74,7 @@ class Layers:
             query_by_bbox=QUERIES['buildings_all_bbox'],
             convert_to_xml_element=buildings_nodes,
             export_parameter_name='lb_budynkow',
-            active=False,
+            active=True,
             default=False,
             warning='Nie nadaje się do bezpośredniego importu. ' +
                     'Ta warstwa zawiera wszystkie budynki (z warstwy BUBD) z BDOT10k na danym obszarze ' +
