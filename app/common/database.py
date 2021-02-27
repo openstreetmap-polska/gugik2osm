@@ -17,6 +17,8 @@ PGConnection = psycopg2.extensions.connection
 
 SQL_PATH = join(dirname(abspath(__file__)), 'queries')
 QUERIES = {
+    'buildings_all_bbox': str(open(join(SQL_PATH, 'buildings_all_bbox.sql'), 'r').read()),
+    'buildings_all_id': str(open(join(SQL_PATH, 'buildings_all_id.sql'), 'r').read()),
     'buildings_vertices': str(open(join(SQL_PATH, 'buildings_vertices.sql'), 'r').read()),
     'buildings_vertices_where_id': str(open(join(SQL_PATH, 'buildings_vertices_where_id.sql'), 'r').read()),
     'cached_mvt': str(open(join(SQL_PATH, 'cached_mvt.sql'), 'r').read()),
