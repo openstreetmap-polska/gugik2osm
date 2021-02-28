@@ -711,7 +711,7 @@ class PostgreSQLWriter(SQL):
                         cast(x_aktualnosca as date) aktualnosc_atrybutow,
                         cast(koniecwersjiobiektu as timestamp) koniecwersjiobiektu,
                         kodkst kod_kst,
-                        ST_GeomFromGML(SUBSTRING(geometry, 54, length(geometry) - 64)) geom_a_2180
+                        ST_GeomFromGML((xpath('/geometry/*', geometry::xml))[1]::text) geom_a_2180
                     FROM {t_bubd_a}
                     LEFT JOIN {t_lookup_x_kod} using (x_kod)
                     LEFT JOIN {t_lookup_x_katIstnienia} using (x_katIstnienia)

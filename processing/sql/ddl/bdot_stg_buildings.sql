@@ -76,7 +76,7 @@ CREATE OR REPLACE VIEW bdot.v_bubd_a as
         cast(x_aktualnosca as date) aktualnosc_atrybutow,
         cast(koniecwersjiobiektu as timestamp) koniecwersjiobiektu,
         kodkst kod_kst,
-        ST_GeomFromGML(SUBSTRING(geometry, 54, length(geometry) - 64)) geom_a_2180
+        ST_GeomFromGML((xpath('/geometry/*', geometry::xml))[1]::text) geom_a_2180
     FROM bdot.stg_budynki_ogolne_poligony b
     LEFT JOIN bdot.lookup_x_kod using (x_kod)
     LEFT JOIN bdot.lookup_x_katistnienia using (x_katIstnienia)
