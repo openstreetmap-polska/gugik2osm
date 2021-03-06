@@ -1,5 +1,5 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidG9tYXN6dCIsImEiOiJjazg2Nno3ZWswZDZ5M2ZvdHdxejFnbGNmIn0.P4_K-eykAt7kpVVq0GrESQ';
-var reCaptchaPublicToken = "6Lfwg6kZAAAAAAh5yX3y0Nk4XWK-i9tMThhhHgRW";
+//var reCaptchaPublicToken = "6Lfwg6kZAAAAAAh5yX3y0Nk4XWK-i9tMThhhHgRW";
 var updatesLayerURL = "https://budynki.openstreetmap.org.pl/updates.geojson";
 var vectorTilesURL = "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf";
 var overpass_layers_url = "https://budynki.openstreetmap.org.pl/overpass-layers.json";
@@ -195,11 +195,11 @@ map.on("click", "prg2load", function (e) {
     .setLngLat(e.lngLat)
     .setHTML(getPopupText(e))
     .addTo(map);
-    grecaptcha.render(
-        "recaptcha4addresses", {
-        "sitekey": reCaptchaPublicToken,
-        "callback": activateReportButton
-    });
+//    grecaptcha.render(
+//        "recaptcha4addresses", {
+//        "sitekey": reCaptchaPublicToken,
+//        "callback": activateReportButton
+//    });
     // todo: implement recaptcha v3
     e.preventDefault();
 });
@@ -244,19 +244,20 @@ map.on("click", "buildings", function (e) {
     s += "</table><br>"
 
     s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
-    s += "<div id=\"recaptcha4buildings\"></div>"
+//    s += "<div id=\"recaptcha4buildings\"></div>"
     s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBuilding(\""
     s += e.features[0].properties.lokalnyid
-    s += "\"); disabled>Zgłoś</button>"
+    s += "\"); >Zgłoś</button>"
+//    s += "\"); disabled>Zgłoś</button>"
     new mapboxgl.Popup({"maxWidth": "320px"})
     .setLngLat(e.lngLat)
     .setHTML(s)
     .addTo(map);
-    grecaptcha.render(
-        "recaptcha4buildings", {
-        "sitekey": reCaptchaPublicToken,
-        "callback": activateReportButton
-    });
+//    grecaptcha.render(
+//        "recaptcha4buildings", {
+//        "sitekey": reCaptchaPublicToken,
+//        "callback": activateReportButton
+//    });
     // todo: implement recaptcha v3
 });
 
@@ -524,10 +525,11 @@ function getPopupText(element) {
     }
     s += "</table>"
     s += "<br><h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
-    s += "<div id=\"recaptcha4addresses\"></div>"
+//    s += "<div id=\"recaptcha4addresses\"></div>"
     s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportPRG(\""
     s += element.features[0].properties.lokalnyid
-    s += "\"); disabled>Zgłoś</button>"
+    s += "\"); >Zgłoś</button>"
+//    s += "\"); disabled>Zgłoś</button>"
     // todo: implement recaptcha v3
     return s
 }
@@ -553,7 +555,7 @@ function reportPRG(id){
         url: "/exclude/",
         data: JSON.stringify({"prg_ids": [id,]}),
         contentType: "application/json",
-        headers: {"reCaptchaUserToken": grecaptcha.getResponse()},
+//        headers: {"reCaptchaUserToken": grecaptcha.getResponse()},
         complete: onReportComplete
     })
 }
@@ -564,7 +566,7 @@ function reportBuilding(id){
         url: "/exclude/",
         data: JSON.stringify({"bdot_ids": [id,]}),
         contentType: "application/json",
-        headers: {"reCaptchaUserToken": grecaptcha.getResponse()},
+//        headers: {"reCaptchaUserToken": grecaptcha.getResponse()},
         complete: onReportComplete
     })
 }
@@ -575,7 +577,7 @@ function reportBoth(encodedStringifiedPayload){
         url: "/exclude/",
         data: decodeURIComponent(encodedStringifiedPayload),
         contentType: "application/json",
-        headers: {"reCaptchaUserToken": grecaptcha.getResponse()},
+//        headers: {"reCaptchaUserToken": grecaptcha.getResponse()},
         complete: onReportComplete
     })
 }
@@ -701,13 +703,14 @@ function selectFeaturesWithPolygon(e) {
             "prg_ids": [...tempSetAddresses],
             "bdot_ids": [...tempSetBuildings]
         }))
-        reportButton += "\"); disabled>Zgłoś</button>"
+        reportButton += "\"); >Zgłoś</button>"
+//        reportButton += "\"); disabled>Zgłoś</button>"
     $("#modalSelectedBody").html(noOfBuildingsHTML + noOfAddressesHTML + downloadSelectedButton + reportButton);
-    grecaptcha.render(
-        "recaptcha4multiselect", {
-        "sitekey": reCaptchaPublicToken,
-        "callback": activateReportButton
-    });
+//    grecaptcha.render(
+//        "recaptcha4multiselect", {
+//        "sitekey": reCaptchaPublicToken,
+//        "callback": activateReportButton
+//    });
     // todo: implement recaptcha v3
     // show modal
     $("#modalSelected").modal();
