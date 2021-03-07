@@ -1253,10 +1253,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0940335,52243,gen. Feliksa Kamińskiego,Generała Feliksa Kamińskiego
 0166887,39850,gen. Fieldorfa,Generała Emila Fieldorfa
 0166930,39850,gen. Fieldorfa,Generała Emila Fieldorfa
-0954082,35668,gen. Fieldorfa Nila,Generała Emila Fieldorfa Nila
-0969103,35668,gen. Fieldorfa Nila,Generała Emila Fieldorfa Nila
-0956810,35668,gen. Fieldorfa Nila,Generała Emila Fieldorfa Nila
-0951876,35668,gen. Fieldorfa Nila,Generała Emila Fieldorfa Nila
 0969250,00248,gen. Franciszka Altera,Generała Franciszka Altera
 0932910,28246,gen. Franciszka Barstcha,Generała Franciszka Barstcha
 0560213,07906,gen. Franciszka Kamińskiego,Generała Franciszka Kamińskiego
@@ -1324,6 +1320,9 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0291440,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
 0954604,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
 0980850,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
+0954082,35668,gen. Fieldorfa Nila,"Generała Augusta Emila Fieldorfa ""Nila"""
+0956810,35668,gen. Fieldorfa Nila,"Generała Augusta Emila Fieldorfa ""Nila"""
+0969103,35668,gen. Fieldorfa Nila,"Generała Augusta Emila Fieldorfa ""Nila"""
 0613903,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
 0987331,50609,Gen. Grota Roweckiego,Generała Stefana Grota-Roweckiego
 0922410,15157,gen. Gustawa Orlicz-Dreszera,Generała Gustawa Orlicz-Dreszera
@@ -10907,3 +10906,11 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0490470,54216,ks. Jana Szadowskiego,Księdza Jana Szadowskiego
 0491713,12592,ks. J. Melcza,Księdza Jana Melcza
 0586394,12021,św. Maksymiliana Kolbe,Świętego Maksymiliana Kolbe
+0988313,47829,Nowy Kisielin-A. Wysockiego,Nowy Kisielin-Antoniego Wysockiego
+0954082,46908,gen. Komorowskiego Bora,"Generała Tadeusza Komorowskiego ""Bora"""
+0097784,00285,gen. Władysława Andersa,Generała Władysława Andersa
+0167125,56414,ks. Jana Kaczkowskiego,Księdza Jana Kaczkowskiego
+0335628,46615,św. Jana Pawła II,Świętego Jana Pawła II
+0466371,07626,św. Józefa,Świętego Józefa
+0977670,35668,gen. Fieldorfa Nila,"Generała Augusta Emila Fieldorfa ""Nila"""
+0951876,35668,gen. Fieldorfa Nila,"Generała Augusta Emila Fieldorfa ""Nila"""
