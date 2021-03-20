@@ -22,6 +22,7 @@ where simc.woj = x.woj and simc.pow = x.pow and simc.gmi = x.gmi) as simc_mappin
 
 	and teryt_ulica is null and ul is not null;	
 
+create index if not exists idx_teryt_ulic_sym on teryt.ulic using hash (sym);
 
 update teryt.temp_ulic 
 set teryt_ulic = (
@@ -45,3 +46,5 @@ from teryt.temp_ulic as t
 where pa.lokalnyid = t.lokalnyid;
 
 drop table if exists teryt.temp_ulic;
+
+drop index teryt.idx_teryt_ulic_sym ;
