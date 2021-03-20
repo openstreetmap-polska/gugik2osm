@@ -1,3 +1,8 @@
+body {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+ 
  /* The switch - the box around the slider */
 .switch {
   position: relative;
