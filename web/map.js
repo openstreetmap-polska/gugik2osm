@@ -36,6 +36,7 @@ var map = new mapboxgl.Map({
             },
             "mvt-tiles": {
                 "type": "vector",
+                "maxzoom": 14,
                 "tiles": [
                     vectorTilesURL
                 ]
