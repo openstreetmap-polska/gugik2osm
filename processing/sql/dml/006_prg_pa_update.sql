@@ -4,3 +4,5 @@ update prg.pa as pa
 set teryt_simc = sym
 from teryt.simc as simc
 where terc6 = simc.woj || simc.pow || simc.gmi and lower(replace(simc.nazwa, ' ', '')) = lower(replace(pa.msc, ' ', '')) and simc.rm = '01' and teryt_simc is null;
+
+analyze prg.pa;

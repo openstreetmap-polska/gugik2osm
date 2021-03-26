@@ -9,3 +9,5 @@ set teryt_simc = (
 	limit 1
 	)
 where pa.teryt_simc is null;
+
+analyze prg.pa;

@@ -39,3 +39,5 @@ where 1=1
 ;
 
 drop index teryt.idx_teryt_simc ;
+
+analyze prg.pa;

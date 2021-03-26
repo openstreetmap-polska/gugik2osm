@@ -48,3 +48,5 @@ where pa.lokalnyid = t.lokalnyid;
 drop table if exists teryt.temp_ulic;
 
 drop index teryt.idx_teryt_ulic_sym ;
+
+analyze prg.pa;
