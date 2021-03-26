@@ -5,7 +5,9 @@
 create index if not exists idx_teryt_simc on teryt.simc using btree (woj, pow, gmi, sym, nazwa, rodz_gmi);
 
 update prg.pa as pa
-set teryt_ulica = trim(concat(cm.m, ' ', (u1.nazwa_2 || ' '), u1.nazwa_1)), teryt_ulic = u1.sym_ul
+set
+    teryt_ulica = trim(concat(cm.m, ' ', (u1.nazwa_2 || ' '), u1.nazwa_1)),
+    teryt_ulic = u1.sym_ul
 from
     teryt.ulic as u1,
     teryt.cecha_mapping cm,
