@@ -37,6 +37,8 @@ QUERIES = {
     'insert_to_exclude_bdot_buildings': str(open(join(SQL_PATH, 'insert_to_exclude_bdot_buildings.sql'), 'r').read()),
     'insert_to_package_exports': str(open(join(SQL_PATH, 'insert_to_package_exports.sql'), 'r').read()),
     'latest_updates': str(open(join(SQL_PATH, 'latest_updates.sql'), 'r').read()),
+    'sc_proposed_addresses_in_bbox': str(open(join(SQL_PATH, 'sc_proposed_addresses_in_bbox.sql'), 'r').read()),
+    'sc_proposed_buildings_in_bbox': str(open(join(SQL_PATH, 'sc_proposed_buildings_in_bbox.sql'), 'r').read()),
 }
 conn: Union[PGConnection, None] = None
 
@@ -79,3 +81,86 @@ def execute_sql(cursor: PGCursor, query: str, parameters: QueryParametersType = 
         conn = None
         raise
     return cursor
+
+
+def data_from_db(query: str, parameters: QueryParametersType = None) -> List[tuple]:
+    """Method executes SQL query in a given cursor with given parameters. Provides error handling.
+    In case of exception it rolls back transaction and closes the connection."""
+
+    global conn
+    connection = pgdb()
+    with connection.cursor() as cur:
+        try:
+            cur.execute(query, parameters) if parameters else cur.execute(query)
+        except psycopg2.InterfaceError:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  f'- Error while executing query: {query}, with parameters: {parameters}')
+            conn = None
+            raise
+        except:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  f'- Error while executing query: {query}, with parameters: {parameters}')
+            if connection:
+                connection.rollback()
+                connection.close()
+            conn = None
+            raise
+        return cur.fetchall()
+
+
+def execute_query(query: str, parameters: QueryParametersType = None) -> List[tuple]:
+    """Method executes SQL query in a given cursor with given parameters. Provides error handling.
+    In case of exception it rolls back transaction and closes the connection."""
+
+    global conn
+    connection = pgdb()
+    with connection.cursor() as cur:
+        try:
+            cur.execute(query, parameters) if parameters else cur.execute(query)
+        except psycopg2.InterfaceError:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  f'- Error while executing query: {query}, with parameters: {parameters}')
+            conn = None
+            raise
+        except:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  f'- Error while executing query: {query}, with parameters: {parameters}')
+            if connection:
+                connection.rollback()
+                connection.close()
+            conn = None
+            raise
+        connection.commit()
+        try:
+            results = cur.fetchall()
+        except psycopg2.ProgrammingError:
+            results = []
+        return results
+
+
+def execute_batch(query: str, parameters: List[QueryParametersType]) -> List[tuple]:
+
+    global conn
+    connection = pgdb()
+    with connection.cursor() as cur:
+        try:
+            execute_values(cur, query, parameters)
+        except psycopg2.InterfaceError:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  f'- Error while executing query: {query}, with parameters: {parameters}')
+            conn = None
+            raise
+        except:
+            print(datetime.now(timezone.utc).astimezone().isoformat(),
+                  f'- Error while executing query: {query}, with parameters: {parameters}')
+            if connection:
+                connection.rollback()
+                connection.close()
+            conn = None
+            raise
+        connection.commit()
+        try:
+            results = cur.fetchall()
+        except psycopg2.ProgrammingError:
+            results = []
+        return results

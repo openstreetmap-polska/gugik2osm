@@ -1,5 +1,6 @@
 from copy import deepcopy
-from typing import List, Union
+from dataclasses import dataclass
+from typing import List, Union, Dict, Any
 from lxml import etree
 import mercantile as m
 from mercantile import Tile, bounds
@@ -172,3 +173,28 @@ def buildings_xml(list_of_tuples):
         root.append(w)
 
     return root
+
+
+@dataclass
+class Feature:
+    id: str
+    tags: Dict[str, Any]
+    geojson_geometry: Dict[str, Any]
+
+
+def to_geojson_dict(features: List[Feature]) -> Dict[str, Any]:
+    results = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': feature.geojson_geometry,
+                'properties': {
+                    'id': feature.id,
+                    'tags': feature.tags
+                }
+            }
+            for feature in features
+        ]
+    }
+    return results
