@@ -56,19 +56,19 @@ class Layers:
             active=True,
             default=True
         ),
-        # LayerDefinition(
-        #     id='addresses',
-        #     name='Wszystkie adresy z PRG',
-        #     query_by_id=QUERIES['delta_where_id'],
-        #     query_by_bbox=QUERIES['delta_where_bbox'],
-        #     convert_to_xml_element=addresses_nodes,
-        #     export_parameter_name='lb_adresow',
-        #     active=False,
-        #     default=False,
-        #     warning='Dla zaawansowanych edytorów. ' +
-        #             'Ta warstwa zawiera wszystkie adresy z PRG na danym obszarze i nie nadaje się do bezpośredniego ' +
-        #             'importu. Używaj z rozwagą.'
-        # ),
+        LayerDefinition(
+            id='addresses',
+            name='Wszystkie adresy z PRG',
+            query_by_id=QUERIES['addresses_all_where_id'],
+            query_by_bbox=QUERIES['addresses_all_where_bbox'],
+            convert_to_xml_element=addresses_nodes,
+            export_parameter_name='lb_adresow',
+            active=True,
+            default=False,
+            warning='Nie nadaje się do bezpośredniego importu. ' +
+                    'Ta warstwa zawiera wszystkie adresy z PRG na danym obszarze ' +
+                    'i służy do podmieniania istniejących w OSM adresów. Dla zaawansowanych edytorów.'
+        ),
         LayerDefinition(
             id='buildings',
             name='Wszystkie budynki z BDOT10k',
