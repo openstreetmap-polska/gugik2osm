@@ -1,1 +1,1 @@
-﻿drop table if exists addresses_old;
+drop table if exists addresses_old;
