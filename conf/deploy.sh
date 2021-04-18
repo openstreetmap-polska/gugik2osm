@@ -3,7 +3,7 @@
 cd /opt/gugik2osm/git/
 git pull
 
-sudo -H python3.7 -m pip install -r /opt/gugik2osm/git/requirements.txt
+sudo -H python3 -m pip install -r /opt/gugik2osm/git/requirements.txt
 
 cp -r /opt/gugik2osm/git/app/* /opt/gugik2osm/app/
 rm -r /opt/gugik2osm/web/*
@@ -25,4 +25,4 @@ sudo chmod 600 /etc/systemd/system/create_socket_folder.service
 sudo systemctl daemon-reload
 sudo service nginx restart
 
-python3.7 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/ --skip-existing
+python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/ --skip-existing

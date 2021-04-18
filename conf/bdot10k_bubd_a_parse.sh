@@ -4,7 +4,7 @@ source /opt/gugik2osm/conf/.env
 
 date >> /opt/gugik2osm/log/bdot_processing.log
 echo "BDOT2CSV" >> /opt/gugik2osm/log/bdot_processing.log
-python3.7 -u /opt/gugik2osm/git/processing/parsers/bdot10k.py --input /opt/gugik2osm/tempbdot/BDOT10k_*.zip --writer csv --csv_directory /opt/gugik2osm/tempbdot2/ --basic_fields >> /opt/gugik2osm/log/bdot_processing.log 2>&1
+python3 -u /opt/gugik2osm/git/processing/parsers/bdot10k.py --input /opt/gugik2osm/tempbdot/BDOT10k_*.zip --writer csv --csv_directory /opt/gugik2osm/tempbdot2/ --basic_fields >> /opt/gugik2osm/log/bdot_processing.log 2>&1
 date >> /opt/gugik2osm/log/bdot_processing.log
 echo "CSV2PGSQL" >> /opt/gugik2osm/log/bdot_processing.log
 psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -c "truncate table bdot.stg_budynki_ogolne_poligony" >> /opt/gugik2osm/log/bdot_processing.log 2>&1

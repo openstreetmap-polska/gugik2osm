@@ -13,7 +13,7 @@
 */1 * * * * ttaras /opt/gugik2osm/conf/data_update.sh
 ## daily
 0 1 * * MON-FRI ttaras /opt/gugik2osm/conf/teryt_processing.sh
-0 0 */1 * * ttaras python3.7 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
+0 0 */1 * * ttaras python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
 ## weekly
 0 20 * * WED ttaras /opt/gugik2osm/conf/bdot10k_bubd_a_parse.sh
 0 20 * * THU ttaras /opt/gugik2osm/conf/bdot10k_bubd_a_export.sh
@@ -36,4 +36,4 @@
 0 1 * * * ttaras truncate -s 20000000 /opt/gugik2osm/log/data_update.log
 0 0 * * * ttaras find /opt/gugik2osm/imposm3/cache/0* -mtime +7 -exec rm -r {} \;
 0 3 * *  TUE root journalctl --vacuum-time=10d
-0 1 * * * ttaras python3.7 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
+0 1 * * * ttaras python3 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
