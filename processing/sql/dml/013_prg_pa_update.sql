@@ -9,13 +9,13 @@ from
     teryt.ulic as u1,
     teryt.cecha_mapping cm,
     (
-        select simc.woj, simc.pow, simc.gmi, simc.sym, simc.sym as sym_czesc, simc.nazwa
+        select simc.woj, simc.pow, simc.gmi, simc.sym as sym_czesc, simc.sym, simc.nazwa
         from teryt.simc
         where rodz_gmi not in ('8', '9')
 
         union
 
-        select simc.woj, simc.pow, simc.gmi, x.sym, simc.sym as sym_czesc, simc.nazwa
+        select simc.woj, simc.pow, simc.gmi, x.sym as sym_czesc, simc.sym, simc.nazwa
         from
             teryt.simc as simc,
             (
