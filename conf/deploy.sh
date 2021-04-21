@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# exit on error in any command
+set -e
+
 cd /opt/gugik2osm/git/
 git pull
 

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# exit on error in any command
+set -e
+
 source /opt/gugik2osm/conf/.env
 
 python3 -u /opt/gugik2osm/git/processing/scripts/prg_dl.py --output_dir /opt/gugik2osm/tempprg >> /opt/gugik2osm/log/prg_processing.log 2>&1

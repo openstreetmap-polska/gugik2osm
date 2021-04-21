@@ -1,3 +1,8 @@
+#!/bin/bash
+
+# exit on error in any command
+set -e
+
 pg_dump --format c --compress 9 --no-owner --no-privileges --file /opt/gugik2osm/temp/export/db.bak --dbname gugik2osm
 mv /opt/gugik2osm/temp/export/db.bak /var/www/data/dbbackup/db.bak
 

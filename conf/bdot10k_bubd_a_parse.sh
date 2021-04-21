@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# exit on error in any command
+set -e
+
 source /opt/gugik2osm/conf/.env
 
 date >> /opt/gugik2osm/log/bdot_processing.log
