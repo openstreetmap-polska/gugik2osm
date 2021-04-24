@@ -439,8 +439,6 @@ function prepareDownloadableLayerHTML (layer) {
 function insertDownloadableLayersIntoDOM (data) {
     var raw_html = data.available_layers.map(prepareDownloadableLayerHTML).join("\n");
     var html_element = document.getElementById("layerPicker");
-    console.log(data);
-    console.log(raw_html);
     html_element.insertAdjacentHTML("beforeend", raw_html);
 }
 
