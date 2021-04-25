@@ -3,11 +3,12 @@ with prg_ids as (
   where processed = false
   returning id
 ),
-delete_tiles as (
-  delete from tiles t
-  using prg.delta d, prg_ids prg
+update_tiles as (
+  update tiles t
+  set mvt = mvt(t.z, t.x, t.y)
+  from prg.delta d, prg_ids prg
   where 1=1
-    and z >= 13
+    and z >= 8
     and t.bbox && st_transform(d.geom, 3857)
     and d.lokalnyid = prg.id
 )
@@ -22,11 +23,12 @@ with b_ids as (
   where processed = false
   returning id
 ),
-delete_tiles as (
-  delete from tiles t
-  using bdot_buildings b, b_ids
+update_tiles as (
+  update tiles t
+  set mvt = mvt(t.z, t.x, t.y)
+  from bdot_buildings b, b_ids
   where 1=1
-    and z >= 13
+    and z >= 8
     and t.bbox && st_transform(b.geom_4326, 3857)
     and b.lokalnyid = b_ids.id
 )

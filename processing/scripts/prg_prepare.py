@@ -173,14 +173,7 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
 
 def partial_update(dsn: str, starting: str = '000') -> None:
     final_status: str = 'SUCCESS'
-    sql_queries: list = []
-    # get paths of sql files
-    # r=root, d=directories, f = files
-    for r, d, f in walk(partial_update_path):
-        for file in f:
-            if file.endswith('.sql') and file >= starting and not file.startswith('___'):
-                sql_queries.append(join(r, file))
-    sql_queries = [x for x in sorted(sql_queries)]
+
     with pg.connect(dsn, **keepalive_kwargs) as conn:
         cur = conn.cursor()
         cur.execute('SELECT in_progress FROM process_locks WHERE process_name in (%s, %s)',
@@ -193,12 +186,17 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                         ('prg_partial_update',))
             conn.commit()
 
-            print(datetime.now(timezone.utc).astimezone().isoformat(),
-                  '- processing queue for excluded addresses and buildings.')
             queue_file_path = join(partial_update_path, '____excluded_queue_process.sql')
             queue_sql = str(open(queue_file_path, 'r', encoding='utf-8').read())
+            data_update_file_path = join(partial_update_path, '____tiles_update.sql')
+            data_update_sql = str(open(data_update_file_path, 'r', encoding='utf-8').read())
             try:
+                print(datetime.now(timezone.utc).astimezone().isoformat(),
+                      '- processing queue for excluded addresses and buildings.')
                 cur.execute(queue_sql)
+                print(datetime.now(timezone.utc).astimezone().isoformat(),
+                      '- processing expired tiles.')
+                cur.execute(data_update_sql)
                 conn.commit()
             except Exception as e:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in partial update process.')
@@ -211,29 +209,6 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                 conn.commit()
                 raise
 
-            print(datetime.now(timezone.utc).astimezone().isoformat(),
-                  '- processing expired tiles.')
-            cur.execute('SELECT * FROM expired_tiles WHERE processed = false FOR UPDATE SKIP LOCKED;')
-            for i, row in enumerate(cur.fetchall()):
-                x, y, z = row[2], row[3], row[1]
-                tile = m.Tile(x, y, z)
-                bbox = to_merc(m.bounds(tile))
-                bbox = {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
-                try:
-                    execute_scripts_from_files(conn=conn, vacuum='never', paths=sql_queries,
-                                               query_parameters=bbox, commit_mode='off')
-                except Exception as e:
-                    print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in partial update process.')
-                    print(e)
-                    final_status = 'FAIL'
-                    conn.rollback()
-                    break
-                cur.execute(
-                    'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
-                    (row[0], row[1], row[2], row[3])
-                )
-                if i % 25 == 0:
-                    conn.commit()
             cur.execute(
                 'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) WHERE process_name = %s',
                 (final_status, 'prg_partial_update',))
