@@ -5,8 +5,6 @@ from os.path import join, dirname, abspath
 from os import walk
 from typing import Union
 
-import mercantile as m
-from pyproj import Proj, transform
 import psycopg2 as pg
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
@@ -21,15 +19,6 @@ keepalive_kwargs = {
     "keepalives_interval": 5,
     "keepalives_count": 5,
 }
-
-
-def to_merc(bbox: m.LngLatBbox) -> dict:
-    in_proj = Proj('epsg:4326')
-    out_proj = Proj('epsg:3857')
-    res = dict()
-    res["west"], res["south"] = transform(in_proj, out_proj, bbox.south, bbox.west)
-    res["east"], res["north"] = transform(in_proj, out_proj, bbox.north, bbox.east)
-    return res
 
 
 def _read_and_execute(

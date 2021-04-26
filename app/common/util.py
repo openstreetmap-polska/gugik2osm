@@ -2,9 +2,6 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import List, Union, Dict, Any
 from lxml import etree
-import mercantile as m
-from mercantile import Tile, bounds
-from pyproj import Proj, transform
 
 
 BUILDING_TAG = etree.Element('tag', k='building', v='yes')
@@ -12,16 +9,6 @@ SOURCE_BUILDING = etree.Element('tag', k='source', v='www.geoportal.gov.pl')
 SOURCE_ADDR = etree.Element('tag', k='source:addr', v='gugik.gov.pl')
 
 XMLElementType = Union[etree.ElementTree, etree.Element]
-
-
-def to_merc(bbox: m.LngLatBbox) -> dict:
-    """Method reprojects BBox in WGS84 (latitude, longitude) to Web Mercator."""
-    in_proj = Proj('epsg:4326')
-    out_proj = Proj('epsg:3857')
-    res = dict()
-    res["west"], res["south"] = transform(in_proj, out_proj, bbox.south, bbox.west)
-    res["east"], res["north"] = transform(in_proj, out_proj, bbox.north, bbox.east)
-    return res
 
 
 def prepare_xml_tree(root: etree.Element, children: List[XMLElementType]) -> etree.ElementTree:
