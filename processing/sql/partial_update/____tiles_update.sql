@@ -163,7 +163,7 @@ bdot_buildings_delete as (
     st_intersects(b.geom_4326, o.geometry)
 ),
 tiles_to_update as (
-  select z, x, y
+  select distinct z, x, y
   from tiles_bounds
   join exp_bounds on tiles_bounds.geom_3857 && exp_bounds.geom
   where z >= 8
