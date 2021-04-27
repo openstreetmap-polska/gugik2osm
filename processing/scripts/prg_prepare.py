@@ -37,6 +37,9 @@ def _read_and_execute(
 
     cur = conn.cursor()
     sql = open(path, 'r', encoding='UTF-8').read()
+    old_isolation_level = conn.isolation_level
+    if commit_mode == 'autocommit':
+        conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     if temp_set_workmem is not None:
         cur.execute('show work_mem')
         old_workmem: str = cur.fetchall()[0][0]
@@ -48,14 +51,13 @@ def _read_and_execute(
         cur.execute(sql)
     if commit_mode == 'always':
         conn.commit()
-    if temp_set_workmem is not None:
-        print('Setting work_mem back to the previous value:', old_workmem)
-        cur.execute('set work_mem = %s', (old_workmem,))
     if vacuum == 'always':
         print(datetime.now(timezone.utc).astimezone().isoformat(), '- running vacuum analyze...')
         old_isolation_level = conn.isolation_level
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cur.execute('VACUUM ANALYZE;')
+        conn.set_isolation_level(old_isolation_level)
+    if commit_mode == 'autocommit':
         conn.set_isolation_level(old_isolation_level)
 
     ets = time.perf_counter()
@@ -184,7 +186,7 @@ def partial_update(dsn: str) -> None:
             conn.commit()
 
             try:
-                execute_scripts_from_files(conn=conn, vacuum='never', paths=sorted_queries_paths, temp_set_workmem='128MB', commit_mode='always')
+                execute_scripts_from_files(conn=conn, vacuum='never', paths=sorted_queries_paths, temp_set_workmem='128MB', commit_mode='autocommit')
                 for notice in conn.notices:
                     print(notice)
             except Exception as e:
@@ -209,7 +211,7 @@ if __name__ == '__main__':
     parser.add_argument('--update', help='Launch partial update process', nargs='?', const=True)
     parser.add_argument('--force', help='Ignore checking if another process is running. Applies to full process.', nargs='?', const=True)
     parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs=1)
-    parser.add_argument('--starting', help='Start from this query (DML or Partial Update). Must match name exactly.', nargs=1)
+    parser.add_argument('--starting', help='Start from this query (DML). Must match name exactly.', nargs=1)
     args = vars(parser.parse_args())
 
     dsn = args['dsn'][0]
@@ -219,7 +221,4 @@ if __name__ == '__main__':
         else:
             full_process(dsn, force=args.get('force'))
     elif 'update' in args and args.get('update'):
-        if args.get('starting'):
-            partial_update(dsn, args.get('starting')[0])
-        else:
-            partial_update(dsn)
+        partial_update(dsn)
