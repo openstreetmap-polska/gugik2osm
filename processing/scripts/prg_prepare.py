@@ -160,8 +160,16 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
                   '- full update in progress already. Not starting another one.')
 
 
-def partial_update(dsn: str, starting: str = '000') -> None:
+def partial_update(dsn: str) -> None:
     final_status: str = 'SUCCESS'
+    queries_paths: list = []
+
+    for r, d, f in walk(partial_update_path):
+        for file in f:
+            if file.endswith('.sql'):
+                queries_paths.append(join(r, file))
+    # make sure query files are sorted by names
+    sorted_queries_paths = [x for x in sorted(queries_paths)]
 
     with pg.connect(dsn, **keepalive_kwargs) as conn:
         cur = conn.cursor()
@@ -175,34 +183,21 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                         ('prg_partial_update',))
             conn.commit()
 
-            queue_file_path = join(partial_update_path, '____excluded_queue_process.sql')
-            queue_sql = str(open(queue_file_path, 'r', encoding='utf-8').read())
-            data_update_file_path = join(partial_update_path, '____tiles_update.sql')
-            data_update_sql = str(open(data_update_file_path, 'r', encoding='utf-8').read())
             try:
-                print(datetime.now(timezone.utc).astimezone().isoformat(),
-                      '- processing queue for excluded addresses and buildings.')
-                cur.execute(queue_sql)
-                print(datetime.now(timezone.utc).astimezone().isoformat(),
-                      '- processing expired tiles.')
-                cur.execute(data_update_sql)
-                conn.commit()
+                execute_scripts_from_files(conn=conn, vacuum='never', paths=sorted_queries_paths, temp_set_workmem='128MB', commit_mode='always')
+                for notice in conn.notices:
+                    print(notice)
             except Exception as e:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in partial update process.')
                 print(e)
                 final_status = 'FAIL'
                 conn.rollback()
-                cur.execute(
-                    'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) WHERE process_name = %s',
-                    (final_status, 'prg_partial_update',))
+            finally:
+                cur.execute('UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
+                            'WHERE process_name = %s',
+                            (final_status, 'prg_partial_update'))
                 conn.commit()
-                raise
-
-            cur.execute(
-                'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) WHERE process_name = %s',
-                (final_status, 'prg_partial_update',))
-            conn.commit()
-            print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished partial update process.')
+                print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished partial update process.')
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- update in progress skipping partial update.')
