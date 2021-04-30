@@ -10,7 +10,7 @@ import requests as requests_lib
 from lxml import etree
 
 from common.database import pgdb, execute_sql, QUERIES, execute_values, pg, QueryParametersType, QueryOutputType
-from common.util import to_merc, Tile, bounds, buildings_xml, addresses_xml, XMLElementType
+from common.util import buildings_xml, addresses_xml, XMLElementType
 import common.util as util
 from common.objects import Layers, LayerDefinition
 
@@ -101,34 +101,14 @@ class AddressPointInfo(Resource):
 
 class MapboxVectorTile(Resource):
     def get(self, z: int, x: int, y: int):
-        # calculate bbox
-        tile = Tile(x, y, z)
-        bbox = to_merc(bounds(tile))
 
         # query db
         conn = pgdb()
         cur = execute_sql(conn.cursor(), QUERIES['cached_mvt'], (z, x, y))
         tup = cur.fetchone()
         if tup is None:
-            params = {
-                'xmin': bbox['west'],
-                'ymin': bbox['south'],
-                'xmax': bbox['east'],
-                'ymax': bbox['north'],
-                'z': z,
-                'x': x,
-                'y': y
-            }
-            if 6 <= int(z) <= 7:
-                cur = execute_sql(cur, QUERIES['mvt_ll_aggr_terc'], params)
-            elif 8 <= int(z) <= 9:
-                cur = execute_sql(cur, QUERIES['mvt_ll_aggr_simc'], params)
-            elif 10 <= int(z) <= 11:
-                cur = execute_sql(cur, QUERIES['mvt_ll_aggr_simc_ulic'], params)
-            elif 12 <= int(z) <= 12:
-                cur = execute_sql(cur, QUERIES['mvt_ll'], params)
-            elif 13 <= int(z) < 23:
-                cur = execute_sql(cur, QUERIES['mvt_hl'], params)
+            if 6 <= int(z) <= 14:
+                cur = execute_sql(cur, QUERIES['mvt_insert'], {'z': z, 'x': x, 'y': y})
             else:
                 abort(404)
             conn.commit()

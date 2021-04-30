@@ -5,8 +5,6 @@ from os.path import join, dirname, abspath
 from os import walk
 from typing import Union
 
-import mercantile as m
-from pyproj import Proj, transform
 import psycopg2 as pg
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
@@ -21,15 +19,6 @@ keepalive_kwargs = {
     "keepalives_interval": 5,
     "keepalives_count": 5,
 }
-
-
-def to_merc(bbox: m.LngLatBbox) -> dict:
-    in_proj = Proj('epsg:4326')
-    out_proj = Proj('epsg:3857')
-    res = dict()
-    res["west"], res["south"] = transform(in_proj, out_proj, bbox.south, bbox.west)
-    res["east"], res["north"] = transform(in_proj, out_proj, bbox.north, bbox.east)
-    return res
 
 
 def _read_and_execute(
@@ -48,6 +37,9 @@ def _read_and_execute(
 
     cur = conn.cursor()
     sql = open(path, 'r', encoding='UTF-8').read()
+    old_isolation_level = conn.isolation_level
+    if commit_mode == 'autocommit':
+        conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     if temp_set_workmem is not None:
         cur.execute('show work_mem')
         old_workmem: str = cur.fetchall()[0][0]
@@ -59,14 +51,13 @@ def _read_and_execute(
         cur.execute(sql)
     if commit_mode == 'always':
         conn.commit()
-    if temp_set_workmem is not None:
-        print('Setting work_mem back to the previous value:', old_workmem)
-        cur.execute('set work_mem = %s', (old_workmem,))
     if vacuum == 'always':
         print(datetime.now(timezone.utc).astimezone().isoformat(), '- running vacuum analyze...')
         old_isolation_level = conn.isolation_level
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cur.execute('VACUUM ANALYZE;')
+        conn.set_isolation_level(old_isolation_level)
+    if commit_mode == 'autocommit':
         conn.set_isolation_level(old_isolation_level)
 
     ets = time.perf_counter()
@@ -171,16 +162,17 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
                   '- full update in progress already. Not starting another one.')
 
 
-def partial_update(dsn: str, starting: str = '000') -> None:
+def partial_update(dsn: str) -> None:
     final_status: str = 'SUCCESS'
-    sql_queries: list = []
-    # get paths of sql files
-    # r=root, d=directories, f = files
+    queries_paths: list = []
+
     for r, d, f in walk(partial_update_path):
         for file in f:
-            if file.endswith('.sql') and file >= starting and not file.startswith('___'):
-                sql_queries.append(join(r, file))
-    sql_queries = [x for x in sorted(sql_queries)]
+            if file.endswith('.sql'):
+                queries_paths.append(join(r, file))
+    # make sure query files are sorted by names
+    sorted_queries_paths = [x for x in sorted(queries_paths)]
+
     with pg.connect(dsn, **keepalive_kwargs) as conn:
         cur = conn.cursor()
         cur.execute('SELECT in_progress FROM process_locks WHERE process_name in (%s, %s)',
@@ -193,52 +185,21 @@ def partial_update(dsn: str, starting: str = '000') -> None:
                         ('prg_partial_update',))
             conn.commit()
 
-            print(datetime.now(timezone.utc).astimezone().isoformat(),
-                  '- processing queue for excluded addresses and buildings.')
-            queue_file_path = join(partial_update_path, '____excluded_queue_process.sql')
-            queue_sql = str(open(queue_file_path, 'r', encoding='utf-8').read())
             try:
-                cur.execute(queue_sql)
-                conn.commit()
+                execute_scripts_from_files(conn=conn, vacuum='never', paths=sorted_queries_paths, temp_set_workmem='128MB', commit_mode='autocommit')
+                for notice in conn.notices:
+                    print(notice)
             except Exception as e:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in partial update process.')
                 print(e)
                 final_status = 'FAIL'
                 conn.rollback()
-                cur.execute(
-                    'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) WHERE process_name = %s',
-                    (final_status, 'prg_partial_update',))
+            finally:
+                cur.execute('UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
+                            'WHERE process_name = %s',
+                            (final_status, 'prg_partial_update'))
                 conn.commit()
-                raise
-
-            print(datetime.now(timezone.utc).astimezone().isoformat(),
-                  '- processing expired tiles.')
-            cur.execute('SELECT * FROM expired_tiles WHERE processed = false FOR UPDATE SKIP LOCKED;')
-            for i, row in enumerate(cur.fetchall()):
-                x, y, z = row[2], row[3], row[1]
-                tile = m.Tile(x, y, z)
-                bbox = to_merc(m.bounds(tile))
-                bbox = {'xmin': bbox['west'], 'ymin': bbox['south'], 'xmax': bbox['east'], 'ymax': bbox['north']}
-                try:
-                    execute_scripts_from_files(conn=conn, vacuum='never', paths=sql_queries,
-                                               query_parameters=bbox, commit_mode='off')
-                except Exception as e:
-                    print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in partial update process.')
-                    print(e)
-                    final_status = 'FAIL'
-                    conn.rollback()
-                    break
-                cur.execute(
-                    'UPDATE expired_tiles SET processed = true WHERE file_name = %s and z = %s and x = %s and y = %s;',
-                    (row[0], row[1], row[2], row[3])
-                )
-                if i % 25 == 0:
-                    conn.commit()
-            cur.execute(
-                'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) WHERE process_name = %s',
-                (final_status, 'prg_partial_update',))
-            conn.commit()
-            print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished partial update process.')
+                print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished partial update process.')
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- update in progress skipping partial update.')
@@ -250,7 +211,7 @@ if __name__ == '__main__':
     parser.add_argument('--update', help='Launch partial update process', nargs='?', const=True)
     parser.add_argument('--force', help='Ignore checking if another process is running. Applies to full process.', nargs='?', const=True)
     parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs=1)
-    parser.add_argument('--starting', help='Start from this query (DML or Partial Update). Must match name exactly.', nargs=1)
+    parser.add_argument('--starting', help='Start from this query (DML). Must match name exactly.', nargs=1)
     args = vars(parser.parse_args())
 
     dsn = args['dsn'][0]
@@ -260,7 +221,4 @@ if __name__ == '__main__':
         else:
             full_process(dsn, force=args.get('force'))
     elif 'update' in args and args.get('update'):
-        if args.get('starting'):
-            partial_update(dsn, args.get('starting')[0])
-        else:
-            partial_update(dsn)
+        partial_update(dsn)

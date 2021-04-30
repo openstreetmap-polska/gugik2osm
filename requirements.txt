@@ -18,7 +18,6 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 lxml==4.6.2
 MarkupSafe==1.1.1
-mercantile==1.1.5
 osm2geojson==0.1.28
 psycopg2-binary==2.8.5
 pycparser==2.20
