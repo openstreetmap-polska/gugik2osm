@@ -2,7 +2,8 @@ with
 a as (
     select
         row_number() over() * -1 - 100000 as way_id,
-        geom_4326,
+        -- holes in polygons are too difficult :(
+        ST_MakePolygon(ST_ExteriorRing(geom_4326)) geom_4326,
         building,
         amenity,
         man_made,
