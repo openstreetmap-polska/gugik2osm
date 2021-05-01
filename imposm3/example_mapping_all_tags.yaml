@@ -1,10 +1,8 @@
 tags:
   load_all: true
-  exclude: [created_by, source]
-
 tables:
-  all:
-    type: geometry
+  nodes:
+    type: point
     columns:
       - name: osm_id
         type: id
@@ -12,10 +10,40 @@ tables:
         type: hstore_tags
       - name: geometry
         type: geometry
-    type_mappings:
-      points:
+    mapping:
         __any__: [__any__]
-      linestrings:
+  ways:
+    type: linestring
+    columns:
+      - name: osm_id
+        type: id
+      - name: tags
+        type: hstore_tags
+      - name: geometry
+        type: geometry
+    mapping:
         __any__: [__any__]
-      polygons:
+  relations:
+    type: relation
+    columns:
+      - name: osm_id
+        type: id
+      - name: tags
+        type: hstore_tags
+    mapping:
+        __any__: [__any__]
+  relation_members:
+    type: relation_member
+    columns:
+      - name: osm_id
+        type: id
+      - name: member
+        type: member_id
+      - name: index
+        type: member_index
+      - name: role
+        type: member_role
+      - name: type
+        type: member_type
+    mapping:
         __any__: [__any__]
