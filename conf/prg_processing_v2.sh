@@ -5,6 +5,8 @@ set -e
 
 source /opt/gugik2osm/conf/.env
 
+source /opt/gugik2osm/venv/bin/activate
+
 python3 -u /opt/gugik2osm/git/processing/scripts/prg_dl.py --output_dir /opt/gugik2osm/tempprg >> /opt/gugik2osm/log/prg_processing.log 2>&1
 date >> /opt/gugik2osm/log/prg_processing.log
 echo "PRG2CSV" >> /opt/gugik2osm/log/prg_processing.log
