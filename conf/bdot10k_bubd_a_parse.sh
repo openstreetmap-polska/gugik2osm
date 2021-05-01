@@ -19,3 +19,6 @@ date >> /opt/gugik2osm/log/bdot_processing.log
 echo "Cleaning temp csv files..." >> /opt/gugik2osm/log/bdot_processing.log
 rm /opt/gugik2osm/tempbdot2/*.csv
 date >> /opt/gugik2osm/log/bdot_processing.log
+echo "Cleaning temp zip files..." >> /opt/gugik2osm/log/bdot_processing.log
+rm /opt/gugik2osm/tempbdot/*.zip
+date >> /opt/gugik2osm/log/bdot_processing.log

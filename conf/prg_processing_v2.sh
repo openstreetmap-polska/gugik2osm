@@ -61,5 +61,8 @@ echo "Finished caching low zoom tiles" >> /opt/gugik2osm/log/prg_processing.log
 date >> /opt/gugik2osm/log/prg_processing.log
 echo "Cleaning temp csv files..." >> /opt/gugik2osm/log/prg_processing.log
 rm /opt/gugik2osm/tempprg2/*.csv
+date >> /opt/gugik2osm/log/prg_processing.log
+echo "Cleaning temp zip files..." >> /opt/gugik2osm/log/prg_processing.log
+rm /opt/gugik2osm/tempprg/*.zip
 echo "Done." >> /opt/gugik2osm/log/prg_processing.log
 date >> /opt/gugik2osm/log/prg_processing.log
