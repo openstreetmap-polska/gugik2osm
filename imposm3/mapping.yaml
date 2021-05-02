@@ -1,5 +1,5 @@
-areas:
-  area_tags: [buildings, addr_polygon]
+tags:
+  load_all: true
 tables:
   addr_polygon:
     columns:
@@ -96,3 +96,49 @@ tables:
     mapping:
       addr:housenumber: [__any__]
     type: point
+  nodes:
+    type: point
+    columns:
+      - name: osm_id
+        type: id
+      - name: tags
+        type: hstore_tags
+      - name: geometry
+        type: geometry
+    mapping:
+        __any__: [__any__]
+  ways:
+    type: linestring
+    columns:
+      - name: osm_id
+        type: id
+      - name: tags
+        type: hstore_tags
+      - name: geometry
+        type: geometry
+    mapping:
+        __any__: [__any__]
+  relations:
+    type: relation
+    columns:
+      - name: osm_id
+        type: id
+      - name: tags
+        type: hstore_tags
+    mapping:
+        __any__: [__any__]
+  relation_members:
+    type: relation_member
+    columns:
+      - name: osm_id
+        type: id
+      - name: member
+        type: member_id
+      - name: index
+        type: member_index
+      - name: role
+        type: member_role
+      - name: type
+        type: member_type
+    mapping:
+        __any__: [__any__]
