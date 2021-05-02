@@ -15,6 +15,7 @@ begin
         select file_name, z, x, y
         from expired_tiles
         where processed = false
+        limit 100000
     ;
 
     select count(*) into temp_count from exp ;
