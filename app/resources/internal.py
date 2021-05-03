@@ -2,6 +2,7 @@ import io
 from datetime import datetime, timedelta
 from random import choice, random
 from typing import Tuple, Dict, List
+import json
 
 from flask import request, Response
 from flask_restful import Resource, abort
@@ -325,7 +326,7 @@ class LatestUpdates(Resource):
         }
 
         # prepare and return response
-        response = Response(response_dict)
+        response = Response(json.dumps(response_dict))
         response.headers['Content-Type'] = 'application/geo+json'
         response.headers['Access-Control-Allow-Origin'] = "*"
         response.headers['X-Accel-Expires'] = '60'
