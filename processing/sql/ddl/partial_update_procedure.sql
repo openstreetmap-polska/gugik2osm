@@ -222,6 +222,25 @@ begin
     select count(*) into temp_count from d ;
     raise notice 'bdot_buildings DELETE: % .', temp_count ;
 
+    -- bdot_buildings_delete 2
+    with
+    d as (
+        delete from bdot_buildings b
+        using osm_abandoned_or_demolished_buildings o, exp_bounds
+        where
+            -- make sure given bounding box is valid
+            ST_Transform(ST_MakeEnvelope(14.0, 49.0, 24.03, 54.86, 4326), 3857) && exp_bounds.geom
+            and
+            b.geom_4326 && ST_Transform(exp_bounds.geom, 4326)
+            and
+            o.geometry && ST_Transform(exp_bounds.geom, 4326)
+            and
+            st_intersects(b.geom_4326, o.geometry)
+        returning 1
+    )
+    select count(*) into temp_count from d ;
+    raise notice 'bdot_buildings DELETE: % .', temp_count ;
+
     -- tiles_to_update
     insert into tiles_to_update
         select distinct z, x, y

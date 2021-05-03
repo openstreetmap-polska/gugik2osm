@@ -41,8 +41,16 @@ insert into bdot_buildings_new (
       and osm.geometry && b.geom_4326
       and st_intersects(osm.geometry, b.geom_4326) limit 1
   ) o on true
+  left join lateral (
+    select 1 as exsts
+    from osm_abandoned_or_demolished_buildings osm
+    where 1=1
+      and osm.geometry && b.geom_4326
+      and st_intersects(osm.geometry, b.geom_4326) limit 1
+  ) o2 on true
   left join exclude_bdot_buildings ex on ex.id=b.lokalnyid
   where 1=1
     and o.exsts is null
+    and o2.exsts is null
     and ex.id is null
 ;
