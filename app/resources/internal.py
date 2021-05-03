@@ -102,9 +102,9 @@ class MapboxVectorTile(Resource):
         response.headers['Content-Type'] = 'application/x-protobuf'
         response.headers['Access-Control-Allow-Origin'] = "*"
         cur.close()
-        if 6 <= int(z) < 13:
+        if 6 <= int(z) < 9:
             response.headers['X-Accel-Expires'] = '120'
-        elif 13 <= int(z) < 23:
+        elif 10 <= int(z) < 23:
             response.headers['X-Accel-Expires'] = '60'
         return response
 
