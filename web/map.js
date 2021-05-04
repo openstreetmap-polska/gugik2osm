@@ -303,6 +303,19 @@ map.scrollZoom.setWheelZoomRate(1/100);
 
 window.onload = function() {
 
+  var overpassLayersLoaded = false;
+  document.getElementById("layerButton").onclick = function() {
+    if (!overpassLayersLoaded) {
+      // add overpass layers
+      fetch(overpass_layers_url)
+          .then(response => response.json())
+          .then(addOverpassSources)
+          .then(insertLayersTogglesIntoDOM);
+
+      overpassLayersLoaded = true;
+    }
+  }
+
   var c = document.getElementById("randomLocationButton");
   var d = document.getElementById("downloadButton");
 
@@ -389,12 +402,6 @@ window.onload = function() {
         toggleMapLayer({id: "simple-tiles", toggle: "on"});
     }
   }
-
-  // add overpass layers
-  fetch(overpass_layers_url)
-      .then(response => response.json())
-      .then(addOverpassSources)
-      .then(insertLayersTogglesIntoDOM);
 
   // add layers to layer picker in download modal
   fetch(downloadable_layers_url)
