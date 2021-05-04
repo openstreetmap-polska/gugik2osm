@@ -100,7 +100,6 @@ class MapboxVectorTile(Resource):
         # prepare and return response
         response = Response(mvt)
         response.headers['Content-Type'] = 'application/x-protobuf'
-        response.headers['Access-Control-Allow-Origin'] = "*"
         cur.close()
         if 6 <= int(z) < 9:
             response.headers['X-Accel-Expires'] = '120'
@@ -328,7 +327,6 @@ class LatestUpdates(Resource):
         # prepare and return response
         response = Response(json.dumps(response_dict))
         response.headers['Content-Type'] = 'application/geo+json'
-        response.headers['Access-Control-Allow-Origin'] = "*"
         response.headers['X-Accel-Expires'] = '60'
 
         return response
