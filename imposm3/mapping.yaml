@@ -1,7 +1,11 @@
+tags:
+  load_all: true
 areas:
-  area_tags: [buildings, addr_polygon]
+  area_tags: [building, landuse, leisure, natural, aeroway, amenity, shop, "building:part", boundary, historic, place, "area:highway", craft, office, public_transport, tourism, allotments, club, "demolished:building", "abandoned:building", healthcare, industrial, residential]
+  linear_tags: [highway, barrier, route]
 tables:
   addr_polygon:
+    type: polygon
     columns:
     - name: osm_id
       type: id
@@ -34,8 +38,8 @@ tables:
       # type: mapping_value
     mapping:
       addr:housenumber: [__any__]
-    type: polygon
   buildings:
+    type: polygon
     columns:
     - name: osm_id
       type: id
@@ -61,8 +65,8 @@ tables:
       type: string
     mapping:
       building: [__any__]
-    type: polygon
   addr_point:
+    type: point
     columns:
     - name: osm_id
       type: id
@@ -95,4 +99,207 @@ tables:
       # type: mapping_value
     mapping:
       addr:housenumber: [__any__]
+  abandoned_or_demolished_buildings:
+    type: polygon
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - key: "abandoned:building"
+      name: abandoned_building
+      type: string
+    - key: "demolished:building"
+      name: demolished_building
+      type: string
+    mapping:
+      "abandoned:building": [__any__]
+      "demolished:building": [__any__]
+  admin:
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - key: admin_level
+      name: admin_level
+      type: integer
+    - name: tags
+      type: hstore_tags
+    mapping:
+      boundary:
+      - administrative
+    type: polygon
+  waterareas:
+    type: polygon
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      natural:
+      - water
+      waterway:
+      - riverbank
+      - dock
+      landuse:
+      - basin
+      - reservoir
+      - pond
+      leisure:
+      - swimming_pool
+  waterways:
+    type: linestring
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      waterway:
+      - stream
+      - river
+      - canal
+      - drain
+      - ditch
+      - fish_pass
+  roads:
+    type: linestring
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    filters:
+      reject:
+        area: ["yes"]
+    mapping:
+      highway: [__any__]
+  place_points:
     type: point
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      place: [__any__]
+  place_areas:
+    type: polygon
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      place: [__any__]
+  amenity_points:
+    type: point
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      amenity: [__any__]
+      tourism: [__any__]
+      craft: [__any__]
+      emergency: [__any__]
+      healthcare: [__any__]
+      shop: [__any__]
+      leisure: [__any__]
+      office: [__any__]
+      sport: [__any__]
+  amenity_areas:
+    type: polygon
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      amenity: [__any__]
+      tourism: [__any__]
+      craft: [__any__]
+      emergency: [__any__]
+      healthcare: [__any__]
+      shop: [__any__]
+      leisure: [__any__]
+      office: [__any__]
+      sport: [__any__]
+  monitoring_station_points:
+    type: point
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      man_made:
+      - monitoring_station
+  monitoring_station_areas:
+    type: polygon
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      man_made:
+      - monitoring_station
+  woods:
+    type: polygon
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      natural:
+      - wood
+  tree_rows:
+    type: linestring
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      natural:
+      - tree_row
+  trees:
+    type: point
+    columns:
+    - name: osm_id
+      type: id
+    - name: geometry
+      type: geometry
+    - name: tags
+      type: hstore_tags
+    mapping:
+      natural:
+      - tree
+

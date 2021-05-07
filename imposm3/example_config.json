@@ -1,0 +1,10 @@
+{
+    "cachedir": "/opt/gugik2osm/imposm3/imposm_cache/",
+    "connection": "postgis://gugik2osm:<password>@localhost:5432/gugik2osm",
+    "limitto":  "/opt/gugik2osm/imposm3/poland.geojson",
+    "mapping":  "/opt/gugik2osm/imposm3/mapping.yaml",
+    "srid": 4326,
+    "diffdir":  "/opt/gugik2osm/imposm3/imposm_diff/",
+    "expiretiles_dir": "/opt/gugik2osm/imposm3/exptiles/",
+    "expiretiles_zoom": 18
+}

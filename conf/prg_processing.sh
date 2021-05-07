@@ -2,6 +2,8 @@
 
 source /opt/gugik2osm/conf/.env
 
+source /opt/gugik2osm/venv/bin/activate
+
 python3 -u /opt/gugik2osm/git/processing/scripts/prg_dl.py --output_dir /opt/gugik2osm/temp >> /opt/gugik2osm/log/prg_processing.log 2>&1
 date >> /opt/gugik2osm/log/prg_processing.log
 python3 -u /opt/gugik2osm/git/processing/parsers/prg.py --input /opt/gugik2osm/temp/02_Punkty_Adresowe.zip --writer postgresql --dsn "host=$PGHOSTADDR port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD" --prep_tables >> /opt/gugik2osm/log/prg_processing.log 2>&1

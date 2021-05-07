@@ -2,6 +2,7 @@
 
 source /opt/gugik2osm/conf/.env
 
+source /opt/gugik2osm/venv/bin/activate
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -9,8 +10,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg PG:"dbname='$PG
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a.zip /var/www/data/bdot10k_bubd_a.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a.zip bdot10k_bubd_a.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -18,8 +20,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.gpkg PG
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.zip /var/www/data/bdot10k_bubd_a_dolnoslaskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.zip bdot10k_bubd_a_dolnoslaskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_dolnoslaskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -27,8 +30,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.g
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.zip /var/www/data/bdot10k_bubd_a_kujawsko_pomorskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.zip bdot10k_bubd_a_kujawsko_pomorskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_kujawsko_pomorskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -36,8 +40,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.gpkg PG:"d
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.zip /var/www/data/bdot10k_bubd_a_lubelskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.zip bdot10k_bubd_a_lubelskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubelskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -45,8 +50,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.gpkg PG:"db
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.zip /var/www/data/bdot10k_bubd_a_lubuskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.zip bdot10k_bubd_a_lubuskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lubuskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -54,8 +60,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.gpkg PG:"dbn
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.zip /var/www/data/bdot10k_bubd_a_lodzkie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.zip bdot10k_bubd_a_lodzkie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_lodzkie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -63,8 +70,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.gpkg PG:
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.zip /var/www/data/bdot10k_bubd_a_malopolskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.zip bdot10k_bubd_a_malopolskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_malopolskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -72,8 +80,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.gpkg PG:
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.zip /var/www/data/bdot10k_bubd_a_mazowieckie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.zip bdot10k_bubd_a_mazowieckie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_mazowieckie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -81,8 +90,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.gpkg PG:"db
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.zip /var/www/data/bdot10k_bubd_a_opolskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.zip bdot10k_bubd_a_opolskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_opolskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -90,8 +100,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.gpkg PG
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.zip /var/www/data/bdot10k_bubd_a_podkarpackie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.zip bdot10k_bubd_a_podkarpackie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_podkarpackie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -99,8 +110,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.gpkg PG:"d
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.zip /var/www/data/bdot10k_bubd_a_podlaskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.zip bdot10k_bubd_a_podlaskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_podlaskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -108,8 +120,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.gpkg PG:"d
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.zip /var/www/data/bdot10k_bubd_a_pomorskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.zip bdot10k_bubd_a_pomorskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_pomorskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -117,8 +130,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.gpkg PG:"dbn
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.zip /var/www/data/bdot10k_bubd_a_slaskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.zip bdot10k_bubd_a_slaskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_slaskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -126,8 +140,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.gpkg 
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.zip /var/www/data/bdot10k_bubd_a_swietokrzyskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.zip bdot10k_bubd_a_swietokrzyskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_swietokrzyskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -135,8 +150,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.zip /var/www/data/bdot10k_bubd_a_warminsko_mazurskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.zip bdot10k_bubd_a_warminsko_mazurskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_warminsko_mazurskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -144,8 +160,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.gpkg P
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.zip /var/www/data/bdot10k_bubd_a_wielkopolskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.zip bdot10k_bubd_a_wielkopolskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_wielkopolskie.zip
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 
@@ -153,8 +170,9 @@ ogr2ogr -f "GPKG" /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.g
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.gpkg -sql "VACUUM"
 ogrinfo /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.gpkg -sql "ANALYZE"
 zip -9 -j /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.zip /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.gpkg
-mv /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.zip /var/www/data/bdot10k_bubd_a_zachodniopomorskie.zip
 rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.gpkg
+b2 upload-file gugik2osm /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.zip bdot10k_bubd_a_zachodniopomorskie.zip
+rm /opt/gugik2osm/temp/export/bdot10k_bubd_a_zachodniopomorskie.zip
 
 
 date >> /opt/gugik2osm/log/bdot_processing.log

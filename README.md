@@ -9,9 +9,6 @@ Mamy nadzieję uczynić z tego pomocne narzędzie dla edytorów, które ułatwi 
 
 https://budynki.openstreetmap.org.pl
 
-## Lista rzeczy do zrobienia:
-- Integracja danych adresowych w tym algorytm wyszukiwania adresów zdublowanych i błednych
-
 ## Narzędzia pomocnicze
 
 Przy okazji tworzenia tej aplikacji napisałem kilka skryptów pomocniczych do importu danych z plików XML (GML) z adresami z PRG czy łączenia się z do API GUS w celu pobrania plików z nazwami gmin, miejscowości, ulic (TERYT).
@@ -125,8 +122,8 @@ Jedno źródło może mieć wiele warstw (np. punkty i poligony albo punkty prez
 
 Lokalne środowisko deweloperskie można uruchomić w kontenerach Docker. Kontener nie jest w pełni funkcjonalny w porównaniu do środowiska produkcyjnego, ale podstawowe rzeczy poza aktualizacją danych powinny działać.
 
-Bazę danych można odtworzyć z [backupu](https://budynki.openstreetmap.org.pl/dane/dbbackup/).
-Można użyć PostgreSQL+PostGIS zainstalowanego bezpośrednio na maszynie lub utworzyć kontener Docker z bazą (co pewnie jest rozwiązaniem prostszym skoro i tak mamy zainstalowanego Dockera żeby odpalić aplikację).
+Bazę danych można odtworzyć z [backupu](https://f003.backblazeb2.com/file/gugik2osm/dbbackup/db.bak) (lub pliku z samą strukturą bez danych: [link](https://f003.backblazeb2.com/file/gugik2osm/dbbackup/db_only_schema.sql)).
+Można użyć PostgreSQL+PostGIS zainstalowanego bezpośrednio na maszynie lub utworzyć kontener Docker z bazą (co pewnie jest rozwiązaniem prostszym skoro i tak mamy zainstalowanego Dockera, żeby odpalić aplikację).
 
 #### Uruchomienie kontenera z Postgisem:
 ```

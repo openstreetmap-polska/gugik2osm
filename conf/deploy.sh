@@ -6,7 +6,9 @@ set -e
 cd /opt/gugik2osm/git/
 git pull
 
-sudo -H python3 -m pip install -r /opt/gugik2osm/git/requirements.txt
+source /opt/gugik2osm/venv/bin/activate
+
+pip3 install -r /opt/gugik2osm/git/requirements.txt
 
 cp -r /opt/gugik2osm/git/app/* /opt/gugik2osm/app/
 rm -r /opt/gugik2osm/web/*

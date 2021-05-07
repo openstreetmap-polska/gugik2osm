@@ -12,6 +12,9 @@ WORKDIR /opt/gugik2osm
 
 # copy files to docker and install python libraries
 COPY ./requirements.txt ./
+RUN python -m venv /opt/gugik2osm/venv
+ENV VIRTUAL_ENV /opt/gugik2osm/venv
+ENV PATH /opt/gugik2osm/venv/bin:$PATH
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./processing/ ./git/processing/
