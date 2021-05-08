@@ -15,6 +15,7 @@
 0 1 * * MON-FRI ttaras /opt/gugik2osm/conf/teryt_processing.sh
 0 0 */1 * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
 ## weekly
+0 10 * * WED ttaras /opt/gugik2osm/conf/bdot10k_dl.sh
 0 20 * * WED ttaras /opt/gugik2osm/conf/bdot10k_bubd_a_parse.sh
 0 20 * * THU ttaras /opt/gugik2osm/conf/bdot10k_bubd_a_export.sh
 0 16 * * FRI ttaras /opt/gugik2osm/conf/prg_processing_v2.sh
