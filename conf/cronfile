@@ -5,8 +5,8 @@
 0 4 * *  TUE root /opt/gugik2osm/conf/services_restart.sh
 
 # keep some db tables in ram by continuously requesting data from them
-*/1 * * * * ttaras curl -s localhost/random/ > /dev/null
-*/1 * * * * ttaras curl -s localhost/processes/ > /dev/null
+*/1 5-15 * * * ttaras curl -s localhost/random/ > /dev/null
+*/1 5-15 * * * ttaras curl -s localhost/processes/ > /dev/null
 
 # import or update data
 ## minutely
