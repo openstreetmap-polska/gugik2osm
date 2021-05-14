@@ -1,4 +1,4 @@
-drop if exists tiles_new;
+drop table if exists tiles_new;
 create table tiles_new as
   select
     z, x, y,

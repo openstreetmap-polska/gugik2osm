@@ -1,12 +1,11 @@
 import io
 from datetime import datetime, timedelta
 from random import choice, random
-from os import environ
 from typing import Tuple, Dict, List
+import json
 
 from flask import request, Response
 from flask_restful import Resource, abort
-import requests as requests_lib
 from lxml import etree
 
 from common.database import pgdb, execute_sql, QUERIES, execute_values, pg, QueryParametersType, QueryOutputType
@@ -36,24 +35,6 @@ class Excluded(Resource):
     """Endpoint for reporting addresses or buildings that are not fit for import into OSM."""
     def post(self):
         r = request.get_json()
-        # captcha_user_token = request.headers.get('reCaptchaUserToken')
-        # # verify if request is correct
-        # if captcha_user_token is None:
-        #     abort(400)
-        # if r is None:
-        #     raise ValueError(request.form)
-        # if r is None or (r.get('prg_ids') is None and r.get('bdot_ids') is None):
-        #     abort(400)
-        # # verify captcha token
-        # response = requests_lib.post(
-        #     url='https://www.google.com/recaptcha/api/siteverify',
-        #     data={
-        #         'secret': environ.get('reCaptchaSecretToken'),
-        #         'response': captcha_user_token
-        #     }
-        # )
-        # if not(response.ok and response.json().get('success')):
-        #     abort(400)
 
         conn = pgdb()
         with conn.cursor() as cur:
@@ -119,11 +100,10 @@ class MapboxVectorTile(Resource):
         # prepare and return response
         response = Response(mvt)
         response.headers['Content-Type'] = 'application/x-protobuf'
-        response.headers['Access-Control-Allow-Origin'] = "*"
         cur.close()
-        if 6 <= int(z) < 13:
-            response.headers['X-Accel-Expires'] = '10800'
-        elif 13 <= int(z) < 23:
+        if 6 <= int(z) < 9:
+            response.headers['X-Accel-Expires'] = '120'
+        elif 10 <= int(z) < 23:
             response.headers['X-Accel-Expires'] = '60'
         return response
 
@@ -344,4 +324,9 @@ class LatestUpdates(Resource):
             ]
         }
 
-        return response_dict
+        # prepare and return response
+        response = Response(json.dumps(response_dict))
+        response.headers['Content-Type'] = 'application/geo+json'
+        response.headers['X-Accel-Expires'] = '60'
+
+        return response

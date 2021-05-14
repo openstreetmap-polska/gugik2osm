@@ -5,6 +5,8 @@ set -e
 
 source /opt/gugik2osm/conf/.env
 
+source /opt/gugik2osm/venv/bin/activate
+
 python3 -u /opt/gugik2osm/git/processing/scripts/prg_dl.py --output_dir /opt/gugik2osm/tempprg >> /opt/gugik2osm/log/prg_processing.log 2>&1
 date >> /opt/gugik2osm/log/prg_processing.log
 echo "PRG2CSV" >> /opt/gugik2osm/log/prg_processing.log
@@ -61,5 +63,8 @@ echo "Finished caching low zoom tiles" >> /opt/gugik2osm/log/prg_processing.log
 date >> /opt/gugik2osm/log/prg_processing.log
 echo "Cleaning temp csv files..." >> /opt/gugik2osm/log/prg_processing.log
 rm /opt/gugik2osm/tempprg2/*.csv
+date >> /opt/gugik2osm/log/prg_processing.log
+echo "Cleaning temp zip files..." >> /opt/gugik2osm/log/prg_processing.log
+rm /opt/gugik2osm/tempprg/*.zip
 echo "Done." >> /opt/gugik2osm/log/prg_processing.log
 date >> /opt/gugik2osm/log/prg_processing.log
