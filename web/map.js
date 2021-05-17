@@ -25,6 +25,14 @@ var map = new mapboxgl.Map({
             "tileSize": 256,
             "attribution": "© <a href=https://www.openstreetmap.org/copyright>OpenStreetMap</a> contributors"
             },
+            "pol-raster-tiles": {
+            "type": "raster",
+            "tiles": [
+                "https://tiles.osmapa.pl/hot/{z}/{x}/{y}.png"
+            ],
+            "tileSize": 256,
+            "attribution": "© <a href=https://www.openstreetmap.org/copyright>OpenStreetMap</a> contributors"
+            },
             "geoportal": {
                 "type": "raster",
                 "tileSize": 256,
@@ -53,6 +61,22 @@ var map = new mapboxgl.Map({
                 "source": "raster-tiles",
                 "minzoom": 0,
                 "maxzoom": 21
+            }, {
+                "id": "polish-tiles",
+                "type": "raster",
+                "source": "pol-raster-tiles",
+                "minzoom": 5,
+                "maxzoom": 20
+            }, {
+                "id": "buildings",
+                "type": "fill",
+                "source": "mvt-tiles",
+                "source-layer": "buildings",
+                "minzoom": 13,
+                "paint": {
+                    "fill-color": "red",
+                    "fill-opacity": 0.7
+                }
             }, {
                 "id": "prg2load_general",
                 "type": "circle",
@@ -96,16 +120,6 @@ var map = new mapboxgl.Map({
                 "paint": {
                     "text-halo-color": "white",
                     "text-halo-width": 2
-                }
-            }, {
-                "id": "buildings",
-                "type": "fill",
-                "source": "mvt-tiles",
-                "source-layer": "buildings",
-                "minzoom": 13,
-                "paint": {
-                    "fill-color": "red",
-                    "fill-opacity": 0.7
                 }
             }, {
                 "id": "buildings-highlighted",
