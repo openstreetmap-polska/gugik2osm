@@ -125,20 +125,11 @@ class JosmData(Resource):
         root = etree.Element('osm', version='0.6')
         layers = Layers()
 
-        if request.args.get('layers', '') == '':
-            selected_layers = layers.default
-        else:
-            selected_layers = [
-                layers[layer_id] for layer_id in request.args.get('layers').split(',')
-                if str(layer_id).lower() in layers.active_ids
-            ]
-            if len(selected_layers) == 0:
-                abort(400)
-
-        selected_layers = list(set(selected_layers))  # remove duplicates if any
-
         data = {}
         if request.args.get('filter_by') == 'bbox':
+            selected_layers = layers.selected_layers(request.args.get('layers', ''))
+            if len(selected_layers) == 0:
+                abort(400)
             bbox = (
                 float(request.args.get('xmin')), float(request.args.get('ymin')),
                 float(request.args.get('xmax')), float(request.args.get('ymax'))

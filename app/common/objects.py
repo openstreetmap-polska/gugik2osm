@@ -10,6 +10,7 @@ from . import util
 @dataclass(frozen=True)
 class LayerDefinition:
     id: str
+    parent_id: str
     name: str
     query_by_id: str
     query_by_bbox: str
@@ -38,6 +39,7 @@ class Layers:
     _list_of_layers = [
         LayerDefinition(
             id='addresses_to_import',
+            parent_id='addresses',
             name='Adresy brakujące w OSM',
             query_by_id=QUERIES['delta_where_id'],
             query_by_bbox=QUERIES['delta_where_bbox'],
@@ -48,6 +50,7 @@ class Layers:
         ),
         LayerDefinition(
             id='buildings_to_import',
+            parent_id='buildings',
             name='Budynki brakujące w OSM',
             query_by_id=QUERIES['buildings_vertices_where_id'],
             query_by_bbox=QUERIES['buildings_vertices'],
@@ -58,6 +61,7 @@ class Layers:
         ),
         LayerDefinition(
             id='addresses',
+            parent_id='',
             name='Wszystkie adresy z PRG',
             query_by_id=QUERIES['addresses_all_where_id'],
             query_by_bbox=QUERIES['addresses_all_where_bbox'],
@@ -71,6 +75,7 @@ class Layers:
         ),
         LayerDefinition(
             id='buildings',
+            parent_id='',
             name='Wszystkie budynki z BDOT10k',
             query_by_id=QUERIES['buildings_all_id'],
             query_by_bbox=QUERIES['buildings_all_bbox'],
@@ -110,6 +115,21 @@ class Layers:
 
     def __getitem__(self, item) -> LayerDefinition:
         return self._dict_of_layers[item]
+
+    def selected_layers(self, layer_names: str) -> List[LayerDefinition]:
+        if layer_names is None or layer_names == '':
+            selected_layers = self.default
+        else:
+            selected_layers = [
+                self._dict_of_layers[layer_id] for layer_id in layer_names.split(',')
+                if str(layer_id).lower().strip() in self.active_ids
+            ]
+            layer_ids = set([x.id for x in selected_layers])
+            selected_layers = [layer for layer in selected_layers if layer.parent_id not in layer_ids]
+
+        selected_layers = list(set(selected_layers))  # remove duplicates if any
+
+        return selected_layers
 
 
 @dataclass
