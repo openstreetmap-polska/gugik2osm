@@ -32,4 +32,3 @@ Werkzeug==0.16.0
 zeep==3.4.0
 zope.event==4.4
 zope.interface==5.1.0
-b2==2.4.0

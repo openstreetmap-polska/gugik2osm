@@ -122,7 +122,7 @@ Jedno źródło może mieć wiele warstw (np. punkty i poligony albo punkty prez
 
 Lokalne środowisko deweloperskie można uruchomić w kontenerach Docker. Kontener nie jest w pełni funkcjonalny w porównaniu do środowiska produkcyjnego, ale podstawowe rzeczy poza aktualizacją danych powinny działać.
 
-Bazę danych można odtworzyć z [backupu](https://f003.backblazeb2.com/file/gugik2osm/dbbackup/db.bak) (lub pliku z samą strukturą bez danych: [link](https://f003.backblazeb2.com/file/gugik2osm/dbbackup/db_only_schema.sql)).
+Bazę danych można odtworzyć z [backupu](https://budynki.openstreetmap.org.pl/dane/dbbackup/).
 Można użyć PostgreSQL+PostGIS zainstalowanego bezpośrednio na maszynie lub utworzyć kontener Docker z bazą (co pewnie jest rozwiązaniem prostszym skoro i tak mamy zainstalowanego Dockera, żeby odpalić aplikację).
 
 #### Uruchomienie kontenera z Postgisem:
