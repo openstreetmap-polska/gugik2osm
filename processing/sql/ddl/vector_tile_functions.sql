@@ -23,7 +23,7 @@ AS  $$
     select
         ST_AsMVT(b.*, 'prg2load_geomonly') mvt
     from b
-$$ LANGUAGE SQL STABLE PARALLEL SAFE;
+$$ LANGUAGE SQL STABLE ;
 
 CREATE OR REPLACE FUNCTION mvt_8_9 (IN bbox geometry) RETURNS bytea
 AS  $$
@@ -49,7 +49,7 @@ AS  $$
     select
         ST_AsMVT(b.*, 'prg2load_geomonly') mvt
     from b
-$$ LANGUAGE SQL STABLE PARALLEL SAFE;
+$$ LANGUAGE SQL STABLE ;
 
 CREATE OR REPLACE FUNCTION mvt_10_11 (IN bbox geometry) RETURNS bytea
 AS  $$
@@ -75,7 +75,7 @@ AS  $$
     select
         ST_AsMVT(b.*, 'prg2load_geomonly') mvt
     from b
-$$ LANGUAGE SQL STABLE PARALLEL SAFE;
+$$ LANGUAGE SQL STABLE ;
 
 CREATE OR REPLACE FUNCTION mvt_12_12 (IN bbox geometry) RETURNS bytea
 AS  $$
@@ -95,7 +95,7 @@ AS  $$
     select
         ST_AsMVT(a.*, 'prg2load_geomonly') mvt
     from a
-$$ LANGUAGE SQL STABLE PARALLEL SAFE;
+$$ LANGUAGE SQL STABLE ;
 
 CREATE OR REPLACE FUNCTION mvt_13_23 (IN bbox geometry) RETURNS bytea
 AS  $$
@@ -142,7 +142,7 @@ AS  $$
         limit 500000
     )
     select (select ST_AsMVT(a.*, 'prg2load') from a) || (select ST_AsMVT(b.*, 'buildings') from b) mvt
-$$ LANGUAGE SQL STABLE PARALLEL SAFE;
+$$ LANGUAGE SQL STABLE ;
 
 CREATE OR REPLACE FUNCTION mvt (IN z int, IN x int, IN y int) RETURNS bytea
 AS $$
@@ -166,4 +166,4 @@ AS $$
             RETURN null;
         end if;
     END;
-$$ LANGUAGE plpgsql STABLE PARALLEL SAFE;
+$$ LANGUAGE plpgsql STABLE ;
