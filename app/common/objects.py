@@ -1,10 +1,9 @@
 import json
 from dataclasses import dataclass
-from typing import Callable, List, Dict, Any, Tuple
+from typing import Callable, List, Dict, Any, Tuple, Union
 
-from .database import QUERIES, data_from_db, execute_batch
-from .util import addresses_nodes, buildings_nodes
 from . import util
+from . import database as db
 
 
 @dataclass(frozen=True)
@@ -26,12 +25,26 @@ class LayerDefinition:
     def __eq__(self, other):
         return self.id == other
 
+    def get_data(self, query_by: str, parameters):
+        if query_by == 'bbox':
+            query = self.query_by_bbox
+        elif query_by == 'id':
+            query = self.query_by_id
+        else:
+            raise ValueError(f'Query by: {query_by} is not valid.')
 
-# def data(self, parameters: QueryParametersType) -> QueryOutputType:
-#     with pgdb().cursor() as cur:
-#         cur = execute_sql(cur, parameters)
-#         results = cur.fetchall()
-#     return results
+        data = db.data_from_db(query, parameters, row_as=dict)
+
+        return LayerData(
+            len(data),
+            [util.input_feature_factory(**row) for row in data]
+        )
+
+
+@dataclass
+class LayerData:
+    count: int
+    data: List[Union[util.InputPoint, util.InputLine, util.InputPolygon]]
 
 
 class Layers:
@@ -41,9 +54,9 @@ class Layers:
             id='addresses_to_import',
             parent_id='addresses',
             name='Adresy brakujące w OSM',
-            query_by_id=QUERIES['delta_where_id'],
-            query_by_bbox=QUERIES['delta_where_bbox'],
-            convert_to_xml_element=addresses_nodes,
+            query_by_id=db.QUERIES['delta_where_id'],
+            query_by_bbox=db.QUERIES['delta_where_bbox'],
+            convert_to_xml_element=util.addresses_nodes,
             export_parameter_name='lb_adresow',
             active=True,
             default=True
@@ -52,9 +65,9 @@ class Layers:
             id='buildings_to_import',
             parent_id='buildings',
             name='Budynki brakujące w OSM',
-            query_by_id=QUERIES['buildings_vertices_where_id'],
-            query_by_bbox=QUERIES['buildings_vertices'],
-            convert_to_xml_element=buildings_nodes,
+            query_by_id=db.QUERIES['buildings_vertices_where_id'],
+            query_by_bbox=db.QUERIES['buildings_vertices'],
+            convert_to_xml_element=util.buildings_nodes,
             export_parameter_name='lb_budynkow',
             active=True,
             default=True
@@ -63,9 +76,9 @@ class Layers:
             id='addresses',
             parent_id='',
             name='Wszystkie adresy z PRG',
-            query_by_id=QUERIES['addresses_all_where_id'],
-            query_by_bbox=QUERIES['addresses_all_where_bbox'],
-            convert_to_xml_element=addresses_nodes,
+            query_by_id=db.QUERIES['addresses_all_where_id'],
+            query_by_bbox=db.QUERIES['addresses_all_where_bbox'],
+            convert_to_xml_element=util.addresses_nodes,
             export_parameter_name='lb_adresow',
             active=True,
             default=False,
@@ -77,9 +90,9 @@ class Layers:
             id='buildings',
             parent_id='',
             name='Wszystkie budynki z BDOT10k',
-            query_by_id=QUERIES['buildings_all_id'],
-            query_by_bbox=QUERIES['buildings_all_bbox'],
-            convert_to_xml_element=buildings_nodes,
+            query_by_id=db.QUERIES['buildings_all_id'],
+            query_by_bbox=db.QUERIES['buildings_all_bbox'],
+            convert_to_xml_element=util.buildings_nodes,
             export_parameter_name='lb_budynkow',
             active=True,
             default=False,
@@ -158,7 +171,7 @@ class ProposedAddress:
 
 
 def proposed_addresses(bbox: Tuple[float, float, float, float]) -> List[ProposedAddress]:
-    data = data_from_db(QUERIES['sc_proposed_addresses_in_bbox'], bbox)
+    data = db.data_from_db(db.QUERIES['sc_proposed_addresses_in_bbox'], bbox)
     return [ProposedAddress(*a[:6], json.loads(a[6])) for a in data]
 
 
@@ -170,7 +183,7 @@ def proposed_addresses_geojson_dict(bbox: Tuple[float, float, float, float]) -> 
 
 
 def report_addresses(ids: List[str]) -> None:
-    execute_batch(QUERIES['insert_to_exclude_prg'], [(x,) for x in ids])
+    db.execute_batch(db.QUERIES['insert_to_exclude_prg'], [(x,) for x in ids])
 
 
 @dataclass
@@ -206,7 +219,7 @@ class ProposedBuilding:
 
 
 def proposed_buildings(bbox: Tuple[float, float, float, float]) -> List[ProposedBuilding]:
-    data = data_from_db(QUERIES['sc_proposed_buildings_in_bbox'], bbox)
+    data = db.data_from_db(db.QUERIES['sc_proposed_buildings_in_bbox'], bbox)
     return [ProposedBuilding(*a[:8], json.loads(a[8])) for a in data]
 
 
@@ -218,4 +231,4 @@ def proposed_buildings_geojson_dict(bbox: Tuple[float, float, float, float]) -> 
 
 
 def report_buildings(ids: List[str]) -> None:
-    execute_batch(QUERIES['insert_to_exclude_bdot_buildings'], [(x,) for x in ids])
+    db.execute_batch(db.QUERIES['insert_to_exclude_bdot_buildings'], [(x,) for x in ids])
