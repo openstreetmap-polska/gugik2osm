@@ -8,8 +8,7 @@ from flask import request, Response
 from flask_restful import Resource, abort
 from lxml import etree
 
-from common.database import pgdb, execute_sql, QUERIES, execute_values, pg, QueryParametersType, QueryOutputType
-from common.util import buildings_xml, addresses_xml, XMLElementType
+from common.database import pgdb, execute_sql, QUERIES, execute_values, QueryParametersType
 import common.util as util
 from common.objects import Layers, LayerDefinition, LayerData
 
@@ -32,7 +31,7 @@ class Processes(Resource):
         return result
 
 
-class Excluded(Resource):
+class Exclude(Resource):
     """Endpoint for reporting addresses or buildings that are not fit for import into OSM."""
 
     def post(self):
@@ -65,23 +64,6 @@ class RandomLocation(Resource):
             execute_sql(cur, query)
             x, y = choice(cur.fetchall())
         return {'lon': x, 'lat': y}
-
-
-class AddressPointInfo(Resource):
-    def get(self, uuid: str):
-        with pgdb().cursor() as cur:
-            try:
-                cur = execute_sql(cur, QUERIES['delta_point_info'], (uuid,))
-            except pg.errors.InvalidTextRepresentation:
-                return {'Error': f'Error parsing string: `{uuid}` to UUID.'}, 400
-            info = cur.fetchone()
-
-        if info:
-            return {'lokalnyid': info[0], 'teryt_msc': info[1], 'teryt_simc': info[2],
-                    'teryt_ulica': info[3], 'teryt_ulic': info[4], 'nr': info[5], 'pna': info[6]
-                    }
-        else:
-            return {'Error': f'Address point with lokalnyid(uuid): {uuid} not found.'}, 404
 
 
 class MapboxVectorTile(Resource):
@@ -218,64 +200,6 @@ class JosmData(Resource):
             data[layer.id] = layer.get_data(query_by=filter_by, parameters=params)
 
         return data
-
-
-class PrgAddressesNotInOSM(Resource):
-    def get(self):
-        if request.args.get('filter_by') == 'bbox':
-            if not (
-                    'xmin' in request.args and 'xmax' in request.args
-                    and
-                    'ymin' in request.args and 'ymax' in request.args
-            ):
-                abort(400)
-        if request.args.get('format') not in {'osm', 'xml'}:
-            abort(400)
-
-        with pgdb().cursor() as cur:
-            execute_sql(
-                cur,
-                QUERIES['delta_where_bbox'],
-                (float(request.args.get('xmin')),
-                float(request.args.get('ymin')),
-                float(request.args.get('xmax')),
-                float(request.args.get('ymax')))
-            )
-            root = addresses_xml(cur.fetchall())
-
-        return Response(
-            etree.tostring(root, encoding='UTF-8'),
-            mimetype='text/xml',
-            headers={'Content-disposition': 'attachment; filename=prg_addresses.osm'})
-
-
-class BuildingsNotInOSM(Resource):
-    def get(self):
-        if request.args.get('filter_by') == 'bbox':
-            if not (
-                    'xmin' in request.args and 'xmax' in request.args
-                    and
-                    'ymin' in request.args and 'ymax' in request.args
-            ):
-                abort(400)
-        else:
-            abort(400)
-        if request.args.get('format') not in {'osm', 'xml'}:
-            abort(400)
-
-        with pgdb().cursor() as cur:
-            execute_sql(
-                cur,
-                QUERIES['buildings_vertices'],
-                (float(request.args.get('xmin')), float(request.args.get('ymin')),
-                float(request.args.get('xmax')), float(request.args.get('ymax')))
-            )
-            root = buildings_xml(cur.fetchall())
-
-        return Response(
-            etree.tostring(root, encoding='UTF-8'),
-            mimetype='text/xml',
-            headers={'Content-disposition': 'attachment; filename=buildings.osm'})
 
 
 class LatestUpdates(Resource):

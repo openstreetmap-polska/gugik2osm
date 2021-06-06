@@ -3,8 +3,8 @@ from os import environ
 from flask_restful import Api
 from flask import Flask
 
-from resources.internal import (JosmData, PrgAddressesNotInOSM, BuildingsNotInOSM, MapboxVectorTile, AddressPointInfo,
-                                RandomLocation, Excluded, Processes, LatestUpdates, AvailableLayers)
+from resources.internal import (JosmData, MapboxVectorTile,
+                                RandomLocation, Exclude, Processes, LatestUpdates, AvailableLayers)
 from resources.sc import ProposedAddresses, ReportProposedAddress, ProposedBuildings, ReportProposedBuilding
 
 app = Flask(__name__)
@@ -12,12 +12,9 @@ api = Api(app)
 
 api.add_resource(JosmData, '/josm_data')
 api.add_resource(AvailableLayers, '/layers/')
-api.add_resource(PrgAddressesNotInOSM, '/prg/not_in/osm/')
-api.add_resource(BuildingsNotInOSM, '/lod1/not_in/osm/')
 api.add_resource(MapboxVectorTile, '/tiles/<int:z>/<int:x>/<int:y>.pbf')
-api.add_resource(AddressPointInfo, '/delta/<string:uuid>/')
 api.add_resource(RandomLocation, '/random/')
-api.add_resource(Excluded, '/exclude/')
+api.add_resource(Exclude, '/exclude/')
 api.add_resource(Processes, '/processes/')
 api.add_resource(LatestUpdates, '/updates.geojson')
 
