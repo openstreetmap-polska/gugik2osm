@@ -32,4 +32,4 @@ sudo service nginx restart
 
 python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/ --skip-existing
 
-bash /opt/gugik2osm/deploy_street_names_mappings.sh
+bash /opt/gugik2osm/conf/deploy_street_names_mappings.sh
