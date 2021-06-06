@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import psycopg2 as pg
 import psycopg2.extensions
 import psycopg2.errors
-from psycopg2.extras import execute_values
+from psycopg2.extras import execute_values, RealDictCursor
 
 QueryParametersType = Union[Iterable, Dict[str, Any]]
 QueryOutputType = List[Optional[Tuple[Any]]]
@@ -61,7 +61,10 @@ def close_db_connection():
 
 def execute_sql(cursor: PGCursor, query: str, parameters: QueryParametersType = None) -> PGCursor:
     """Method executes SQL query in a given cursor with given parameters. Provides error handling.
-    In case of exception it rolls back transaction and closes the connection."""
+    In case of exception it rolls back transaction and closes the connection.
+
+    Deprecated."""
+
     global conn
     try:
         cursor.execute(query, parameters) if parameters else cursor.execute(query)
@@ -81,18 +84,29 @@ def execute_sql(cursor: PGCursor, query: str, parameters: QueryParametersType = 
     return cursor
 
 
-def data_from_db(query: str, parameters: QueryParametersType = None) -> List[tuple]:
-    """Method executes SQL query in a given cursor with given parameters. Provides error handling.
-    In case of exception it rolls back transaction and closes the connection."""
+def data_from_db(
+        query: str,
+        parameters: QueryParametersType = None,
+        row_as: Union[tuple, dict, Any] = tuple
+) -> List[Union[tuple, dict, Any]]:
+    """Method executes SQL query and returns data. Data can be mapped to class if you provide it in row_as parameter.
+    Provides error handling. In case of exception it rolls back transaction and closes the connection."""
 
     global conn
     connection = pgdb()
-    with connection.cursor() as cur:
+
+    if row_as == dict:
+        cursor_factory_type = RealDictCursor
+    else:
+        cursor_factory_type = None
+
+    with connection.cursor(cursor_factory=cursor_factory_type) as cur:
         try:
             cur.execute(query, parameters) if parameters else cur.execute(query)
-        except psycopg2.InterfaceError:
+        except (psycopg2.InterfaceError, psycopg2.OperationalError) as e:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   f'- Error while executing query: {query}, with parameters: {parameters}')
+            print(e)
             conn = None
             raise
         except:
@@ -103,21 +117,25 @@ def data_from_db(query: str, parameters: QueryParametersType = None) -> List[tup
                 connection.close()
             conn = None
             raise
-        return cur.fetchall()
+        results = cur.fetchall()
+        if row_as not in (dict, tuple):
+            results = [row_as(*row) for row in results]
+        return results
 
 
 def execute_query(query: str, parameters: QueryParametersType = None) -> List[tuple]:
-    """Method executes SQL query in a given cursor with given parameters. Provides error handling.
+    """Method executes SQL query and commits transaction. Provides error handling.
     In case of exception it rolls back transaction and closes the connection."""
 
     global conn
     connection = pgdb()
-    with connection.cursor() as cur:
+    with connection.cursor(withhold=True) as cur:
         try:
             cur.execute(query, parameters) if parameters else cur.execute(query)
-        except psycopg2.InterfaceError:
+        except (psycopg2.InterfaceError, psycopg2.OperationalError) as e:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   f'- Error while executing query: {query}, with parameters: {parameters}')
+            print(e)
             conn = None
             raise
         except:
@@ -137,10 +155,18 @@ def execute_query(query: str, parameters: QueryParametersType = None) -> List[tu
 
 
 def execute_batch(query: str, parameters: List[QueryParametersType]) -> List[tuple]:
+    """Execute query using VALUES with a sequence of parameters.
+    In simpler terms it allows e.g. batch inserts such as:
+        insert into table values (1, 'a'), (2, 'b');
+    instead of having to execute inserts separately:
+        insert into table values (1, 'a');
+        insert into table values (2, 'b');
+    This can provide significant performance boost.
+    """
 
     global conn
     connection = pgdb()
-    with connection.cursor() as cur:
+    with connection.cursor(withhold=True) as cur:
         try:
             execute_values(cur, query, parameters)
         except psycopg2.InterfaceError:
