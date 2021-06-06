@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass
-from typing import Callable, List, Dict, Any, Tuple, Union
+from typing import List, Dict, Any, Tuple, Union
 
 from . import util
 from . import database as db
@@ -13,7 +13,6 @@ class LayerDefinition:
     name: str
     query_by_id: str
     query_by_bbox: str
-    convert_to_xml_element: Callable
     export_parameter_name: str
     active: bool = True
     default: bool = False
@@ -56,7 +55,6 @@ class Layers:
             name='Adresy brakujące w OSM',
             query_by_id=db.QUERIES['delta_where_id'],
             query_by_bbox=db.QUERIES['delta_where_bbox'],
-            convert_to_xml_element=util.addresses_nodes,
             export_parameter_name='lb_adresow',
             active=True,
             default=True
@@ -67,7 +65,6 @@ class Layers:
             name='Budynki brakujące w OSM',
             query_by_id=db.QUERIES['buildings_vertices_where_id'],
             query_by_bbox=db.QUERIES['buildings_vertices'],
-            convert_to_xml_element=util.buildings_nodes,
             export_parameter_name='lb_budynkow',
             active=True,
             default=True
@@ -78,7 +75,6 @@ class Layers:
             name='Wszystkie adresy z PRG',
             query_by_id=db.QUERIES['addresses_all_where_id'],
             query_by_bbox=db.QUERIES['addresses_all_where_bbox'],
-            convert_to_xml_element=util.addresses_nodes,
             export_parameter_name='lb_adresow',
             active=True,
             default=False,
@@ -92,7 +88,6 @@ class Layers:
             name='Wszystkie budynki z BDOT10k',
             query_by_id=db.QUERIES['buildings_all_id'],
             query_by_bbox=db.QUERIES['buildings_all_bbox'],
-            convert_to_xml_element=util.buildings_nodes,
             export_parameter_name='lb_budynkow',
             active=True,
             default=False,

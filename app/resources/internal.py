@@ -126,7 +126,6 @@ class JosmData(Resource):
 
     def get(self):
         package_export_params = None
-        root = etree.Element('osm', version='0.6')
         layers = Layers()
 
         data = {}
@@ -158,13 +157,7 @@ class JosmData(Resource):
             abort(400)
 
         list_of_features = [values for layer_id, layer_data in data.items() for values in layer_data.data]
-        nodes, ways, relations = util.convert_to_osm_style_objects(list_of_features)
-        for node in nodes:
-            root.append(node.as_xml_element())
-        for way in ways:
-            root.append(way.as_xml_element())
-        for relation in relations:
-            root.append(relation.as_xml_element())
+        root = util.create_osm_xml(list_of_features)
 
         if package_export_params:
             for layer_id, layer_data in data.items():
@@ -185,7 +178,6 @@ class JosmData(Resource):
         if request.args.get('filter_by') != 'id':
             abort(400)
 
-        root = etree.Element('osm', version='0.6')
         layers = Layers()
 
         temp = request.get_json()
@@ -203,13 +195,7 @@ class JosmData(Resource):
         data = self.data_for_layers(selected_layers_and_params, 'id')
 
         list_of_features = [values for layer_id, layer_data in data.items() for values in layer_data.data]
-        nodes, ways, relations = util.convert_to_osm_style_objects(list_of_features)
-        for node in nodes:
-            root.append(node.as_xml_element())
-        for way in ways:
-            root.append(way.as_xml_element())
-        for relation in relations:
-            root.append(relation.as_xml_element())
+        root = util.create_osm_xml(list_of_features)
 
         return Response(
             etree.tostring(root, encoding='UTF-8'),
