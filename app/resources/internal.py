@@ -52,9 +52,10 @@ class Excluded(Resource):
 
 
 class RandomLocation(Resource):
-    """Returns random location (lon, lat) while prioritizing areas with a lot of objects to export."""
+    """Returns random location (lon, lat) while prioritizing (95% chance) areas with a lot of objects to export."""
+
     def get(self):
-        if random() > 0.1:
+        if random() > 0.05:
             query = QUERIES['locations_most_count']
         else:
             query = QUERIES['locations_random']
