@@ -56,12 +56,12 @@ var map = new mapboxgl.Map({
         "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
         "layers": [
             {
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 21
-            }, {
+//                "id": "simple-tiles",
+//                "type": "raster",
+//                "source": "raster-tiles",
+//                "minzoom": 0,
+//                "maxzoom": 21
+//            }, {
                 "id": "polish-tiles",
                 "type": "raster",
                 "source": "pol-raster-tiles",
