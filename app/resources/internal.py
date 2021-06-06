@@ -1,7 +1,7 @@
 import io
 from datetime import datetime, timedelta
 from random import choice, random
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict, List, Union
 import json
 
 from flask import request, Response
@@ -11,11 +11,12 @@ from lxml import etree
 from common.database import pgdb, execute_sql, QUERIES, execute_values, pg, QueryParametersType, QueryOutputType
 from common.util import buildings_xml, addresses_xml, XMLElementType
 import common.util as util
-from common.objects import Layers, LayerDefinition
+from common.objects import Layers, LayerDefinition, LayerData
 
 
 class Processes(Resource):
     """Lists processes (data update)."""
+
     def get(self):
         cur = execute_sql(pgdb().cursor(), QUERIES['processes'])
         list_of_processes = cur.fetchall()
@@ -33,6 +34,7 @@ class Processes(Resource):
 
 class Excluded(Resource):
     """Endpoint for reporting addresses or buildings that are not fit for import into OSM."""
+
     def post(self):
         r = request.get_json()
 
@@ -76,7 +78,8 @@ class AddressPointInfo(Resource):
 
         if info:
             return {'lokalnyid': info[0], 'teryt_msc': info[1], 'teryt_simc': info[2],
-                    'teryt_ulica': info[3], 'teryt_ulic': info[4], 'nr': info[5], 'pna': info[6]}
+                    'teryt_ulica': info[3], 'teryt_ulic': info[4], 'nr': info[5], 'pna': info[6]
+                    }
         else:
             return {'Error': f'Address point with lokalnyid(uuid): {uuid} not found.'}, 404
 
@@ -154,14 +157,19 @@ class JosmData(Resource):
         else:
             abort(400)
 
-        xml_children = []
-        for k, v in data.items():
-            xml_children.extend(v['data'])
-            if package_export_params and layers[k].export_parameter_name:
-                package_export_params[layers[k].export_parameter_name] = v['count']
-        root = util.prepare_xml_tree(root, xml_children)
+        list_of_features = [values for layer_id, layer_data in data.items() for values in layer_data.data]
+        nodes, ways, relations = util.convert_to_osm_style_objects(list_of_features)
+        for node in nodes:
+            root.append(node.as_xml_element())
+        for way in ways:
+            root.append(way.as_xml_element())
+        for relation in relations:
+            root.append(relation.as_xml_element())
 
         if package_export_params:
+            for layer_id, layer_data in data.items():
+                if layers[layer_id].export_parameter_name:
+                    package_export_params[layers[layer_id].export_parameter_name] = layer_data.count
             required_parameters = ['lb_adresow', 'lb_budynkow']
             for param in required_parameters:
                 if package_export_params.get(param) is None:
@@ -193,10 +201,15 @@ class JosmData(Resource):
             selected_layers_and_params.append((layers['buildings_to_import'], buildings_params))
 
         data = self.data_for_layers(selected_layers_and_params, 'id')
-        xml_children = []
-        for k, v in data.items():
-            xml_children.extend(v['data'])
-        root = util.prepare_xml_tree(root, xml_children)
+
+        list_of_features = [values for layer_id, layer_data in data.items() for values in layer_data.data]
+        nodes, ways, relations = util.convert_to_osm_style_objects(list_of_features)
+        for node in nodes:
+            root.append(node.as_xml_element())
+        for way in ways:
+            root.append(way.as_xml_element())
+        for relation in relations:
+            root.append(relation.as_xml_element())
 
         return Response(
             etree.tostring(root, encoding='UTF-8'),
@@ -209,23 +222,14 @@ class JosmData(Resource):
             cur.execute(QUERIES['insert_to_package_exports'], package_export_params)
             conn.commit()
 
-    def data_for_layers(self, layers: List[Tuple[LayerDefinition, QueryParametersType]], filter_by: str) -> Dict[str, XMLElementType]:
+    def data_for_layers(self,
+                        layers: List[Tuple[LayerDefinition, QueryParametersType]],
+                        filter_by: str
+                        ) -> Dict[str, LayerData]:
         data = {}
 
-        with pgdb().cursor() as cur:
-            for layer, params in layers:
-                if filter_by == 'bbox':
-                    query = layer.query_by_bbox
-                elif filter_by == 'id':
-                    query = layer.query_by_id
-                else:
-                    raise NotImplementedError()
-                cur = execute_sql(cur, query, params)
-                temp = cur.fetchall()
-                data[layer.id] = {
-                    'count': len(temp),
-                    'data': layer.convert_to_xml_element(temp)
-                }
+        for layer, params in layers:
+            data[layer.id] = layer.get_data(query_by=filter_by, parameters=params)
 
         return data
 
@@ -247,9 +251,9 @@ class PrgAddressesNotInOSM(Resource):
                 cur,
                 QUERIES['delta_where_bbox'],
                 (float(request.args.get('xmin')),
-                 float(request.args.get('ymin')),
-                 float(request.args.get('xmax')),
-                 float(request.args.get('ymax')))
+                float(request.args.get('ymin')),
+                float(request.args.get('xmax')),
+                float(request.args.get('ymax')))
             )
             root = addresses_xml(cur.fetchall())
 
@@ -278,7 +282,7 @@ class BuildingsNotInOSM(Resource):
                 cur,
                 QUERIES['buildings_vertices'],
                 (float(request.args.get('xmin')), float(request.args.get('ymin')),
-                 float(request.args.get('xmax')), float(request.args.get('ymax')))
+                float(request.args.get('xmax')), float(request.args.get('ymax')))
             )
             root = buildings_xml(cur.fetchall())
 

@@ -1,46 +1,60 @@
 with
-a as (
+data as (
     select
-        row_number() over() * -1 - 100000 as way_id,
-        -- holes in polygons are too difficult :(
-        ST_MakePolygon(ST_ExteriorRing(geom_4326)) geom_4326,
-        building,
-        amenity,
-        man_made,
-        leisure,
-        historic,
-        tourism,
-        building_levels
+        row_number() over() as way_id,
+        geom_4326,
+        GeometryType(geom_4326) geom_type,
+        jsonb_strip_nulls(jsonb_build_object(
+           'building', building,
+           'amenity', amenity,
+           'man_made', man_made,
+           'leisure', leisure,
+           'historic', historic,
+           'tourism', tourism,
+           'building:levels', building_levels
+        )) tags
     from bdot_buildings_all b
     where 1=1
         and b.lokalnyid in %s
     limit 50000
 ),
-b as (
+points as (
     select
         way_id,
         ST_DumpPoints(geom_4326) dp
-    from a
+    from data
 ),
-c as (
+outer_rings as (
     select
         way_id,
-        array_agg(ARRAY[cast(st_x((dp).geom) as numeric(10, 8)), cast(st_y((dp).geom) as numeric(10, 8))]) as arr
-    from b
+        array_agg(ARRAY[st_y((dp).geom), st_x((dp).geom)]) as outer_ring
+    from points
+    where 1=1
+        and (dp).path[1] = 1
     group by way_id
 ),
-d as (
+inner_rings_temp as (
     select
         way_id,
-        arr,
-        building,
-        amenity,
-        man_made,
-        leisure,
-        historic,
-        tourism,
-        building_levels
-    from c
-    join a using(way_id)
+        array_agg(ARRAY[st_y((dp).geom), st_x((dp).geom)]) as inner_ring
+    from points
+    where 1=1
+        and (dp).path[1] > 1
+    group by way_id, (dp).path[1]
+),
+inner_rings_final as (
+    select
+        way_id,
+        array_agg(inner_ring) as inner_rings
+    from inner_rings_temp
+    group by way_id
 )
-select * from d;
+select
+    geom_type,
+    tags,
+    outer_ring,
+    coalesce(inner_rings, ARRAY[]::real[]) inner_rings
+from data
+inner join outer_rings using(way_id)
+left join inner_rings_final using(way_id)
+;
