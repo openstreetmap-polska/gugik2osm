@@ -212,10 +212,10 @@ def create_osm_xml(list_of_features: List[Union[InputPoint, InputLine, InputPoly
     root = etree.Element('osm', version='0.6')
     list_of_nodes, list_of_ways, list_of_relations = convert_to_osm_style_objects(list_of_features)
     for node in list_of_nodes:
-        root.append(node)
+        root.append(node.as_xml_element())
     for way in list_of_ways:
-        root.append(way)
+        root.append(way.as_xml_element())
     for relation in list_of_relations:
-        root.append(relation)
+        root.append(relation.as_xml_element())
 
     return root
