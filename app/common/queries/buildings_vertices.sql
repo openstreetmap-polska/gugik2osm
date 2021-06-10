@@ -48,7 +48,7 @@ inner_rings_temp as (
 inner_rings_final as (
     select
         way_id,
-        array_agg(inner_ring) as inner_rings
+        jsonb_agg(inner_ring) as inner_rings -- inner rings have different dimensionality so we can't use regular postgresql arrays
     from inner_rings_temp
     group by way_id
 )
@@ -56,7 +56,7 @@ select
     geom_type,
     tags,
     outer_ring,
-    coalesce(inner_rings, ARRAY[]::real[]) inner_rings
+    coalesce(inner_rings, '[]'::jsonb) inner_rings
 from data
 inner join outer_rings using(way_id)
 left join inner_rings_final using(way_id)
