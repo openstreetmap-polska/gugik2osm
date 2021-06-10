@@ -11,7 +11,8 @@ data as (
            'leisure', leisure,
            'historic', historic,
            'tourism', tourism,
-           'building:levels', building_levels
+           'building:levels', building_levels,
+           'source', 'www.geoportal.gov.pl'
         )) tags
     from bdot_buildings_all b
     where 1=1

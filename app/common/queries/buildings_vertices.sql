@@ -11,7 +11,8 @@ data as (
            'leisure', leisure,
            'historic', historic,
            'tourism', tourism,
-           'building:levels', building_levels
+           'building:levels', building_levels,
+           'source', 'www.geoportal.gov.pl'
         )) tags
     from bdot_buildings b
     left join exclude_bdot_buildings ex on b.lokalnyid=ex.id

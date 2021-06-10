@@ -6,7 +6,8 @@ select
                'addr:place', d.teryt_msc,
                'addr:city:simc', d.teryt_simc,
                'addr:housenumber', d.nr,
-               'addr:postcode', d.pna
+               'addr:postcode', d.pna,
+               'source:addr', 'gugik.gov.pl'
             ))
         else
             jsonb_strip_nulls(jsonb_build_object(
@@ -14,7 +15,8 @@ select
                'addr:city:simc', d.teryt_simc,
                'addr:street', d.teryt_ulica,
                'addr:housenumber', d.nr,
-               'addr:postcode', d.pna
+               'addr:postcode', d.pna,
+               'source:addr', 'gugik.gov.pl'
             ))
    end tags,
    st_x(st_transform(d.geom, 4326)) longitude,
