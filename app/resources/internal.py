@@ -1,4 +1,3 @@
-import io
 from datetime import datetime, timedelta
 from random import choice, random
 from typing import Tuple, Dict, List, Union
@@ -8,7 +7,7 @@ from flask import request, Response
 from flask_restful import Resource, abort
 from lxml import etree
 
-from common.database import pgdb, execute_sql, QUERIES, execute_values, QueryParametersType
+from common.database import QUERIES, QueryParametersType, data_from_db, execute_query, execute_batch
 import common.util as util
 from common.objects import Layers, LayerDefinition, LayerData
 
@@ -17,8 +16,7 @@ class Processes(Resource):
     """Lists processes (data update)."""
 
     def get(self):
-        cur = execute_sql(pgdb().cursor(), QUERIES['processes'])
-        list_of_processes = cur.fetchall()
+        list_of_processes = data_from_db(QUERIES['processes'])
         result = {
             'processes': [
                 {
@@ -37,18 +35,16 @@ class Exclude(Resource):
     def post(self):
         r = request.get_json()
 
-        conn = pgdb()
-        with conn.cursor() as cur:
-            prg_counter, lod1_counter = 0, 0
-            if r.get('prg_ids'):
-                prg_ids = [(x,) for x in r['prg_ids']]
-                execute_values(cur, QUERIES['insert_to_exclude_prg'], prg_ids)
-                prg_counter = len(prg_ids)
-            if r.get('bdot_ids'):
-                lod1_ids = [(x,) for x in r['bdot_ids']]
-                execute_values(cur, QUERIES['insert_to_exclude_bdot_buildings'], lod1_ids)
-                lod1_counter = len(lod1_ids)
-            conn.commit()
+        prg_counter, lod1_counter = 0, 0
+        if r.get('prg_ids'):
+            prg_ids = [(x,) for x in r['prg_ids']]
+            execute_batch(QUERIES['insert_to_exclude_prg'], prg_ids)
+            prg_counter = len(prg_ids)
+        if r.get('bdot_ids'):
+            lod1_ids = [(x,) for x in r['bdot_ids']]
+            execute_batch(QUERIES['insert_to_exclude_bdot_buildings'], lod1_ids)
+            lod1_counter = len(lod1_ids)
+
         return {'prg_ids_inserted': prg_counter, 'bdot_ids_inserted': lod1_counter}, 201
 
 
@@ -60,33 +56,28 @@ class RandomLocation(Resource):
             query = QUERIES['locations_most_count']
         else:
             query = QUERIES['locations_random']
-        with pgdb().cursor() as cur:
-            execute_sql(cur, query)
-            x, y = choice(cur.fetchall())
+        list_of_tuples = data_from_db(query)
+        x, y = choice(list_of_tuples)
         return {'lon': x, 'lat': y}
 
 
 class MapboxVectorTile(Resource):
+    """Returns vector tile (MVT) with data which can be displayed on the map."""
+
     def get(self, z: int, x: int, y: int):
 
-        # query db
-        conn = pgdb()
-        cur = execute_sql(conn.cursor(), QUERIES['cached_mvt'], (z, x, y))
-        tup = cur.fetchone()
-        if tup is None:
+        list_of_tuples = data_from_db(QUERIES['cached_mvt'], (z, x, y))
+        if len(list_of_tuples) == 0:
             if 6 <= int(z) <= 14:
-                cur = execute_sql(cur, QUERIES['mvt_insert'], {'z': z, 'x': x, 'y': y})
+                execute_query(QUERIES['mvt_insert'], {'z': z, 'x': x, 'y': y})
             else:
                 abort(404)
-            conn.commit()
-            cur = execute_sql(cur, QUERIES['cached_mvt'], (z, x, y))
-            tup = cur.fetchone()
-        mvt = io.BytesIO(tup[0]).getvalue() if tup else abort(500)
+            list_of_tuples = data_from_db(QUERIES['cached_mvt'], (z, x, y))
+
+        mvt = list_of_tuples[0][0] if len(list_of_tuples) == 1 else abort(500)
 
         # prepare and return response
-        response = Response(mvt)
-        response.headers['Content-Type'] = 'application/x-protobuf'
-        cur.close()
+        response = Response(mvt, status=200, content_type='application/x-protobuf')
         if 6 <= int(z) < 9:
             response.headers['X-Accel-Expires'] = '120'
         elif 10 <= int(z) < 23:
@@ -185,10 +176,7 @@ class JosmData(Resource):
             headers={'Content-disposition': 'attachment; filename=paczka_danych.osm'})
 
     def register_bbox_export(self, package_export_params: dict) -> None:
-        conn = pgdb()
-        with conn.cursor() as cur:
-            cur.execute(QUERIES['insert_to_package_exports'], package_export_params)
-            conn.commit()
+        execute_query(QUERIES['insert_to_package_exports'], package_export_params)
 
     def data_for_layers(self,
                         layers: List[Tuple[LayerDefinition, QueryParametersType]],
@@ -203,6 +191,8 @@ class JosmData(Resource):
 
 
 class LatestUpdates(Resource):
+    """Returns areas that has recently been updated in OSM or areas that were exported as JOSM data package."""
+
     def get(self):
         ts = request.args.get('after')
         if ts is None:
@@ -215,24 +205,25 @@ class LatestUpdates(Resource):
         if ts - datetime.now() > timedelta(hours=24, minutes=5):
             abort(400)
 
-        with pgdb().cursor() as cur:
-            execute_sql(
-                cur,
-                QUERIES['latest_updates'],
-                {'ts': ts}
-            )
-            data = cur.fetchall()
+        list_of_tuples = data_from_db(QUERIES['latest_updates'], {'ts': ts})
         response_dict = {
             'type': 'FeatureCollection',
             'features': [
                 {'type': 'Feature', 'geometry': bbox, 'properties': {'dataset': dataset, 'created_at': created_at}}
-                for dataset, created_at, bbox in data
+                for dataset, created_at, bbox in list_of_tuples
             ]
         }
 
         # prepare and return response
-        response = Response(json.dumps(response_dict))
-        response.headers['Content-Type'] = 'application/geo+json'
-        response.headers['X-Accel-Expires'] = '60'
+        expiry_time = ts + timedelta(seconds=60)
+        response = Response(
+            response=json.dumps(response_dict),
+            status=200,
+            content_type='application/geo+json',
+            headers={
+                'X-Accel-Expires': '60',
+                'Expires': expiry_time.strftime("%a, %d %b %Y %H:%M:%S GMT"),
+            }
+        )
 
         return response

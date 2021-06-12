@@ -1,7 +1,7 @@
 from os import environ
 from os.path import join, dirname, abspath
 import atexit
-from typing import Union, Any, Dict, Optional, Tuple, List, Iterable
+from typing import Union, Any, Dict, Optional, Tuple, List, Iterable, Callable
 from datetime import datetime, timezone
 
 import psycopg2 as pg
@@ -39,6 +39,7 @@ QUERIES = {
     'sc_proposed_buildings_in_bbox': str(open(join(SQL_PATH, 'sc_proposed_buildings_in_bbox.sql'), 'r').read()),
 }
 conn: Union[PGConnection, None] = None
+connection_read_only: Union[PGConnection, None] = None
 
 
 def pgdb() -> PGConnection:
@@ -51,6 +52,17 @@ def pgdb() -> PGConnection:
         return conn
 
 
+def pgdb_read_only() -> PGConnection:
+    """Method returns connection to the DB. If there is no connection active it creates one."""
+    global connection_read_only
+    if connection_read_only:
+        return connection_read_only
+    else:
+        connection_read_only = pg.connect(dsn=environ['dsn'])
+        connection_read_only.set_session(readonly=True, autocommit=True)
+        return connection_read_only
+
+
 @atexit.register
 def close_db_connection():
     """Close the database connection. Method executed upon exit."""
@@ -59,41 +71,16 @@ def close_db_connection():
         conn.close()
 
 
-def execute_sql(cursor: PGCursor, query: str, parameters: QueryParametersType = None) -> PGCursor:
-    """Method executes SQL query in a given cursor with given parameters. Provides error handling.
-    In case of exception it rolls back transaction and closes the connection.
-
-    Deprecated."""
-
-    global conn
-    try:
-        cursor.execute(query, parameters) if parameters else cursor.execute(query)
-    except psycopg2.InterfaceError:
-        print(datetime.now(timezone.utc).astimezone().isoformat(),
-              f'- Error while executing query: {query}, with parameters: {parameters}')
-        conn = None
-        raise
-    except:
-        print(datetime.now(timezone.utc).astimezone().isoformat(),
-              f'- Error while executing query: {query}, with parameters: {parameters}')
-        if conn:
-            conn.rollback()
-            conn.close()
-        conn = None
-        raise
-    return cursor
-
-
 def data_from_db(
-        query: str,
-        parameters: QueryParametersType = None,
-        row_as: Union[tuple, dict, Any] = tuple
+    query: str,
+    parameters: QueryParametersType = None,
+    row_as: Union[tuple, dict, Callable] = tuple
 ) -> List[Union[tuple, dict, Any]]:
     """Method executes SQL query and returns data. Data can be mapped to class if you provide it in row_as parameter.
     Provides error handling. In case of exception it rolls back transaction and closes the connection."""
 
-    global conn
-    connection = pgdb()
+    global connection_read_only
+    connection = pgdb_read_only()
 
     if row_as == dict:
         cursor_factory_type = RealDictCursor
@@ -107,7 +94,7 @@ def data_from_db(
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   f'- Error while executing query: {query}, with parameters: {parameters}')
             print(e)
-            conn = None
+            connection_read_only = None
             raise
         except:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
@@ -115,7 +102,7 @@ def data_from_db(
             if connection:
                 connection.rollback()
                 connection.close()
-            conn = None
+            connection_read_only = None
             raise
         results = cur.fetchall()
         if row_as not in (dict, tuple):
@@ -129,7 +116,7 @@ def execute_query(query: str, parameters: QueryParametersType = None) -> List[tu
 
     global conn
     connection = pgdb()
-    with connection.cursor(withhold=True) as cur:
+    with connection.cursor() as cur:
         try:
             cur.execute(query, parameters) if parameters else cur.execute(query)
         except (psycopg2.InterfaceError, psycopg2.OperationalError) as e:
@@ -146,11 +133,11 @@ def execute_query(query: str, parameters: QueryParametersType = None) -> List[tu
                 connection.close()
             conn = None
             raise
-        connection.commit()
         try:
             results = cur.fetchall()
         except psycopg2.ProgrammingError:
             results = []
+        connection.commit()
         return results
 
 
@@ -166,7 +153,7 @@ def execute_batch(query: str, parameters: List[QueryParametersType]) -> List[tup
 
     global conn
     connection = pgdb()
-    with connection.cursor(withhold=True) as cur:
+    with connection.cursor() as cur:
         try:
             execute_values(cur, query, parameters)
         except psycopg2.InterfaceError:
@@ -182,9 +169,9 @@ def execute_batch(query: str, parameters: List[QueryParametersType]) -> List[tup
                 connection.close()
             conn = None
             raise
-        connection.commit()
         try:
             results = cur.fetchall()
         except psycopg2.ProgrammingError:
             results = []
+        connection.commit()
         return results
