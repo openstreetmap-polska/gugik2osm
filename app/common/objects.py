@@ -95,6 +95,20 @@ class Layers:
                     'Ta warstwa zawiera wszystkie budynki (z warstwy BUBD) z BDOT10k na danym obszarze ' +
                     'i służy do podmieniania geometrii istniejących w OSM budynków. Dla zaawansowanych edytorów.'
         ),
+        LayerDefinition(
+            id='streets',
+            parent_id='',
+            name='Wszystkie ulice z PRG',
+            query_by_id=db.QUERIES['streets_all_where_id'],
+            query_by_bbox=db.QUERIES['streets_all_where_bbox'],
+            export_parameter_name='',
+            active=True,
+            default=False,
+            warning='Nie nadaje się do bezpośredniego importu. ' +
+                    'Ta warstwa zawiera wszystkie ulice z PRG na danym obszarze i służy do łatwiejszego dodawania ' +
+                    'nowych ulic, ale wymaga uważnego łączenia tych danych z istniejącą w OSM siatką drogową. ' +
+                    'Dla zaawansowanych edytorów.'
+        ),
     ]
     _dict_of_layers = {layer.id: layer for layer in _list_of_layers}
 
