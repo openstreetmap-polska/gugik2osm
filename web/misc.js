@@ -8,7 +8,11 @@ function processesInfo () {
             var temp = '<table>';
             data.processes.forEach((el) => {
                 temp += `<tr><td><b>Nazwa:</b></td><td><b>${el.name}</b></td>`;
-                temp += `<tr><td>Czy w trakcie:</td><td>${el.in_progress}</td>`;
+                if (el.in_progress) {
+                    temp += `<tr><td>Czy w trakcie:</td><td style="background-color: #66ff33;">Tak</td>`;
+                } else {
+                    temp += `<tr><td>Czy w trakcie:</td><td>Nie</td>`;
+                }
                 temp += `<tr><td>Czas rozpoczęcia:</td><td>${el.start_time}</td>`;
                 if (el.end_time != null) {
                     temp += `<tr><td>Czas zakończenia:</td><td>${el.end_time}</td>`;
