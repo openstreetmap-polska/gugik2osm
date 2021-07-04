@@ -145,7 +145,7 @@ class Layers:
             selected_layers = self.default
         else:
             selected_layers = [
-                self._dict_of_layers[layer_id] for layer_id in layer_names.split(',')
+                self._dict_of_layers[str(layer_id).lower().strip()] for layer_id in layer_names.split(',')
                 if str(layer_id).lower().strip() in self.active_ids
             ]
             layer_ids = set([x.id for x in selected_layers])
