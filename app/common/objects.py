@@ -139,6 +139,8 @@ class Layers:
         return self._dict_of_layers[item]
 
     def selected_layers(self, layer_names: str) -> List[LayerDefinition]:
+        """Returns a list of layers matching provided ids (separated by comma). Returns only active layers."""
+
         if layer_names is None or layer_names == '':
             selected_layers = self.default
         else:
@@ -166,6 +168,8 @@ class ProposedAddress:
 
     @property
     def id_tags_geom_tuple(self) -> Tuple[str, Dict[str, Any], Dict[str, Any]]:
+        """Returns tuple with object id, dict with tags and dict with geometry."""
+
         tags = {'addr:housenumber': self.house_number, 'source:addr': 'gugik.gov.pl'}
         if self.post_code:
             tags['addr:postcode'] = self.post_code
@@ -180,11 +184,21 @@ class ProposedAddress:
 
 
 def proposed_addresses(bbox: Tuple[float, float, float, float]) -> List[ProposedAddress]:
+    """
+    Returns proposed addresses within given bounding box. Returns list of instances of ProposedAddress class.
+    Proposed addresses are addresses that are present in gov database but are absent from OSM database.
+    """
+
     data = db.data_from_db(db.QUERIES['sc_proposed_addresses_in_bbox'], bbox)
     return [ProposedAddress(*a[:6], json.loads(a[6])) for a in data]
 
 
 def proposed_addresses_geojson_dict(bbox: Tuple[float, float, float, float]) -> Dict[str, Any]:
+    """
+    Returns proposed addresses within given bounding box. Returns a dict with the structure of GeoJSON.
+    Proposed addresses are addresses that are present in gov database but are absent from OSM database.
+    """
+
     pa = proposed_addresses(bbox)
     data = [x.id_tags_geom_tuple for x in pa]
     features = [util.Feature(id=x[0], tags=x[1], geojson_geometry=x[2]) for x in data]
@@ -192,6 +206,10 @@ def proposed_addresses_geojson_dict(bbox: Tuple[float, float, float, float]) -> 
 
 
 def report_addresses(ids: List[str]) -> None:
+    """
+    Adds address to a list of addresses marked as unsuitable for import. Or more precisely it adds it to a queue.
+    After queue entry is processed this address will be removed from the map and won't be returned in future requests.
+    """
     db.execute_batch(db.QUERIES['insert_to_exclude_prg'], [(x,) for x in ids])
 
 
@@ -209,6 +227,8 @@ class ProposedBuilding:
 
     @property
     def id_tags_geom_tuple(self) -> Tuple[str, Dict[str, Any], Dict[str, Any]]:
+        """Returns tuple with object id, dict with tags and dict with geometry."""
+
         tags = {'source': 'www.geoportal.gov.pl'}
         if self.building:
             tags['building'] = self.building
@@ -228,11 +248,21 @@ class ProposedBuilding:
 
 
 def proposed_buildings(bbox: Tuple[float, float, float, float]) -> List[ProposedBuilding]:
+    """
+    Returns proposed buildings within given bounding box. Returns list of instances of ProposedBuilding class.
+    Proposed buildings are buildings that are present in gov database but are absent from OSM database.
+    """
+
     data = db.data_from_db(db.QUERIES['sc_proposed_buildings_in_bbox'], bbox)
     return [ProposedBuilding(*a[:8], json.loads(a[8])) for a in data]
 
 
 def proposed_buildings_geojson_dict(bbox: Tuple[float, float, float, float]) -> Dict[str, Any]:
+    """
+    Returns proposed buildings within given bounding box. Returns a dict with the structure of GeoJSON.
+    Proposed buildings are buildings that are present in gov database but are absent from OSM database.
+    """
+
     pb = proposed_buildings(bbox)
     data = [x.id_tags_geom_tuple for x in pb]
     features = [util.Feature(id=x[0], tags=x[1], geojson_geometry=x[2]) for x in data]
@@ -240,4 +270,9 @@ def proposed_buildings_geojson_dict(bbox: Tuple[float, float, float, float]) -> 
 
 
 def report_buildings(ids: List[str]) -> None:
+    """
+    Adds building to a list of buildings marked as unsuitable for import. Or more precisely it adds it to a queue.
+    After queue entry is processed this building will be removed from the map and won't be returned in future requests.
+    """
+
     db.execute_batch(db.QUERIES['insert_to_exclude_bdot_buildings'], [(x,) for x in ids])
