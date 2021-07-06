@@ -1,7 +1,7 @@
 select
     GeometryType(d.geom_2180) geom_type,
     case
-        when d.teryt_ulica is null then
+        when d.teryt_ulica is null or d.teryt_ulica = '' then
             jsonb_strip_nulls(jsonb_build_object(
                'addr:place', d.teryt_msc,
                'addr:city:simc', d.teryt_simc,
