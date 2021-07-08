@@ -143,27 +143,27 @@ def input_feature_factory(geom_type: str, **kwargs) -> Union[InputPoint, InputLi
 def convert_to_osm_style_objects(
         list_of_features: List[Union[InputPoint, InputLine, InputPolygon]]
 ) -> Tuple[List[Node], List[Way], List[Relation]]:
-    """"Method converts """
+    """"Method converts input features (points, lines, polygons) into OSM style objects (nodes, ways, relations)."""
 
     node_id_seq = DecreasingSequence()
     way_id_seq = DecreasingSequence()
     relation_id_seq = DecreasingSequence()
 
-    list_of_nodes = []
-    node_dict = {}
-    list_of_ways = []
-    list_of_relations = []
+    list_of_nodes: List[Node] = []
+    node_dict: Dict[Tuple[float, float], Node] = {}
+    list_of_ways: List[Way] = []
+    list_of_relations: List[Relation] = []
 
     def create_way(list_of_coordinates: List[Tuple[float, float]], tags: Dict[str, Any]) -> int:
         node_ids = []
         for coordinates in list_of_coordinates:
             lat_lon_tuple = trim_coordinates(*coordinates)
             if node_dict.get(lat_lon_tuple):
-                node_id = node_dict.get(lat_lon_tuple)
+                node_id = node_dict[lat_lon_tuple].id
             else:
                 new_node = Node(node_id_seq.next_value(), {}, *lat_lon_tuple)
                 node_id = new_node.id
-                node_dict[lat_lon_tuple] = node_id
+                node_dict[lat_lon_tuple] = new_node
                 list_of_nodes.append(new_node)
             node_ids.append(node_id)
 
@@ -177,11 +177,13 @@ def convert_to_osm_style_objects(
             lat, lon = trim_coordinates(feature.latitude, feature.longitude)
 
             if node_dict.get((lat, lon)):
-                logging.warning(f'Node with coordinates {lat}, {lon} already exists in dictionary. Skipping.')
+                existing_node = node_dict[(lat, lon)]
+                existing_node.tags = {**existing_node.tags, **feature.tags}
+                logging.warning(f'Node with coordinates {lat}, {lon} already exists in dictionary. Merging tags.')
                 continue
 
             n = Node(node_id_seq.next_value(), feature.tags, lat, lon)
-            node_dict[(lat, lon)] = n.id
+            node_dict[(lat, lon)] = n
             list_of_nodes.append(n)
 
         elif isinstance(feature, InputLine):
