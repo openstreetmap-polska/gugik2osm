@@ -109,7 +109,7 @@ class Relation:
 
 
 class DecreasingSequence:
-    def __init__(self, starting_value: int = -1, step: int = -1):
+    def __init__(self, starting_value: int = 0, step: int = -1):
         self.value = starting_value
         if step == 0:
             raise ValueError('Step cannot be equal zero.')
