@@ -8,15 +8,23 @@ from app.common import util
 class ConversionToOSMObjectsTests(unittest.TestCase):
 
     def test_creating_node(self):
-        point = util.InputPoint(tags={}, latitude=0, longitude=0)
+        point = util.InputPoint(tags={}, latitude=0.1, longitude=0.3)
         nodes, ways, relations = util.convert_to_osm_style_objects([point])
         assert len(nodes) == 1
         assert len(ways) == 0
         assert len(relations) == 0
         node = nodes[0]
         assert node.id == -1
-        assert node.latitude == 0
-        assert node.longitude == 0
+        assert node.latitude == 0.1
+        assert node.longitude == 0.3
+
+    def test_creating_two_nodes(self):
+        point1 = util.InputPoint(tags={}, latitude=0.1, longitude=0.3)
+        point2 = util.InputPoint(tags={}, latitude=1, longitude=1)
+        nodes, ways, relations = util.convert_to_osm_style_objects([point1, point2])
+        assert len(nodes) == 2
+        assert len(ways) == 0
+        assert len(relations) == 0
 
     def test_node_with_tags(self):
         point = util.InputPoint(tags={'test': 'test'}, latitude=0, longitude=0)
@@ -73,8 +81,8 @@ class ConversionToOSMObjectsTests(unittest.TestCase):
         assert polygon_coordinates == reconstructed_polygon_coordinates
 
     def test_creating_relation_from_donut_polygon(self):
-        outer_ring_coordinates = [(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)]
-        inner_ring_coordinates = [[(3, 3), (4, 4), (4, 3), (3, 3)]]
+        outer_ring_coordinates = [(0.3, 0.3), (0, 10), (10, 10), (10, 0), (0.3, 0.3)]
+        inner_ring_coordinates = [[(3.3, 3.3), (4, 4), (4, 3), (3.3, 3.3)]]
         polygon = util.InputPolygon(tags={}, outer_ring=outer_ring_coordinates, inner_rings=inner_ring_coordinates)
         nodes, ways, relations = util.convert_to_osm_style_objects([polygon])
         assert len(nodes) == 7  # two nodes are reused
@@ -166,10 +174,32 @@ class ConversionToOSMObjectsTests(unittest.TestCase):
 class ConversionToXMLTests(unittest.TestCase):
 
     def test_with_one_node(self):
-        pass
+        point = util.InputPoint(tags={}, latitude=0.1, longitude=1.3)
+        nodes, ways, relations = util.convert_to_osm_style_objects([point])
+        node = nodes[0]
+        xml = node.as_xml_element()
+        assert xml.tag == 'node'
+        assert len(list(xml)) == 0
+        assert xml.get('lat') == '0.1'
+        assert xml.get('lon') == '1.3'
+        assert xml.get('id') == '-1'
 
     def test_with_two_nodes(self):
-        pass
+        point1 = util.InputPoint(tags={}, latitude=0.1, longitude=1.3)
+        point2 = util.InputPoint(tags={'key1': 'value1', 'key2': 'value2'}, latitude=0, longitude=1)
+        nodes, ways, relations = util.convert_to_osm_style_objects([point1, point2])
+        node1 = [n for n in nodes if n.latitude == 0.1 and n.longitude == 1.3][0]
+        node2 = [n for n in nodes if n.latitude == 0 and n.longitude == 1][0]
+        xml1 = node1.as_xml_element()
+        xml2 = node2.as_xml_element()
+        assert len(list(xml1)) == 0
+        assert len(list(xml2)) == 2
+        assert xml2[0].tag == 'tag'
+        assert xml2[0].get('k') == 'key1'
+        assert xml2[0].get('v') == 'value1'
+        assert xml2[1].tag == 'tag'
+        assert xml2[1].get('k') == 'key2'
+        assert xml2[1].get('v') == 'value2'
 
     def test_with_two_intersecting_nodes(self):
         pass
