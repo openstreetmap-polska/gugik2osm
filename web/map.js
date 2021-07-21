@@ -284,6 +284,7 @@ map.on("click", "buildings", function (e) {
     if (e.features[0].properties.building_levels) {
         s += "building_levels=" + e.features[0].properties.building_levels + "<br>"
     }
+    s += "source=www.geoportal.gov.pl<br>"
 
     s += "      </div>"
     s += "    </div>"
@@ -592,6 +593,7 @@ function getPopupText(element) {
     if (element.features[0].properties.pna) {
         s += "addr:postcode=" + element.features[0].properties.pna + "<br>"
     }
+    s += "source=gugik.gov.pl<br>"
 
     s += "      </div>"
     s += "    </div>"
