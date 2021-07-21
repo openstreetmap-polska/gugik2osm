@@ -244,12 +244,51 @@ map.on("click", "buildings", function (e) {
         s += "<tr><td>historic:</td><td>" + e.features[0].properties.historic + "</td></tr>"
     }
     if (e.features[0].properties.tourism) {
-        s += "<tr><td>:</td><td>" + e.features[0].properties.tourism + "</td></tr>"
+        s += "<tr><td>tourism:</td><td>" + e.features[0].properties.tourism + "</td></tr>"
     }
     if (e.features[0].properties.building_levels) {
         s += "<tr><td>building_levels:</td><td>" + e.features[0].properties.building_levels + "</td></tr>"
     }
-    s += "</table><br>"
+    s += "</table>"
+
+    s += "<div class=\"accordion\" id=\"accordionBuildingTags\">"
+    s += "  <div class=\"card my-2\">"
+    s += "    <div class=\"card-header p-0\" id=\"headingBuildingTags\">"
+    s += "      <h2 class=\"mb-0\">"
+    s += "        <button class=\"btn btn-link btn-block text-left\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseBuildingTags\" aria-expanded=\"true\" aria-controls=\"collapseBuildingTags\">"
+    s += "          Tagi do skopiowania"
+    s += "        </button>"
+    s += "      </h2>"
+    s += "    </div>"
+    s += "    <div id=\"collapseBuildingTags\" class=\"collapse\" aria-labelledby=\"headingBuildingTags\" data-parent=\"#accordionBuildingTags\">"
+    s += "      <div class=\"card-body\">"
+
+    if (e.features[0].properties.building) {
+        s += "building=" + e.features[0].properties.building + "<br>"
+    }
+    if (e.features[0].properties.amenity) {
+        s += "amenity=" + e.features[0].properties.amenity + "<br>"
+    }
+    if (e.features[0].properties.man_made) {
+        s += "man_made=" + e.features[0].properties.man_made + "<br>"
+    }
+    if (e.features[0].properties.leisure) {
+        s += "leisure=" + e.features[0].properties.leisure + "<br>"
+    }
+    if (e.features[0].properties.historic) {
+        s += "historic=" + e.features[0].properties.historic + "<br>"
+    }
+    if (e.features[0].properties.tourism) {
+        s += "tourism=" + e.features[0].properties.tourism + "<br>"
+    }
+    if (e.features[0].properties.building_levels) {
+        s += "building_levels=" + e.features[0].properties.building_levels + "<br>"
+    }
+
+    s += "      </div>"
+    s += "    </div>"
+    s += "  </div>"
+    s += "</div>"
 
     s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
     s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBuilding(\""
@@ -520,7 +559,7 @@ function getPopupText(element) {
     s += "<tr><td>lokalnyid:</td><td>" + element.features[0].properties.lokalnyid + "</td></tr>"
     s += "<tr><td>kod miejscowości:</td><td>" + element.features[0].properties.teryt_simc + "</td></tr>"
     s += "<tr><td>miejscowość:</td><td>" + element.features[0].properties.teryt_msc + "</td></tr>"
-    if (element.features[0].properties.teryt_ulic) {
+    if (element.features[0].properties.teryt_ulica) {
         s += "<tr><td>kod_ulic:</td><td>" + element.features[0].properties.teryt_ulic + "</td></tr>"
         s += "<tr><td>ulica:</td><td>" + element.features[0].properties.teryt_ulica + "</td></tr>"
     }
@@ -529,7 +568,37 @@ function getPopupText(element) {
         s += "<tr><td>kod pocztowy:</td><td>" + element.features[0].properties.pna + "</td></tr>"
     }
     s += "</table>"
-    s += "<br><h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
+
+    s += "<div class=\"accordion\" id=\"accordionAddressTags\">"
+    s += "  <div class=\"card my-2\">"
+    s += "    <div class=\"card-header p-0\" id=\"headingAddressTags\">"
+    s += "      <h2 class=\"mb-0\">"
+    s += "        <button class=\"btn btn-link btn-block text-left\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseAddressTags\" aria-expanded=\"true\" aria-controls=\"collapseAddressTags\">"
+    s += "          Tagi do skopiowania"
+    s += "        </button>"
+    s += "      </h2>"
+    s += "    </div>"
+    s += "    <div id=\"collapseAddressTags\" class=\"collapse\" aria-labelledby=\"headingAddressTags\" data-parent=\"#accordionAddressTags\">"
+    s += "      <div class=\"card-body\">"
+
+    s += "addr:city:simc=" + element.features[0].properties.teryt_simc + "<br>"
+    if (element.features[0].properties.teryt_ulic) {
+        s += "addr:city=" + element.features[0].properties.teryt_msc + "<br>"
+        s += "addr:street=" + element.features[0].properties.teryt_ulica + "<br>"
+    } else {
+        s += "addr:place=" + element.features[0].properties.teryt_msc + "<br>"
+    }
+    s += "addr:housenumber=" + element.features[0].properties.nr + "<br>"
+    if (element.features[0].properties.pna) {
+        s += "addr:postcode=" + element.features[0].properties.pna + "<br>"
+    }
+
+    s += "      </div>"
+    s += "    </div>"
+    s += "  </div>"
+    s += "</div>"
+
+    s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
     s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportPRG(\""
     s += element.features[0].properties.lokalnyid
     s += "\"); >Zgłoś</button>"
