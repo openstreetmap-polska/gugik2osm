@@ -64,14 +64,15 @@
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <div id="header" class="collapse navbar-collapse">
             <button type="button" class="btn btn-light py-1 px-2 mx-2" data-toggle="modal"
-                data-target="#modalDownload" title="Limit do 50k obiektów"><i class="fas fa-file-download"></i> Pobierz
-                dane dla JOSM</button>
-            <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2"><i
-                    class="fas fa-random"></i> Losuj lokalizację</button>
+                    id="downloadDataForJOSM" title="Limit do 50k obiektów">
+                <i class="fas fa-file-download"></i> Pobierz dane dla JOSM
+            </button>
+            <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2">
+                <i class="fas fa-random"></i> Losuj lokalizację</button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-2">
-                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki"><i
-                            class="fas fa-align-left"></i> Klauzula informacyjna</a>
+                    <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki">
+                        <i class="fas fa-align-left"></i> Klauzula informacyjna</a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="status-info" class="nav-link" data-toggle="modal" data-target="#modalStatus"
@@ -82,8 +83,8 @@
                             class="fas fa-question-circle"></i> FAQ/Pomoc</a>
                 </li>
                 <li class="nav-item px-2">
-                    <a id="data-info" class="nav-link" href="/opis_danych.html" target="_blank"><i
-                            class="fas fa-download"></i> Dane GIS</a>
+                    <a id="data-info" class="nav-link" href="/opis_danych.html" target="_blank">
+                        <i class="fas fa-download"></i> Dane GIS</a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="gh-link" class="nav-link" href="https://github.com/openstreetmap-polska/gugik2osm"
@@ -129,7 +130,7 @@
     </nav>
 
     <div class="modal" tabindex="-1" role="dialog" id="modalDownload">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Pobieranie danych</h5>
@@ -145,8 +146,8 @@
                     <p><b>Wybierz warstwy do pobrania:</b></p>
                     <div>
                         <div id="layerPicker"></div>
-                        <button type="button" class="btn btn-success btn-lg btn-block mt-4" id="downloadButton">
-                            <i class="fas fa-file-download"></i> Pobierz</button>
+                        <a class="btn btn-success btn-lg btn-block mt-4" id="downloadButton" target="_blank" href="#">
+                            <i class="fas fa-file-download"></i> Pobierz</a>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -251,18 +252,44 @@
     </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="modalSelected">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Zaznaczono obiekty</h5>
+                    <h5 class="modal-title">Pobieranie danych</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div id="modalSelectedBody" class="modal-body"></div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości
+                        albo, czy nie dublują już istniejących w bazie OSM.
+                    </div>
+                    <p><b>Wybierz warstwy do pobrania:</b></p>
+                    <div>
+                        <div id="layerPicker2"></div>
+                        <a class="btn btn-success btn-lg btn-block mt-4" id="downloadButton2" target="_blank" href="#">
+                            <i class="fas fa-file-download"></i> Pobierz</a>
+                    </div>
+                    <br><h6>Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:</h6>
+                    <button type="button" class="btn btn-primary" onclick="reportAddressUsingGeom()">Zgłoś tylko adresy</button>
+                    <button type="button" class="btn btn-primary" onclick="reportBuildingUsingGeom()">Zgłoś tylko budynki</button>
+                    <button type="button" class="btn btn-primary" onclick="reportBothUsingGeom()">Zgłoś adresy i budynki</button>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
                 </div>
+
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title">Zaznaczono obiekty</h5>-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                <div id="modalSelectedBody" class="modal-body"></div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>-->
+<!--                </div>-->
             </div>
         </div>
     </div>

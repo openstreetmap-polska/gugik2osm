@@ -1,5 +1,5 @@
 select
-    GeometryType(d.geom) geom_type,
+    GeometryType(d.geom_2180) geom_type,
     case
         when d.teryt_ulica is null or d.teryt_ulica = '' then
             jsonb_strip_nulls(jsonb_build_object(
@@ -19,11 +19,11 @@ select
                'source:addr', 'gugik.gov.pl'
             ))
    end tags,
-   st_x(st_transform(d.geom, 4326)) longitude,
-   st_y(st_transform(d.geom, 4326)) latitude
-from prg.delta d
-left join exclude_prg on d.lokalnyid=exclude_prg.id
+   st_x(st_transform(d.geom_2180, 4326)) longitude,
+   st_y(st_transform(d.geom_2180, 4326)) latitude
+from addresses d
 where 1=1
-    and exclude_prg.id is null
-    and d.lokalnyid in %s
-limit 50000;
+    and d.geom_2180 && st_transform(ST_GeomFromGeoJSON( %(geojson_geometry)s ), 2180)
+    and st_intersects(d.geom_2180, st_transform(ST_GeomFromGeoJSON( %(geojson_geometry)s ), 2180))
+limit 50000
+;
