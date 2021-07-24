@@ -197,9 +197,9 @@ var draw = new MapboxDraw({
 });
 map.addControl(draw);
 
-map.on('draw.create', selectFeaturesWithPolygon);
-map.on('draw.update', selectFeaturesWithPolygon);
-map.on('draw.delete', selectFeaturesWithPolygon);
+map.on('draw.create', openDownloadModalUsingPolygon);
+map.on('draw.update', openDownloadModalUsingPolygon);
+map.on('draw.delete', openDownloadModalUsingPolygon);
 
 // When a click event occurs on a feature in the states layer, open a popup at the
 // location of the click, with description HTML from its properties.
@@ -371,7 +371,7 @@ window.onload = function() {
   }
 
   var c = document.getElementById("randomLocationButton");
-  var d = document.getElementById("downloadButton");
+  var d = document.getElementById("downloadDataForJOSM");
 
   c.onclick = async function() {
     var response = await fetch('/random/');
@@ -387,23 +387,7 @@ window.onload = function() {
 
     map.flyTo({"center": location, "zoom": 14});
   }
-  d.onclick = function() {
-    var bounds = map.getBounds().toArray();
-    var xmin = bounds[0][0];
-    var xmax = bounds[1][0];
-    var ymin = bounds[0][1];
-    var ymax = bounds[1][1];
-    var html_elements = document.getElementById("layerPicker").getElementsByTagName("input");
-    var layerIds = [];
-    for (i = 0; i < html_elements.length; i++) {
-        var temp = html_elements.item(i);
-        if (temp.checked) layerIds.push(temp.getAttribute("id"));
-    }
-    console.log(layerIds);
-    var theUrl = "/josm_data?filter_by=bbox&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax+"&layers="+layerIds.join(",");
-    console.log(theUrl);
-    window.open(theUrl);
-  }
+  d.onclick = openDownloadModalUsingBbox;
 
   var a = document.getElementById("addressesLayerToggle");
   var b = document.getElementById("buildingsLayerToggle");
@@ -460,20 +444,54 @@ window.onload = function() {
   // add layers to layer picker in download modal
   fetch(downloadable_layers_url)
     .then(response => response.json())
-    .then(insertDownloadableLayersIntoDOM);
-
+    .then(
+        data => {
+            console.log("Preparing layers for bbox-modal");
+            insertDownloadableLayersIntoDOM(data, "layerPicker");
+            $("input[name='layerPicker']")
+              .on('change', () => {checkLayerPickerAndSetDownloadButtonUrl("layerPicker", "downloadButton", "bbox")});
+            console.log("Preparing layers for polygon-modal");
+            insertDownloadableLayersIntoDOM(data, "layerPicker2");
+            $("input[name='layerPicker2']")
+              .on('change', () => {checkLayerPickerAndSetDownloadButtonUrl("layerPicker2", "downloadButton2", "polygon")});
+        }
+    );
 }
 
-function prepareDownloadableLayerHTML (layer) {
-//    var temp = "<br><label class=\"switch\"><input id=" + layer.id + " type=\"checkbox\"";
-//    if (layer.default) temp += " checked ";
-//    temp += "><span class=\"slider round\"></span></label>";
-//    temp += "<label for=" + layer.id + ">" + layer.name + "</label>";
+function checkLayerPickerAndSetDownloadButtonUrl(layerPickerId, downloadButtonId, modalType) {
+    const selector = `input[name="${layerPickerId}"]:checked`;
+    if (!$(selector).length) {
+        setDummyUrlForDownloadButton(downloadButtonId);
+    } else if (modalType === "polygon") {
+        setDownloadButtonURlWithPolygon(layerPickerId, downloadButtonId);
+    } else if (modalType === "bbox") {
+        setDownloadButtonURlWithBbox(layerPickerId, downloadButtonId);
+    }
+}
+
+function setDummyUrlForDownloadButton(downloadButtonId) {
+    document.getElementById(downloadButtonId).href = "javascript:void(0)";
+    document.getElementById(downloadButtonId).target = "";
+    document.getElementById(downloadButtonId).className = "btn btn-outline-success btn-lg btn-block mt-4";
+}
+
+function createUUID() {
+    // from https://www.tutorialspoint.com/how-to-create-guid-uuid-in-javascript
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+}
+
+function prepareDownloadableLayerHTML (layer, parentName) {
+
+    var uuid = createUUID();
 
     var temp = "<div class=\"ml-2 custom-control custom-switch custom-switch-md\">";
-    temp += "<input type=\"checkbox\" class=\"custom-control-input\" id=\"" + layer.id + "\"";
+    temp += "<input type=\"checkbox\" class=\"custom-control-input\" layerId=\"";
+    temp += layer.id + "\" id=\"" + uuid + "\" name=\"" + parentName + "\"";
     if (layer.default) temp += " checked ";
-    temp += "><label class=\"custom-control-label pt-1\" for=\"" + layer.id + "\">"+ layer.name + " ";
+    temp += "><label class=\"custom-control-label pt-1\" for=\"" + uuid + "\">"+ layer.name + " ";
     if (layer.warning != "") {
         temp += "<i class=\"fa fa-exclamation-triangle\" style=\"color:orange\" aria-hidden=\"true\"></i><em class=\"text-muted\">";
         temp += " " + layer.warning + "</em></label>";
@@ -482,10 +500,10 @@ function prepareDownloadableLayerHTML (layer) {
     return temp
 }
 
-function insertDownloadableLayersIntoDOM (data) {
-    var raw_html = data.available_layers.map(prepareDownloadableLayerHTML).join("\n");
-    var html_element = document.getElementById("layerPicker");
-    html_element.insertAdjacentHTML("beforeend", raw_html);
+function insertDownloadableLayersIntoDOM (data, htmlElementId) {
+    var raw_html = data.available_layers.map(layer => prepareDownloadableLayerHTML(layer, htmlElementId)).join("\n");
+    var html_element = document.getElementById(htmlElementId);
+    html_element.innerHTML = raw_html;
 }
 
 function insertLayersTogglesIntoDOM (data) {
@@ -652,130 +670,117 @@ function reportBoth(encodedStringifiedPayload){
     })
 }
 
-function downloadByIds(encodedStringifiedPayload){
+function reportAddressUsingGeom() {
+    var unioned = getDrawnGeometry();
     $.ajax({
         type: "POST",
-        url: "/josm_data?filter_by=id",
-        data: decodeURIComponent(encodedStringifiedPayload),
+        url: "/exclude/",
+        data: JSON.stringify({
+            "exclude_prg_addresses": true,
+            "exclude_bdot_buildings": false,
+            "geom": JSON.stringify(unioned['geometry'])
+        }),
         contentType: "application/json",
-        dataType: "text",
-        success: function(response, status, xhr) {
-            // from: https://stackoverflow.com/questions/16086162/handle-file-download-from-ajax-post
-            // check for a filename
-            var filename = "";
-            var disposition = xhr.getResponseHeader('Content-Disposition');
-            if (disposition && disposition.indexOf('attachment') !== -1) {
-                var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                var matches = filenameRegex.exec(disposition);
-                if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-            }
+        complete: onReportComplete
+    });
+}
 
-            var type = xhr.getResponseHeader('Content-Type');
-            var blob = new Blob([response], { type: type });
-
-            if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                window.navigator.msSaveBlob(blob, filename);
-            } else {
-                var URL = window.URL || window.webkitURL;
-                var downloadUrl = URL.createObjectURL(blob);
-
-                if (filename) {
-                    // use HTML5 a[download] attribute to specify filename
-                    var a = document.createElement("a");
-                    // safari doesn't support this yet
-                    if (typeof a.download === 'undefined') {
-                        window.location.href = downloadUrl;
-                    } else {
-                        a.href = downloadUrl;
-                        a.download = filename;
-                        document.body.appendChild(a);
-                        a.click();
-                    }
-                } else {
-                    window.location.href = downloadUrl;
-                }
-
-                setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-            }
-        }
+function reportBuildingUsingGeom() {
+    var unioned = getDrawnGeometry();
+    $.ajax({
+        type: "POST",
+        url: "/exclude/",
+        data: JSON.stringify({
+            "exclude_prg_addresses": false,
+            "exclude_bdot_buildings": true,
+            "geom": JSON.stringify(unioned['geometry'])
+        }),
+        contentType: "application/json",
+        complete: onReportComplete
     })
 }
 
-function selectFeaturesWithPolygon(e) {
-    // get polygons drawn
-    var data = draw.getAll();
+function reportBothUsingGeom() {
+    var unioned = getDrawnGeometry();
+    $.ajax({
+        type: "POST",
+        url: "/exclude/",
+        data: JSON.stringify({
+            "exclude_prg_addresses": true,
+            "exclude_bdot_buildings": true,
+            "geom": JSON.stringify(unioned['geometry'])
+        }),
+        contentType: "application/json",
+        complete: onReportComplete
+    })
+}
 
-    if (e.type === "draw.delete" && e.features.length === 1){
-        draw.delete(e.features[0].lokalnyid);
+function getDrawnGeometry() {
+    var data = draw.getAll();
+    var unioned = data['features'].reduce((previousValue, currentValue, index, array) => {
+        return turf.union(previousValue, currentValue)
+    });
+    return unioned
+}
+
+function openDownloadModalUsingBbox(e) {
+
+    // set URL for downloadButton
+    setDownloadButtonURlWithBbox("layerPicker", "downloadButton");
+
+    // show modal
+    $("#modalDownload").modal();
+}
+
+function openDownloadModalUsingPolygon(e) {
+
+    // delete selected feature if delete button was clicked and single feature was selected
+    if (e.type === "draw.delete" && e.features.length === 1) {
+        draw.delete(e.features[0].id);
         return
     }
 
-    var filterBuildings = ["in", "lokalnyid"];
-    var tempSetBuildings = new Set();
-    var filterAddresses = ["in", "lokalnyid"];
-    var tempSetAddresses = new Set();
+    // set URL for downloadButton
+    setDownloadButtonURlWithPolygon("layerPicker2", "downloadButton2");
 
-    // for each drawn polygon
-    data.features.forEach(function(userPolygon){
-        // generate bounding box from polygon the user drew
-        var polygonBoundingBox = turf.bbox(userPolygon);
-
-        var southWest = [polygonBoundingBox[0], polygonBoundingBox[1]];
-        var northEast = [polygonBoundingBox[2], polygonBoundingBox[3]];
-
-        var northEastPointPixel = map.project(northEast);
-        var southWestPointPixel = map.project(southWest);
-
-        // first select features by bounding box
-        var featuresBuildings = map.queryRenderedFeatures([southWestPointPixel, northEastPointPixel], { layers: ['buildings'] });
-        var featuresAddresses = map.queryRenderedFeatures([southWestPointPixel, northEastPointPixel], { layers: ['prg2load'] });
-
-        // then for each selected feature verify if it intersects the polygon and add it's id to the list of selected features
-        var temp = featuresBuildings.reduce(function(memo, feature) {
-            if (!turf.booleanDisjoint(feature, userPolygon)) {
-                memo.push(feature.properties.lokalnyid);
-            }
-            return memo;
-        }, []);
-        temp.forEach(function(e){tempSetBuildings.add(e)});
-
-        var temp = featuresAddresses.reduce(function(memo, feature) {
-            if (!turf.booleanDisjoint(feature, userPolygon)) {
-                memo.push(feature.properties.lokalnyid);
-            }
-            return memo;
-        }, []);
-        temp.forEach(function(e){tempSetAddresses.add(e)});
-    });
-
-    // prepare filters for the highlight layers
-    filterBuildings = filterBuildings.concat(...tempSetBuildings);
-    filterAddresses = filterAddresses.concat(...tempSetAddresses);
-
-    // apply filters showing selected objects via the highlight layers
-    map.setFilter("buildings-highlighted", filterBuildings);
-    map.setFilter("addresses-highlighted", filterAddresses);
-
-    // set modal's content
-    var noOfBuildingsHTML = "<p>Zaznaczono " + tempSetBuildings.size + " budynków.</p>"
-    var noOfAddressesHTML = "<p>Zaznaczono " + tempSetAddresses.size + " adresów.</p>"
-    var downloadSelectedButton = "<br><button id=\"downloadSelectedButton\" type=\"button\" class=\"btn btn-primary\" onclick=downloadByIds(\""
-        downloadSelectedButton += encodeURIComponent(JSON.stringify({
-            "addresses_ids": [...tempSetAddresses],
-            "buildings_ids": [...tempSetBuildings]
-        }))
-        downloadSelectedButton += "\"); >Pobierz paczkę JOSM</button><br>"
-    var reportButton = "<br><h6>Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:</h6>"
-        reportButton += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBoth(\""
-        reportButton += encodeURIComponent(JSON.stringify({
-            "prg_ids": [...tempSetAddresses],
-            "bdot_ids": [...tempSetBuildings]
-        }))
-        reportButton += "\"); >Zgłoś</button>"
-    $("#modalSelectedBody").html(noOfBuildingsHTML + noOfAddressesHTML + downloadSelectedButton + reportButton);
     // show modal
     $("#modalSelected").modal();
+}
+
+function getLayerIds(layerPickerId) {
+    var layerIds = [];
+    var html_elements = document.getElementById(layerPickerId).getElementsByTagName("input");
+    for (i = 0; i < html_elements.length; i++) {
+        var temp = html_elements.item(i);
+        if (temp.checked) layerIds.push(temp.getAttribute("layerId"));
+    }
+    return layerIds
+}
+
+function setDownloadButtonUrlAndStyle(downloadButtonId, theUrl, classes) {
+    document.getElementById(downloadButtonId).href = theUrl;
+    document.getElementById(downloadButtonId).target = "_blank";
+    document.getElementById(downloadButtonId).className = classes;
+}
+
+function setDownloadButtonURlWithBbox(layerPickerId, downloadButtonId) {
+    var bounds = map.getBounds().toArray();
+    var xmin = bounds[0][0];
+    var xmax = bounds[1][0];
+    var ymin = bounds[0][1];
+    var ymax = bounds[1][1];
+    var layerIds = getLayerIds(layerPickerId);
+    var theUrl = "/josm_data?filter_by=bbox&layers="+layerIds.join(",") + "&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax;
+    console.log(theUrl);
+    setDownloadButtonUrlAndStyle(downloadButtonId, theUrl, "btn btn-success btn-lg btn-block mt-4")
+}
+
+function setDownloadButtonURlWithPolygon(layerPickerId, downloadButtonId) {
+    var unioned = getDrawnGeometry();
+    var layerIds = getLayerIds(layerPickerId);
+    var theUrl = "/josm_data?filter_by=geojson_geometry&layers="+layerIds.join(",") +"&geom="+ encodeURIComponent(JSON.stringify(unioned['geometry']));
+    console.log(theUrl);
+    setDownloadButtonUrlAndStyle(downloadButtonId, theUrl, "btn btn-success btn-lg btn-block mt-4")
 }
 
 function coordinateFeature(lng, lat) {

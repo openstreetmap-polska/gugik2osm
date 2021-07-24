@@ -34,18 +34,29 @@ class Exclude(Resource):
 
     def post(self):
         r = request.get_json()
+        exclude_prg_addresses = r.get('exclude_prg_addresses')
+        exclude_bdot_buildings = r.get('exclude_bdot_buildings')
+        geojson_geometry_string = r.get('geom')
 
-        prg_counter, lod1_counter = 0, 0
-        if r.get('prg_ids'):
-            prg_ids = [(x,) for x in r['prg_ids']]
-            execute_batch(QUERIES['insert_to_exclude_prg'], prg_ids)
-            prg_counter = len(prg_ids)
-        if r.get('bdot_ids'):
-            lod1_ids = [(x,) for x in r['bdot_ids']]
-            execute_batch(QUERIES['insert_to_exclude_bdot_buildings'], lod1_ids)
-            lod1_counter = len(lod1_ids)
+        if geojson_geometry_string:
+            if exclude_prg_addresses:
+                execute_query(QUERIES['insert_to_exclude_prg_addresses_where_geom'], {'geojson_geometry': geojson_geometry_string})
+            if exclude_bdot_buildings:
+                execute_query(QUERIES['insert_to_exclude_bdot_buildings_where_geom'], {'geojson_geometry': geojson_geometry_string})
+            return {}, 201
+        else:
+            # keep old path for compatibility
+            prg_counter, lod1_counter = 0, 0
+            if r.get('prg_ids'):
+                prg_ids = [(x,) for x in r['prg_ids']]
+                execute_batch(QUERIES['insert_to_exclude_prg'], prg_ids)
+                prg_counter = len(prg_ids)
+            if r.get('bdot_ids'):
+                lod1_ids = [(x,) for x in r['bdot_ids']]
+                execute_batch(QUERIES['insert_to_exclude_bdot_buildings'], lod1_ids)
+                lod1_counter = len(lod1_ids)
 
-        return {'prg_ids_inserted': prg_counter, 'bdot_ids_inserted': lod1_counter}, 201
+            return {'prg_ids_inserted': prg_counter, 'bdot_ids_inserted': lod1_counter}, 201
 
 
 class RandomLocation(Resource):
@@ -95,80 +106,42 @@ class AvailableLayers(Resource):
 
 
 class JosmData(Resource):
-    """Newer version of the function returning data as osm file with the new endpoint."""
+    """Returns data for given area as an osm file."""
 
     def get(self):
         package_export_params = None
+        geojson_geometry_string = ''
         layers = Layers()
 
-        data = {}
+        selected_layers = layers.selected_layers(request.args.get('layers', ''))
+        if len(selected_layers) == 0:
+            abort(400)
+
         if request.args.get('filter_by') == 'bbox':
-            selected_layers = layers.selected_layers(request.args.get('layers', ''))
-            if len(selected_layers) == 0:
-                abort(400)
             bbox = (
                 float(request.args.get('xmin')), float(request.args.get('ymin')),
                 float(request.args.get('xmax')), float(request.args.get('ymax'))
             )
-            package_export_params = {'xmin': bbox[0], 'ymin': bbox[1], 'xmax': bbox[2], 'ymax': bbox[3]}
-            data = self.data_for_layers([(layer, bbox) for layer in selected_layers], 'bbox')
-        elif request.args.get('filter_by') == 'id':
-            selected_layers_and_params = []
-            temp1 = request.args.get('addresses_ids')
-            addresses_params = (tuple(temp1.split(',')),) if temp1 else None  # tuple of tuples was needed
-            if addresses_params:
-                selected_layers_and_params.append((layers['addresses_to_import'], addresses_params))
-            temp2 = request.args.get('buildings_ids')
-            buildings_params = (tuple(temp2.split(',')),) if temp2 else None  # tuple of tuples was needed
-            if buildings_params:
-                selected_layers_and_params.append((layers['buildings_to_import'], buildings_params))
-            data = self.data_for_layers(selected_layers_and_params, 'id')
-        elif request.args.get('filter_by') == 'geom_wkt':
-            # not implemented yet
-            abort(400)
+            geojson_geometry_string = json.dumps(util.bbox_to_geojson_geometry(bbox))
+        elif request.args.get('filter_by') == 'geojson_geometry':
+            geojson_geometry_string = request.args.get('geom')
         else:
             abort(400)
 
-        list_of_features = [values for layer_id, layer_data in data.items() for values in layer_data.data]
-        root = util.create_osm_xml(list_of_features)
-
-        if package_export_params:
-            for layer_id, layer_data in data.items():
-                if layers[layer_id].export_parameter_name:
-                    package_export_params[layers[layer_id].export_parameter_name] = layer_data.count
-            required_parameters = ['lb_adresow', 'lb_budynkow']
-            for param in required_parameters:
-                if package_export_params.get(param) is None:
-                    package_export_params[param] = 0
-            self.register_bbox_export(package_export_params)
-
-        return Response(
-            etree.tostring(root, encoding='UTF-8'),
-            mimetype='text/xml',
-            headers={'Content-disposition': 'attachment; filename=paczka_danych.osm'})
-
-    def post(self):
-        if request.args.get('filter_by') != 'id':
-            abort(400)
-
-        layers = Layers()
-
-        temp = request.get_json()
-        temp1 = temp.get('addresses_ids')
-        temp2 = temp.get('buildings_ids')
-        addresses_params = (tuple(temp1),) if temp1 and len(temp1) > 0 else None
-        buildings_params = (tuple(temp2),) if temp2 and len(temp2) > 0 else None
-
-        selected_layers_and_params = []
-        if addresses_params:
-            selected_layers_and_params.append((layers['addresses_to_import'], addresses_params))
-        if buildings_params:
-            selected_layers_and_params.append((layers['buildings_to_import'], buildings_params))
-
-        data = self.data_for_layers(selected_layers_and_params, 'id')
+        data = self.data_for_layers([(layer, {'geojson_geometry': geojson_geometry_string}) for layer in selected_layers])
 
         list_of_features = [values for layer_id, layer_data in data.items() for values in layer_data.data]
         root = util.create_osm_xml(list_of_features)
+
+        package_export_params = {'geojson_geometry': geojson_geometry_string}
+        for layer_id, layer_data in data.items():
+            if layers[layer_id].export_parameter_name:
+                package_export_params[layers[layer_id].export_parameter_name] = layer_data.count
+        required_parameters = ['lb_adresow', 'lb_budynkow']
+        for param in required_parameters:
+            if package_export_params.get(param) is None:
+                package_export_params[param] = 0
+        self.register_bbox_export(package_export_params)
 
         return Response(
             etree.tostring(root, encoding='UTF-8'),
@@ -178,14 +151,10 @@ class JosmData(Resource):
     def register_bbox_export(self, package_export_params: dict) -> None:
         execute_query(QUERIES['insert_to_package_exports'], package_export_params)
 
-    def data_for_layers(self,
-                        layers: List[Tuple[LayerDefinition, QueryParametersType]],
-                        filter_by: str
-                        ) -> Dict[str, LayerData]:
+    def data_for_layers(self, layers: List[Tuple[LayerDefinition, QueryParametersType]]) -> Dict[str, LayerData]:
         data = {}
-
         for layer, params in layers:
-            data[layer.id] = layer.get_data(query_by=filter_by, parameters=params)
+            data[layer.id] = layer.get_data(params)
 
         return data
 

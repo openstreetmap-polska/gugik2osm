@@ -16,7 +16,8 @@ data as (
         )) tags
     from bdot_buildings_all b
     where 1=1
-        and b.geom_4326 && ST_MakeEnvelope(%s, %s, %s, %s, 4326)
+        and b.geom_4326 && ST_GeomFromGeoJSON( %(geojson_geometry)s )
+        and st_intersects(b.geom_4326, ST_GeomFromGeoJSON( %(geojson_geometry)s ))
     limit 50000
 ),
 points as (

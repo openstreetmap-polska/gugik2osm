@@ -6,7 +6,8 @@ preprocess_1 as (
     from streets_all s
     left join street_names_mappings m on s.interpolated_teryt_simc=m.teryt_simc_code and s.teryt_ulic=m.teryt_ulic_code
     where 1=1
-        and street_id in %s
+        and geom_2180 && st_transform(ST_GeomFromGeoJSON( %(geojson_geometry)s ), 2180)
+        and st_intersects(geom_2180, st_transform(ST_GeomFromGeoJSON( %(geojson_geometry)s ), 2180))
     limit 50000
 ),
 preprocess_2 as (

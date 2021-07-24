@@ -221,3 +221,18 @@ def create_osm_xml(list_of_features: List[Union[InputPoint, InputLine, InputPoly
         root.append(relation.as_xml_element())
 
     return root
+
+
+def bbox_to_geojson_geometry(bbox: Tuple[float, float, float, float]) -> Dict[str, Any]:
+    return {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [bbox[0], bbox[1]],
+                [bbox[2], bbox[1]],
+                [bbox[2], bbox[3]],
+                [bbox[0], bbox[3]],
+                [bbox[0], bbox[1]]
+            ]
+        ]
+    }
