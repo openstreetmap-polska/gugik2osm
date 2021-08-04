@@ -611,7 +611,7 @@ function getPopupText(element) {
     if (element.features[0].properties.pna) {
         s += "addr:postcode=" + element.features[0].properties.pna + "<br>"
     }
-    s += "source=gugik.gov.pl<br>"
+    s += "source:addr=gugik.gov.pl<br>"
 
     s += "      </div>"
     s += "    </div>"
