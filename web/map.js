@@ -3,11 +3,23 @@ var updatesLayerURL = "https://budynki.openstreetmap.org.pl/updates.geojson";
 var vectorTilesURL = "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf";
 var overpass_layers_url = "https://budynki.openstreetmap.org.pl/overpass-layers.json";
 var downloadable_layers_url = "https://budynki.openstreetmap.org.pl/layers/";
+
+const defaultCenter = [19.76231, 52.51863];
+const defaultZoom = 13;
+var initialZoom = defaultZoom;
+var initialCenter = defaultCenter;
+if (document.cookie !== "") {
+    const obj = JSON.parse(document.cookie);
+    initialCenter = obj.center;
+    initialZoom = obj.zoom;
+    console.log('Found location in cookie from last session. Will use it.')
+}
+
 var map = new mapboxgl.Map({
     "container": "map",
     "hash": "map",
-    "zoom": 13,
-    "center": [19.76231, 52.51863],
+    "zoom": initialZoom,
+    "center": initialCenter,
     "minZoom": 6,
     "maxZoom": 19,
     "maxPitch": 0,
@@ -167,6 +179,7 @@ var map = new mapboxgl.Map({
         ]
     }
 });
+console.log('Mapbox GL JS library version: ' + map.version);
 
 map.addControl(
     new MapboxGeocoder({
@@ -848,10 +861,11 @@ window.setInterval(
         $("#osm-link")[0].href = osm_link + window.location.hash;
         $("#osm-link-edit-id")[0].href = osm_link + "edit?editor=id" + window.location.hash;
         $("#osm-link-edit-remote")[0].href = osm_link + "edit?editor=remote" + window.location.hash;
+        document.cookie = JSON.stringify({'zoom': map.getZoom(), 'center': map.getCenter()});
     },
     333
 );
-//$(window).on('hashchange', function() {
+//window.addEventListener('hashchange', function() {
 //    console.log('TEST');
 //    console.log(window.location.hash);
-//});
+//}, false);
