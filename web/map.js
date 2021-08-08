@@ -231,10 +231,48 @@ var updates_popup = new mapboxgl.Popup({
 });
 
 // Add popup when hovering over updates layer
-map.on('mousemove', function (e) {
-    // update less frequently for less cpu load
-    if (Date.now() % 2 === 0) return;
+function prepareUpdatesLayerPopupHTML(features) {
+    var popup_text = "";
+    var last_osm_update_ts = "";
+    var last_export_update_ts = "";
+    var osm_notification = 0;
+    var export_notification = 0;
+    features.forEach(function(f){
+        if (f.properties.dataset === "osm") {
+            osm_notification = 1;
+            if (f.properties.created_at > last_osm_update_ts) last_osm_update_ts = f.properties.created_at;
+        }
+        if (f.properties.dataset === "exports") {
+            export_notification = 1;
+            if (f.properties.created_at > last_export_update_ts) last_export_update_ts = f.properties.created_at;
+        }
+    });
+    if ((osm_notification + export_notification) > 1) {
+        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! (~" + last_osm_update_ts + ")<br>";
+        popup_text += "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ")";
+    } else if (osm_notification > 0) {
+        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! (" + last_osm_update_ts + ")";
+    } else if (export_notification > 0) {
+        popup_text = "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ")";
+    }
+    return popup_text
+}
 
+function onUpdatesLayerEnterPopup(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['osm-updates', 'gugik2osm-exports']
+    });
+
+    popup_text = prepareUpdatesLayerPopupHTML(features);
+
+    updates_popup
+    .setLngLat(e.lngLat)
+    .trackPointer()
+    .setHTML(popup_text)
+    .addTo(map);
+}
+
+function onUpdatesLayerLeavePopup(e) {
     var features = map.queryRenderedFeatures(e.point, {
         layers: ['osm-updates', 'gugik2osm-exports']
     });
@@ -244,21 +282,20 @@ map.on('mousemove', function (e) {
         return;
     }
 
-    var popup_text = "";
-    var osm_notification = 0;
-    var export_notification = 0;
-    features.forEach(function(f){
-        if (f.properties.dataset === "osm") osm_notification = 1;
-        if (f.properties.dataset === "exports") export_notification = 1;
-    });
-    if (osm_notification > 0) popup_text += "Ktoś niedawno modyfikował OSM w tym miejscu!\n";
-    if (export_notification > 0) popup_text += "Ktoś niedawno eksportował paczkę danych w tym miejscu!\n";
+    popup_text = prepareUpdatesLayerPopupHTML(features);
 
     updates_popup
     .setLngLat(e.lngLat)
+    .trackPointer()
     .setText(popup_text)
     .addTo(map);
-});
+}
+
+map.on('mouseenter', 'osm-updates', onUpdatesLayerEnterPopup);
+map.on('mouseleave', 'osm-updates', onUpdatesLayerLeavePopup);
+
+map.on('mouseenter', 'gugik2osm-exports', onUpdatesLayerEnterPopup);
+map.on('mouseleave', 'gugik2osm-exports', onUpdatesLayerLeavePopup);
 
 window.onload = function() {
 
@@ -767,7 +804,7 @@ function setDownloadButtonURlWithBbox(layerPickerId, downloadButtonId) {
 }
 
 function setDownloadButtonURlWithPolygon(layerPickerId, downloadButtonId) {
-    var unioned = getDrawnGeometry();
+    var unioned = getUnionedDrawnGeometry();
     var layerIds = getLayerIds(layerPickerId);
     var theUrl = "/josm_data?filter_by=geojson_geometry&layers="+layerIds.join(",") +"&geom="+ encodeURIComponent(JSON.stringify(unioned['geometry']));
     console.log(theUrl);
