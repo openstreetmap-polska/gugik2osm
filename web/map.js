@@ -9,7 +9,11 @@ const defaultZoom = 13;
 var initialZoom = defaultZoom;
 var initialCenter = defaultCenter;
 if (document.cookie !== "") {
-    const obj = JSON.parse(document.cookie);
+    const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('map_position='))
+      .split('=')[1];
+    const obj = JSON.parse(cookieValue);
     initialCenter = obj.center;
     initialZoom = obj.zoom;
     console.log('Found location in cookie from last session. Will use it.')
@@ -876,7 +880,7 @@ window.setInterval(
         $("#osm-link")[0].href = osm_link + window.location.hash;
         $("#osm-link-edit-id")[0].href = osm_link + "edit?editor=id" + window.location.hash;
         $("#osm-link-edit-remote")[0].href = osm_link + "edit?editor=remote" + window.location.hash;
-        document.cookie = JSON.stringify({'zoom': map.getZoom(), 'center': map.getCenter()});
+        document.cookie = "map_position=" + JSON.stringify({'zoom': map.getZoom(), 'center': map.getCenter()});
     },
     333
 );
