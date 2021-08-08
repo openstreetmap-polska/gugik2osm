@@ -8,7 +8,7 @@ const defaultCenter = [19.76231, 52.51863];
 const defaultZoom = 13;
 var initialZoom = defaultZoom;
 var initialCenter = defaultCenter;
-if (document.cookie !== "") {
+if (document.cookie.search("map_position") !== -1) {
     const cookieValue = document.cookie
       .split('; ')
       .find(row => row.startsWith('map_position='))
