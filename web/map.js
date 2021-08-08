@@ -134,30 +134,6 @@ var map = new mapboxgl.Map({
                     "text-halo-width": 2
                 }
             }, {
-                "id": "buildings-highlighted",
-                "type": "fill",
-                "source": "mvt-tiles",
-                "source-layer": "buildings",
-                "paint": {
-                    "fill-outline-color": "#484896",
-                    "fill-color": "#6e599f",
-                    "fill-opacity": 0.75
-                },
-                "filter": ["in", "id", ""]
-            }, {
-                "id": "addresses-highlighted",
-                "type": "circle",
-                "source": "mvt-tiles",
-                "source-layer": "prg2load",
-                "paint": {
-                    "circle-radius": 3,
-                    "circle-color": "yellow",
-                    "circle-stroke-color": "white",
-                    "circle-stroke-width": 1,
-                    "circle-opacity": 0.9
-                },
-                "filter": ["in", "lokalnyid", ""]
-            }, {
                 "id": "osm-updates",
                 "type": "fill",
                 "source": "updates",
@@ -180,6 +156,8 @@ var map = new mapboxgl.Map({
     }
 });
 console.log('Mapbox GL JS library version: ' + map.version);
+
+map.scrollZoom.setWheelZoomRate(1/100);
 
 map.addControl(
     new MapboxGeocoder({
@@ -220,97 +198,14 @@ map.on("click", "prg2load", function (e) {
     console.log(e.features[0].properties);
     new mapboxgl.Popup({"maxWidth": "320px"})
     .setLngLat(e.lngLat)
-    .setHTML(getPopupText(e))
+    .setHTML(getAddressPopupHTML(e))
     .addTo(map);
     e.preventDefault();
 });
 map.on("click", "buildings", function (e) {
-    var s = "<table>"
-    s += "<tr><td>lokalnyid:</td><td>" + e.features[0].properties.lokalnyid + "</td></tr>"
-    s += "<tr><td>status_bdot:</td><td>" + e.features[0].properties.status_bdot + "</td></tr>"
-    s += "<tr><td>kategoria_bdot:</td><td>" + e.features[0].properties.kategoria_bdot + "</td></tr>"
-    if (e.features[0].properties.funkcja_ogolna_budynku) {
-        s += "<tr><td>funkcja_ogolna_budynku:</td><td>" + e.features[0].properties.funkcja_ogolna_budynku + "</td></tr>"
-    }
-    if (e.features[0].properties.funkcja_szczegolowa_budynku) {
-        s += "<tr><td>funkcja_szczegolowa_budynku:</td><td>" + e.features[0].properties.funkcja_szczegolowa_budynku + "</td></tr>"
-    }
-    if (e.features[0].properties.aktualnosc_geometrii) {
-        s += "<tr><td>aktualnosc_geometrii:</td><td>" + e.features[0].properties.aktualnosc_geometrii + "</td></tr>"
-    }
-    if (e.features[0].properties.aktualnosc_atrybutow) {
-        s += "<tr><td>aktualnosc_atrybutow:</td><td>" + e.features[0].properties.aktualnosc_atrybutow + "</td></tr>"
-    }
-    if (e.features[0].properties.building) {
-        s += "<tr><td>building:</td><td>" + e.features[0].properties.building + "</td></tr>"
-    }
-    if (e.features[0].properties.amenity) {
-        s += "<tr><td>amenity:</td><td>" + e.features[0].properties.amenity + "</td></tr>"
-    }
-    if (e.features[0].properties.man_made) {
-        s += "<tr><td>man_made:</td><td>" + e.features[0].properties.man_made + "</td></tr>"
-    }
-    if (e.features[0].properties.leisure) {
-        s += "<tr><td>leisure:</td><td>" + e.features[0].properties.leisure + "</td></tr>"
-    }
-    if (e.features[0].properties.historic) {
-        s += "<tr><td>historic:</td><td>" + e.features[0].properties.historic + "</td></tr>"
-    }
-    if (e.features[0].properties.tourism) {
-        s += "<tr><td>tourism:</td><td>" + e.features[0].properties.tourism + "</td></tr>"
-    }
-    if (e.features[0].properties.building_levels) {
-        s += "<tr><td>building_levels:</td><td>" + e.features[0].properties.building_levels + "</td></tr>"
-    }
-    s += "</table>"
-
-    s += "<div class=\"accordion\" id=\"accordionBuildingTags\">"
-    s += "  <div class=\"card my-2\">"
-    s += "    <div class=\"card-header p-0\" id=\"headingBuildingTags\">"
-    s += "      <h2 class=\"mb-0\">"
-    s += "        <button class=\"btn btn-link btn-block text-left\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseBuildingTags\" aria-expanded=\"true\" aria-controls=\"collapseBuildingTags\">"
-    s += "          Tagi do skopiowania"
-    s += "        </button>"
-    s += "      </h2>"
-    s += "    </div>"
-    s += "    <div id=\"collapseBuildingTags\" class=\"collapse\" aria-labelledby=\"headingBuildingTags\" data-parent=\"#accordionBuildingTags\">"
-    s += "      <div class=\"card-body\">"
-
-    if (e.features[0].properties.building) {
-        s += "building=" + e.features[0].properties.building + "<br>"
-    }
-    if (e.features[0].properties.amenity) {
-        s += "amenity=" + e.features[0].properties.amenity + "<br>"
-    }
-    if (e.features[0].properties.man_made) {
-        s += "man_made=" + e.features[0].properties.man_made + "<br>"
-    }
-    if (e.features[0].properties.leisure) {
-        s += "leisure=" + e.features[0].properties.leisure + "<br>"
-    }
-    if (e.features[0].properties.historic) {
-        s += "historic=" + e.features[0].properties.historic + "<br>"
-    }
-    if (e.features[0].properties.tourism) {
-        s += "tourism=" + e.features[0].properties.tourism + "<br>"
-    }
-    if (e.features[0].properties.building_levels) {
-        s += "building_levels=" + e.features[0].properties.building_levels + "<br>"
-    }
-    s += "source=www.geoportal.gov.pl<br>"
-
-    s += "      </div>"
-    s += "    </div>"
-    s += "  </div>"
-    s += "</div>"
-
-    s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
-    s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBuilding(\""
-    s += e.features[0].properties.lokalnyid
-    s += "\"); >Zgłoś</button>"
     new mapboxgl.Popup({"maxWidth": "320px"})
     .setLngLat(e.lngLat)
-    .setHTML(s)
+    .setHTML(getBuildingPopupHTML(e))
     .addTo(map);
 });
 
@@ -364,9 +259,6 @@ map.on('mousemove', function (e) {
     .setText(popup_text)
     .addTo(map);
 });
-//
-
-map.scrollZoom.setWheelZoomRate(1/100);
 
 window.onload = function() {
 
@@ -585,8 +477,94 @@ function toggleMapLayer(params){
     }
 }
 
+function getBuildingPopupHTML(e) {
+    var s = "<table>"
+    s += "<tr><td>lokalnyid:</td><td>" + e.features[0].properties.lokalnyid + "</td></tr>"
+    s += "<tr><td>status_bdot:</td><td>" + e.features[0].properties.status_bdot + "</td></tr>"
+    s += "<tr><td>kategoria_bdot:</td><td>" + e.features[0].properties.kategoria_bdot + "</td></tr>"
+    if (e.features[0].properties.funkcja_ogolna_budynku) {
+        s += "<tr><td>funkcja_ogolna_budynku:</td><td>" + e.features[0].properties.funkcja_ogolna_budynku + "</td></tr>"
+    }
+    if (e.features[0].properties.funkcja_szczegolowa_budynku) {
+        s += "<tr><td>funkcja_szczegolowa_budynku:</td><td>" + e.features[0].properties.funkcja_szczegolowa_budynku + "</td></tr>"
+    }
+    if (e.features[0].properties.aktualnosc_geometrii) {
+        s += "<tr><td>aktualnosc_geometrii:</td><td>" + e.features[0].properties.aktualnosc_geometrii + "</td></tr>"
+    }
+    if (e.features[0].properties.aktualnosc_atrybutow) {
+        s += "<tr><td>aktualnosc_atrybutow:</td><td>" + e.features[0].properties.aktualnosc_atrybutow + "</td></tr>"
+    }
+    if (e.features[0].properties.building) {
+        s += "<tr><td>building:</td><td>" + e.features[0].properties.building + "</td></tr>"
+    }
+    if (e.features[0].properties.amenity) {
+        s += "<tr><td>amenity:</td><td>" + e.features[0].properties.amenity + "</td></tr>"
+    }
+    if (e.features[0].properties.man_made) {
+        s += "<tr><td>man_made:</td><td>" + e.features[0].properties.man_made + "</td></tr>"
+    }
+    if (e.features[0].properties.leisure) {
+        s += "<tr><td>leisure:</td><td>" + e.features[0].properties.leisure + "</td></tr>"
+    }
+    if (e.features[0].properties.historic) {
+        s += "<tr><td>historic:</td><td>" + e.features[0].properties.historic + "</td></tr>"
+    }
+    if (e.features[0].properties.tourism) {
+        s += "<tr><td>tourism:</td><td>" + e.features[0].properties.tourism + "</td></tr>"
+    }
+    if (e.features[0].properties.building_levels) {
+        s += "<tr><td>building_levels:</td><td>" + e.features[0].properties.building_levels + "</td></tr>"
+    }
+    s += "</table>"
 
-function getPopupText(element) {
+    s += "<div class=\"accordion\" id=\"accordionBuildingTags\">"
+    s += "  <div class=\"card my-2\">"
+    s += "    <div class=\"card-header p-0\" id=\"headingBuildingTags\">"
+    s += "      <h2 class=\"mb-0\">"
+    s += "        <button class=\"btn btn-link btn-block text-left\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseBuildingTags\" aria-expanded=\"true\" aria-controls=\"collapseBuildingTags\">"
+    s += "          Tagi do skopiowania"
+    s += "        </button>"
+    s += "      </h2>"
+    s += "    </div>"
+    s += "    <div id=\"collapseBuildingTags\" class=\"collapse\" aria-labelledby=\"headingBuildingTags\" data-parent=\"#accordionBuildingTags\">"
+    s += "      <div class=\"card-body\">"
+
+    if (e.features[0].properties.building) {
+        s += "building=" + e.features[0].properties.building + "<br>"
+    }
+    if (e.features[0].properties.amenity) {
+        s += "amenity=" + e.features[0].properties.amenity + "<br>"
+    }
+    if (e.features[0].properties.man_made) {
+        s += "man_made=" + e.features[0].properties.man_made + "<br>"
+    }
+    if (e.features[0].properties.leisure) {
+        s += "leisure=" + e.features[0].properties.leisure + "<br>"
+    }
+    if (e.features[0].properties.historic) {
+        s += "historic=" + e.features[0].properties.historic + "<br>"
+    }
+    if (e.features[0].properties.tourism) {
+        s += "tourism=" + e.features[0].properties.tourism + "<br>"
+    }
+    if (e.features[0].properties.building_levels) {
+        s += "building_levels=" + e.features[0].properties.building_levels + "<br>"
+    }
+    s += "source=www.geoportal.gov.pl<br>"
+
+    s += "      </div>"
+    s += "    </div>"
+    s += "  </div>"
+    s += "</div>"
+
+    s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
+    s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBuilding(\""
+    s += e.features[0].properties.lokalnyid
+    s += "\"); >Zgłoś</button>"
+    return s
+}
+
+function getAddressPopupHTML(element) {
     var s = "<table>"
     s += "<tr><td>lokalnyid:</td><td>" + element.features[0].properties.lokalnyid + "</td></tr>"
     s += "<tr><td>kod miejscowości:</td><td>" + element.features[0].properties.teryt_simc + "</td></tr>"
@@ -684,7 +662,7 @@ function reportBoth(encodedStringifiedPayload){
 }
 
 function reportAddressUsingGeom() {
-    var unioned = getDrawnGeometry();
+    var unioned = getUnionedDrawnGeometry();
     $.ajax({
         type: "POST",
         url: "/exclude/",
@@ -699,7 +677,7 @@ function reportAddressUsingGeom() {
 }
 
 function reportBuildingUsingGeom() {
-    var unioned = getDrawnGeometry();
+    var unioned = getUnionedDrawnGeometry();
     $.ajax({
         type: "POST",
         url: "/exclude/",
@@ -714,7 +692,7 @@ function reportBuildingUsingGeom() {
 }
 
 function reportBothUsingGeom() {
-    var unioned = getDrawnGeometry();
+    var unioned = getUnionedDrawnGeometry();
     $.ajax({
         type: "POST",
         url: "/exclude/",
@@ -728,7 +706,7 @@ function reportBothUsingGeom() {
     })
 }
 
-function getDrawnGeometry() {
+function getUnionedDrawnGeometry() {
     var data = draw.getAll();
     var unioned = data['features'].reduce((previousValue, currentValue, index, array) => {
         return turf.union(previousValue, currentValue)
