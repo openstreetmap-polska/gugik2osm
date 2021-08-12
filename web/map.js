@@ -3,11 +3,27 @@ var updatesLayerURL = "https://budynki.openstreetmap.org.pl/updates.geojson";
 var vectorTilesURL = "https://budynki.openstreetmap.org.pl/tiles/{z}/{x}/{y}.pbf";
 var overpass_layers_url = "https://budynki.openstreetmap.org.pl/overpass-layers.json";
 var downloadable_layers_url = "https://budynki.openstreetmap.org.pl/layers/";
+
+const defaultCenter = [19.76231, 52.51863];
+const defaultZoom = 13;
+var initialZoom = defaultZoom;
+var initialCenter = defaultCenter;
+if (document.cookie.search("map_position") !== -1) {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('map_position='))
+      .split('=')[1];
+    const obj = JSON.parse(cookieValue);
+    initialCenter = obj.center;
+    initialZoom = obj.zoom;
+    console.log('Found location in cookie from last session. Will use it.')
+}
+
 var map = new mapboxgl.Map({
     "container": "map",
     "hash": "map",
-    "zoom": 13,
-    "center": [19.76231, 52.51863],
+    "zoom": initialZoom,
+    "center": initialCenter,
     "minZoom": 6,
     "maxZoom": 19,
     "maxPitch": 0,
@@ -122,30 +138,6 @@ var map = new mapboxgl.Map({
                     "text-halo-width": 2
                 }
             }, {
-                "id": "buildings-highlighted",
-                "type": "fill",
-                "source": "mvt-tiles",
-                "source-layer": "buildings",
-                "paint": {
-                    "fill-outline-color": "#484896",
-                    "fill-color": "#6e599f",
-                    "fill-opacity": 0.75
-                },
-                "filter": ["in", "id", ""]
-            }, {
-                "id": "addresses-highlighted",
-                "type": "circle",
-                "source": "mvt-tiles",
-                "source-layer": "prg2load",
-                "paint": {
-                    "circle-radius": 3,
-                    "circle-color": "yellow",
-                    "circle-stroke-color": "white",
-                    "circle-stroke-width": 1,
-                    "circle-opacity": 0.9
-                },
-                "filter": ["in", "lokalnyid", ""]
-            }, {
                 "id": "osm-updates",
                 "type": "fill",
                 "source": "updates",
@@ -167,6 +159,9 @@ var map = new mapboxgl.Map({
         ]
     }
 });
+console.log('Mapbox GL JS library version: ' + map.version);
+
+map.scrollZoom.setWheelZoomRate(1/100);
 
 map.addControl(
     new MapboxGeocoder({
@@ -207,97 +202,14 @@ map.on("click", "prg2load", function (e) {
     console.log(e.features[0].properties);
     new mapboxgl.Popup({"maxWidth": "320px"})
     .setLngLat(e.lngLat)
-    .setHTML(getPopupText(e))
+    .setHTML(getAddressPopupHTML(e))
     .addTo(map);
     e.preventDefault();
 });
 map.on("click", "buildings", function (e) {
-    var s = "<table>"
-    s += "<tr><td>lokalnyid:</td><td>" + e.features[0].properties.lokalnyid + "</td></tr>"
-    s += "<tr><td>status_bdot:</td><td>" + e.features[0].properties.status_bdot + "</td></tr>"
-    s += "<tr><td>kategoria_bdot:</td><td>" + e.features[0].properties.kategoria_bdot + "</td></tr>"
-    if (e.features[0].properties.funkcja_ogolna_budynku) {
-        s += "<tr><td>funkcja_ogolna_budynku:</td><td>" + e.features[0].properties.funkcja_ogolna_budynku + "</td></tr>"
-    }
-    if (e.features[0].properties.funkcja_szczegolowa_budynku) {
-        s += "<tr><td>funkcja_szczegolowa_budynku:</td><td>" + e.features[0].properties.funkcja_szczegolowa_budynku + "</td></tr>"
-    }
-    if (e.features[0].properties.aktualnosc_geometrii) {
-        s += "<tr><td>aktualnosc_geometrii:</td><td>" + e.features[0].properties.aktualnosc_geometrii + "</td></tr>"
-    }
-    if (e.features[0].properties.aktualnosc_atrybutow) {
-        s += "<tr><td>aktualnosc_atrybutow:</td><td>" + e.features[0].properties.aktualnosc_atrybutow + "</td></tr>"
-    }
-    if (e.features[0].properties.building) {
-        s += "<tr><td>building:</td><td>" + e.features[0].properties.building + "</td></tr>"
-    }
-    if (e.features[0].properties.amenity) {
-        s += "<tr><td>amenity:</td><td>" + e.features[0].properties.amenity + "</td></tr>"
-    }
-    if (e.features[0].properties.man_made) {
-        s += "<tr><td>man_made:</td><td>" + e.features[0].properties.man_made + "</td></tr>"
-    }
-    if (e.features[0].properties.leisure) {
-        s += "<tr><td>leisure:</td><td>" + e.features[0].properties.leisure + "</td></tr>"
-    }
-    if (e.features[0].properties.historic) {
-        s += "<tr><td>historic:</td><td>" + e.features[0].properties.historic + "</td></tr>"
-    }
-    if (e.features[0].properties.tourism) {
-        s += "<tr><td>tourism:</td><td>" + e.features[0].properties.tourism + "</td></tr>"
-    }
-    if (e.features[0].properties.building_levels) {
-        s += "<tr><td>building_levels:</td><td>" + e.features[0].properties.building_levels + "</td></tr>"
-    }
-    s += "</table>"
-
-    s += "<div class=\"accordion\" id=\"accordionBuildingTags\">"
-    s += "  <div class=\"card my-2\">"
-    s += "    <div class=\"card-header p-0\" id=\"headingBuildingTags\">"
-    s += "      <h2 class=\"mb-0\">"
-    s += "        <button class=\"btn btn-link btn-block text-left\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseBuildingTags\" aria-expanded=\"true\" aria-controls=\"collapseBuildingTags\">"
-    s += "          Tagi do skopiowania"
-    s += "        </button>"
-    s += "      </h2>"
-    s += "    </div>"
-    s += "    <div id=\"collapseBuildingTags\" class=\"collapse\" aria-labelledby=\"headingBuildingTags\" data-parent=\"#accordionBuildingTags\">"
-    s += "      <div class=\"card-body\">"
-
-    if (e.features[0].properties.building) {
-        s += "building=" + e.features[0].properties.building + "<br>"
-    }
-    if (e.features[0].properties.amenity) {
-        s += "amenity=" + e.features[0].properties.amenity + "<br>"
-    }
-    if (e.features[0].properties.man_made) {
-        s += "man_made=" + e.features[0].properties.man_made + "<br>"
-    }
-    if (e.features[0].properties.leisure) {
-        s += "leisure=" + e.features[0].properties.leisure + "<br>"
-    }
-    if (e.features[0].properties.historic) {
-        s += "historic=" + e.features[0].properties.historic + "<br>"
-    }
-    if (e.features[0].properties.tourism) {
-        s += "tourism=" + e.features[0].properties.tourism + "<br>"
-    }
-    if (e.features[0].properties.building_levels) {
-        s += "building_levels=" + e.features[0].properties.building_levels + "<br>"
-    }
-    s += "source=www.geoportal.gov.pl<br>"
-
-    s += "      </div>"
-    s += "    </div>"
-    s += "  </div>"
-    s += "</div>"
-
-    s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
-    s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBuilding(\""
-    s += e.features[0].properties.lokalnyid
-    s += "\"); >Zgłoś</button>"
     new mapboxgl.Popup({"maxWidth": "320px"})
     .setLngLat(e.lngLat)
-    .setHTML(s)
+    .setHTML(getBuildingPopupHTML(e))
     .addTo(map);
 });
 
@@ -323,10 +235,48 @@ var updates_popup = new mapboxgl.Popup({
 });
 
 // Add popup when hovering over updates layer
-map.on('mousemove', function (e) {
-    // update less frequently for less cpu load
-    if (Date.now() % 2 === 0) return;
+function prepareUpdatesLayerPopupHTML(features) {
+    var popup_text = "";
+    var last_osm_update_ts = "";
+    var last_export_update_ts = "";
+    var osm_notification = 0;
+    var export_notification = 0;
+    features.forEach(function(f){
+        if (f.properties.dataset === "osm") {
+            osm_notification = 1;
+            if (f.properties.created_at > last_osm_update_ts) last_osm_update_ts = f.properties.created_at;
+        }
+        if (f.properties.dataset === "exports") {
+            export_notification = 1;
+            if (f.properties.created_at > last_export_update_ts) last_export_update_ts = f.properties.created_at;
+        }
+    });
+    if ((osm_notification + export_notification) > 1) {
+        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! (~" + last_osm_update_ts + ")<br>";
+        popup_text += "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ")";
+    } else if (osm_notification > 0) {
+        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! (" + last_osm_update_ts + ")";
+    } else if (export_notification > 0) {
+        popup_text = "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ")";
+    }
+    return popup_text
+}
 
+function onUpdatesLayerEnterPopup(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['osm-updates', 'gugik2osm-exports']
+    });
+
+    popup_text = prepareUpdatesLayerPopupHTML(features);
+
+    updates_popup
+    .setLngLat(e.lngLat)
+    .trackPointer()
+    .setHTML(popup_text)
+    .addTo(map);
+}
+
+function onUpdatesLayerLeavePopup(e) {
     var features = map.queryRenderedFeatures(e.point, {
         layers: ['osm-updates', 'gugik2osm-exports']
     });
@@ -336,24 +286,20 @@ map.on('mousemove', function (e) {
         return;
     }
 
-    var popup_text = "";
-    var osm_notification = 0;
-    var export_notification = 0;
-    features.forEach(function(f){
-        if (f.properties.dataset === "osm") osm_notification = 1;
-        if (f.properties.dataset === "exports") export_notification = 1;
-    });
-    if (osm_notification > 0) popup_text += "Ktoś niedawno modyfikował OSM w tym miejscu!\n";
-    if (export_notification > 0) popup_text += "Ktoś niedawno eksportował paczkę danych w tym miejscu!\n";
+    popup_text = prepareUpdatesLayerPopupHTML(features);
 
     updates_popup
     .setLngLat(e.lngLat)
+    .trackPointer()
     .setText(popup_text)
     .addTo(map);
-});
-//
+}
 
-map.scrollZoom.setWheelZoomRate(1/100);
+map.on('mouseenter', 'osm-updates', onUpdatesLayerEnterPopup);
+map.on('mouseleave', 'osm-updates', onUpdatesLayerLeavePopup);
+
+map.on('mouseenter', 'gugik2osm-exports', onUpdatesLayerEnterPopup);
+map.on('mouseleave', 'gugik2osm-exports', onUpdatesLayerLeavePopup);
 
 window.onload = function() {
 
@@ -572,8 +518,94 @@ function toggleMapLayer(params){
     }
 }
 
+function getBuildingPopupHTML(e) {
+    var s = "<table>"
+    s += "<tr><td>lokalnyid:</td><td>" + e.features[0].properties.lokalnyid + "</td></tr>"
+    s += "<tr><td>status_bdot:</td><td>" + e.features[0].properties.status_bdot + "</td></tr>"
+    s += "<tr><td>kategoria_bdot:</td><td>" + e.features[0].properties.kategoria_bdot + "</td></tr>"
+    if (e.features[0].properties.funkcja_ogolna_budynku) {
+        s += "<tr><td>funkcja_ogolna_budynku:</td><td>" + e.features[0].properties.funkcja_ogolna_budynku + "</td></tr>"
+    }
+    if (e.features[0].properties.funkcja_szczegolowa_budynku) {
+        s += "<tr><td>funkcja_szczegolowa_budynku:</td><td>" + e.features[0].properties.funkcja_szczegolowa_budynku + "</td></tr>"
+    }
+    if (e.features[0].properties.aktualnosc_geometrii) {
+        s += "<tr><td>aktualnosc_geometrii:</td><td>" + e.features[0].properties.aktualnosc_geometrii + "</td></tr>"
+    }
+    if (e.features[0].properties.aktualnosc_atrybutow) {
+        s += "<tr><td>aktualnosc_atrybutow:</td><td>" + e.features[0].properties.aktualnosc_atrybutow + "</td></tr>"
+    }
+    if (e.features[0].properties.building) {
+        s += "<tr><td>building:</td><td>" + e.features[0].properties.building + "</td></tr>"
+    }
+    if (e.features[0].properties.amenity) {
+        s += "<tr><td>amenity:</td><td>" + e.features[0].properties.amenity + "</td></tr>"
+    }
+    if (e.features[0].properties.man_made) {
+        s += "<tr><td>man_made:</td><td>" + e.features[0].properties.man_made + "</td></tr>"
+    }
+    if (e.features[0].properties.leisure) {
+        s += "<tr><td>leisure:</td><td>" + e.features[0].properties.leisure + "</td></tr>"
+    }
+    if (e.features[0].properties.historic) {
+        s += "<tr><td>historic:</td><td>" + e.features[0].properties.historic + "</td></tr>"
+    }
+    if (e.features[0].properties.tourism) {
+        s += "<tr><td>tourism:</td><td>" + e.features[0].properties.tourism + "</td></tr>"
+    }
+    if (e.features[0].properties.building_levels) {
+        s += "<tr><td>building_levels:</td><td>" + e.features[0].properties.building_levels + "</td></tr>"
+    }
+    s += "</table>"
 
-function getPopupText(element) {
+    s += "<div class=\"accordion\" id=\"accordionBuildingTags\">"
+    s += "  <div class=\"card my-2\">"
+    s += "    <div class=\"card-header p-0\" id=\"headingBuildingTags\">"
+    s += "      <h2 class=\"mb-0\">"
+    s += "        <button class=\"btn btn-link btn-block text-left\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapseBuildingTags\" aria-expanded=\"true\" aria-controls=\"collapseBuildingTags\">"
+    s += "          Tagi do skopiowania"
+    s += "        </button>"
+    s += "      </h2>"
+    s += "    </div>"
+    s += "    <div id=\"collapseBuildingTags\" class=\"collapse\" aria-labelledby=\"headingBuildingTags\" data-parent=\"#accordionBuildingTags\">"
+    s += "      <div class=\"card-body\">"
+
+    if (e.features[0].properties.building) {
+        s += "building=" + e.features[0].properties.building + "<br>"
+    }
+    if (e.features[0].properties.amenity) {
+        s += "amenity=" + e.features[0].properties.amenity + "<br>"
+    }
+    if (e.features[0].properties.man_made) {
+        s += "man_made=" + e.features[0].properties.man_made + "<br>"
+    }
+    if (e.features[0].properties.leisure) {
+        s += "leisure=" + e.features[0].properties.leisure + "<br>"
+    }
+    if (e.features[0].properties.historic) {
+        s += "historic=" + e.features[0].properties.historic + "<br>"
+    }
+    if (e.features[0].properties.tourism) {
+        s += "tourism=" + e.features[0].properties.tourism + "<br>"
+    }
+    if (e.features[0].properties.building_levels) {
+        s += "building_levels=" + e.features[0].properties.building_levels + "<br>"
+    }
+    s += "source=www.geoportal.gov.pl<br>"
+
+    s += "      </div>"
+    s += "    </div>"
+    s += "  </div>"
+    s += "</div>"
+
+    s += "<h6>Jeżeli obiekt nie istnieje lub nie nadaje się do importu zgłoś go:</h6>"
+    s += "<button id=\"reportButton\" type=\"button\" class=\"btn btn-primary\" onclick=reportBuilding(\""
+    s += e.features[0].properties.lokalnyid
+    s += "\"); >Zgłoś</button>"
+    return s
+}
+
+function getAddressPopupHTML(element) {
     var s = "<table>"
     s += "<tr><td>lokalnyid:</td><td>" + element.features[0].properties.lokalnyid + "</td></tr>"
     s += "<tr><td>kod miejscowości:</td><td>" + element.features[0].properties.teryt_simc + "</td></tr>"
@@ -611,7 +643,7 @@ function getPopupText(element) {
     if (element.features[0].properties.pna) {
         s += "addr:postcode=" + element.features[0].properties.pna + "<br>"
     }
-    s += "source=gugik.gov.pl<br>"
+    s += "source:addr=gugik.gov.pl<br>"
 
     s += "      </div>"
     s += "    </div>"
@@ -671,7 +703,7 @@ function reportBoth(encodedStringifiedPayload){
 }
 
 function reportAddressUsingGeom() {
-    var unioned = getDrawnGeometry();
+    var unioned = getUnionedDrawnGeometry();
     $.ajax({
         type: "POST",
         url: "/exclude/",
@@ -686,7 +718,7 @@ function reportAddressUsingGeom() {
 }
 
 function reportBuildingUsingGeom() {
-    var unioned = getDrawnGeometry();
+    var unioned = getUnionedDrawnGeometry();
     $.ajax({
         type: "POST",
         url: "/exclude/",
@@ -701,7 +733,7 @@ function reportBuildingUsingGeom() {
 }
 
 function reportBothUsingGeom() {
-    var unioned = getDrawnGeometry();
+    var unioned = getUnionedDrawnGeometry();
     $.ajax({
         type: "POST",
         url: "/exclude/",
@@ -715,7 +747,7 @@ function reportBothUsingGeom() {
     })
 }
 
-function getDrawnGeometry() {
+function getUnionedDrawnGeometry() {
     var data = draw.getAll();
     var unioned = data['features'].reduce((previousValue, currentValue, index, array) => {
         return turf.union(previousValue, currentValue)
@@ -776,7 +808,7 @@ function setDownloadButtonURlWithBbox(layerPickerId, downloadButtonId) {
 }
 
 function setDownloadButtonURlWithPolygon(layerPickerId, downloadButtonId) {
-    var unioned = getDrawnGeometry();
+    var unioned = getUnionedDrawnGeometry();
     var layerIds = getLayerIds(layerPickerId);
     var theUrl = "/josm_data?filter_by=geojson_geometry&layers="+layerIds.join(",") +"&geom="+ encodeURIComponent(JSON.stringify(unioned['geometry']));
     console.log(theUrl);
@@ -848,10 +880,11 @@ window.setInterval(
         $("#osm-link")[0].href = osm_link + window.location.hash;
         $("#osm-link-edit-id")[0].href = osm_link + "edit?editor=id" + window.location.hash;
         $("#osm-link-edit-remote")[0].href = osm_link + "edit?editor=remote" + window.location.hash;
+        document.cookie = "map_position=" + JSON.stringify({'zoom': map.getZoom(), 'center': map.getCenter()});
     },
     333
 );
-//$(window).on('hashchange', function() {
+//window.addEventListener('hashchange', function() {
 //    console.log('TEST');
 //    console.log(window.location.hash);
-//});
+//}, false);
