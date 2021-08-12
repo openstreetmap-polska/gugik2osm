@@ -28,25 +28,3 @@ function processesInfo () {
             $('#procinfo').html(temp);
     });
 }
-
-function downloadVisibleAddresses(){
-    var bounds = map.getBounds().toArray();
-    var xmin = bounds[0][0];
-    var xmax = bounds[1][0];
-    var ymin = bounds[0][1];
-    var ymax = bounds[1][1];
-    var theUrl = "/prg/not_in/osm/?filter_by=bbox&format=osm&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax
-    console.log(theUrl);
-    window.open(theUrl);
-}
-
-function downloadVisibleBuildings(){
-    var bounds = map.getBounds().toArray();
-    var xmin = bounds[0][0];
-    var xmax = bounds[1][0];
-    var ymin = bounds[0][1];
-    var ymax = bounds[1][1];
-    var theUrl = "/lod1/not_in/osm/?filter_by=bbox&format=osm&xmin="+xmin+"&ymin="+ymin+"&xmax="+xmax+"&ymax="+ymax
-    console.log(theUrl);
-    window.open(theUrl);
-}

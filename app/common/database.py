@@ -17,28 +17,25 @@ PGConnection = psycopg2.extensions.connection
 
 SQL_PATH = join(dirname(abspath(__file__)), 'queries')
 QUERIES = {
-    'addresses_all_where_id': str(open(join(SQL_PATH, 'addresses_all_where_id.sql'), 'r').read()),
-    'addresses_all_where_bbox': str(open(join(SQL_PATH, 'addresses_all_where_bbox.sql'), 'r').read()),
-    'buildings_all_bbox': str(open(join(SQL_PATH, 'buildings_all_bbox.sql'), 'r').read()),
-    'buildings_all_id': str(open(join(SQL_PATH, 'buildings_all_id.sql'), 'r').read()),
-    'buildings_vertices': str(open(join(SQL_PATH, 'buildings_vertices.sql'), 'r').read()),
-    'buildings_vertices_where_id': str(open(join(SQL_PATH, 'buildings_vertices_where_id.sql'), 'r').read()),
+    'addresses_all_where_geom': str(open(join(SQL_PATH, 'addresses_all_where_geom.sql'), 'r').read()),
+    'addresses_where_geom': str(open(join(SQL_PATH, 'addresses_where_geom.sql'), 'r').read()),
+    'buildings_all_where_geom': str(open(join(SQL_PATH, 'buildings_all_where_geom.sql'), 'r').read()),
+    'buildings_where_geom': str(open(join(SQL_PATH, 'buildings_where_geom.sql'), 'r').read()),
     'cached_mvt': str(open(join(SQL_PATH, 'cached_mvt.sql'), 'r').read()),
     'delta_point_info': str(open(join(SQL_PATH, 'delta_point_info.sql'), 'r').read()),
-    'delta_where_bbox': str(open(join(SQL_PATH, 'delta_where_bbox.sql'), 'r').read()),
-    'delta_where_id': str(open(join(SQL_PATH, 'delta_where_id.sql'), 'r').read()),
     'mvt_insert': str(open(join(SQL_PATH, 'mvt_insert.sql'), 'r').read()),
     'locations_random': str(open(join(SQL_PATH, 'locations_random.sql'), 'r').read()),
     'locations_most_count': str(open(join(SQL_PATH, 'locations_most_count.sql'), 'r').read()),
     'processes': str(open(join(SQL_PATH, 'processes.sql'), 'r').read()),
     'insert_to_exclude_prg': str(open(join(SQL_PATH, 'insert_to_exclude_prg.sql'), 'r').read()),
+    'insert_to_exclude_prg_addresses_where_geom': str(open(join(SQL_PATH, 'insert_to_exclude_prg_addresses_where_geom.sql'), 'r').read()),
     'insert_to_exclude_bdot_buildings': str(open(join(SQL_PATH, 'insert_to_exclude_bdot_buildings.sql'), 'r').read()),
+    'insert_to_exclude_bdot_buildings_where_geom': str(open(join(SQL_PATH, 'insert_to_exclude_bdot_buildings_where_geom.sql'), 'r').read()),
     'insert_to_package_exports': str(open(join(SQL_PATH, 'insert_to_package_exports.sql'), 'r').read()),
     'latest_updates': str(open(join(SQL_PATH, 'latest_updates.sql'), 'r').read()),
     'sc_proposed_addresses_in_bbox': str(open(join(SQL_PATH, 'sc_proposed_addresses_in_bbox.sql'), 'r').read()),
     'sc_proposed_buildings_in_bbox': str(open(join(SQL_PATH, 'sc_proposed_buildings_in_bbox.sql'), 'r').read()),
-    'streets_all_where_bbox': str(open(join(SQL_PATH, 'streets_all_where_bbox.sql'), 'r').read()),
-    'streets_all_where_id': str(open(join(SQL_PATH, 'streets_all_where_id.sql'), 'r').read()),
+    'streets_all_where_geom': str(open(join(SQL_PATH, 'streets_all_where_geom.sql'), 'r').read()),
 }
 conn: Union[PGConnection, None] = None
 connection_read_only: Union[PGConnection, None] = None

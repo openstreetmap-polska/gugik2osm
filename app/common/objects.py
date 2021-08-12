@@ -11,8 +11,7 @@ class LayerDefinition:
     id: str
     parent_id: str
     name: str
-    query_by_id: str
-    query_by_bbox: str
+    query: str
     export_parameter_name: str
     active: bool = True
     default: bool = False
@@ -24,16 +23,9 @@ class LayerDefinition:
     def __eq__(self, other):
         return self.id == other
 
-    def get_data(self, query_by: str, parameters):
-        if query_by == 'bbox':
-            query = self.query_by_bbox
-        elif query_by == 'id':
-            query = self.query_by_id
-        else:
-            raise ValueError(f'Query by: {query_by} is not valid.')
+    def get_data(self, geometry):
 
-        data = db.data_from_db(query, parameters, row_as=dict)
-
+        data = db.data_from_db(self.query, geometry, row_as=dict)
         return LayerData(
             len(data),
             [util.input_feature_factory(**row) for row in data]
@@ -53,8 +45,7 @@ class Layers:
             id='addresses_to_import',
             parent_id='addresses',
             name='Adresy brakujące w OSM',
-            query_by_id=db.QUERIES['delta_where_id'],
-            query_by_bbox=db.QUERIES['delta_where_bbox'],
+            query=db.QUERIES['addresses_where_geom'],
             export_parameter_name='lb_adresow',
             active=True,
             default=True
@@ -63,8 +54,7 @@ class Layers:
             id='buildings_to_import',
             parent_id='buildings',
             name='Budynki brakujące w OSM',
-            query_by_id=db.QUERIES['buildings_vertices_where_id'],
-            query_by_bbox=db.QUERIES['buildings_vertices'],
+            query=db.QUERIES['buildings_where_geom'],
             export_parameter_name='lb_budynkow',
             active=True,
             default=True
@@ -73,8 +63,7 @@ class Layers:
             id='addresses',
             parent_id='',
             name='Wszystkie adresy z PRG',
-            query_by_id=db.QUERIES['addresses_all_where_id'],
-            query_by_bbox=db.QUERIES['addresses_all_where_bbox'],
+            query=db.QUERIES['addresses_all_where_geom'],
             export_parameter_name='lb_adresow',
             active=True,
             default=False,
@@ -86,8 +75,7 @@ class Layers:
             id='buildings',
             parent_id='',
             name='Wszystkie budynki z BDOT10k',
-            query_by_id=db.QUERIES['buildings_all_id'],
-            query_by_bbox=db.QUERIES['buildings_all_bbox'],
+            query=db.QUERIES['buildings_all_where_geom'],
             export_parameter_name='lb_budynkow',
             active=True,
             default=False,
@@ -99,8 +87,7 @@ class Layers:
             id='streets',
             parent_id='',
             name='Wszystkie ulice z PRG',
-            query_by_id=db.QUERIES['streets_all_where_id'],
-            query_by_bbox=db.QUERIES['streets_all_where_bbox'],
+            query=db.QUERIES['streets_all_where_geom'],
             export_parameter_name='',
             active=True,
             default=False,

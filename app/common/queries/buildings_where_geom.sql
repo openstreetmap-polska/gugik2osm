@@ -14,9 +14,12 @@ data as (
            'building:levels', building_levels,
            'source', 'www.geoportal.gov.pl'
         )) tags
-    from bdot_buildings_all b
+    from bdot_buildings b
+    left join exclude_bdot_buildings ex on b.lokalnyid=ex.id
     where 1=1
-        and b.lokalnyid in %s
+        and ex.id is null
+        and b.geom_4326 && ST_GeomFromGeoJSON( %(geojson_geometry)s )
+        and st_intersects(b.geom_4326, ST_GeomFromGeoJSON( %(geojson_geometry)s ))
     limit 50000
 ),
 points as (
