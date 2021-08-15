@@ -1,6 +1,11 @@
 #!/bin/bash
 
+# exit on error in any command
+set -e
+
+set -a
 source /opt/gugik2osm/conf/.env
+set +a
 
 echo "Creating GeoPackage..." >> /opt/gugik2osm/log/bdot_processing.log
 

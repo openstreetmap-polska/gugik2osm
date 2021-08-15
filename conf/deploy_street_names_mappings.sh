@@ -6,7 +6,9 @@ set -e
 cd /opt/gugik2osm/git/
 git pull
 
+set -a
 source /opt/gugik2osm/conf/.env
+set +a
 
 date >> /opt/gugik2osm/log/prg_processing.log
 echo "Deploying street names mappings..." >> /opt/gugik2osm/log/prg_processing.log
