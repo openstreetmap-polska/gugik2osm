@@ -4,6 +4,7 @@ create table if not exists osm_stats (
   metric_key text not null,
   metric_description text not null,
   value int not null,
+  sql_version int default 2,
   constraint osm_stats_pk primary key (measurement_day, metric_key)
 );
 
@@ -46,10 +47,10 @@ insert into osm_stats (measurement_day, metric_key, metric_description, value) v
   'osm_unique_addresses_count',
   'Liczba unikalnych adresów.',
   (select count(*) from (
-    select distinct md5(concat(coalesce(miejscowosc, cz_msc, ''), coalesce(ulica, ''), type)) adr_hash
+    select distinct md5(concat(kod_pna, coalesce(miejscowosc, cz_msc, ''), coalesce(ulica, ''), type)) adr_hash
     from osm_addr_point
     union
-    select distinct md5(concat(coalesce(miejscowosc, cz_msc, ''), coalesce(ulica, ''), type)) adr_hash
+    select distinct md5(concat(kod_pna, coalesce(miejscowosc, cz_msc, ''), coalesce(ulica, ''), type)) adr_hash
     from osm_addr_polygon
   ) adr )
 );
