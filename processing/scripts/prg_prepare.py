@@ -53,12 +53,15 @@ def _read_and_execute(
         conn.commit()
     if vacuum == 'always':
         print(datetime.now(timezone.utc).astimezone().isoformat(), '- running vacuum analyze...')
-        old_isolation_level = conn.isolation_level
+        old_isolation_level2 = conn.isolation_level
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cur.execute('VACUUM ANALYZE;')
-        conn.set_isolation_level(old_isolation_level)
+        conn.set_isolation_level(old_isolation_level2)
     if commit_mode == 'autocommit':
         conn.set_isolation_level(old_isolation_level)
+
+    for notice in conn.notices:
+        print(str(notice).strip())
 
     ets = time.perf_counter()
     delta = ets - sts
@@ -187,8 +190,6 @@ def partial_update(dsn: str) -> None:
 
             try:
                 execute_scripts_from_files(conn=conn, vacuum='never', paths=sorted_queries_paths, temp_set_workmem='128MB', commit_mode='autocommit')
-                for notice in conn.notices:
-                    print(notice)
             except Exception as e:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in partial update process.')
                 print(e)
