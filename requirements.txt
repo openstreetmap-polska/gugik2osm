@@ -32,3 +32,4 @@ Werkzeug==2.0.1
 zeep==3.4.0
 zope.event==4.5.0
 zope.interface==5.4.0
+python-dotenv==0.19.0

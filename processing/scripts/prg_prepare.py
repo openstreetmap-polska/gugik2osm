@@ -1,4 +1,5 @@
 import argparse
+import os
 import time
 from datetime import datetime, timezone, timedelta
 from os.path import join, dirname, abspath
@@ -211,11 +212,23 @@ if __name__ == '__main__':
     parser.add_argument('--full', help='Launch full process', nargs='?', const=True)
     parser.add_argument('--update', help='Launch partial update process', nargs='?', const=True)
     parser.add_argument('--force', help='Ignore checking if another process is running. Applies to full process.', nargs='?', const=True)
-    parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs=1)
+    parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs='?')
+    parser.add_argument('--dotenv', help='Path to .env file with credentials for PostgreSQL DB.', nargs='?')
     parser.add_argument('--starting', help='Start from this query (DML). Must match name exactly.', nargs=1)
     args = vars(parser.parse_args())
 
-    dsn = args['dsn'][0]
+    if args.get('dotenv'):
+        from dotenv import load_dotenv
+        dotenv_path = args['dotenv']
+        load_dotenv(dotenv_path, verbose=True)
+        PGHOSTADDR = os.environ['PGHOSTADDR']
+        PGPORT = os.environ['PGPORT']
+        PGDATABASE = os.environ['PGDATABASE']
+        PGUSER = os.environ['PGUSER']
+        PGPASSWORD = os.environ['PGPASSWORD']
+        dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+    else:
+        dsn = args['dsn']
     if 'full' in args and args.get('full'):
         if args.get('starting'):
             full_process(dsn, starting=args.get('starting')[0], force=args.get('force'))

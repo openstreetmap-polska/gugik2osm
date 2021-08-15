@@ -1,4 +1,5 @@
 import argparse
+import os
 from datetime import datetime, timezone
 import urllib.request
 import urllib.error
@@ -45,6 +46,7 @@ if __name__ == '__main__':
     parser.add_argument('--output_dir', help='File path to the directory where files are to be placed.', nargs=1)
     parser.add_argument('--only', help='Download only this county\'s file. (provide 4 digit TERYT code)', nargs='?')
     parser.add_argument('--dsn', help='Connection string for PostgreSQL database with data about counties loaded by teryt_dl script.', nargs='?')
+    parser.add_argument('--dotenv', help='Path to .env file with credentials for PostgreSQL DB.', nargs='?')
     args = vars(parser.parse_args())
 
     if args.get('only'):
@@ -55,7 +57,20 @@ if __name__ == '__main__':
 
         query = 'select woj || pow as kod_teryt from teryt.terc where pow is not null and gmi is null'
 
-        with pg.connect(args.get('dsn')) as conn:
+        if args.get('dotenv'):
+            from dotenv import load_dotenv
+            dotenv_path = args['dotenv']
+            load_dotenv(dotenv_path, verbose=True)
+            PGHOSTADDR = os.environ['PGHOSTADDR']
+            PGPORT = os.environ['PGPORT']
+            PGDATABASE = os.environ['PGDATABASE']
+            PGUSER = os.environ['PGUSER']
+            PGPASSWORD = os.environ['PGPASSWORD']
+            dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+        else:
+            dsn = args['dsn']
+
+        with pg.connect(dsn) as conn:
             cur = conn.cursor()
             try:
                 cur.execute(query)

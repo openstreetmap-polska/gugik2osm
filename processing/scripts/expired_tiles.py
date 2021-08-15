@@ -1,4 +1,5 @@
 import argparse
+import os
 import shutil
 from datetime import datetime, timezone
 from os.path import join
@@ -73,20 +74,34 @@ if __name__ == '__main__':
     parser.add_argument('--remove-old-folders', help='Remove folders older than today', nargs='?', const=True)
     parser.add_argument('--insert-exp-tiles', help='Read and insert into db the expired tiles', nargs='?', const=True)
     parser.add_argument('--all', help='Read all todays tiles files (flag to be used in conjunction with insert)', nargs='?', const=True)
-    parser.add_argument('--dsn', help='Connection string for PostgreSQL DB. (flag to be used in conjunction with insert)', nargs=1)
+    parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs='?')
+    parser.add_argument('--dotenv', help='Path to .env file with credentials for PostgreSQL DB.', nargs='?')
     parser.add_argument('--dir', help='Base directory where folders/files with expired tiles are stored', nargs=1)
     args = vars(parser.parse_args())
 
     if args.get('remove_old_folders'):
         remove_folder_older_than_today(args['dir'][0])
     elif args.get('insert_exp_tiles'):
+        if args.get('dotenv'):
+            from dotenv import load_dotenv
+            dotenv_path = args['dotenv']
+            load_dotenv(dotenv_path, verbose=True)
+            PGHOSTADDR = os.environ['PGHOSTADDR']
+            PGPORT = os.environ['PGPORT']
+            PGDATABASE = os.environ['PGDATABASE']
+            PGUSER = os.environ['PGUSER']
+            PGPASSWORD = os.environ['PGPASSWORD']
+            dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+        else:
+            dsn = args['dsn']
+
         if args.get('all'):
             for tup in expired_tiles_from_all_todays_files(args['dir'][0]):
-                insert_tiles_into_db(tup[0], tup[1], args['dsn'][0])
+                insert_tiles_into_db(tup[0], tup[1], dsn)
         else:
             expt = expired_tiles_from_newest_file(args['dir'][0])
             if len(expt) > 0:
                 file_name, tiles = expt
-                insert_tiles_into_db(file_name, tiles, args['dsn'][0])
+                insert_tiles_into_db(file_name, tiles, dsn)
             else:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- no expired tiles.')

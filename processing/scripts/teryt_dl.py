@@ -1,9 +1,11 @@
 import argparse
+import os
 import zipfile
 from base64 import b64decode
 from io import BytesIO, TextIOWrapper, StringIO
 from os.path import join, dirname, abspath
 from datetime import datetime, timedelta, timezone
+
 from zeep import Client
 from zeep.wsse.username import UsernameToken
 import psycopg2 as pg
@@ -134,13 +136,34 @@ def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None)
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- TERYT update in progress already. Not starting another one.')
+    conn.close()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--api_env', help='TERYT API environment.', nargs=1, choices=['prod', 'test'])
-    parser.add_argument('--api_user', help='TERYT API user.', nargs=1)
-    parser.add_argument('--api_password', help='TERYT API password.', nargs=1)
-    parser.add_argument('--dsn', help='Connection string for PostgreSQL.', nargs=1)
+    parser.add_argument('--api_user', help='TERYT API user.', nargs='?')
+    parser.add_argument('--api_password', help='TERYT API password.', nargs='?')
+    parser.add_argument('--dsn', help='Connection string for PostgreSQL DB.', nargs='?')
+    parser.add_argument('--dotenv', help='Path to .env file with credentials for PostgreSQL DB.', nargs='?')
     args = vars(parser.parse_args())
-    main(args['api_env'][0], args['dsn'][0], args['api_user'][0], args['api_password'][0])
+
+    if args.get('dotenv'):
+        from dotenv import load_dotenv
+        dotenv_path = args['dotenv']
+        load_dotenv(dotenv_path, verbose=True)
+        PGHOSTADDR = os.environ['PGHOSTADDR']
+        PGPORT = os.environ['PGPORT']
+        PGDATABASE = os.environ['PGDATABASE']
+        PGUSER = os.environ['PGUSER']
+        PGPASSWORD = os.environ['PGPASSWORD']
+        dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+        api_user = os.environ['TERYTUSER']
+        api_password = os.environ['TERYTPASSWORD']
+    else:
+        dsn = args['dsn']
+        api_user = args['api_user']
+        api_password = args['api_password']
+    api_env = args['api_env']
+
+    main(api_env, dsn, api_user, api_password)
