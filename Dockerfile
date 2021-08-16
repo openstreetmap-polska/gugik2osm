@@ -17,7 +17,6 @@ ENV VIRTUAL_ENV /opt/gugik2osm/venv
 ENV PATH /opt/gugik2osm/venv/bin:$PATH
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./processing/ ./git/processing/
 COPY ./conf/ ./conf/
 
 # create symlinks similar to the ones on production server
