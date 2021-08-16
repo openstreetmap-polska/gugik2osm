@@ -10,27 +10,27 @@
 
 # import or update data
 ## minutely
-*/1 * * * * ttaras /opt/gugik2osm/conf/data_update.sh
+*/1 * * * * ttaras /opt/gugik2osm/git/processing/bash/data_update.sh
 ## daily
-0 1 * * MON-FRI ttaras /opt/gugik2osm/conf/teryt_processing.sh
+0 1 * * MON-FRI ttaras /opt/gugik2osm/git/processing/bash/teryt_processing.sh
 0 0 */1 * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
 ## weekly
-0 10 * * WED ttaras /opt/gugik2osm/conf/bdot10k_dl.sh
-0 20 * * WED ttaras /opt/gugik2osm/conf/bdot10k_bubd_a_parse.sh
-0 20 * * THU ttaras /opt/gugik2osm/conf/bdot10k_bubd_a_export.sh
-0 16 * * FRI ttaras /opt/gugik2osm/conf/prg_processing_v2.sh
+0 10 * * WED ttaras /opt/gugik2osm/git/processing/bash/bdot10k_dl.sh
+0 20 * * WED ttaras /opt/gugik2osm/git/processing/bash/bdot10k_bubd_a_parse.sh
+0 20 * * THU ttaras /opt/gugik2osm/git/processing/bash/bdot10k_bubd_a_export.sh
+0 16 * * FRI ttaras /opt/gugik2osm/git/processing/bash/prg_processing_v2.sh
 
 # export data
-0 20 * * * postgres /opt/gugik2osm/conf/export_osm_stats.sh >> /opt/gugik2osm/log/exports.log 2>&1
-0 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_osm_addresses.sh >> /opt/gugik2osm/log/exports.log 2>&1
-15 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_woj.sh >> /opt/gugik2osm/log/exports.log 2>&1
-16 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_pow.sh >> /opt/gugik2osm/log/exports.log 2>&1
-17 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_gmi.sh >> /opt/gugik2osm/log/exports.log 2>&1
-18 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_msc.sh >> /opt/gugik2osm/log/exports.log 2>&1
-19 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_cz_msc.sh >> /opt/gugik2osm/log/exports.log 2>&1
-20 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_teryt_ul.sh >> /opt/gugik2osm/log/exports.log 2>&1
-25 3 * * MON-FRI postgres /opt/gugik2osm/conf/export_osm_buildings.sh >> /opt/gugik2osm/log/exports.log 2>&1
-0 23 * * SUN postgres /opt/gugik2osm/conf/export_prg_addresses.sh >> /opt/gugik2osm/log/exports.log 2>&1
+0 20 * * * postgres /opt/gugik2osm/git/processing/bash/export_osm_stats.sh >> /opt/gugik2osm/log/exports.log 2>&1
+0 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_osm_addresses.sh >> /opt/gugik2osm/log/exports.log 2>&1
+15 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_teryt_woj.sh >> /opt/gugik2osm/log/exports.log 2>&1
+16 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_teryt_pow.sh >> /opt/gugik2osm/log/exports.log 2>&1
+17 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_teryt_gmi.sh >> /opt/gugik2osm/log/exports.log 2>&1
+18 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_teryt_msc.sh >> /opt/gugik2osm/log/exports.log 2>&1
+19 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_teryt_cz_msc.sh >> /opt/gugik2osm/log/exports.log 2>&1
+20 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_teryt_ul.sh >> /opt/gugik2osm/log/exports.log 2>&1
+25 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_osm_buildings.sh >> /opt/gugik2osm/log/exports.log 2>&1
+0 23 * * SUN postgres /opt/gugik2osm/git/processing/bash/export_prg_addresses.sh >> /opt/gugik2osm/log/exports.log 2>&1
 0 1 * * MON postgres /opt/gugik2osm/conf/export_db_backup.sh >> /opt/gugik2osm/log/exports.log 2>&1
 
 # clean old files
