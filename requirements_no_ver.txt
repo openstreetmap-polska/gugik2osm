@@ -1,0 +1,13 @@
+Flask
+Flask-RESTful
+gevent
+greenlet
+gunicorn
+lxml
+osm2geojson
+psycopg2-binary==2.8.6
+requests
+requests-toolbelt
+Shapely
+zeep==3.4.0
+python-dotenv
