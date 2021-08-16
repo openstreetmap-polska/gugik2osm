@@ -137,3 +137,5 @@ dmypy.json
 /db_scripts/state.txt
 /workspace.code-workspace
 .vscode/settings.json
+
+/venv*
