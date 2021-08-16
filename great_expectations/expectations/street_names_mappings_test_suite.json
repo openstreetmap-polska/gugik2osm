@@ -1,0 +1,53 @@
+{
+  "data_asset_type": null,
+  "expectation_suite_name": "street_names_mappings_test_suite",
+  "expectations": [
+    {
+      "expectation_type": "expect_table_columns_to_match_ordered_list",
+      "kwargs": {
+        "column_list": [
+          "teryt_simc_code",
+          "teryt_ulic_code",
+          "teryt_street_name",
+          "osm_street_name"
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_compound_columns_to_be_unique",
+      "kwargs": {
+        "column_list": [
+          "teryt_simc_code",
+          "teryt_ulic_code"
+        ],
+        "ignore_row_if": "never"
+      },
+      "meta": {}
+    }
+  ],
+  "meta": {
+    "citations": [
+      {
+        "batch_request": {
+          "datasource_name": "mappings",
+          "data_connector_name": "default_inferred_data_connector_name",
+          "data_asset_name": "street_names_mappings.csv",
+          "batch_spec_passthrough": {
+            "reader_options": {
+              "sep": ",",
+              "encoding": "utf-8",
+              "dtype": {
+                  "teryt_simc_code": "object",
+                "teryt_ulic_code": "object",
+                "teryt_street_name": "object",
+                "osm_street_name": "object"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "great_expectations_version": "0.13.28"
+  }
+}
