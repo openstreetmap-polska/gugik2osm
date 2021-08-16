@@ -1,4 +1,4 @@
-from os import environ
+import os
 from os.path import join, dirname, abspath
 import atexit
 from typing import Union, Any, Dict, Optional, Tuple, List, Iterable, Callable
@@ -8,6 +8,7 @@ import psycopg2 as pg
 import psycopg2.extensions
 import psycopg2.errors
 from psycopg2.extras import execute_values, RealDictCursor
+from dotenv import load_dotenv
 
 QueryParametersType = Union[Iterable, Dict[str, Any]]
 QueryOutputType = List[Optional[Tuple[Any]]]
@@ -41,13 +42,24 @@ conn: Union[PGConnection, None] = None
 connection_read_only: Union[PGConnection, None] = None
 
 
+def get_dsn(dotenv_file_path: str = '/opt/gugik2osm/conf/.env', read_only_user: bool = False) -> str:
+    load_dotenv(dotenv_file_path, verbose=True)
+    PGHOSTADDR = os.environ['PGHOSTADDR']
+    PGPORT = os.environ['PGPORT']
+    PGDATABASE = os.environ['PGDATABASE']
+    PGUSER = os.environ['PGUSER'] if not read_only_user else os.environ['PGUSER_RO']
+    PGPASSWORD = os.environ['PGPASSWORD']
+    dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+    return dsn
+
+
 def pgdb() -> PGConnection:
     """Method returns connection to the DB. If there is no connection active it creates one."""
     global conn
     if conn:
         return conn
     else:
-        conn = pg.connect(dsn=environ['dsn'])
+        conn = pg.connect(dsn=get_dsn())
         return conn
 
 
@@ -57,7 +69,7 @@ def pgdb_read_only() -> PGConnection:
     if connection_read_only:
         return connection_read_only
     else:
-        connection_read_only = pg.connect(dsn=environ['dsn'])
+        connection_read_only = pg.connect(dsn=get_dsn())
         connection_read_only.set_session(readonly=True, autocommit=True)
         return connection_read_only
 

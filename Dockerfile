@@ -37,9 +37,6 @@ RUN mkdir /var/www/overpass-layers/
 # create dir for nginx cache
 RUN mkdir /tmp/nginx/
 
-# change placeholder dsn in supervisord config
-RUN sed -i "s/host=localhost port=5432 user=user password=password dbname=db/%(ENV_dsn)s/" /opt/gugik2osm/conf/supervisord.conf
-
 # create a script starting services and keeping container running (bash will wait for commands)
 RUN echo "supervisord && service nginx restart && bash" > ./start.sh
 
