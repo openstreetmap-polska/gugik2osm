@@ -103,6 +103,19 @@ class ConversionToOSMObjectsTests(unittest.TestCase):
         assert len(reconstructed_inner_ring[0]) == 4
         assert inner_ring_coordinates == reconstructed_inner_ring
 
+    def test_creating_relation_from_multipolygon(self):
+        outer_rings_coordinates = [[(0.3, 0.3), (0, 10), (10, 10), (10, 0), (0.3, 0.3)], [(20, 20), (20, 30), (30, 30), (30, 20), (20, 20)]]
+        inner_ring_coordinates = [[(3.3, 3.3), (4, 4), (4, 3), (3.3, 3.3)]]
+        multipolygon = util.InputMultiPolygon(tags={}, outer_rings=outer_rings_coordinates, inner_rings=inner_ring_coordinates)
+        nodes, ways, relations = util.convert_to_osm_style_objects([multipolygon])
+        assert len(nodes) == 11  # two nodes are reused
+        assert len(ways) == 3
+        assert len(relations) == 1
+        relation = relations[0]
+        assert len(relation.members) == 3
+        outer_rings = [member for member in relation.members if member.role == 'outer']
+        assert len(outer_rings) == 2
+
     def test_relation_with_tags(self):
         outer_ring_coordinates = [(0, 0), (0, 10), (10, 10), (10, 0), (0, 0)]
         inner_ring_coordinates = [[(3, 3), (4, 4), (4, 3), (3, 3)]]

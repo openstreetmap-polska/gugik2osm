@@ -50,6 +50,13 @@ class InputPolygon:
 
 
 @dataclass
+class InputMultiPolygon:
+    tags: Dict[str, Any]
+    outer_rings: List[List[Tuple[float, float]]]
+    inner_rings: List[List[Tuple[float, float]]]
+
+
+@dataclass
 class Node:
     id: int
     tags: Dict[str, Any]
@@ -134,6 +141,8 @@ def input_feature_factory(geom_type: str, **kwargs) -> Union[InputPoint, InputLi
         feature = InputLine(tags=kwargs['tags'], list_of_coordinate_pairs=kwargs['list_of_coordinate_pairs'])
     elif geom_type == 'POLYGON':
         feature = InputPolygon(tags=kwargs['tags'], outer_ring=kwargs['outer_ring'], inner_rings=kwargs['inner_rings'])
+    elif geom_type == 'MULTIPOLYGON':
+        feature = InputMultiPolygon(tags=kwargs['tags'], outer_rings=kwargs['outer_rings'], inner_rings=kwargs['inner_rings'])
     else:
         raise AttributeError(f'Geometry type: {geom_type} currently not supported.')
 
@@ -141,7 +150,7 @@ def input_feature_factory(geom_type: str, **kwargs) -> Union[InputPoint, InputLi
 
 
 def convert_to_osm_style_objects(
-        list_of_features: List[Union[InputPoint, InputLine, InputPolygon]]
+        list_of_features: List[Union[InputPoint, InputLine, InputPolygon, InputMultiPolygon]]
 ) -> Tuple[List[Node], List[Way], List[Relation]]:
     """"Method converts input features (points, lines, polygons) into OSM style objects (nodes, ways, relations)."""
 
@@ -171,7 +180,7 @@ def convert_to_osm_style_objects(
         list_of_ways.append(w)
         return w.id
 
-    expected_classes = [InputPoint, InputLine, InputPolygon]
+    expected_classes = [InputPoint, InputLine, InputPolygon, InputMultiPolygon]
     for feature in list_of_features:
         if isinstance(feature, InputPoint):
             lat, lon = trim_coordinates(feature.latitude, feature.longitude)
@@ -201,6 +210,14 @@ def convert_to_osm_style_objects(
                 relation_tags = {**feature.tags, 'type': 'multipolygon'}
                 r = Relation(relation_id_seq.next_value(), relation_tags, members)
                 list_of_relations.append(r)
+
+        elif isinstance(feature, InputMultiPolygon):
+            outer_ids = [create_way(ring, dict()) for ring in feature.outer_rings]
+            inner_ids = [create_way(ring, dict()) for ring in feature.inner_rings]
+            members = [RelationMember('way', i, 'outer') for i in outer_ids] + [RelationMember('way', i, 'inner') for i in inner_ids]
+            relation_tags = {**feature.tags, 'type': 'multipolygon'}
+            r = Relation(relation_id_seq.next_value(), relation_tags, members)
+            list_of_relations.append(r)
 
         else:
             raise ValueError(f'Feature is not one of expected types: {type(feature)}. Expected one of: {expected_classes}')

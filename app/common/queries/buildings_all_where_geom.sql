@@ -23,40 +23,95 @@ data as (
 points as (
     select
         way_id,
+        geom_type,
         ST_DumpPoints(geom_4326) dp
     from data
 ),
-outer_rings as (
+polygon_outer_rings as (
     select
         way_id,
+        geom_type,
         array_agg(ARRAY[st_y((dp).geom), st_x((dp).geom)]) as outer_ring
     from points
     where 1=1
+        and geom_type = 'POLYGON'
         and (dp).path[1] = 1
-    group by way_id
+    group by way_id, geom_type
 ),
-inner_rings_temp as (
+polygon_inner_rings_temp as (
     select
         way_id,
+        geom_type,
         array_agg(ARRAY[st_y((dp).geom), st_x((dp).geom)]) as inner_ring
     from points
     where 1=1
+        and geom_type = 'POLYGON'
         and (dp).path[1] > 1
-    group by way_id, (dp).path[1]
+    group by way_id, geom_type, (dp).path[1]
 ),
-inner_rings_final as (
+polygon_inner_rings_final as (
     select
         way_id,
+        geom_type,
         jsonb_agg(inner_ring) as inner_rings -- inner rings have different dimensionality so we can't use regular postgresql arrays
-    from inner_rings_temp
-    group by way_id
+    from polygon_inner_rings_temp
+    group by way_id, geom_type
+),
+multipolygon_outer_rings_temp as (
+    select
+        way_id,
+        geom_type,
+        array_agg(ARRAY[st_y((dp).geom), st_x((dp).geom)]) as outer_ring
+    from points
+    where 1=1
+        and geom_type = 'MULTIPOLYGON'
+        and (dp).path[2] = 1
+    group by way_id, geom_type, (dp).path[1]
+),
+multipolygon_outer_rings_final as (
+    select
+        way_id,
+        geom_type,
+        array_agg(outer_ring) as outer_rings
+    from multipolygon_outer_rings_temp
+    group by way_id, geom_type
+),
+multipolygon_inner_rings_temp as (
+    select
+        way_id,
+        geom_type,
+        array_agg(ARRAY[st_y((dp).geom), st_x((dp).geom)]) as inner_ring
+    from points
+    where 1=1
+        and geom_type = 'MULTIPOLYGON'
+        and (dp).path[2] > 1
+    group by way_id, geom_type, (dp).path[1], (dp).path[2]
+),
+multipolygon_inner_rings_final as (
+    select
+        way_id,
+        geom_type,
+        jsonb_agg(inner_ring) as inner_rings -- inner rings have different dimensionality so we can't use regular postgresql arrays
+    from multipolygon_inner_rings_temp
+    group by way_id, geom_type
 )
 select
     geom_type,
     tags,
     outer_ring,
+    ARRAY[]::float[] as outer_rings,
     coalesce(inner_rings, '[]'::jsonb) inner_rings
 from data
-inner join outer_rings using(way_id)
-left join inner_rings_final using(way_id)
+inner join polygon_outer_rings using(way_id, geom_type)
+left join polygon_inner_rings_final using(way_id, geom_type)
+union all
+select
+    geom_type,
+    tags,
+    null as outer_ring,
+    outer_rings,
+    coalesce(inner_rings, '[]'::jsonb) inner_rings
+from data
+inner join multipolygon_outer_rings_final using(way_id, geom_type)
+left join multipolygon_inner_rings_final using(way_id, geom_type)
 ;
