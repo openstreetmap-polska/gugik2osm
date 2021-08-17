@@ -38,5 +38,4 @@ jobs:
         python3 -m pytest
     - name: Test street names mappings with great_expectations
       run: |
-        great_expectations --v3-api suite list || (echo "::error::An error occurred while loading your great expectations project. See action logs for more detail." && exit 1);
-        great_expectations --v3-api checkpoint run street_names_mappings_checkpoint
+        python3 ./great_expectations/check_street_names_mappings.py
