@@ -17,6 +17,7 @@ cp -r /opt/gugik2osm/git/web/* /opt/gugik2osm/web/
 cp /opt/gugik2osm/git/conf/*.sh /opt/gugik2osm/conf/
 cp /opt/gugik2osm/git/conf/*.service /opt/gugik2osm/conf/
 chmod 775 /opt/gugik2osm/conf/*.sh
+chmod 775 /opt/gugik2osm/git/processing/bash/*.sh
 sudo cp /opt/gugik2osm/git/conf/cronfile /opt/gugik2osm/conf/
 cp /opt/gugik2osm/git/conf/nginx.conf /opt/gugik2osm/conf/
 
