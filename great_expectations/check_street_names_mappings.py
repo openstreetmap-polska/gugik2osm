@@ -1,4 +1,5 @@
 import sys
+from os.path import abspath, join, dirname
 
 import great_expectations as ge
 from great_expectations.exceptions import ValidationError
@@ -20,9 +21,15 @@ expected_columns = [
     'osm_street_name'
 ]
 
+if len(sys.argv) == 2:
+    file_path = sys.argv[1]
+else:
+    directory = dirname(abspath(__file__))
+    file_path = join(directory, '../processing/sql/data/street_names_mappings.csv')
+
 print('Loading file...')
 df_ge = ge.read_csv(
-    '../processing/sql/data/street_names_mappings.csv',
+    file_path,
     dtype={
         'osm_street_name': 'object',
         'teryt_simc_code': 'object',

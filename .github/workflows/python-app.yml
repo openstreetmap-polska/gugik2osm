@@ -38,4 +38,4 @@ jobs:
         python3 -m pytest
     - name: Test street names mappings with great_expectations
       run: |
-        python3 ./great_expectations/check_street_names_mappings.py
+        python3 ./great_expectations/check_street_names_mappings.py ./processing/sql/data/street_names_mappings.csv
