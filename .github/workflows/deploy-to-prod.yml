@@ -1,0 +1,23 @@
+# deploy to prod
+# for easy changes to python app or data processing this should work
+# if database migrations need to be applied they will need to be done manually
+
+name: deploy-to-prod
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    name: Deploy to prod env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH Key
+        uses: kielabokkie/ssh-key-and-known-hosts-action@v1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-host: ${{ secrets.SSH_HOST_IP }}
+          ssh-port: ${{ secrets.SSH_HOST_PORT }}
+      - name: Run deploy script on host
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_IP }}:${{ secrets.SSH_HOST_PORT }} /opt/gugik2osm/conf/deploy.sh
