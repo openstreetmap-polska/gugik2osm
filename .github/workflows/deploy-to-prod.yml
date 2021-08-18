@@ -20,4 +20,4 @@ jobs:
           ssh-host: ${{ secrets.SSH_HOST_IP }}
           ssh-port: ${{ secrets.SSH_HOST_PORT }}
       - name: Run deploy script on host
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_IP }}:${{ secrets.SSH_HOST_PORT }} /opt/gugik2osm/conf/deploy.sh
+        run: ssh -t -p ${{ secrets.SSH_HOST_PORT }} -l ${{ secrets.SSH_USER }} ${{ secrets.SSH_HOST_IP }} /opt/gugik2osm/conf/deploy.sh
