@@ -128,16 +128,18 @@ def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None)
                 final_status = 'FAIL'
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- error during TERYT update process.')
                 print(e)
-            cur.execute(
-                'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
-                'WHERE process_name = %s',
-                (final_status, 'teryt_update',))
-            conn.commit()
-            print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished TERYT update process.')
+                raise e
+            finally:
+                cur.execute(
+                    'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
+                    'WHERE process_name = %s',
+                    (final_status, 'teryt_update',))
+                conn.commit()
+                print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished TERYT update process.')
+                conn.close()
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- TERYT update in progress already. Not starting another one.')
-    conn.close()
 
 
 if __name__ == '__main__':
