@@ -200,6 +200,7 @@ map.on('draw.delete', openDownloadModalUsingPolygon);
 // location of the click, with description HTML from its properties.
 map.on("click", "prg2load", function (e) {
     console.log(e.features[0].properties);
+    printDebugTileInfo(e.lngLat);
     new mapboxgl.Popup({"maxWidth": "320px"})
     .setLngLat(e.lngLat)
     .setHTML(getAddressPopupHTML(e))
@@ -207,6 +208,7 @@ map.on("click", "prg2load", function (e) {
     e.preventDefault();
 });
 map.on("click", "buildings", function (e) {
+    printDebugTileInfo(e.lngLat);
     new mapboxgl.Popup({"maxWidth": "320px"})
     .setLngLat(e.lngLat)
     .setHTML(getBuildingPopupHTML(e))
@@ -228,6 +230,25 @@ map.on("mouseleave", "prg2load", function () {
 map.on("mouseleave", "buildings", function () {
     map.getCanvas().style.cursor = "";
 });
+
+// https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#ECMAScript_.28JavaScript.2FActionScript.2C_etc..29
+function lon2tile(lon,zoom) {
+    return (Math.floor((lon+180)/360*Math.pow(2,zoom)));
+}
+function lat2tile(lat,zoom)  {
+    return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom)));
+}
+function latlon2tileatz18(lngLat) {
+    const z = 18;
+    const x = lon2tile(lngLat.lng, z);
+    const y = lat2tile(lngLat.lat, z);
+    return {z: z, x: x, y: y}
+}
+function printDebugTileInfo(lngLat) {
+    const zxy = latlon2tileatz18(lngLat);
+    console.log(zxy);
+    console.log('For debugging purposes. Object that you clicked is on tile: ' + zxy.z + '/' + zxy.x + '/' + zxy.y);
+}
 
 // Create a popup, but don't add it to the map yet.
 var updates_popup = new mapboxgl.Popup({
@@ -880,7 +901,7 @@ window.setInterval(
         $("#osm-link")[0].href = osm_link + window.location.hash;
         $("#osm-link-edit-id")[0].href = osm_link + "edit?editor=id" + window.location.hash;
         $("#osm-link-edit-remote")[0].href = osm_link + "edit?editor=remote" + window.location.hash;
-        document.cookie = "map_position=" + JSON.stringify({'zoom': map.getZoom(), 'center': map.getCenter()});
+        document.cookie = "map_position=" + JSON.stringify({'zoom': map.getZoom(), 'center': map.getCenter()}) + ";max-age="+ 60*60*24*365;
     },
     333
 );
