@@ -153,6 +153,12 @@ def load_data_from_files(
     total_num = len(list_of_filepaths)
     for idx, file_path in enumerate(list_of_filepaths):
         print(f'{str(idx+1).zfill(fill)}/{total_num} - Processing file: {file_path} .')
+        if not os.path.isfile(file_path):
+            print('Not a file. Skipping.')
+            continue
+        if os.stat(file_path).st_size == 0:
+            print('File has size of 0 bytes. Skipping.')
+            continue
         psycopg2.extras.execute_values(
             cursor,
             '''INSERT INTO changesets_processing.changesets (

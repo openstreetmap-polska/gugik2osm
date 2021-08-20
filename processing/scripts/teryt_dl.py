@@ -123,10 +123,11 @@ def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None)
                     r = client.service[teryt[key]['api_method']](DataStanu=date)
                     f = BytesIO(b64decode(r['plik_zawartosc']))
                     load2pg(conn, readfile(f), key, prepare_tables=i == 0)
-            except:
+            except Exception as e:
                 conn.rollback()
                 final_status = 'FAIL'
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- error during TERYT update process.')
+                print(e)
             cur.execute(
                 'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
                 'WHERE process_name = %s',
