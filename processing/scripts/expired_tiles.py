@@ -4,7 +4,10 @@ import shutil
 from datetime import datetime, timezone
 from os.path import join
 from os import listdir
+from typing import List
+
 import psycopg2 as pg
+import psycopg2.extras
 
 
 def expired_tiles_from_newest_file(base_dir: str) -> tuple:
@@ -41,23 +44,44 @@ def expired_tiles_from_all_todays_files(base_dir: str) -> list:
     return results
 
 
-def insert_tiles_into_db(file_name: str, tiles: list, dsn: str) -> None:
-    if len(tiles) > 0:
-        with pg.connect(dsn) as conn:
-            cur = conn.cursor()
-            for tile in tiles:
-                z, x, y = str(tile).split('/')
-                z, x, y = int(z), int(x), int(y.rstrip())
-                print(
-                    datetime.now(timezone.utc).astimezone().isoformat(),
-                    '- inserting row with values:',
-                    (file_name, z, x, y)
-                )
-                cur.execute(
-                    'INSERT INTO expired_tiles (file_name, z, x, y) VALUES (%s, %s, %s, %s) ON CONFLICT DO NOTHING;',
-                    (file_name, z, x, y)
-                )
+def insert_tiles_into_db(file_name: str, list_of_tiles: List[str], dsn: str) -> None:
+    query = '''
+        with
+        tiles (file_name, z, x, y) as (
+            VALUES %s
+        ),
+        tiles_to_insert as (
+            select *
+            from tiles
+            where 1=1
+                and ST_Transform(ST_MakeEnvelope(14.0, 49.0, 24.03, 54.86, 4326), 3857) && ST_TileEnvelope(z, x, y)
+        )
+        insert into expired_tiles  
+            select *
+            from tiles_to_insert
+        on conflict do nothing
+    '''
+    if len(list_of_tiles) > 0:
+        print(datetime.now(timezone.utc).astimezone().isoformat(), f'Tiles to insert: {len(list_of_tiles)}.')
+        conn = pg.connect(dsn)
+        try:
+            cursor = conn.cursor()
+            pg.extras.execute_values(cursor, query, _prepare_tuple_to_insert(file_name, list_of_tiles), page_size=1000)
+            for notice in conn.notices:
+                print(str(notice).strip())
             conn.commit()
+        except pg.Error as e:
+            print('Error inserting expired tiles:', e)
+        finally:
+            conn.close()
+        print(datetime.now(timezone.utc).astimezone().isoformat(), 'Done.')
+
+
+def _prepare_tuple_to_insert(file_name: str, list_of_tiles: List[str]):
+    for tile in list_of_tiles:
+        z, x, y = str(tile).split('/')
+        z, x, y = int(z), int(x), int(y.rstrip())
+        yield file_name, z, x, y
 
 
 def remove_folder_older_than_today(base_dir: str) -> None:
@@ -91,17 +115,16 @@ if __name__ == '__main__':
             PGDATABASE = os.environ['PGDATABASE']
             PGUSER = os.environ['PGUSER']
             PGPASSWORD = os.environ['PGPASSWORD']
-            dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+            pg_dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
         else:
-            dsn = args['dsn']
+            pg_dsn = args['dsn']
 
         if args.get('all'):
             for tup in expired_tiles_from_all_todays_files(args['dir'][0]):
-                insert_tiles_into_db(tup[0], tup[1], dsn)
+                insert_tiles_into_db(tup[0], tup[1], pg_dsn)
         else:
             expt = expired_tiles_from_newest_file(args['dir'][0])
             if len(expt) > 0:
-                file_name, tiles = expt
-                insert_tiles_into_db(file_name, tiles, dsn)
+                insert_tiles_into_db(*expt, pg_dsn)
             else:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- no expired tiles.')
