@@ -25,6 +25,7 @@ QUERIES = {
     'cached_mvt': str(open(join(SQL_PATH, 'cached_mvt.sql'), 'r').read()),
     'delta_point_info': str(open(join(SQL_PATH, 'delta_point_info.sql'), 'r').read()),
     'mvt_insert': str(open(join(SQL_PATH, 'mvt_insert.sql'), 'r').read()),
+    'mvt_add_to_reload_queue': str(open(join(SQL_PATH, 'mvt_add_to_reload_queue.sql'), 'r').read()),
     'locations_random': str(open(join(SQL_PATH, 'locations_random.sql'), 'r').read()),
     'locations_most_count': str(open(join(SQL_PATH, 'locations_most_count.sql'), 'r').read()),
     'processes': str(open(join(SQL_PATH, 'processes.sql'), 'r').read()),

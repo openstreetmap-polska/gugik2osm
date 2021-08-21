@@ -248,6 +248,9 @@ function printDebugTileInfo(lngLat) {
     const zxy = latlon2tileatz18(lngLat);
     console.log(zxy);
     console.log('For debugging purposes. Object that you clicked is on tile: ' + zxy.z + '/' + zxy.x + '/' + zxy.y);
+    console.log('Jeżeli obiekt nie zniknął z mapy po odświeżeniu po kilku minutach od dodania możesz spróbować ' +
+                'poprosić o aktualizację tego kafelka jeszcze raz używając linku: ' +
+                'https://budynki.openstreetmap.org.pl/tiles/'+ zxy.z + '/' + zxy.x + '/' + zxy.y + '/reload');
 }
 
 // Create a popup, but don't add it to the map yet.

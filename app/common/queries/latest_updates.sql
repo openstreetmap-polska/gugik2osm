@@ -8,6 +8,7 @@ data as (
   where 1=1
     and created_at is not null
     and created_at >= %(ts)s
+    and file_name not like 'http_request%'
     -- bbox is more or less in Poland
     and ST_Transform(ST_MakeEnvelope(14.0, 49.0, 24.03, 54.86, 4326), 3857) && ST_TileEnvelope(z, x, y)
 

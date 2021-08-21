@@ -96,6 +96,14 @@ class MapboxVectorTile(Resource):
         return response
 
 
+class MarkTileForReload(Resource):
+    """Marks MVT to be reloaded with next data update."""
+
+    def get(self, z: int, x: int, y: int):
+        execute_query(QUERIES['mvt_add_to_reload_queue'], (f'http_request_{datetime.now().isoformat()}', z, x, y))
+        return 'OK', 201
+
+
 class AvailableLayers(Resource):
     """Provides list of ids of available layers with data to download."""
 
