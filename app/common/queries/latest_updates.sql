@@ -7,7 +7,7 @@ osm as (
   from expired_tiles
   where 1=1
     and created_at >= %(ts)s
-    and file_name not like 'http_request%'
+    and file_name not like 'http_request%%'  -- psycopg2 requires 'escaping' of percent sign
 ), prg as (
   select
     'exports' as dataset,
