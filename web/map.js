@@ -348,7 +348,7 @@ window.onload = function() {
     var o = document.getElementById("ortoLayerToggle");
     if (o.checked) {
         map.removeLayer("orto");
-        toggleMapLayer({id: "simple-tiles", toggle: "on"});
+        toggleMapLayer({id: "polish-tiles", toggle: "on"});
         o.removeAttribute("checked");
     }
 
@@ -400,11 +400,11 @@ window.onload = function() {
     // seems like mapbox gl js library still requests tiles even if layer
     // is not visible so we'll just add and remove the layer as needed
     if (o.checked) {
-        map.addLayer(ortoLayerDefinition, "simple-tiles");
-        toggleMapLayer({id: "simple-tiles", toggle: "off"});
+        map.addLayer(ortoLayerDefinition, "polish-tiles");
+        toggleMapLayer({id: "polish-tiles", toggle: "off"});
     } else {
         map.removeLayer(ortoLayerDefinition.id);
-        toggleMapLayer({id: "simple-tiles", toggle: "on"});
+        toggleMapLayer({id: "polish-tiles", toggle: "on"});
     }
   }
 
