@@ -173,7 +173,7 @@ class LatestUpdates(Resource):
     def get(self):
         ts = request.args.get('after')
         if ts is None:
-            ts = datetime.now() - timedelta(minutes=120)
+            ts = datetime.now() - timedelta(minutes=60)
         else:
             try:
                 ts = datetime.fromisoformat(ts)
