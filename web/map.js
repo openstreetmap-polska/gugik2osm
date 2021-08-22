@@ -94,24 +94,377 @@ var map = new mapboxgl.Map({
                     "fill-opacity": 0.7
                 }
             }, {
-                "id": "prg2load_general",
+                "id": "buildings-as-points",
                 "type": "circle",
                 "source": "mvt-tiles",
-                "source-layer": "prg2load_geomonly",
-                "minzoom": 6,
+                "source-layer": "buildings_centroids",
+                "minzoom": 12,
                 "maxzoom": 13,
                 "paint": {
                     "circle-radius": 3,
+                    "circle-color": "red",
+                    "circle-opacity": 0.5
+                },
+            }, {
+                "id": "address-aggregated-count-geom-6",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 6,
+                "maxzoom": 7,
+                "paint": {
+                    "circle-radius": [
+                        "step",
+                        ["get", "no_of_points"],
+                                3,
+                          150,  5,
+                          500,  7,
+                         1000, 9,
+                         3000, 11,
+                         5000, 13,
+                    ],
                     "circle-color": "purple",
                     "circle-stroke-color": "white",
                     "circle-stroke-width": 1,
                     "circle-opacity": 0.5
                 }
             }, {
-                "id": "prg2load",
+                "id": "address-aggregated-count-geom-7",
                 "type": "circle",
                 "source": "mvt-tiles",
-                "source-layer": "prg2load",
+                "source-layer": "aggregated_count",
+                "minzoom": 7,
+                "maxzoom": 8,
+                "paint": {
+                    "circle-radius": [
+                        "step",
+                        ["get", "no_of_points"],
+                                3,
+                          100,  6,
+                          600,  9,
+                         1000, 12,
+                         2000, 15,
+                         3000, 18,
+                         4000, 21,
+                    ],
+                    "circle-color": "purple",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 1,
+                    "circle-opacity": 0.5
+                }
+            }, {
+                "id": "address-aggregated-count-geom-8",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 8,
+                "maxzoom": 9,
+                "paint": {
+                    "circle-radius": [
+                        "step",
+                        ["get", "no_of_points"],
+                               3,
+                          15,  5,
+                          50,  7,
+                         100,  7,
+                         300,  9,
+                         500,  9,
+                         750, 11,
+                        1000, 13,
+                        2000, 15,
+                        3000, 17,
+                        4000, 19,
+                        5000, 21,
+                        6000, 23,
+                        7000, 25,
+                        8000, 27,
+                    ],
+                    "circle-color": "purple",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 1,
+                    "circle-opacity": 0.5
+                }
+            }, {
+                "id": "address-aggregated-count-geom-9",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 9,
+                "maxzoom": 10,
+                "paint": {
+                    "circle-radius": [
+                        "step",
+                        ["get", "no_of_points"],
+                               3,
+                          15,  5,
+                          40,  7,
+                          75,  9,
+                         300, 11,
+                         500, 13,
+                         750, 15,
+                        1000, 17,
+                        2000, 19,
+                        3000, 21,
+                        4000, 23,
+                    ],
+                    "circle-color": "purple",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 1,
+                    "circle-opacity": 0.5
+                }
+            }, {
+                "id": "address-aggregated-count-geom-10",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 10,
+                "maxzoom": 11,
+                "paint": {
+                    "circle-radius": [
+                        "step",
+                        ["get", "no_of_points"],
+                               3,
+                           8,  5,
+                          15,  7,
+                          40,  10,
+                          75,  13,
+                         300, 15,
+                         500, 17,
+                         750, 19,
+                        1000, 21,
+                        2000, 23,
+                        3000, 26,
+                        4000, 29,
+                        5000, 32,
+                        6000, 35,
+                    ],
+                    "circle-color": "purple",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 1,
+                    "circle-opacity": 0.5
+                }
+            }, {
+                "id": "address-aggregated-count-geom-11-12",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 11,
+                "maxzoom": 13,
+                "layout":{
+                    "circle-sort-key": ["get", "no_of_points"],
+                },
+                "paint": {
+                    "circle-radius": [
+                        "step",
+                        ["get", "no_of_points"],
+                               3,
+                           7,  5,
+                          25,  7,
+                          40,  9,
+                          60, 11,
+                         100, 14,
+                         150, 17,
+                         200, 20,
+                         300, 23,
+                    ],
+                    "circle-color": "purple",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 1,
+                    "circle-opacity": 0.5
+                }
+            }, {
+                "id": "address-aggregated-count-label-7",
+                "type": "symbol",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 7,
+                "maxzoom": 8,
+                "layout": {
+                    "text-field": "{no_of_points}",
+                    "text-font": ["Metropolis Regular"],
+                    "text-size": [
+                        "step",
+                        ["get", "no_of_points"],
+                               8,
+                          30, 10,
+                          50, 12,
+                         250, 14,
+                        1000, 16,
+                    ],
+                    "text-variable-anchor": ["center"],
+                    "text-justify": "center",
+                    "symbol-sort-key": ["*", -1, ["get", "no_of_points"]],
+                },
+                "paint": {
+                    "text-halo-color": "white",
+                    "text-halo-width": [
+                        "step",
+                        ["get", "no_of_points"],
+                             2,
+                        500, 3,
+                    ],
+                    "text-halo-blur": 1,
+                },
+                "filter": [">", "no_of_points", 500],
+            }, {
+                "id": "address-aggregated-count-label-8",
+                "type": "symbol",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 8,
+                "maxzoom": 9,
+                "layout": {
+                    "text-field": "{no_of_points}",
+                    "text-font": ["Metropolis Regular"],
+                    "text-size": [
+                        "step",
+                        ["get", "no_of_points"],
+                               8,
+                          30, 10,
+                          50, 12,
+                         250, 14,
+                        1000, 16,
+                    ],
+                    "text-variable-anchor": ["center"],
+                    "text-justify": "center",
+                    "symbol-sort-key": ["*", -1, ["get", "no_of_points"]],
+                },
+                "paint": {
+                    "text-halo-color": "white",
+                    "text-halo-width": [
+                        "step",
+                        ["get", "no_of_points"],
+                             2,
+                        500, 3,
+                    ],
+                    "text-halo-blur": 1,
+                },
+                "filter": [">", "no_of_points", 200],
+            }, {
+                "id": "address-aggregated-count-label-9",
+                "type": "symbol",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 9,
+                "maxzoom": 10,
+                "layout": {
+                    "text-field": "{no_of_points}",
+                    "text-font": ["Metropolis Regular"],
+                    "text-size": [
+                        "step",
+                        ["get", "no_of_points"],
+                               8,
+                          30, 10,
+                          50, 12,
+                         250, 14,
+                        1000, 16,
+                    ],
+                    "text-variable-anchor": ["center"],
+                    "text-justify": "center",
+                    "symbol-sort-key": ["*", -1, ["get", "no_of_points"]],
+                },
+                "paint": {
+                    "text-halo-color": "white",
+                    "text-halo-width": [
+                        "step",
+                        ["get", "no_of_points"],
+                             2,
+                        500, 3,
+                    ],
+                    "text-halo-blur": 1,
+                },
+                "filter": [">", "no_of_points", 99],
+            }, {
+                "id": "address-aggregated-count-label-10",
+                "type": "symbol",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 10,
+                "maxzoom": 11,
+                "layout": {
+                    "text-field": "{no_of_points}",
+                    "text-font": ["Metropolis Regular"],
+                    "text-size": [
+                        "step",
+                        ["get", "no_of_points"],
+                               8,
+                          30, 10,
+                          50, 12,
+                         250, 14,
+                        1000, 16,
+                        2000, 18,
+                        3000, 20,
+                        4000, 22,
+                        5000, 24,
+                    ],
+                    "text-variable-anchor": ["center"],
+                    "text-justify": "center",
+                    "symbol-sort-key": ["*", -1, ["get", "no_of_points"]],
+                },
+                "paint": {
+                    "text-halo-color": "white",
+                    "text-halo-width": [
+                        "step",
+                        ["get", "no_of_points"],
+                             2,
+                        500, 3,
+                    ],
+                    "text-halo-blur": 1,
+                },
+                "filter": [">", "no_of_points", 49],
+            }, {
+                "id": "address-aggregated-count-label-11",
+                "type": "symbol",
+                "source": "mvt-tiles",
+                "source-layer": "aggregated_count",
+                "minzoom": 11,
+                "maxzoom": 12,
+                "layout": {
+                    "text-field": "{no_of_points}",
+                    "text-font": ["Metropolis Regular"],
+                    "text-size": [
+                        "step",
+                        ["get", "no_of_points"],
+                               8,
+                          30, 10,
+                          50, 12,
+                         250, 14,
+                        1000, 16,
+                    ],
+                    "text-variable-anchor": ["center"],
+                    "text-justify": "center",
+                    "symbol-sort-key": ["*", -1, ["get", "no_of_points"]],
+                },
+                "paint": {
+                    "text-halo-color": "white",
+                    "text-halo-width": [
+                        "step",
+                        ["get", "no_of_points"],
+                             2,
+                        500, 3,
+                    ],
+                    "text-halo-blur": 1,
+                },
+                "filter": [">", "no_of_points",  10],
+            }, {
+                "id": "addresses-geomonly",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "addresses_geomonly",
+                "minzoom": 12,
+                "maxzoom": 13,
+                "paint": {
+                    "circle-radius": 3,
+                    "circle-color": "purple",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 0,
+                    "circle-opacity": 0.5
+                }
+            }, {
+                "id": "addresses",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "addresses",
                 "minzoom": 13,
                 "paint": {
                     "circle-radius": 3,
@@ -121,10 +474,10 @@ var map = new mapboxgl.Map({
                     "circle-opacity": 0.9
                 }
             }, {
-                "id": "house-numbers",
+                "id": "addresses-house-numbers",
                 "type": "symbol",
                 "source": "mvt-tiles",
-                "source-layer": "prg2load",
+                "source-layer": "addresses",
                 "minzoom": 15,
                 "layout": {
                     "text-field": "{nr}",
@@ -198,7 +551,7 @@ map.on('draw.delete', openDownloadModalUsingPolygon);
 
 // When a click event occurs on a feature in the states layer, open a popup at the
 // location of the click, with description HTML from its properties.
-map.on("click", "prg2load", function (e) {
+map.on("click", "addresses", function (e) {
     console.log(e.features[0].properties);
     printDebugTileInfo(e.lngLat);
     new mapboxgl.Popup({"maxWidth": "320px"})
@@ -216,7 +569,7 @@ map.on("click", "buildings", function (e) {
 });
 
 // Change the cursor to a pointer when the mouse is over the states layer.
-map.on("mouseenter", "prg2load", function () {
+map.on("mouseenter", "addresses", function () {
     map.getCanvas().style.cursor = "pointer";
 });
 map.on("mouseenter", "buildings", function () {
@@ -224,7 +577,7 @@ map.on("mouseenter", "buildings", function () {
 });
 
 // Change it back to a pointer when it leaves.
-map.on("mouseleave", "prg2load", function () {
+map.on("mouseleave", "addresses", function () {
     map.getCanvas().style.cursor = "";
 });
 map.on("mouseleave", "buildings", function () {
@@ -251,6 +604,14 @@ function printDebugTileInfo(lngLat) {
     console.log('Jeżeli obiekt nie zniknął z mapy po odświeżeniu po kilku minutach od dodania możesz spróbować ' +
                 'poprosić o aktualizację tego kafelka jeszcze raz używając linku: ' +
                 'https://budynki.openstreetmap.org.pl/tiles/'+ zxy.z + '/' + zxy.x + '/' + zxy.y + '/reload');
+}
+
+function getAddressLayers() {
+    return map.getStyle().layers.filter(layer => layer.id.startsWith('address'))
+}
+
+function getBuildingLayers() {
+    return map.getStyle().layers.filter(layer => layer.id.startsWith('building'))
 }
 
 // Create a popup, but don't add it to the map yet.
@@ -340,76 +701,12 @@ window.onload = function() {
     }
   }
 
-  var c = document.getElementById("randomLocationButton");
-  var d = document.getElementById("downloadDataForJOSM");
-
-  c.onclick = async function() {
-    var response = await fetch('/random/');
-    var location = await response.json();
-    console.log(location);
-    //disable orto layer if present
-    var o = document.getElementById("ortoLayerToggle");
-    if (o.checked) {
-        map.removeLayer("orto");
-        toggleMapLayer({id: "polish-tiles", toggle: "on"});
-        o.removeAttribute("checked");
-    }
-
-    map.flyTo({"center": location, "zoom": 14});
-  }
-  d.onclick = openDownloadModalUsingBbox;
-
-  var a = document.getElementById("addressesLayerToggle");
-  var b = document.getElementById("buildingsLayerToggle");
-  var o = document.getElementById("ortoLayerToggle");
-  var u = document.getElementById("updatesLayerToggle");
-
-  a.onclick = function(e) {
-    var toggleValue = a.checked ? 'on' : 'off';
-
-    [
-        {id: 'prg2load', toggle: toggleValue},
-        {id: 'prg2load_general', toggle: toggleValue},
-        {id: 'addresses-highlighted', toggle: toggleValue},
-        {id: 'house-numbers', toggle: toggleValue}
-    ].forEach(toggleMapLayer);
-  }
-  b.onclick = function(e) {
-    var toggleValue = b.checked ? 'on' : 'off';
-
-    [
-        {id: 'buildings', toggle: toggleValue},
-        {id: 'buildings-highlighted', toggle: toggleValue}
-    ].forEach(toggleMapLayer);
-  }
-  u.onclick = function(e) {
-    var toggleValue = u.checked ? 'on' : 'off';
-
-    [
-        {id: 'osm-updates', toggle: toggleValue},
-        {id: 'gugik2osm-exports', toggle: toggleValue}
-    ].forEach(toggleMapLayer);
-  }
-  o.onclick = function(e) {
-    var ortoLayerDefinition = {
-        "id": "orto",
-        "type": "raster",
-        "source": "geoportal",
-        "minzoom": 0,
-        "maxzoom": 21,
-        "visibility": "none"
-    };
-
-    // seems like mapbox gl js library still requests tiles even if layer
-    // is not visible so we'll just add and remove the layer as needed
-    if (o.checked) {
-        map.addLayer(ortoLayerDefinition, "polish-tiles");
-        toggleMapLayer({id: "polish-tiles", toggle: "off"});
-    } else {
-        map.removeLayer(ortoLayerDefinition.id);
-        toggleMapLayer({id: "polish-tiles", toggle: "on"});
-    }
-  }
+  document.getElementById("randomLocationButton").onclick = goToRandomLocation;
+  document.getElementById("downloadDataForJOSM").onclick = openDownloadModalUsingBbox;
+  document.getElementById("addressesLayerToggle").onclick = toggleAddressLayers;
+  document.getElementById("buildingsLayerToggle").onclick = toggleBuildingLayers;
+  document.getElementById("updatesLayerToggle").onclick = toggleUpdatesLayer;
+  document.getElementById("ortoLayerToggle").onclick = toggleOrtoLayer;
 
   // add layers to layer picker in download modal
   fetch(downloadable_layers_url)
@@ -426,6 +723,61 @@ window.onload = function() {
               .on('change', () => {checkLayerPickerAndSetDownloadButtonUrl("layerPicker2", "downloadButton2", "polygon")});
         }
     );
+}
+
+async function goToRandomLocation() {
+    const o = document.getElementById("ortoLayerToggle");
+    var response = await fetch('/random/');
+    var location = await response.json();
+    console.log(location);
+    //disable orto layer if present
+    if (o.checked) {
+        map.removeLayer("orto");
+        toggleMapLayer({id: "polish-tiles", toggle: "on"});
+        o.removeAttribute("checked");
+    }
+
+    map.flyTo({"center": location, "zoom": 14});
+  }
+
+function toggleAddressLayers() {
+    const toggleValue = document.getElementById("addressesLayerToggle").checked ? 'on' : 'off';
+    getAddressLayers().map(l => ({"id": l.id, "toggle": toggleValue})).forEach(toggleMapLayer);
+}
+
+function toggleBuildingLayers() {
+    const toggleValue = document.getElementById("buildingsLayerToggle").checked ? 'on' : 'off';
+    getBuildingLayers().map(l => ({"id": l.id, "toggle": toggleValue})).forEach(toggleMapLayer);
+}
+
+function toggleUpdatesLayer() {
+    const toggleValue = document.getElementById("updatesLayerToggle").checked ? 'on' : 'off';
+
+    [
+        {id: 'osm-updates', toggle: toggleValue},
+        {id: 'gugik2osm-exports', toggle: toggleValue}
+    ].forEach(toggleMapLayer);
+}
+
+function toggleOrtoLayer() {
+    const ortoLayerDefinition = {
+        "id": "orto",
+        "type": "raster",
+        "source": "geoportal",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "visibility": "none"
+    };
+
+    // seems like mapbox gl js library still requests tiles even if layer
+    // is not visible so we'll just add and remove the layer as needed
+    if (document.getElementById("ortoLayerToggle").checked) {
+        map.addLayer(ortoLayerDefinition, "polish-tiles");
+        toggleMapLayer({id: "polish-tiles", toggle: "off"});
+    } else {
+        map.removeLayer(ortoLayerDefinition.id);
+        toggleMapLayer({id: "polish-tiles", toggle: "on"});
+    }
 }
 
 function checkLayerPickerAndSetDownloadButtonUrl(layerPickerId, downloadButtonId, modalType) {

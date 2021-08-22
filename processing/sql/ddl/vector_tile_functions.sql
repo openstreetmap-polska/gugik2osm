@@ -2,11 +2,12 @@ CREATE OR REPLACE FUNCTION mvt_6_7 (IN bbox geometry) RETURNS bytea
 AS  $$
     with
     a as (
-        select distinct teryt_simc
+        select teryt_simc
         from prg.delta d
         left join exclude_prg on d.lokalnyid=exclude_prg.id
         where d.geom && ST_Transform(bbox, 2180)
             and exclude_prg.id is null
+        group by teryt_simc
     ),
     b as (
         select
@@ -21,11 +22,11 @@ AS  $$
         group by woj, pow, gmi, rodz_gmi
     )
     select
-        ST_AsMVT(b.*, 'prg2load_geomonly') mvt
+        ST_AsMVT(b.*, 'aggregated_count') mvt
     from b
 $$ LANGUAGE SQL STABLE ;
 
-CREATE OR REPLACE FUNCTION mvt_8_9 (IN bbox geometry) RETURNS bytea
+CREATE OR REPLACE FUNCTION mvt_8_10 (IN bbox geometry) RETURNS bytea
 AS  $$
     with
     a as (
@@ -47,11 +48,11 @@ AS  $$
         group by teryt_simc
     )
     select
-        ST_AsMVT(b.*, 'prg2load_geomonly') mvt
+        ST_AsMVT(b.*, 'aggregated_count') mvt
     from b
 $$ LANGUAGE SQL STABLE ;
 
-CREATE OR REPLACE FUNCTION mvt_10_11 (IN bbox geometry) RETURNS bytea
+CREATE OR REPLACE FUNCTION mvt_11_11 (IN bbox geometry) RETURNS bytea
 AS  $$
     with
     a as (
@@ -73,7 +74,7 @@ AS  $$
         group by a.teryt_simc, a.teryt_ulic
     )
     select
-        ST_AsMVT(b.*, 'prg2load_geomonly') mvt
+        ST_AsMVT(b.*, 'aggregated_count') mvt
     from b
 $$ LANGUAGE SQL STABLE ;
 
@@ -91,10 +92,23 @@ AS  $$
         where d.geom && ST_Transform(bbox, 2180)
             and exclude_prg.id is null
         limit 500000
+    ),
+    b as (
+        select
+            ST_AsMVTGeom(
+                ST_Transform(ST_Centroid(geom_4326), 3857),
+                bbox::box2d
+            ) geom
+        from bdot_buildings
+        where geom_4326 && ST_Transform(bbox, 4326)
+        limit 500000
     )
-    select
-        ST_AsMVT(a.*, 'prg2load_geomonly') mvt
-    from a
+    select string_agg(layer, null) mvt
+    from (
+        select ST_AsMVT(a.*, 'addresses_geomonly') as layer from a
+        union all
+        select ST_AsMVT(b.*, 'buildings_centroids') as layer from b
+    ) t
 $$ LANGUAGE SQL STABLE ;
 
 CREATE OR REPLACE FUNCTION mvt_13_23 (IN bbox geometry) RETURNS bytea
@@ -141,7 +155,12 @@ AS  $$
             and ex.id is null
         limit 500000
     )
-    select (select ST_AsMVT(a.*, 'prg2load') from a) || (select ST_AsMVT(b.*, 'buildings') from b) mvt
+    select string_agg(layer, null) mvt
+    from (
+        select ST_AsMVT(a.*, 'addresses') as layer from a
+        union all
+        select ST_AsMVT(b.*, 'buildings') as layer from b
+    ) t
 $$ LANGUAGE SQL STABLE ;
 
 CREATE OR REPLACE FUNCTION mvt (IN z int, IN x int, IN y int) RETURNS bytea
@@ -153,10 +172,10 @@ AS $$
 
         if z >= 6 and z <= 7 then
             RETURN mvt_6_7(bbox);
-        elsif z >= 8 and z <= 9 then
-            RETURN mvt_8_9(bbox);
-        elsif z >= 10 and z <= 11 then
-            RETURN mvt_10_11(bbox);
+        elsif z >= 8 and z <= 10 then
+            RETURN mvt_8_10(bbox);
+        elsif z >= 11 and z <= 11 then
+            RETURN mvt_11_11(bbox);
         elsif z >= 12 and z <= 12 then
             RETURN mvt_12_12(bbox);
         elsif z >= 13 and z <= 23 then
