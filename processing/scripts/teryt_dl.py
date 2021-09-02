@@ -167,6 +167,6 @@ if __name__ == '__main__':
         dsn = args['dsn']
         api_user = args['api_user']
         api_password = args['api_password']
-    api_env = args['api_env']
+    api_env = args['api_env'][0]
 
     main(api_env, dsn, api_user, api_password)
