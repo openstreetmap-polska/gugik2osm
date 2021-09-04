@@ -166,10 +166,6 @@ def load_data_from_files(
                 num_changes,
                 osm_user,
                 uid,
-                min_lat,
-                min_lon,
-                max_lat,
-                max_lon,
                 comments_count,
                 tags,
                 bbox
@@ -190,10 +186,6 @@ def load_data_from_files(
                 %(num_changes)s,
                 %(osm_user)s,
                 %(uid)s,
-                %(min_lat)s,
-                %(min_lon)s,
-                %(max_lat)s,
-                %(max_lon)s,
                 %(comments_count)s,
                 %(tags)s,
                 %(bbox)s
