@@ -186,8 +186,14 @@ class LatestUpdates(Resource):
         response_dict = {
             'type': 'FeatureCollection',
             'features': [
-                {'type': 'Feature', 'geometry': bbox, 'properties': {'dataset': dataset, 'created_at': created_at}}
-                for dataset, created_at, bbox in list_of_tuples
+                {
+                    'type': 'Feature',
+                    'geometry': bbox,
+                    'properties': {
+                        'dataset': dataset, 'created_at': created_at, 'changesets': changesets
+                    }
+                }
+                for dataset, created_at, bbox, changesets in list_of_tuples
             ]
         }
 

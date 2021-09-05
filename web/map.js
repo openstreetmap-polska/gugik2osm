@@ -505,12 +505,24 @@ map.on("mouseenter", "addresses", function () {
 map.on("mouseenter", "buildings", function () {
     map.getCanvas().style.cursor = "pointer";
 });
+map.on("mouseenter", "osm-updates", function () {
+    map.getCanvas().style.cursor = "pointer";
+});
+map.on("mouseenter", "gugik2osm-exports", function () {
+    map.getCanvas().style.cursor = "pointer";
+});
 
 // Change it back to a pointer when it leaves.
 map.on("mouseleave", "addresses", function () {
     map.getCanvas().style.cursor = "";
 });
 map.on("mouseleave", "buildings", function () {
+    map.getCanvas().style.cursor = "";
+});
+map.on("mouseleave", "osm-updates", function () {
+    map.getCanvas().style.cursor = "";
+});
+map.on("mouseleave", "gugik2osm-exports", function () {
     map.getCanvas().style.cursor = "";
 });
 
@@ -546,20 +558,28 @@ function getBuildingLayers() {
 
 // Create a popup, but don't add it to the map yet.
 var updates_popup = new mapboxgl.Popup({
-    closeButton: false
+    closeButton: false,
+    maxWidth: "420px"
 });
 
 // Add popup when hovering over updates layer
 function prepareUpdatesLayerPopupHTML(features) {
     var popup_text = "";
-    var last_osm_update_ts = "";
+    var osm_changesets_links = "";
     var last_export_update_ts = "";
     var osm_notification = 0;
     var export_notification = 0;
     features.forEach(function(f){
         if (f.properties.dataset === "osm") {
             osm_notification = 1;
-            if (f.properties.created_at > last_osm_update_ts) last_osm_update_ts = f.properties.created_at;
+            JSON.parse(f.properties.changesets).forEach(c => {
+                const ts = new Date(c.closed_at);
+                const formatted_ts = `${ts.getFullYear()}-${String(ts.getMonth()).padStart(2,'0')}-${String(ts.getDate()).padStart(2,'0')} ${String(ts.getHours()).padStart(2,'0')}:${String(ts.getMinutes()).padStart(2,'0')}`;
+                osm_changesets_links += `<tr><td><a href="https://osm.org/changeset/${c.changeset_id}" `
+                osm_changesets_links += `target="_blank" rel="noopener">${c.changeset_id}</a></td>`;
+                osm_changesets_links += `<td>${formatted_ts}</td>`
+                osm_changesets_links += `<td>${c.osm_user}</td></tr>`
+            });
         }
         if (f.properties.dataset === "exports") {
             export_notification = 1;
@@ -567,10 +587,20 @@ function prepareUpdatesLayerPopupHTML(features) {
         }
     });
     if ((osm_notification + export_notification) > 1) {
-        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! (~" + last_osm_update_ts + ")<br>";
-        popup_text += "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ")";
+        popup_text = "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ") <br>";
+        popup_text += "Ktoś niedawno modyfikował OSM w tym miejscu! <br>";
+        if (osm_changesets_links !== "") {
+            popup_text += "<table><tr><th class=\"px-1\">Changeset</th><th class=\"pl-1 pr-5\">Zamknięty</th><th class=\"px-1\">Użytkownik</th></tr>";
+            popup_text += osm_changesets_links;
+            popup_text += "</table>"
+        }
     } else if (osm_notification > 0) {
-        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! (" + last_osm_update_ts + ")";
+        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! <br>";
+        if (osm_changesets_links !== "") {
+            popup_text += "<table><tr><th>Changeset</th><th>Zamknięty</th><th>Użytkownik</th></tr>";
+            popup_text += osm_changesets_links;
+            popup_text += "</table>"
+        }
     } else if (export_notification > 0) {
         popup_text = "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ")";
     }
@@ -587,6 +617,19 @@ function onUpdatesLayerEnterPopup(e) {
     updates_popup
     .setLngLat(e.lngLat)
     .trackPointer()
+    .setHTML(popup_text)
+    .addTo(map);
+}
+
+function onUpdatesLayerClickPopup(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['osm-updates', 'gugik2osm-exports']
+    });
+
+    popup_text = prepareUpdatesLayerPopupHTML(features);
+
+    new mapboxgl.Popup({maxWidth: "420px"})
+    .setLngLat(e.lngLat)
     .setHTML(popup_text)
     .addTo(map);
 }
@@ -610,11 +653,20 @@ function onUpdatesLayerLeavePopup(e) {
     .addTo(map);
 }
 
-map.on('mouseenter', 'osm-updates', onUpdatesLayerEnterPopup);
-map.on('mouseleave', 'osm-updates', onUpdatesLayerLeavePopup);
+//map.on('mouseenter', 'osm-updates', onUpdatesLayerEnterPopup);
+//map.on('mouseleave', 'osm-updates', onUpdatesLayerLeavePopup);
 
-map.on('mouseenter', 'gugik2osm-exports', onUpdatesLayerEnterPopup);
-map.on('mouseleave', 'gugik2osm-exports', onUpdatesLayerLeavePopup);
+map.on("click", "osm-updates", function (e) {
+    printDebugTileInfo(e.lngLat);
+    onUpdatesLayerClickPopup(e);
+});
+map.on("click", "gugik2osm-exports", function (e) {
+    printDebugTileInfo(e.lngLat);
+    onUpdatesLayerClickPopup(e);
+});
+
+//map.on('mouseenter', 'gugik2osm-exports', onUpdatesLayerEnterPopup);
+//map.on('mouseleave', 'gugik2osm-exports', onUpdatesLayerLeavePopup);
 
 window.onload = function() {
 
