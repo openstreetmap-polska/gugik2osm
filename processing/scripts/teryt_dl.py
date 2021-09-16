@@ -107,39 +107,39 @@ def load2pg(conn, file: StringIO, key: str, prepare_tables: bool = False) -> Non
 def main(env: str, dsn: str, api_user: str, api_password: str, date: str = None) -> None:
     date = date if date else datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d')
     final_status: str = 'SUCCESS'
-    with pg.connect(dsn) as conn:
-        cur = conn.cursor()
-        cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('teryt_update',))
-        teryt_update_in_progress = cur.fetchone()[0]
-        if not teryt_update_in_progress:
-            print(datetime.now(timezone.utc).astimezone().isoformat(), '- starting TERYT update process.')
-            cur.execute('UPDATE process_locks SET (in_progress, start_time, end_time) = (true, \'now\', null) ' +
-                        'WHERE process_name = %s',
-                        ('teryt_update',))
-            conn.commit()
-            try:
-                for i, key in enumerate(teryt.keys()):
-                    client = Client(url[env], wsse=UsernameToken(api_user, api_password))
-                    r = client.service[teryt[key]['api_method']](DataStanu=date)
-                    f = BytesIO(b64decode(r['plik_zawartosc']))
-                    load2pg(conn, readfile(f), key, prepare_tables=i == 0)
-            except Exception as e:
-                conn.rollback()
-                final_status = 'FAIL'
-                print(datetime.now(timezone.utc).astimezone().isoformat(), '- error during TERYT update process.')
-                print(e)
-                raise e
-            finally:
-                cur.execute(
-                    'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
+    conn = pg.connect(dsn)
+    cur = conn.cursor()
+    cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('teryt_update',))
+    teryt_update_in_progress = cur.fetchone()[0]
+    if not teryt_update_in_progress:
+        print(datetime.now(timezone.utc).astimezone().isoformat(), '- starting TERYT update process.')
+        cur.execute('UPDATE process_locks SET (in_progress, start_time, end_time) = (true, \'now\', null) ' +
                     'WHERE process_name = %s',
-                    (final_status, 'teryt_update',))
-                conn.commit()
-                print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished TERYT update process.')
-                conn.close()
-        else:
-            print(datetime.now(timezone.utc).astimezone().isoformat(),
-                  '- TERYT update in progress already. Not starting another one.')
+                    ('teryt_update',))
+        conn.commit()
+        try:
+            for i, key in enumerate(teryt.keys()):
+                client = Client(url[env], wsse=UsernameToken(api_user, api_password))
+                r = client.service[teryt[key]['api_method']](DataStanu=date)
+                f = BytesIO(b64decode(r['plik_zawartosc']))
+                load2pg(conn, readfile(f), key, prepare_tables=i == 0)
+        except Exception as e:
+            conn.rollback()
+            final_status = 'FAIL'
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- error during TERYT update process.')
+            print(e)
+            raise e
+        finally:
+            cur.execute(
+                'UPDATE process_locks SET (in_progress, end_time, last_status) = (false, \'now\', %s) ' +
+                'WHERE process_name = %s',
+                (final_status, 'teryt_update',))
+            conn.commit()
+            print(datetime.now(timezone.utc).astimezone().isoformat(), '- finished TERYT update process.')
+            conn.close()
+    else:
+        print(datetime.now(timezone.utc).astimezone().isoformat(),
+              '- TERYT update in progress already. Not starting another one.')
 
 
 if __name__ == '__main__':
@@ -167,6 +167,6 @@ if __name__ == '__main__':
         dsn = args['dsn']
         api_user = args['api_user']
         api_password = args['api_password']
-    api_env = args['api_env']
+    api_env = args['api_env'][0]
 
     main(api_env, dsn, api_user, api_password)

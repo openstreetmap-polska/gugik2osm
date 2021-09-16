@@ -105,10 +105,6 @@ def parsed_changesets(
             'num_changes': int(el.get('num_changes')) if el.get('num_changes') is not None else None,
             'osm_user': el.get('user'),
             'uid': int(el.get('uid')) if el.get('uid') is not None else None,
-            'min_lat': min_lat,
-            'min_lon': min_lon,
-            'max_lat': max_lat,
-            'max_lon': max_lon,
             'comments_count': int(el.get('comments_count')) if el.get('comments_count') is not None else None,
             'tags': json.dumps({
                 x.get('k'): x.get('v')
@@ -170,10 +166,6 @@ def load_data_from_files(
                 num_changes,
                 osm_user,
                 uid,
-                min_lat,
-                min_lon,
-                max_lat,
-                max_lon,
                 comments_count,
                 tags,
                 bbox
@@ -194,10 +186,6 @@ def load_data_from_files(
                 %(num_changes)s,
                 %(osm_user)s,
                 %(uid)s,
-                %(min_lat)s,
-                %(min_lon)s,
-                %(max_lat)s,
-                %(max_lon)s,
                 %(comments_count)s,
                 %(tags)s,
                 %(bbox)s
@@ -270,7 +258,7 @@ if __name__ == '__main__':
             list_of_filepaths=file_paths,
             allow_no_coordinates=allow_no_coords,
             restrict_to_bbox=data_bbox,
-            commit_every_n_files=10
+            commit_every_n_files=100
         )
     except psycopg2.Error as e:
         print('There was a problem getting list of processed files from DB.')

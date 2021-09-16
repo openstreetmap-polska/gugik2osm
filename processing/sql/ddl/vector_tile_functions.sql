@@ -1,84 +1,83 @@
-CREATE OR REPLACE FUNCTION mvt_6_7 (IN bbox geometry) RETURNS bytea
+CREATE OR REPLACE FUNCTION mvt_clustered (
+    IN bbox geometry,
+    IN max_distance_distance float8,
+    IN min_points_per_cluster integer
+) RETURNS bytea
 AS  $$
     with
     a as (
-        select teryt_simc
+        select
+            d.geom
         from prg.delta d
-        left join exclude_prg on d.lokalnyid=exclude_prg.id
-        where d.geom && ST_Transform(bbox, 2180)
-            and exclude_prg.id is null
-        group by teryt_simc
+        left join exclude_prg e on d.lokalnyid = e.id
+        where 1=1
+            and e.id is null
+            and d.geom && ST_Transform(bbox, 2180)
+        limit 500000
+    ),
+    a2 as (
+        select
+            ST_ClusterDBSCAN(geom, max_distance_distance, min_points_per_cluster) over() clid,
+            ST_Transform(geom, 3857) geom_3857
+        from a
+    ),
+    a3 as (
+        select
+            ST_GeometricMedian(st_union(geom_3857)) centroid,
+            count(*) no_of_points
+        from a2
+        group by clid
+    ),
+    a4 as (
+        select
+           ST_AsMVTGeom(
+             centroid,
+             bbox::box2d
+           ) geom,
+           no_of_points
+        from a3
     ),
     b as (
         select
-            ST_AsMVTGeom(
-                ST_Transform(ST_GeometricMedian(st_union(d.geom)), 3857),
-                bbox::box2d
-            ) geom
-            , count(*) no_of_points
-        from a
-        join prg.delta d using(teryt_simc)
-        join teryt.simc on teryt_simc = sym
-        group by woj, pow, gmi, rodz_gmi
-    )
-    select
-        ST_AsMVT(b.*, 'aggregated_count') mvt
-    from b
-$$ LANGUAGE SQL STABLE ;
-
-CREATE OR REPLACE FUNCTION mvt_8_10 (IN bbox geometry) RETURNS bytea
-AS  $$
-    with
-    a as (
-        select distinct teryt_simc
-        from prg.delta d
-        left join exclude_prg on d.lokalnyid=exclude_prg.id
-        where d.geom && ST_Transform(bbox, 2180)
-            and exclude_prg.id is null
+            ST_Transform(ST_Centroid(geom_4326), 3857) geom_3857
+        from bdot_buildings b
+        left join exclude_bdot_buildings e on b.lokalnyid = e.id
+        where 1=1
+            and e.id is null
+            and geom_4326 && ST_Transform(bbox, 4326)
+        limit 500000
     ),
-    b as (
+    b2 as (
+        select
+            ST_ClusterDBSCAN(geom_3857, max_distance_distance, min_points_per_cluster) over() clid,
+            geom_3857
+        from b
+    ),
+    b3 as (
+        select
+            ST_GeometricMedian(st_union(geom_3857)) centroid,
+            count(*) no_of_points
+        from b2
+        group by clid
+    ),
+    b4 as (
         select
             ST_AsMVTGeom(
-                ST_Transform(ST_GeometricMedian(st_union(d.geom)), 3857),
+                centroid,
                 bbox::box2d
-            ) geom
-            , count(*) no_of_points
-        from a
-        join prg.delta d using(teryt_simc)
-        group by teryt_simc
+            ) geom,
+            no_of_points
+        from b3
     )
-    select
-        ST_AsMVT(b.*, 'aggregated_count') mvt
-    from b
+    select string_agg(layer, null) mvt
+    from (
+        select ST_AsMVT(a4.*, 'addresses_clustered') as layer from a4
+        union all
+        select ST_AsMVT(b4.*, 'buildings_clustered') as layer from b4
+    ) t
 $$ LANGUAGE SQL STABLE ;
 
-CREATE OR REPLACE FUNCTION mvt_11_11 (IN bbox geometry) RETURNS bytea
-AS  $$
-    with
-    a as (
-        select distinct teryt_simc, coalesce(teryt_ulic, '99999') teryt_ulic
-        from prg.delta d
-        left join exclude_prg on d.lokalnyid=exclude_prg.id
-        where d.geom && ST_Transform(bbox, 2180)
-            and exclude_prg.id is null
-    ),
-    b as (
-        select
-            ST_AsMVTGeom(
-                ST_Transform(ST_GeometricMedian(st_union(d.geom)), 3857),
-                bbox::box2d
-            ) geom
-            , count(*) no_of_points
-        from a
-        join prg.delta d on a.teryt_simc=d.teryt_simc and a.teryt_ulic=coalesce(d.teryt_ulic, '99999')
-        group by a.teryt_simc, a.teryt_ulic
-    )
-    select
-        ST_AsMVT(b.*, 'aggregated_count') mvt
-    from b
-$$ LANGUAGE SQL STABLE ;
-
-CREATE OR REPLACE FUNCTION mvt_12_12 (IN bbox geometry) RETURNS bytea
+CREATE OR REPLACE FUNCTION mvt_unclustered_geom_only (IN bbox geometry) RETURNS bytea
 AS  $$
     with
     a as (
@@ -111,7 +110,7 @@ AS  $$
     ) t
 $$ LANGUAGE SQL STABLE ;
 
-CREATE OR REPLACE FUNCTION mvt_13_23 (IN bbox geometry) RETURNS bytea
+CREATE OR REPLACE FUNCTION mvt_unclustered_with_details (IN bbox geometry) RETURNS bytea
 AS  $$
     with a as (
         select
@@ -170,16 +169,22 @@ AS $$
     BEGIN
         bbox := ST_TileEnvelope(z, x, y);
 
-        if z >= 6 and z <= 7 then
-            RETURN mvt_6_7(bbox);
-        elsif z >= 8 and z <= 10 then
-            RETURN mvt_8_10(bbox);
-        elsif z >= 11 and z <= 11 then
-            RETURN mvt_11_11(bbox);
-        elsif z >= 12 and z <= 12 then
-            RETURN mvt_12_12(bbox);
+        if z = 6 then
+            RETURN mvt_clustered(bbox, 1000, 1);
+        elsif z = 7 then
+            RETURN mvt_clustered(bbox, 1000, 1);
+        elsif z = 8 then
+            RETURN mvt_clustered(bbox, 1000, 1);
+        elsif z = 9 then
+            RETURN mvt_clustered(bbox, 500, 1);
+        elsif z = 10 then
+            RETURN mvt_clustered(bbox, 200, 1);
+        elsif z = 11 then
+            RETURN mvt_unclustered_geom_only(bbox);
+        elsif z = 12 then
+            RETURN mvt_unclustered_geom_only(bbox);
         elsif z >= 13 and z <= 23 then
-            RETURN mvt_13_23(bbox);
+            RETURN mvt_unclustered_with_details(bbox);
         else
             raise notice 'Zoom % outside valid range.', z;
             RETURN null;

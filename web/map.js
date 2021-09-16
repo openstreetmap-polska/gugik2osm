@@ -98,158 +98,58 @@ var map = new mapboxgl.Map({
                 "type": "circle",
                 "source": "mvt-tiles",
                 "source-layer": "buildings_centroids",
-                "minzoom": 12,
+                "minzoom": 11,
                 "maxzoom": 13,
                 "paint": {
-                    "circle-radius": 3,
+                    "circle-radius": [
+                        "step",
+                        ["zoom"],
+                            2,
+                        12, 3,
+                    ],
                     "circle-color": "red",
                     "circle-opacity": 0.5
                 },
             }, {
-                "id": "address-aggregated-count-geom-6",
+                "id": "buildings-clustered-6-7",
                 "type": "circle",
                 "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
+                "source-layer": "buildings_clustered",
                 "minzoom": 6,
                 "maxzoom": 7,
+//                "layout":{
+//                    "circle-sort-key": ["get", "no_of_points"],
+//                },
                 "paint": {
                     "circle-radius": [
                         "step",
                         ["get", "no_of_points"],
-                                3,
-                          150,  5,
-                          500,  7,
-                         1000, 9,
-                         3000, 11,
-                         5000, 13,
+                                2,
+                           50,  3,
+                          100,  5,
+                          200,  7,
+                          400,  9,
+                          800, 11,
+                         1600, 13,
+                         3200, 15,
+                         6400, 17,
+                        12800, 19,
+                        25600, 21,
+                        51200, 23,
                     ],
-                    "circle-color": "purple",
+                    "circle-color": "red",
                     "circle-stroke-color": "white",
-                    "circle-stroke-width": 1,
+                    "circle-stroke-width": 0.2,
                     "circle-opacity": 0.5
-                }
+                },
+                "filter": [">", "no_of_points", 4],
             }, {
-                "id": "address-aggregated-count-geom-7",
+                "id": "buildings-clustered-8-10",
                 "type": "circle",
                 "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
+                "source-layer": "buildings_clustered",
                 "minzoom": 7,
-                "maxzoom": 8,
-                "paint": {
-                    "circle-radius": [
-                        "step",
-                        ["get", "no_of_points"],
-                                3,
-                          100,  6,
-                          600,  9,
-                         1000, 12,
-                         2000, 15,
-                         3000, 18,
-                         4000, 21,
-                    ],
-                    "circle-color": "purple",
-                    "circle-stroke-color": "white",
-                    "circle-stroke-width": 1,
-                    "circle-opacity": 0.5
-                }
-            }, {
-                "id": "address-aggregated-count-geom-8",
-                "type": "circle",
-                "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
-                "minzoom": 8,
-                "maxzoom": 9,
-                "paint": {
-                    "circle-radius": [
-                        "step",
-                        ["get", "no_of_points"],
-                               3,
-                          15,  5,
-                          50,  7,
-                         100,  7,
-                         300,  9,
-                         500,  9,
-                         750, 11,
-                        1000, 13,
-                        2000, 15,
-                        3000, 17,
-                        4000, 19,
-                        5000, 21,
-                        6000, 23,
-                        7000, 25,
-                        8000, 27,
-                    ],
-                    "circle-color": "purple",
-                    "circle-stroke-color": "white",
-                    "circle-stroke-width": 1,
-                    "circle-opacity": 0.5
-                }
-            }, {
-                "id": "address-aggregated-count-geom-9",
-                "type": "circle",
-                "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
-                "minzoom": 9,
-                "maxzoom": 10,
-                "paint": {
-                    "circle-radius": [
-                        "step",
-                        ["get", "no_of_points"],
-                               3,
-                          15,  5,
-                          40,  7,
-                          75,  9,
-                         300, 11,
-                         500, 13,
-                         750, 15,
-                        1000, 17,
-                        2000, 19,
-                        3000, 21,
-                        4000, 23,
-                    ],
-                    "circle-color": "purple",
-                    "circle-stroke-color": "white",
-                    "circle-stroke-width": 1,
-                    "circle-opacity": 0.5
-                }
-            }, {
-                "id": "address-aggregated-count-geom-10",
-                "type": "circle",
-                "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
-                "minzoom": 10,
                 "maxzoom": 11,
-                "paint": {
-                    "circle-radius": [
-                        "step",
-                        ["get", "no_of_points"],
-                               3,
-                           8,  5,
-                          15,  7,
-                          40,  10,
-                          75,  13,
-                         300, 15,
-                         500, 17,
-                         750, 19,
-                        1000, 21,
-                        2000, 23,
-                        3000, 26,
-                        4000, 29,
-                        5000, 32,
-                        6000, 35,
-                    ],
-                    "circle-color": "purple",
-                    "circle-stroke-color": "white",
-                    "circle-stroke-width": 1,
-                    "circle-opacity": 0.5
-                }
-            }, {
-                "id": "address-aggregated-count-geom-11-12",
-                "type": "circle",
-                "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
-                "minzoom": 11,
-                "maxzoom": 13,
                 "layout":{
                     "circle-sort-key": ["get", "no_of_points"],
                 },
@@ -257,15 +157,83 @@ var map = new mapboxgl.Map({
                     "circle-radius": [
                         "step",
                         ["get", "no_of_points"],
-                               3,
-                           7,  5,
-                          25,  7,
-                          40,  9,
-                          60, 11,
-                         100, 14,
-                         150, 17,
-                         200, 20,
-                         300, 23,
+                                2,
+                           10,  3,
+                           30,  5,
+                           75,  7,
+                          100,  9,
+                          200, 11,
+                          300, 13,
+                          400, 15,
+                          500, 17,
+                          600, 19,
+                          700, 21,
+                          800, 23,
+                    ],
+                    "circle-color": "red",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 1,
+                    "circle-opacity": 0.5
+                }
+            }, {
+                "id": "addresses-clustered-6",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "addresses_clustered",
+                "minzoom": 6,
+                "maxzoom": 7,
+//                "layout":{
+//                    "circle-sort-key": ["get", "no_of_points"],
+//                },
+                "paint": {
+                    "circle-radius": [
+                        "step",
+                        ["get", "no_of_points"],
+                                2,
+                           50,  3,
+                          100,  5,
+                          200,  7,
+                          400,  9,
+                          800, 11,
+                         1600, 13,
+                         3200, 15,
+                         6400, 17,
+                        12800, 19,
+                        25600, 21,
+                        51200, 23,
+                    ],
+                    "circle-color": "purple",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 0.2,
+                    "circle-opacity": 0.5
+                },
+                "filter": [">", "no_of_points", 4],
+            }, {
+                "id": "addresses-clustered-7-10",
+                "type": "circle",
+                "source": "mvt-tiles",
+                "source-layer": "addresses_clustered",
+                "minzoom": 7,
+                "maxzoom": 11,
+                "layout":{
+                    "circle-sort-key": ["get", "no_of_points"],
+                },
+                "paint": {
+                    "circle-radius": [
+                        "step",
+                        ["get", "no_of_points"],
+                                2,
+                           10,  3,
+                           30,  5,
+                           75,  7,
+                          100,  9,
+                          200, 11,
+                          300, 13,
+                          400, 15,
+                          500, 17,
+                          600, 19,
+                          700, 21,
+                          800, 23,
                     ],
                     "circle-color": "purple",
                     "circle-stroke-color": "white",
@@ -273,10 +241,10 @@ var map = new mapboxgl.Map({
                     "circle-opacity": 0.5
                 }
             }, {
-                "id": "address-aggregated-count-label-7",
+                "id": "addresses-clustered-label-7",
                 "type": "symbol",
                 "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
+                "source-layer": "addresses_clustered",
                 "minzoom": 7,
                 "maxzoom": 8,
                 "layout": {
@@ -285,8 +253,8 @@ var map = new mapboxgl.Map({
                     "text-size": [
                         "step",
                         ["get", "no_of_points"],
-                               8,
-                          30, 10,
+                               6,
+                          30,  9,
                           50, 12,
                          250, 14,
                         1000, 16,
@@ -300,86 +268,18 @@ var map = new mapboxgl.Map({
                     "text-halo-width": [
                         "step",
                         ["get", "no_of_points"],
-                             2,
-                        500, 3,
+                             1,
+                        500, 2,
                     ],
                     "text-halo-blur": 1,
                 },
-                "filter": [">", "no_of_points", 500],
+                "filter": [">", "no_of_points", 1000],
             }, {
-                "id": "address-aggregated-count-label-8",
+                "id": "addresses-clustered-label-8-10",
                 "type": "symbol",
                 "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
+                "source-layer": "addresses_clustered",
                 "minzoom": 8,
-                "maxzoom": 9,
-                "layout": {
-                    "text-field": "{no_of_points}",
-                    "text-font": ["Metropolis Regular"],
-                    "text-size": [
-                        "step",
-                        ["get", "no_of_points"],
-                               8,
-                          30, 10,
-                          50, 12,
-                         250, 14,
-                        1000, 16,
-                    ],
-                    "text-variable-anchor": ["center"],
-                    "text-justify": "center",
-                    "symbol-sort-key": ["*", -1, ["get", "no_of_points"]],
-                },
-                "paint": {
-                    "text-halo-color": "white",
-                    "text-halo-width": [
-                        "step",
-                        ["get", "no_of_points"],
-                             2,
-                        500, 3,
-                    ],
-                    "text-halo-blur": 1,
-                },
-                "filter": [">", "no_of_points", 200],
-            }, {
-                "id": "address-aggregated-count-label-9",
-                "type": "symbol",
-                "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
-                "minzoom": 9,
-                "maxzoom": 10,
-                "layout": {
-                    "text-field": "{no_of_points}",
-                    "text-font": ["Metropolis Regular"],
-                    "text-size": [
-                        "step",
-                        ["get", "no_of_points"],
-                               8,
-                          30, 10,
-                          50, 12,
-                         250, 14,
-                        1000, 16,
-                    ],
-                    "text-variable-anchor": ["center"],
-                    "text-justify": "center",
-                    "symbol-sort-key": ["*", -1, ["get", "no_of_points"]],
-                },
-                "paint": {
-                    "text-halo-color": "white",
-                    "text-halo-width": [
-                        "step",
-                        ["get", "no_of_points"],
-                             2,
-                        500, 3,
-                    ],
-                    "text-halo-blur": 1,
-                },
-                "filter": [">", "no_of_points", 99],
-            }, {
-                "id": "address-aggregated-count-label-10",
-                "type": "symbol",
-                "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
-                "minzoom": 10,
                 "maxzoom": 11,
                 "layout": {
                     "text-field": "{no_of_points}",
@@ -387,15 +287,11 @@ var map = new mapboxgl.Map({
                     "text-size": [
                         "step",
                         ["get", "no_of_points"],
-                               8,
-                          30, 10,
+                               6,
+                          30,  9,
                           50, 12,
                          250, 14,
                         1000, 16,
-                        2000, 18,
-                        3000, 20,
-                        4000, 22,
-                        5000, 24,
                     ],
                     "text-variable-anchor": ["center"],
                     "text-justify": "center",
@@ -406,27 +302,27 @@ var map = new mapboxgl.Map({
                     "text-halo-width": [
                         "step",
                         ["get", "no_of_points"],
-                             2,
-                        500, 3,
+                             1,
+                        500, 2,
                     ],
                     "text-halo-blur": 1,
                 },
-                "filter": [">", "no_of_points", 49],
+                "filter": [">", "no_of_points", 100],
             }, {
-                "id": "address-aggregated-count-label-11",
+                "id": "buildings-clustered-label-7",
                 "type": "symbol",
                 "source": "mvt-tiles",
-                "source-layer": "aggregated_count",
-                "minzoom": 11,
-                "maxzoom": 12,
+                "source-layer": "buildings_clustered",
+                "minzoom": 7,
+                "maxzoom": 8,
                 "layout": {
                     "text-field": "{no_of_points}",
                     "text-font": ["Metropolis Regular"],
                     "text-size": [
                         "step",
                         ["get", "no_of_points"],
-                               8,
-                          30, 10,
+                               6,
+                          30,  9,
                           50, 12,
                          250, 14,
                         1000, 16,
@@ -440,18 +336,52 @@ var map = new mapboxgl.Map({
                     "text-halo-width": [
                         "step",
                         ["get", "no_of_points"],
-                             2,
-                        500, 3,
+                             1,
+                        500, 2,
                     ],
                     "text-halo-blur": 1,
                 },
-                "filter": [">", "no_of_points",  10],
+                "filter": [">", "no_of_points", 1000],
+            }, {
+                "id": "buildings-clustered-label-8-10",
+                "type": "symbol",
+                "source": "mvt-tiles",
+                "source-layer": "buildings_clustered",
+                "minzoom": 8,
+                "maxzoom": 11,
+                "layout": {
+                    "text-field": "{no_of_points}",
+                    "text-font": ["Metropolis Regular"],
+                    "text-size": [
+                        "step",
+                        ["get", "no_of_points"],
+                               6,
+                          30,  9,
+                          50, 12,
+                         250, 14,
+                        1000, 16,
+                    ],
+                    "text-variable-anchor": ["center"],
+                    "text-justify": "center",
+                    "symbol-sort-key": ["*", -1, ["get", "no_of_points"]],
+                },
+                "paint": {
+                    "text-halo-color": "white",
+                    "text-halo-width": [
+                        "step",
+                        ["get", "no_of_points"],
+                             1,
+                        500, 2,
+                    ],
+                    "text-halo-blur": 1,
+                },
+                "filter": [">", "no_of_points", 100],
             }, {
                 "id": "addresses-geomonly",
                 "type": "circle",
                 "source": "mvt-tiles",
                 "source-layer": "addresses_geomonly",
-                "minzoom": 12,
+                "minzoom": 11,
                 "maxzoom": 13,
                 "paint": {
                     "circle-radius": 3,
@@ -575,12 +505,24 @@ map.on("mouseenter", "addresses", function () {
 map.on("mouseenter", "buildings", function () {
     map.getCanvas().style.cursor = "pointer";
 });
+map.on("mouseenter", "osm-updates", function () {
+    map.getCanvas().style.cursor = "pointer";
+});
+map.on("mouseenter", "gugik2osm-exports", function () {
+    map.getCanvas().style.cursor = "pointer";
+});
 
 // Change it back to a pointer when it leaves.
 map.on("mouseleave", "addresses", function () {
     map.getCanvas().style.cursor = "";
 });
 map.on("mouseleave", "buildings", function () {
+    map.getCanvas().style.cursor = "";
+});
+map.on("mouseleave", "osm-updates", function () {
+    map.getCanvas().style.cursor = "";
+});
+map.on("mouseleave", "gugik2osm-exports", function () {
     map.getCanvas().style.cursor = "";
 });
 
@@ -616,20 +558,28 @@ function getBuildingLayers() {
 
 // Create a popup, but don't add it to the map yet.
 var updates_popup = new mapboxgl.Popup({
-    closeButton: false
+    closeButton: false,
+    maxWidth: "420px"
 });
 
 // Add popup when hovering over updates layer
 function prepareUpdatesLayerPopupHTML(features) {
     var popup_text = "";
-    var last_osm_update_ts = "";
+    var osm_changesets_links = "";
     var last_export_update_ts = "";
     var osm_notification = 0;
     var export_notification = 0;
     features.forEach(function(f){
         if (f.properties.dataset === "osm") {
             osm_notification = 1;
-            if (f.properties.created_at > last_osm_update_ts) last_osm_update_ts = f.properties.created_at;
+            JSON.parse(f.properties.changesets).forEach(c => {
+                const ts = new Date(c.closed_at);
+                const formatted_ts = `${ts.getFullYear()}-${String(ts.getMonth()).padStart(2,'0')}-${String(ts.getDate()).padStart(2,'0')} ${String(ts.getHours()).padStart(2,'0')}:${String(ts.getMinutes()).padStart(2,'0')}`;
+                osm_changesets_links += `<tr><td><a href="https://osm.org/changeset/${c.changeset_id}" `
+                osm_changesets_links += `target="_blank" rel="noopener">${c.changeset_id}</a></td>`;
+                osm_changesets_links += `<td>${formatted_ts}</td>`
+                osm_changesets_links += `<td>${c.osm_user}</td></tr>`
+            });
         }
         if (f.properties.dataset === "exports") {
             export_notification = 1;
@@ -637,10 +587,20 @@ function prepareUpdatesLayerPopupHTML(features) {
         }
     });
     if ((osm_notification + export_notification) > 1) {
-        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! (~" + last_osm_update_ts + ")<br>";
-        popup_text += "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ")";
+        popup_text = "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ") <br>";
+        popup_text += "Ktoś niedawno modyfikował OSM w tym miejscu! <br>";
+        if (osm_changesets_links !== "") {
+            popup_text += "<table><tr><th class=\"px-1\">Changeset</th><th class=\"pl-1 pr-5\">Zamknięty</th><th class=\"px-1\">Użytkownik</th></tr>";
+            popup_text += osm_changesets_links;
+            popup_text += "</table>"
+        }
     } else if (osm_notification > 0) {
-        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! (" + last_osm_update_ts + ")";
+        popup_text = "Ktoś niedawno modyfikował OSM w tym miejscu! <br>";
+        if (osm_changesets_links !== "") {
+            popup_text += "<table><tr><th>Changeset</th><th>Zamknięty</th><th>Użytkownik</th></tr>";
+            popup_text += osm_changesets_links;
+            popup_text += "</table>"
+        }
     } else if (export_notification > 0) {
         popup_text = "Ktoś niedawno eksportował paczkę danych w tym miejscu! (" + last_export_update_ts + ")";
     }
@@ -657,6 +617,19 @@ function onUpdatesLayerEnterPopup(e) {
     updates_popup
     .setLngLat(e.lngLat)
     .trackPointer()
+    .setHTML(popup_text)
+    .addTo(map);
+}
+
+function onUpdatesLayerClickPopup(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['osm-updates', 'gugik2osm-exports']
+    });
+
+    popup_text = prepareUpdatesLayerPopupHTML(features);
+
+    new mapboxgl.Popup({maxWidth: "420px"})
+    .setLngLat(e.lngLat)
     .setHTML(popup_text)
     .addTo(map);
 }
@@ -680,11 +653,20 @@ function onUpdatesLayerLeavePopup(e) {
     .addTo(map);
 }
 
-map.on('mouseenter', 'osm-updates', onUpdatesLayerEnterPopup);
-map.on('mouseleave', 'osm-updates', onUpdatesLayerLeavePopup);
+//map.on('mouseenter', 'osm-updates', onUpdatesLayerEnterPopup);
+//map.on('mouseleave', 'osm-updates', onUpdatesLayerLeavePopup);
 
-map.on('mouseenter', 'gugik2osm-exports', onUpdatesLayerEnterPopup);
-map.on('mouseleave', 'gugik2osm-exports', onUpdatesLayerLeavePopup);
+map.on("click", "osm-updates", function (e) {
+    printDebugTileInfo(e.lngLat);
+    onUpdatesLayerClickPopup(e);
+});
+map.on("click", "gugik2osm-exports", function (e) {
+    printDebugTileInfo(e.lngLat);
+    onUpdatesLayerClickPopup(e);
+});
+
+//map.on('mouseenter', 'gugik2osm-exports', onUpdatesLayerEnterPopup);
+//map.on('mouseleave', 'gugik2osm-exports', onUpdatesLayerLeavePopup);
 
 window.onload = function() {
 
