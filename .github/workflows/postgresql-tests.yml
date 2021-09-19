@@ -53,8 +53,6 @@ jobs:
         run: |
           set -e
 
-          psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -f
-
           for infile in ./processing/sql/ddl/*.sql
           do
             echo $infile
