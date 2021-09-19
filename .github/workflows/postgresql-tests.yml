@@ -46,7 +46,7 @@ jobs:
       - name: Run SQL scripts
         env:
           PGDATABASE: gis
-          PGHOSTADDR: postgres
+          PGHOSTADDR: localhost
           PGPORT: "5432"
           PGUSER: postgres
           PGPASSWORD: "1234"
