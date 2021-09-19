@@ -44,8 +44,9 @@ def _read_and_execute(
     if temp_set_workmem is not None:
         cur.execute('show work_mem')
         old_workmem: str = cur.fetchall()[0][0]
-        print('old work_mem:', old_workmem, '- setting to:', temp_set_workmem)
-        cur.execute('set work_mem = %s', (temp_set_workmem,))
+        if old_workmem != temp_set_workmem:
+            print('old work_mem:', old_workmem, '- setting to:', temp_set_workmem)
+            cur.execute('set work_mem = %s', (temp_set_workmem,))
     if query_parameters:
         cur.execute(sql, query_parameters)
     else:
@@ -63,6 +64,7 @@ def _read_and_execute(
 
     for notice in conn.notices:
         print(str(notice).strip())
+    conn.notices = []
 
     ets = time.perf_counter()
     delta = ets - sts
@@ -108,12 +110,13 @@ def execute_scripts_from_files(
     if commit_mode in ('always', 'once'):
         conn.commit()
     if vacuum in ('always', 'once'):
-        with conn.cursor() as cur:
-            print(datetime.now(timezone.utc).astimezone().isoformat(), '- running vacuum analyze...')
-            old_isolation_level = conn.isolation_level
-            conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-            cur.execute('VACUUM ANALYZE;')
-            conn.set_isolation_level(old_isolation_level)
+        cur = conn.cursor()
+        print(datetime.now(timezone.utc).astimezone().isoformat(), '- running vacuum analyze...')
+        old_isolation_level = conn.isolation_level
+        conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        cur.execute('VACUUM ANALYZE;')
+        conn.set_isolation_level(old_isolation_level)
+        cur.close()
     print(datetime.now(timezone.utc).astimezone().isoformat(), '- Done.')
 
 
@@ -136,8 +139,9 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
     dmls = [x for x in sorted(dmls)]
 
     # execute sql scripts
-    with pg.connect(dsn, **keepalive_kwargs) as conn:
-        cur = conn.cursor()
+    conn = pg.connect(dsn, **keepalive_kwargs)
+    cur = conn.cursor()
+    try:
         cur.execute('SELECT in_progress FROM process_locks WHERE process_name = %s', ('prg_full_update',))
         full_update_in_progress = cur.fetchone()[0] if not force else False
         if not full_update_in_progress:
@@ -149,7 +153,7 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
             try:
                 if len(ddls) > 0:
                     execute_scripts_from_files(conn=conn, vacuum='never', paths=ddls, commit_mode='once')
-                execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2048MB', commit_mode='always')
+                execute_scripts_from_files(conn=conn, vacuum='once', paths=dmls, temp_set_workmem='2GB', commit_mode='always')
             except Exception as e:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- failure in full update process.')
                 print(e)
@@ -164,6 +168,8 @@ def full_process(dsn: str, starting: str = '000', force: bool = False) -> None:
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- full update in progress already. Not starting another one.')
+    finally:
+        conn.close()
 
 
 def partial_update(dsn: str) -> None:
@@ -177,8 +183,9 @@ def partial_update(dsn: str) -> None:
     # make sure query files are sorted by names
     sorted_queries_paths = [x for x in sorted(queries_paths)]
 
-    with pg.connect(dsn, **keepalive_kwargs) as conn:
-        cur = conn.cursor()
+    conn = pg.connect(dsn, **keepalive_kwargs)
+    cur = conn.cursor()
+    try:
         cur.execute('SELECT in_progress FROM process_locks WHERE process_name in (%s, %s)',
                     ('prg_full_update', 'prg_partial_update'))
         update_in_progress = [x[0] for x in cur.fetchall()]
@@ -205,6 +212,8 @@ def partial_update(dsn: str) -> None:
         else:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   '- update in progress skipping partial update.')
+    finally:
+        conn.close()
 
 
 if __name__ == '__main__':
