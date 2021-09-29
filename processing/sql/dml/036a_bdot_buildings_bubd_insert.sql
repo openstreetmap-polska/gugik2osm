@@ -26,6 +26,7 @@ insert into bdot_buildings_all_new (
     b.aktualnosc_geometrii,
     b.aktualnosc_atrybutow,
     case
+      when b.status_bdot = 'w budowie' then 'construction'
       when coalesce(building, amenity, man_made, leisure, historic, tourism) is null then 'yes'
       else m.building
     end building,
