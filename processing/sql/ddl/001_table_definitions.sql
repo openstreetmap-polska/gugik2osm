@@ -331,12 +331,12 @@ create table if not exists package_exports (
 create index if not exists idx_package_exports_created_at on package_exports(created_at);
 
 create table if not exists tiles (
-	z integer not null,
-	x integer not null,
-	y integer not null,
-	mvt bytea,
-	bbox geometry(Polygon, 3857),
-	constraint tiles_zxy_pk primary key (z, x, y)
+    z integer not null,
+    x integer not null,
+    y integer not null,
+    mvt bytea,
+    bbox geometry(Polygon, 3857),
+    constraint tiles_zxy_pk primary key (z, x, y)
 );
 create index if not exists idx_tiles_bbox on tiles using gist (bbox);
 
