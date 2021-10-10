@@ -285,4 +285,4 @@ def osm_admin_boundary_where_simc(simc_code: str) -> List[GeoJSONGeometryString]
 def osm_admin_boundary_where_id(relation_id: int) -> List[GeoJSONGeometryString]:
     """Returns GeoJSON string with geometry of administrative boundary in OSM with given OSM relation id."""
 
-    return db.data_from_db(db.QUERIES['admin_geom_where_simc'], {'relation_id': relation_id}, GeoJSONGeometryString)
+    return db.data_from_db(db.QUERIES['admin_geom_where_id'], {'relation_id': relation_id}, GeoJSONGeometryString)
