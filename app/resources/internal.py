@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timedelta
 from random import choice, random
 from typing import Tuple, Dict, List, Union
@@ -9,7 +10,13 @@ from lxml import etree
 
 from common.database import QUERIES, QueryParametersType, data_from_db, execute_query, execute_batch
 import common.util as util
-from common.objects import Layers, LayerDefinition, LayerData
+from common.objects import (
+    Layers,
+    LayerDefinition,
+    LayerData,
+    osm_admin_boundary_where_terc,
+    osm_admin_boundary_where_simc
+)
 
 
 class Processes(Resource):
@@ -133,6 +140,16 @@ class JosmData(Resource):
             geojson_geometry_string = json.dumps(util.bbox_to_geojson_geometry(bbox))
         elif request.args.get('filter_by') == 'geojson_geometry':
             geojson_geometry_string = request.args.get('geom')
+            # todo: validate geometry
+        elif request.args.get('filter_by') == 'osm_boundary':
+            if request.args.get('teryt_terc') and re.match(r'^\d{7}$', request.args.get('teryt_terc')):
+                terc = request.args.get('teryt_terc')
+                geojson_geometry_string = osm_admin_boundary_where_terc(terc_code=terc).value
+            elif request.args.get('teryt_simc') and re.match(r'^\d{7}$', request.args.get('teryt_simc')):
+                simc = request.args.get('teryt_simc')
+                geojson_geometry_string = osm_admin_boundary_where_simc(simc_code=simc).value
+            else:
+                abort(400)
         else:
             abort(400)
 

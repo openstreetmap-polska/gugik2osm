@@ -539,6 +539,9 @@ CREATE TABLE IF NOT EXISTS osm_admin (
     CONSTRAINT osm_admin_pkey PRIMARY KEY (osm_id, id)
 );
 CREATE INDEX IF NOT EXISTS osm_admin_geom ON osm_admin USING gist (geometry);
+-- make sure these are created manually after imposm data import
+create index if not exists osm_admin_terc on osm_admin ((tags -> 'teryt:terc')) where exist(tags, 'teryt:terc');
+create index if not exists osm_admin_simc on osm_admin ((tags -> 'teryt:simc')) where exist(tags, 'teryt:simc');
 
 CREATE TABLE IF NOT EXISTS osm_adr (
     msc text,
