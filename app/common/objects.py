@@ -270,13 +270,19 @@ class GeoJSONGeometryString:
     value: str
 
 
-def osm_admin_boundary_where_terc(terc_code: str) -> GeoJSONGeometryString:
+def osm_admin_boundary_where_terc(terc_code: str) -> List[GeoJSONGeometryString]:
     """Returns GeoJSON string with geometry of administrative boundary in OSM with given TERYT terc code."""
 
-    return db.data_from_db(db.QUERIES['admin_geom_where_terc'], {'terc_code': terc_code}, GeoJSONGeometryString)[0]
+    return db.data_from_db(db.QUERIES['admin_geom_where_terc'], {'terc_code': terc_code}, GeoJSONGeometryString)
 
 
-def osm_admin_boundary_where_simc(simc_code: str) -> GeoJSONGeometryString:
+def osm_admin_boundary_where_simc(simc_code: str) -> List[GeoJSONGeometryString]:
     """Returns GeoJSON string with geometry of administrative boundary in OSM with given TERYT simc code."""
 
-    return db.data_from_db(db.QUERIES['admin_geom_where_simc'], {'simc_code': simc_code}, GeoJSONGeometryString)[0]
+    return db.data_from_db(db.QUERIES['admin_geom_where_simc'], {'simc_code': simc_code}, GeoJSONGeometryString)
+
+
+def osm_admin_boundary_where_id(relation_id: int) -> List[GeoJSONGeometryString]:
+    """Returns GeoJSON string with geometry of administrative boundary in OSM with given OSM relation id."""
+
+    return db.data_from_db(db.QUERIES['admin_geom_where_simc'], {'relation_id': relation_id}, GeoJSONGeometryString)

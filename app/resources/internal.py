@@ -15,7 +15,8 @@ from common.objects import (
     LayerDefinition,
     LayerData,
     osm_admin_boundary_where_terc,
-    osm_admin_boundary_where_simc
+    osm_admin_boundary_where_simc,
+    osm_admin_boundary_where_id,
 )
 
 
@@ -144,10 +145,13 @@ class JosmData(Resource):
         elif request.args.get('filter_by') == 'osm_boundary':
             if request.args.get('teryt_terc') and re.match(r'^\d{7}$', request.args.get('teryt_terc')):
                 terc = request.args.get('teryt_terc')
-                geojson_geometry_string = osm_admin_boundary_where_terc(terc_code=terc).value
+                geojson_geometry_string = osm_admin_boundary_where_terc(terc_code=terc)[0].value
             elif request.args.get('teryt_simc') and re.match(r'^\d{7}$', request.args.get('teryt_simc')):
                 simc = request.args.get('teryt_simc')
-                geojson_geometry_string = osm_admin_boundary_where_simc(simc_code=simc).value
+                geojson_geometry_string = osm_admin_boundary_where_simc(simc_code=simc)[0].value
+            elif request.args.get('relation_id') and re.match(r'^\d+$', request.args.get('relation_id')):
+                relation_id = int(request.args.get('relation_id'))
+                geojson_geometry_string = osm_admin_boundary_where_id(relation_id=relation_id)[0].value
             else:
                 abort(400)
         else:
