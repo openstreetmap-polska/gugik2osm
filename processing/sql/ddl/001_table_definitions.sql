@@ -331,12 +331,12 @@ create table if not exists package_exports (
 create index if not exists idx_package_exports_created_at on package_exports(created_at);
 
 create table if not exists tiles (
-	z integer not null,
-	x integer not null,
-	y integer not null,
-	mvt bytea,
-	bbox geometry(Polygon, 3857),
-	constraint tiles_zxy_pk primary key (z, x, y)
+    z integer not null,
+    x integer not null,
+    y integer not null,
+    mvt bytea,
+    bbox geometry(Polygon, 3857),
+    constraint tiles_zxy_pk primary key (z, x, y)
 );
 create index if not exists idx_tiles_bbox on tiles using gist (bbox);
 
@@ -539,6 +539,9 @@ CREATE TABLE IF NOT EXISTS osm_admin (
     CONSTRAINT osm_admin_pkey PRIMARY KEY (osm_id, id)
 );
 CREATE INDEX IF NOT EXISTS osm_admin_geom ON osm_admin USING gist (geometry);
+-- make sure these are created manually after imposm data import
+create index if not exists osm_admin_terc on osm_admin ((tags -> 'teryt:terc')) where exist(tags, 'teryt:terc');
+create index if not exists osm_admin_simc on osm_admin ((tags -> 'teryt:simc')) where exist(tags, 'teryt:simc');
 
 CREATE TABLE IF NOT EXISTS osm_adr (
     msc text,

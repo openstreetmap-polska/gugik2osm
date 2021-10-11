@@ -38,6 +38,8 @@ QUERIES = {
     'sc_proposed_addresses_in_bbox': str(open(join(SQL_PATH, 'sc_proposed_addresses_in_bbox.sql'), 'r').read()),
     'sc_proposed_buildings_in_bbox': str(open(join(SQL_PATH, 'sc_proposed_buildings_in_bbox.sql'), 'r').read()),
     'streets_all_where_geom': str(open(join(SQL_PATH, 'streets_all_where_geom.sql'), 'r').read()),
+    'admin_geom_where_simc': str(open(join(SQL_PATH, 'admin_geom_where_simc.sql'), 'r').read()),
+    'admin_geom_where_terc': str(open(join(SQL_PATH, 'admin_geom_where_terc.sql'), 'r').read()),
 }
 conn: Union[PGConnection, None] = None
 connection_read_only: Union[PGConnection, None] = None

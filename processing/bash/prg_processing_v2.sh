@@ -59,10 +59,6 @@ echo "Exporting unmatched streets" >> /opt/gugik2osm/log/prg_processing.log
 psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -f /opt/gugik2osm/git/processing/sql/export/osm_street_mapping.sql > /opt/gugik2osm/temp/export/unmatched_osm_street_mappings.csv
 mv /opt/gugik2osm/temp/export/unmatched_osm_street_mappings.csv /var/www/data/unmatched_osm_street_mappings.csv
 date >> /opt/gugik2osm/log/prg_processing.log
-echo "Caching low zoom tiles" >> /opt/gugik2osm/log/prg_processing.log
-bash /opt/gugik2osm/conf/cache_low_zoom_tiles.sh
-echo "Finished caching low zoom tiles" >> /opt/gugik2osm/log/prg_processing.log
-date >> /opt/gugik2osm/log/prg_processing.log
 echo "Cleaning temp csv files..." >> /opt/gugik2osm/log/prg_processing.log
 rm /opt/gugik2osm/tempprg2/*.csv
 date >> /opt/gugik2osm/log/prg_processing.log

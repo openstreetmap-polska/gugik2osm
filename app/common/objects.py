@@ -263,3 +263,20 @@ def report_buildings(ids: List[str]) -> None:
     """
 
     db.execute_batch(db.QUERIES['insert_to_exclude_bdot_buildings'], [(x,) for x in ids])
+
+
+@dataclass
+class GeoJSONGeometryString:
+    value: str
+
+
+def osm_admin_boundary_where_terc(terc_code: str) -> GeoJSONGeometryString:
+    """Returns GeoJSON string with geometry of administrative boundary in OSM with given TERYT terc code."""
+
+    return db.data_from_db(db.QUERIES['admin_geom_where_terc'], {'terc_code': terc_code}, GeoJSONGeometryString)[0]
+
+
+def osm_admin_boundary_where_simc(simc_code: str) -> GeoJSONGeometryString:
+    """Returns GeoJSON string with geometry of administrative boundary in OSM with given TERYT simc code."""
+
+    return db.data_from_db(db.QUERIES['admin_geom_where_simc'], {'simc_code': simc_code}, GeoJSONGeometryString)[0]
