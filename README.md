@@ -214,3 +214,6 @@ var downloadable_layers_url = "http://localhost:45000/layers/";
 Wszystkie zmiany dla plików HTML/JS i Python powinny być automatycznie widoczne po odświeżeniu strony (rzeczy typu pliki js mogą wymagać odświeżenia wraz z usunięciem cache: ctrl+f5).
 
 W przeglądarce przejdź do http://localhost:45000 (lub pod innym portem zależnie od tego, co zostało ustawione w komendzie docker run).
+
+#### Uruchamianie testów jednostkowych i integracyjnych
+Jeżeli pracujemy w systemie Windows, to możemy użyć pomocniczego skryptu PowerShell: run_local_tests_windows.ps1.

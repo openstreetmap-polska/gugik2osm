@@ -1,0 +1,78 @@
+name: tests-postgresql
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Label of the container job
+  test:
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    # Docker Hub image that `test` executes in
+#    container: node:10.18-jessie
+
+    # Service containers to run with `test`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: kartoza/postgis
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASS: "1234"
+          POSTGRES_DBNAME: gis
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Install PSQL client
+        run: |
+            sudo apt-get update
+            sudo apt-get install --yes --no-install-recommends postgresql-client
+      - name: Run SQL scripts
+        env:
+          PGDATABASE: gis
+          PGHOSTADDR: "127.0.0.1"
+          PGPORT: "5432"
+          PGUSER: postgres
+          PGPASSWORD: "1234"
+        run: |
+          set -e
+
+          for infile in ./processing/sql/ddl/*.sql
+          do
+            echo $infile
+            psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -f $infile
+          done
+
+          for infile in ./processing/sql/dml/*.sql
+          do
+            echo $infile
+            psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -f $infile
+          done
+
+          for infile in ./processing/sql/partial_update/*.sql
+          do
+            echo $infile
+            psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -f $infile
+          done
+
+          for infile in ./processing/sql/export/*.sql
+          do
+            echo $infile
+            psql -h $PGHOSTADDR -p $PGPORT -d $PGDATABASE -U $PGUSER -f $infile
+          done
