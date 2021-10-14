@@ -1,5 +1,6 @@
 import unittest
 
+import lxml.etree
 from lxml import etree
 
 from app.common import util
@@ -215,10 +216,32 @@ class ConversionToXMLTests(unittest.TestCase):
         assert xml2[1].get('v') == 'value2'
 
     def test_with_two_intersecting_nodes(self):
-        pass
+        point1 = util.InputPoint(tags={}, latitude=0.1, longitude=1.3)
+        point2 = util.InputPoint(tags={'key1': 'value1', 'key2': 'value2'}, latitude=0.1, longitude=1.3)
+        nodes, ways, relations = util.convert_to_osm_style_objects([point1, point2])
+        node = nodes[0]
+        xml = node.as_xml_element()
+        tags = {child.get('k'): child.get('v') for child in xml}
+        assert xml.tag == 'node'
+        assert len(list(xml)) == 2
+        assert xml.get('lat') == '0.1'
+        assert xml.get('lon') == '1.3'
+        assert xml.get('id') == '-1'
+        assert tags['key1'] == 'value1'
+        assert tags['key2'] == 'value2'
 
     def test_with_one_line(self):
-        pass
+        line_coordinates = [(0, 0), (1, 1), (2, 2)]
+        line = util.InputLine(tags={'test': 'test'}, list_of_coordinate_pairs=line_coordinates)
+        nodes, ways, relations = util.convert_to_osm_style_objects([line])
+        way = ways[0]
+        xml = way.as_xml_element()
+        tags = {child.get('k'): child.get('v') for child in xml if child.tag == 'tag'}
+        nodes_references = [child for child in xml if child.tag == 'nd']
+        assert xml.tag == 'way'
+        assert len(list(xml)) == 4
+        assert len(nodes_references) == 3
+        assert tags['test'] == 'test'
 
     def test_with_two_lines(self):
         pass

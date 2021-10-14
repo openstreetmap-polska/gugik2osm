@@ -154,9 +154,7 @@ def convert_to_osm_style_objects(
 ) -> Tuple[List[Node], List[Way], List[Relation]]:
     """"Method converts input features (points, lines, polygons) into OSM style objects (nodes, ways, relations)."""
 
-    node_id_seq = DecreasingSequence()
-    way_id_seq = DecreasingSequence()
-    relation_id_seq = DecreasingSequence()
+    id_generator = DecreasingSequence()
 
     list_of_nodes: List[Node] = []
     node_dict: Dict[Tuple[float, float], Node] = {}
@@ -170,13 +168,13 @@ def convert_to_osm_style_objects(
             if node_dict.get(lat_lon_tuple):
                 node_id = node_dict[lat_lon_tuple].id
             else:
-                new_node = Node(node_id_seq.next_value(), {}, *lat_lon_tuple)
+                new_node = Node(id_generator.next_value(), {}, *lat_lon_tuple)
                 node_id = new_node.id
                 node_dict[lat_lon_tuple] = new_node
                 list_of_nodes.append(new_node)
             node_ids.append(node_id)
 
-        w = Way(way_id_seq.next_value(), tags, node_ids)
+        w = Way(id_generator.next_value(), tags, node_ids)
         list_of_ways.append(w)
         return w.id
 
@@ -191,7 +189,7 @@ def convert_to_osm_style_objects(
                 logging.warning(f'Node with coordinates {lat}, {lon} already exists in dictionary. Merging tags.')
                 continue
 
-            n = Node(node_id_seq.next_value(), feature.tags, lat, lon)
+            n = Node(id_generator.next_value(), feature.tags, lat, lon)
             node_dict[(lat, lon)] = n
             list_of_nodes.append(n)
 
@@ -208,7 +206,7 @@ def convert_to_osm_style_objects(
                 inner_ids = [create_way(ring, dict()) for ring in feature.inner_rings]
                 members = [RelationMember('way', outer_id, 'outer')] + [RelationMember('way', i, 'inner') for i in inner_ids]
                 relation_tags = {**feature.tags, 'type': 'multipolygon'}
-                r = Relation(relation_id_seq.next_value(), relation_tags, members)
+                r = Relation(id_generator.next_value(), relation_tags, members)
                 list_of_relations.append(r)
 
         elif isinstance(feature, InputMultiPolygon):
@@ -216,7 +214,7 @@ def convert_to_osm_style_objects(
             inner_ids = [create_way(ring, dict()) for ring in feature.inner_rings]
             members = [RelationMember('way', i, 'outer') for i in outer_ids] + [RelationMember('way', i, 'inner') for i in inner_ids]
             relation_tags = {**feature.tags, 'type': 'multipolygon'}
-            r = Relation(relation_id_seq.next_value(), relation_tags, members)
+            r = Relation(id_generator.next_value(), relation_tags, members)
             list_of_relations.append(r)
 
         else:
