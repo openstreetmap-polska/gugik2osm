@@ -186,7 +186,15 @@ begin
                     case when kod_simc ~ '^\d{7}$' then kod_simc else null end simc,
                     geom
                 from (
-                    select miejscowosc, cz_msc, ulica, type as nr_porzadkowy, kod_pna, kod_ulic, kod_simc, ST_Centroid(geometry) geom
+                    select
+                        miejscowosc,
+                        cz_msc,
+                        ulica,
+                        ltrim(rtrim(replace(replace(upper(trim(type)), '\', '/'), ' ', ''), './'), '.0/') as nr_porzadkowy,
+                        kod_pna,
+                        kod_ulic,
+                        kod_simc,
+                        ST_Centroid(geometry) geom
                     from osm_addr_polygon
                     join exp_bounds
                     on geometry && ST_Transform(exp_bounds.geom, 4326) and ST_Centroid(geometry) && ST_Transform(exp_bounds.geom, 4326)
@@ -196,7 +204,15 @@ begin
 
                     union all
 
-                    select miejscowosc, cz_msc, ulica, type as nr_porzadkowy, kod_pna, kod_ulic, kod_simc, geometry
+                    select
+                        miejscowosc,
+                        cz_msc,
+                        ulica,
+                        ltrim(rtrim(replace(replace(upper(trim(type)), '\', '/'), ' ', ''), './'), '.0/') as nr_porzadkowy,
+                        kod_pna,
+                        kod_ulic,
+                        kod_simc,
+                        geometry
                     from osm_addr_point
                     join exp_bounds on geometry && ST_Transform(exp_bounds.geom, 4326)
                     where
