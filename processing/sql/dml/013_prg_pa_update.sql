@@ -29,9 +29,9 @@ from
 where 1=1
     and pa.teryt_simc = simc_mapping.sym
     and simc_mapping.sym_czesc = u1.sym
-	and lower(replace(pa.ul, ' ', '')) = lower(replace(u1.nazwa_1, ' ', '')) 
-	and u1.cecha = cm.cecha
-	and teryt_ulica is null
+    and lower(replace(pa.ul, ' ', '')) = lower(replace(u1.nazwa_1, ' ', '')) 
+    and u1.cecha = cm.cecha
+    and teryt_ulica is null
 ;
 
 analyze prg.pa;
