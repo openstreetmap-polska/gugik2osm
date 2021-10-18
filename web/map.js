@@ -32,22 +32,21 @@ var map = new mapboxgl.Map({
         "version": 8,
         "sources": {
             "raster-tiles": {
-            "type": "raster",
-            "tiles": [
-                "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            ],
-            "tileSize": 256,
-            "attribution": "© <a href=https://www.openstreetmap.org/copyright>OpenStreetMap</a> contributors"
+                "type": "raster",
+                "tiles": [
+                    "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                ],
+                "tileSize": 256,
             },
             "pol-raster-tiles": {
-            "type": "raster",
-            "tiles": [
-                "https://tiles.osmapa.pl/hot/{z}/{x}/{y}.png"
-            ],
-            "tileSize": 256,
-            "attribution": "© <a href=https://www.openstreetmap.org/copyright>OpenStreetMap</a> contributors"
+                "type": "raster",
+                "tiles": [
+                    "https://tiles.osmapa.pl/hot/{z}/{x}/{y}.png"
+                ],
+                "tileSize": 256,
+                "attribution": "dane <a class=\"text-primary\" href=https://www.openstreetmap.org/copyright>OpenStreetMap ©</a>; mapa <a class=\"text-primary\" href=https://tiles.osmapa.pl>tiles.osmapa.pl</a>"
             },
             "geoportal": {
                 "type": "raster",

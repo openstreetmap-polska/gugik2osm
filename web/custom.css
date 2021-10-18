@@ -121,3 +121,7 @@ input:checked + .slider:before {
 .custom-switch.custom-switch-md .custom-control-input:checked ~ .custom-control-label::after {
   transform: translateX(calc(1.5rem - 0.25rem));
 }
+
+.mapboxgl-ctrl-bottom-right {
+  position: fixed !important
+}
