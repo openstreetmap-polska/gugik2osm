@@ -27,4 +27,4 @@ class Process:
 
 
 def status() -> List[Process]:
-    return db.data_from_db(db.QUERIES['processes'], row_as=Process)
+    return db.data_from_db(db.QUERIES['processes'], row_as=Process, bypass_lock=True)

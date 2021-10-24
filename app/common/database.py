@@ -115,12 +115,14 @@ def abort_if_db_locked() -> None:
 def data_from_db(
     query: str,
     parameters: QueryParametersType = None,
-    row_as: Union[tuple, dict, Callable] = tuple
+    row_as: Union[tuple, dict, Callable] = tuple,
+    bypass_lock: bool = False
 ) -> List[Union[tuple, dict, Any]]:
     """Method executes SQL query and returns data. Data can be mapped to class if you provide it in row_as parameter.
     Provides error handling. In case of exception it rolls back transaction and closes the connection."""
 
-    abort_if_db_locked()
+    if not bypass_lock:
+        abort_if_db_locked()
 
     global connection_read_only
     connection = pgdb_read_only()
@@ -153,11 +155,12 @@ def data_from_db(
         return results
 
 
-def execute_query(query: str, parameters: QueryParametersType = None) -> List[tuple]:
+def execute_query(query: str, parameters: QueryParametersType = None, bypass_lock: bool = False) -> List[tuple]:
     """Method executes SQL query and commits transaction. Provides error handling.
     In case of exception it rolls back transaction and closes the connection."""
 
-    abort_if_db_locked()
+    if not bypass_lock:
+        abort_if_db_locked()
 
     global conn
     connection = pgdb()
@@ -187,7 +190,7 @@ def execute_query(query: str, parameters: QueryParametersType = None) -> List[tu
         return results
 
 
-def execute_batch(query: str, parameters: List[QueryParametersType]) -> List[tuple]:
+def execute_batch(query: str, parameters: List[QueryParametersType], bypass_lock: bool = False) -> List[tuple]:
     """Execute query using VALUES with a sequence of parameters.
     In simpler terms it allows e.g. batch inserts such as:
         insert into table values (1, 'a'), (2, 'b');
@@ -197,7 +200,8 @@ def execute_batch(query: str, parameters: List[QueryParametersType]) -> List[tup
     This can provide significant performance boost.
     """
 
-    abort_if_db_locked()
+    if not bypass_lock:
+        abort_if_db_locked()
 
     global conn
     connection = pgdb()
