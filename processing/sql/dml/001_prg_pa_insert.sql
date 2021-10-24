@@ -35,7 +35,7 @@ INSERT INTO prg.pa
        pa.numerporzadkowy,
        ltrim(rtrim(replace(replace(upper(trim(pa.numerporzadkowy)), '\', '/'), ' ', ''), './'), '.0/') nr,
        case when pa.kodpocztowy = '00-000' then null else pa.kodpocztowy end                 pna,
-       ST_FlipCoordinates(ST_GeomFromGML((xpath('/geometry/*', pa.geometry::xml))[1]::text)) geom
+       ST_GeomFromGML((xpath('/geometry/*', pa.geometry::xml))[1]::text) geom
     FROM prg.punkty_adresowe pa
     LEFT JOIN prg.jednostki_administracyjne ja2 on pa.komponent_01 = ja2.gmlid
     LEFT JOIN prg.jednostki_administracyjne ja3 on pa.komponent_02 = ja3.gmlid
