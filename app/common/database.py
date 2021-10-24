@@ -47,18 +47,22 @@ connection_read_only: Union[PGConnection, None] = None
 
 
 def get_dsn(dotenv_file_path: str = '/opt/gugik2osm/conf/.env', read_only_user: bool = False) -> str:
+    """Method reads connection parameters from .env file and returns dsn (connection string) for psycopg2."""
+
     load_dotenv(dotenv_file_path, verbose=True)
     PGHOSTADDR = os.environ['PGHOSTADDR']
     PGPORT = os.environ['PGPORT']
     PGDATABASE = os.environ['PGDATABASE']
     PGUSER = os.environ['PGUSER'] if not read_only_user else os.environ['PGUSER_RO']
-    PGPASSWORD = os.environ['PGPASSWORD']
+    PGPASSWORD = os.environ['PGPASSWORD'] if not read_only_user else os.environ['PGPASSWORD_RO']
     dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+
     return dsn
 
 
 def pgdb() -> PGConnection:
     """Method returns connection to the DB. If there is no connection active it creates one."""
+
     global conn
     if conn:
         return conn
@@ -69,11 +73,12 @@ def pgdb() -> PGConnection:
 
 def pgdb_read_only() -> PGConnection:
     """Method returns connection to the DB. If there is no connection active it creates one."""
+
     global connection_read_only
     if connection_read_only:
         return connection_read_only
     else:
-        connection_read_only = pg.connect(dsn=get_dsn())
+        connection_read_only = pg.connect(dsn=get_dsn(read_only_user=True))
         connection_read_only.set_session(readonly=True, autocommit=True)
         return connection_read_only
 
@@ -81,6 +86,7 @@ def pgdb_read_only() -> PGConnection:
 @atexit.register
 def close_db_connection():
     """Close the database connection. Method executed upon exit."""
+
     global conn
     if conn:
         conn.close()

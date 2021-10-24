@@ -1,40 +1,21 @@
 import re
 from datetime import datetime, timedelta
-from random import choice, random
-from typing import Tuple, Dict, List, Union
 import json
 
 from flask import request, Response
 from flask_restful import Resource, abort
 from lxml import etree
 
-from common.database import QUERIES, QueryParametersType, data_from_db, execute_query, execute_batch
-import common.util as util
-from common.objects import (
-    Layers,
-    LayerDefinition,
-    LayerData,
-    osm_admin_boundary_where_terc,
-    osm_admin_boundary_where_simc,
-    osm_admin_boundary_where_id,
-)
+from common import util
+from common import objects
 
 
 class Processes(Resource):
     """Lists processes (data update)."""
 
     def get(self):
-        list_of_processes = data_from_db(QUERIES['processes'])
-        result = {
-            'processes': [
-                {
-                    'name': x[0], 'in_progress': x[1], 'start_time': x[2], 'end_time': x[3],
-                    'no_of_tiles_to_process': x[4], 'abbr_name': x[5], 'last_status': x[6]
-                }
-                for x in list_of_processes
-            ]
-        }
-        return result
+        list_of_processes = objects.processes.status()
+        return {'processes': [p.as_dict() for p in list_of_processes]}
 
 
 class Exclude(Resource):
@@ -48,21 +29,21 @@ class Exclude(Resource):
 
         if geojson_geometry_string:
             if exclude_prg_addresses:
-                execute_query(QUERIES['insert_to_exclude_prg_addresses_where_geom'], {'geojson_geometry': geojson_geometry_string})
+                objects.addresses.report_addresses_in_polygon(geojson_geometry_string)
             if exclude_bdot_buildings:
-                execute_query(QUERIES['insert_to_exclude_bdot_buildings_where_geom'], {'geojson_geometry': geojson_geometry_string})
+                objects.buildings.report_buildings_in_polygon(geojson_geometry_string)
             return {}, 201
         else:
             # keep old path for compatibility
             prg_counter, lod1_counter = 0, 0
             if r.get('prg_ids'):
-                prg_ids = [(x,) for x in r['prg_ids']]
-                execute_batch(QUERIES['insert_to_exclude_prg'], prg_ids)
+                prg_ids = r['prg_ids']
+                objects.addresses.report_addresses(prg_ids)
                 prg_counter = len(prg_ids)
             if r.get('bdot_ids'):
-                lod1_ids = [(x,) for x in r['bdot_ids']]
-                execute_batch(QUERIES['insert_to_exclude_bdot_buildings'], lod1_ids)
-                lod1_counter = len(lod1_ids)
+                bdot_ids = r['bdot_ids']
+                objects.buildings.report_buildings(bdot_ids)
+                lod1_counter = len(bdot_ids)
 
             return {'prg_ids_inserted': prg_counter, 'bdot_ids_inserted': lod1_counter}, 201
 
@@ -71,13 +52,8 @@ class RandomLocation(Resource):
     """Returns random location (lon, lat) while prioritizing (95% chance) areas with a lot of objects to export."""
 
     def get(self):
-        if random() > 0.05:
-            query = QUERIES['locations_most_count']
-        else:
-            query = QUERIES['locations_random']
-        list_of_tuples = data_from_db(query)
-        x, y = choice(list_of_tuples)
-        return {'lon': x, 'lat': y}
+        point = objects.locations.random_location()
+        return {'lon': point.longitude, 'lat': point.latitude}
 
 
 class MapboxVectorTile(Resource):
@@ -85,15 +61,15 @@ class MapboxVectorTile(Resource):
 
     def get(self, z: int, x: int, y: int):
 
-        list_of_tuples = data_from_db(QUERIES['cached_mvt'], (z, x, y))
-        if len(list_of_tuples) == 0:
+        tile = objects.tiles.select(z, x, y)
+        if tile is None:
             if 6 <= int(z) <= 14:
-                execute_query(QUERIES['mvt_insert'], {'z': z, 'x': x, 'y': y})
+                objects.tiles.generate_if_not_exists(z, x, y)
             else:
                 abort(404)
-            list_of_tuples = data_from_db(QUERIES['cached_mvt'], (z, x, y))
+            tile = objects.tiles.select(z, x, y)
 
-        mvt = list_of_tuples[0][0] if len(list_of_tuples) == 1 else abort(500)
+        mvt = tile.data if tile is not None else abort(500)
 
         # prepare and return response
         response = Response(mvt, status=200, content_type='application/x-protobuf')
@@ -108,7 +84,7 @@ class MarkTileForReload(Resource):
     """Marks MVT to be reloaded with next data update."""
 
     def get(self, z: int, x: int, y: int):
-        execute_query(QUERIES['mvt_add_to_reload_queue'], (f'http_request_{datetime.now().isoformat()}', z, x, y))
+        objects.tiles.queue_for_reload(z, x, y)
         return 'OK', 201
 
 
@@ -117,7 +93,7 @@ class AvailableLayers(Resource):
 
     def get(self):
         return {
-            'available_layers': Layers().active_ids_with_names
+            'available_layers': objects.layers.Layers().active_ids_with_names
         }
 
 
@@ -125,9 +101,8 @@ class JosmData(Resource):
     """Returns data for given area as an osm file."""
 
     def get(self):
-        package_export_params = None
         geojson_geometry_string = ''
-        layers = Layers()
+        layers = objects.layers.Layers()
 
         selected_layers = layers.selected_layers(request.args.get('layers', ''))
         if len(selected_layers) == 0:
@@ -143,21 +118,21 @@ class JosmData(Resource):
             geojson_geometry_string = request.args.get('geom')
             # todo: validate geometry
         elif request.args.get('filter_by') == 'osm_boundary':
-            if request.args.get('teryt_terc') and re.match(r'^\d{7}$', request.args.get('teryt_terc')):
+            if request.args.get('teryt_terc') and re.match(r'^\d{2,7}$', request.args.get('teryt_terc')):
                 terc = request.args.get('teryt_terc')
-                geojson_geometry_string = osm_admin_boundary_where_terc(terc_code=terc)[0].value
+                geojson_geometry_string = objects.osm_admin_boundaries.select_where_terc(terc_code=terc)[0].value
             elif request.args.get('teryt_simc') and re.match(r'^\d{7}$', request.args.get('teryt_simc')):
                 simc = request.args.get('teryt_simc')
-                geojson_geometry_string = osm_admin_boundary_where_simc(simc_code=simc)[0].value
+                geojson_geometry_string = objects.osm_admin_boundaries.select_where_simc(simc_code=simc)[0].value
             elif request.args.get('relation_id') and re.match(r'^\d+$', request.args.get('relation_id')):
                 relation_id = int(request.args.get('relation_id'))
-                geojson_geometry_string = osm_admin_boundary_where_id(relation_id=relation_id)[0].value
+                geojson_geometry_string = objects.osm_admin_boundaries.select_where_id(relation_id=relation_id)[0].value
             else:
                 abort(400)
         else:
             abort(400)
 
-        data = self.data_for_layers([(layer, {'geojson_geometry': geojson_geometry_string}) for layer in selected_layers])
+        data = objects.layers.select_data_for_layers([(layer, {'geojson_geometry': geojson_geometry_string}) for layer in selected_layers])
 
         list_of_features = [values for layer_id, layer_data in data.items() for values in layer_data.data]
         root = util.create_osm_xml(list_of_features)
@@ -170,22 +145,12 @@ class JosmData(Resource):
         for param in required_parameters:
             if package_export_params.get(param) is None:
                 package_export_params[param] = 0
-        self.register_bbox_export(package_export_params)
+        objects.layers.register_export(**package_export_params)
 
         return Response(
             etree.tostring(root, encoding='UTF-8'),
             mimetype='text/xml',
             headers={'Content-disposition': 'attachment; filename=paczka_danych.osm'})
-
-    def register_bbox_export(self, package_export_params: dict) -> None:
-        execute_query(QUERIES['insert_to_package_exports'], package_export_params)
-
-    def data_for_layers(self, layers: List[Tuple[LayerDefinition, QueryParametersType]]) -> Dict[str, LayerData]:
-        data = {}
-        for layer, params in layers:
-            data[layer.id] = layer.get_data(params)
-
-        return data
 
 
 class LatestUpdates(Resource):
@@ -203,20 +168,12 @@ class LatestUpdates(Resource):
         if ts - datetime.now() > timedelta(hours=24, minutes=5):
             abort(400)
 
-        list_of_tuples = data_from_db(QUERIES['latest_updates'], {'ts': ts})
-        response_dict = {
-            'type': 'FeatureCollection',
-            'features': [
-                {
-                    'type': 'Feature',
-                    'geometry': bbox,
-                    'properties': {
-                        'dataset': dataset, 'created_at': created_at, 'changesets': changesets
-                    }
-                }
-                for dataset, created_at, bbox, changesets in list_of_tuples
-            ]
-        }
+        list_of_updates = objects.updates.latest_updates(ts)
+        list_of_geometries = [u.area for u in list_of_updates]
+        list_of_properties = [
+            {'dataset': u.dataset, 'created_at': u.created_at, 'changesets': u.changesets} for u in list_of_updates
+        ]
+        response_dict = util.create_geojson_dict(list_of_geometries, list_of_properties)
 
         # prepare and return response
         expiry_time = ts + timedelta(seconds=60)

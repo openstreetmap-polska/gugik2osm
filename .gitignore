@@ -139,3 +139,5 @@ dmypy.json
 .vscode/settings.json
 
 /venv*
+
+.env_win

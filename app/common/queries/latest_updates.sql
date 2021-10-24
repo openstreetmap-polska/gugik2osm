@@ -61,6 +61,7 @@ osm as (
     from unioned_osm u
     left join joined_osm j using(rn)
 ),
+-- todo: add unioning of geometry for package_exports too
 prg as (
   select
     'exports' as dataset,

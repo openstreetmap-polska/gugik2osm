@@ -3,7 +3,7 @@ import json
 from flask import request, Response
 from flask_restful import Resource, abort
 
-from common import objects
+from common.objects import addresses, buildings
 
 
 class ProposedAddresses(Resource):
@@ -23,7 +23,7 @@ class ProposedAddresses(Resource):
         max_lon = float(max_lon)
         max_lat = float(max_lat)
 
-        geojson_dict = objects.proposed_addresses_geojson_dict((min_lon, min_lat, max_lon, max_lat))
+        geojson_dict = addresses.proposed_addresses_geojson_dict((min_lon, min_lat, max_lon, max_lat))
 
         return Response(
             json.dumps(geojson_dict),
@@ -39,7 +39,7 @@ class ReportProposedAddress(Resource):
 
         parsed_request = request.get_json()
         if parsed_request:
-            objects.report_addresses(parsed_request)
+            addresses.report_addresses(parsed_request)
         else:
             abort(400)
 
@@ -63,7 +63,7 @@ class ProposedBuildings(Resource):
         max_lon = float(max_lon)
         max_lat = float(max_lat)
 
-        geojson_dict = objects.proposed_buildings_geojson_dict((min_lon, min_lat, max_lon, max_lat))
+        geojson_dict = buildings.proposed_buildings_geojson_dict((min_lon, min_lat, max_lon, max_lat))
 
         return Response(
             json.dumps(geojson_dict),
@@ -79,7 +79,7 @@ class ReportProposedBuilding(Resource):
 
         parsed_request = request.get_json()
         if parsed_request:
-            objects.report_buildings(parsed_request)
+            buildings.report_buildings(parsed_request)
         else:
             abort(400)
 
