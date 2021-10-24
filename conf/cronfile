@@ -19,7 +19,7 @@
 0 10 * * WED ttaras /opt/gugik2osm/git/processing/bash/bdot10k_dl.sh
 0 20 * * WED ttaras /opt/gugik2osm/git/processing/bash/bdot10k_bubd_a_parse.sh
 0 20 * * THU ttaras /opt/gugik2osm/git/processing/bash/bdot10k_bubd_a_export.sh
-0 16 * * FRI ttaras /opt/gugik2osm/git/processing/bash/prg_processing_v2.sh
+0 21 * * FRI ttaras /opt/gugik2osm/git/processing/bash/prg_processing_v2.sh
 
 # export data
 0 20 * * * postgres /opt/gugik2osm/git/processing/bash/export_osm_stats.sh >> /opt/gugik2osm/log/exports.log 2>&1
