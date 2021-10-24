@@ -1,7 +1,8 @@
 insert into process_locks values
 ('prg_full_update', false, null, null, null, 'Cotygodniowa aktualizacja danych PRG'),
 ('prg_partial_update', false, null, null, null, 'Cominutowa aktualizacja danych OSM'),
-('teryt_update', false, null, null, null, 'Codzienna aktualizacja danych TERYT')
+('teryt_update', false, null, null, null, 'Codzienna aktualizacja danych TERYT'),
+('db_lock', false, null, null, null, 'Blokada dostępu do bazy danych (przerwa techniczna)')
 on conflict do nothing
 ;
 
