@@ -251,3 +251,20 @@ def bbox_to_geojson_geometry(bbox: Tuple[float, float, float, float]) -> Dict[st
             ]
         ]
     }
+
+
+def create_geojson_dict(list_of_geometries: List[dict], list_of_properties: List[dict]) -> dict:
+    response_dict = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': geom,
+                'properties': {
+                    **properties
+                }
+            }
+            for geom, properties in zip(list_of_geometries, list_of_properties)
+        ]
+    }
+    return response_dict

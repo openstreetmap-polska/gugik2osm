@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 import psycopg2 as pg
 import psycopg2.extensions
 import psycopg2.errors
+from flask_restful import abort
 from psycopg2.extras import execute_values, RealDictCursor
 from dotenv import load_dotenv
 
@@ -47,18 +48,22 @@ connection_read_only: Union[PGConnection, None] = None
 
 
 def get_dsn(dotenv_file_path: str = '/opt/gugik2osm/conf/.env', read_only_user: bool = False) -> str:
+    """Method reads connection parameters from .env file and returns dsn (connection string) for psycopg2."""
+
     load_dotenv(dotenv_file_path, verbose=True)
     PGHOSTADDR = os.environ['PGHOSTADDR']
     PGPORT = os.environ['PGPORT']
     PGDATABASE = os.environ['PGDATABASE']
     PGUSER = os.environ['PGUSER'] if not read_only_user else os.environ['PGUSER_RO']
-    PGPASSWORD = os.environ['PGPASSWORD']
+    PGPASSWORD = os.environ['PGPASSWORD'] if not read_only_user else os.environ['PGPASSWORD_RO']
     dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+
     return dsn
 
 
 def pgdb() -> PGConnection:
     """Method returns connection to the DB. If there is no connection active it creates one."""
+
     global conn
     if conn:
         return conn
@@ -69,11 +74,12 @@ def pgdb() -> PGConnection:
 
 def pgdb_read_only() -> PGConnection:
     """Method returns connection to the DB. If there is no connection active it creates one."""
+
     global connection_read_only
     if connection_read_only:
         return connection_read_only
     else:
-        connection_read_only = pg.connect(dsn=get_dsn())
+        connection_read_only = pg.connect(dsn=get_dsn(read_only_user=True))
         connection_read_only.set_session(readonly=True, autocommit=True)
         return connection_read_only
 
@@ -81,18 +87,42 @@ def pgdb_read_only() -> PGConnection:
 @atexit.register
 def close_db_connection():
     """Close the database connection. Method executed upon exit."""
+
     global conn
     if conn:
         conn.close()
 
 
+def is_db_locked() -> bool:
+    """Checks if db_lock record in process_locks is active."""
+
+    global connection_read_only
+    connection = pgdb_read_only()
+    cur = connection.cursor()
+    cur.execute("SELECT in_progress FROM process_locks WHERE process_name = 'db_lock';")
+    is_locked = cur.fetchall()[0][0]
+
+    return is_locked
+
+
+def abort_if_db_locked() -> None:
+    """Executes flask abort if the database is locked."""
+
+    if is_db_locked():
+        abort(503)
+
+
 def data_from_db(
     query: str,
     parameters: QueryParametersType = None,
-    row_as: Union[tuple, dict, Callable] = tuple
+    row_as: Union[tuple, dict, Callable] = tuple,
+    bypass_lock: bool = False
 ) -> List[Union[tuple, dict, Any]]:
     """Method executes SQL query and returns data. Data can be mapped to class if you provide it in row_as parameter.
     Provides error handling. In case of exception it rolls back transaction and closes the connection."""
+
+    if not bypass_lock:
+        abort_if_db_locked()
 
     global connection_read_only
     connection = pgdb_read_only()
@@ -125,12 +155,16 @@ def data_from_db(
         return results
 
 
-def execute_query(query: str, parameters: QueryParametersType = None) -> List[tuple]:
+def execute_query(query: str, parameters: QueryParametersType = None, bypass_lock: bool = False) -> List[tuple]:
     """Method executes SQL query and commits transaction. Provides error handling.
     In case of exception it rolls back transaction and closes the connection."""
 
+    if not bypass_lock:
+        abort_if_db_locked()
+
     global conn
     connection = pgdb()
+
     with connection.cursor() as cur:
         try:
             cur.execute(query, parameters) if parameters else cur.execute(query)
@@ -156,7 +190,7 @@ def execute_query(query: str, parameters: QueryParametersType = None) -> List[tu
         return results
 
 
-def execute_batch(query: str, parameters: List[QueryParametersType]) -> List[tuple]:
+def execute_batch(query: str, parameters: List[QueryParametersType], bypass_lock: bool = False) -> List[tuple]:
     """Execute query using VALUES with a sequence of parameters.
     In simpler terms it allows e.g. batch inserts such as:
         insert into table values (1, 'a'), (2, 'b');
@@ -166,8 +200,12 @@ def execute_batch(query: str, parameters: List[QueryParametersType]) -> List[tup
     This can provide significant performance boost.
     """
 
+    if not bypass_lock:
+        abort_if_db_locked()
+
     global conn
     connection = pgdb()
+
     with connection.cursor() as cur:
         try:
             execute_values(cur, query, parameters)
