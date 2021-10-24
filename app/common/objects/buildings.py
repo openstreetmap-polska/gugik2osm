@@ -2,8 +2,8 @@ import json
 from dataclasses import dataclass
 from typing import Any, Dict, List, Tuple
 
-from common import util
-from common import database as db
+from .. import util
+from .. import database as db
 
 
 @dataclass

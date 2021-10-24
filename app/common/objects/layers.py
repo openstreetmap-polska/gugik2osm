@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Dict, List, Tuple, Union
 
-from common import util
-from common import database as db
+from .. import util
+from .. import database as db
 
 
 @dataclass(frozen=True)

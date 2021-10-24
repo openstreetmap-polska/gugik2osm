@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from common import database as db
+from .. import database as db
 
 
 @dataclass

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from random import random, choice
 
-from common import database as db
+from .. import database as db
 
 
 @dataclass
