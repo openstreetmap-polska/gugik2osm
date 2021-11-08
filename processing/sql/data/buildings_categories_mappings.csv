@@ -501,7 +501,7 @@ budynki biurowe,budynki biurowe,schronisko turystyczne,yes,,,,,alpine_hut
 budynki zbiorowego zamieszkania,budynki zbiorowego zamieszkani,rezydencja prezydencka,government,,,,,
 budynki przemysłowe,budynki przemysłowe,Urząd Gminy,government,,,,,
 budynki szkół i instytucji badawczych,budynki szkół i instytucji badawczych,biblioteka,yes,,,,,
-budynki gospodarstw rolnych,budynki gospodarstwa rolnego,budynek gospodarczy,farm_auxiliary,,,,,
+budynki gospodarstw rolnych,budynki gospodarstwa rolnego,budynek gospodarczy,outbuilding,,,,,
 budynki szpitali i zakładów opieki medycznej,budynki szpitali i zakładów opieki medyczne,Urząd Gminy,government,,,,,
 "budynki zakwaterowania turystycznego, pozostałe",pozostałe budynki zakwaterowania turystycznego,restauracja,yes,,,,,
 "pozostałe budynki niemieszkalne, gdzie indziej nie wymienione",pozostałe budynki niemieszkalne,apteka,yes,,,,,
