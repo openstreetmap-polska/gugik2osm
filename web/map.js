@@ -946,7 +946,7 @@ function getBuildingPopupHTML(e) {
         s += "tourism=" + e.features[0].properties.tourism + "<br>"
     }
     if (e.features[0].properties.building_levels) {
-        s += "building_levels=" + e.features[0].properties.building_levels + "<br>"
+        s += "building:levels=" + e.features[0].properties.building_levels + "<br>"
     }
     s += "source=www.geoportal.gov.pl<br>"
 
