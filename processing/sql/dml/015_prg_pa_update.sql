@@ -1,3 +1,4 @@
+set jit=on;
 -- replace all duplicate words using regex expressions
 -- so: 'plac Plac Mickiewicza' would become 'plac Mickiewicza'
 update prg.pa

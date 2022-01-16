@@ -1,3 +1,5 @@
+set jit=on;
+
 insert into streets_all_new
 select street_id, interpolated_teryt_simc, teryt_ulic, street_name, geom_2180 --st_astext(st_transform(geom_2180, 4326))
 from (

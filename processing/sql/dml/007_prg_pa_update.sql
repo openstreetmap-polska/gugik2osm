@@ -1,3 +1,4 @@
+set jit=on;
 -- aktualizacja simc na podstawie terytu
 -- zgodnosc po woj, pow, gmi, nazwa
 update prg.pa as pa

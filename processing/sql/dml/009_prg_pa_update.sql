@@ -1,3 +1,4 @@
+set jit=on;
 -- aktualizacja simc na podstawie terytu
 -- jezeli nadal simc jest nieokreslone, to wybieramy na zasadzie podobienstwa nazwy miejscowosci
 update prg.pa

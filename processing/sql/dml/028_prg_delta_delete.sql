@@ -1,3 +1,5 @@
+set jit=on;
+
 delete from prg.delta_new prg
 using (
     select prg.lokalnyid

@@ -1,3 +1,5 @@
+set jit=on;
+
 drop table if exists prg.pa_hashed;
 create table prg.pa_hashed as
 select

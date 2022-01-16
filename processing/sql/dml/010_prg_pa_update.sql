@@ -1,3 +1,4 @@
+set jit=on;
 -- aktualizacja nazwy miejscowosci na podstawie simc
 update prg.pa as pa
 set teryt_msc = simc.nazwa

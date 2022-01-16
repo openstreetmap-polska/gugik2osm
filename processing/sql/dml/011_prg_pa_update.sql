@@ -1,3 +1,4 @@
+set jit=on;
 -- okreslenie nazwy ulic
 -- zgodnosc simc, kod nazwy ulicy, nazwa ulicy
 update prg.pa as pa
