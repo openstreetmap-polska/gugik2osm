@@ -43,5 +43,7 @@ CREATE OR REPLACE VIEW bdot.v_bubd_a as
     LEFT JOIN bdot.lookup_funszczegolowabudynku fs8 on fs8.funSzczegolowaBudynku=b.funszczegolowabudynku_08
     LEFT JOIN bdot.lookup_funszczegolowabudynku fs9 on fs9.funSzczegolowaBudynku=b.funszczegolowabudynku_09
     LEFT JOIN bdot.lookup_funszczegolowabudynku fs10 on fs10.funSzczegolowaBudynku=b.funszczegolowabudynku_10
-    WHERE lokalnyid ~ E'^[[:xdigit:]]{8}-([[:xdigit:]]{4}-){3}[[:xdigit:]]{12}$' -- check if uuid is valid
+    WHERE 1=1
+        and lokalnyid ~ E'^[[:xdigit:]]{8}-([[:xdigit:]]{4}-){3}[[:xdigit:]]{12}$' -- check if uuid is valid
+        and is_parsable_gml((xpath('/geometry/*', geometry::xml))[1]::text) -- check if geometry is valid
 ;
