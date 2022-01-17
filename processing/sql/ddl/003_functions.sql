@@ -1,5 +1,5 @@
 CREATE or replace FUNCTION is_parsable_gml(text) RETURNS boolean
-    LANGUAGE plpgsql IMMUTABLE PARALLEL SAFE
+    LANGUAGE plpgsql IMMUTABLE PARALLEL UNSAFE
     AS $_$
 declare
     temp geometry;
