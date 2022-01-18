@@ -44,7 +44,7 @@ create table if not exists bdot_buildings (
     historic text,
     tourism text,
     building_levels smallint,
-    geom_4326 geometry(polygon, 4326) not null
+    geom_4326 geometry(geometry, 4326) not null
 );
 CREATE INDEX if not exists idx_bdot_buildings_geom ON bdot_buildings USING gist (geom_4326);
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS bdot_buildings_all (
     historic text,
     tourism text,
     building_levels smallint,
-    geom_4326 geometry(Polygon,4326) NOT NULL
+    geom_4326 geometry(geometry, 4326) NOT NULL
 );
 create index if not exists idx_bdot_buildings_all_geom on bdot_buildings_all using GIST (geom_4326);
 
