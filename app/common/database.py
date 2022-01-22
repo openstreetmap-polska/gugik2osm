@@ -68,7 +68,7 @@ def pgdb() -> PGConnection:
     if conn:
         return conn
     else:
-        conn = pg.connect(dsn=get_dsn())
+        conn = pg.connect(dsn=get_dsn(), options=f'-c statement_timeout={1000*30}')
         return conn
 
 
@@ -79,7 +79,7 @@ def pgdb_read_only() -> PGConnection:
     if connection_read_only:
         return connection_read_only
     else:
-        connection_read_only = pg.connect(dsn=get_dsn(read_only_user=True))
+        connection_read_only = pg.connect(dsn=get_dsn(read_only_user=True), options=f'-c statement_timeout={1000*30}')
         connection_read_only.set_session(readonly=True, autocommit=True)
         return connection_read_only
 
