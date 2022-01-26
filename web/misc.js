@@ -1,5 +1,5 @@
 function processesInfo () {
-    fetch('/processes/')
+    fetch('/processes.json')
         .then((response) => {
           return response.json();
         })
