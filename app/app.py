@@ -16,7 +16,7 @@ api.add_resource(MapboxVectorTile, '/tiles/<int:z>/<int:x>/<int:y>.pbf')
 api.add_resource(MarkTileForReload, '/tiles/<int:z>/<int:x>/<int:y>/reload')
 api.add_resource(RandomLocation, '/random/')
 api.add_resource(Exclude, '/exclude/')
-api.add_resource(Processes, '/processes/')
+api.add_resource(Processes, '/processes/', '/processes.json')
 api.add_resource(LatestUpdates, '/updates.geojson', '/updates/')
 
 api.add_resource(ProposedAddresses, '/sc/proposed_addresses')
