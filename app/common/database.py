@@ -98,11 +98,27 @@ def is_db_locked() -> bool:
 
     global connection_read_only
     connection = pgdb_read_only()
-    cur = connection.cursor()
-    cur.execute("SELECT in_progress FROM process_locks WHERE process_name = 'db_lock';")
-    is_locked = cur.fetchall()[0][0]
-
-    return is_locked
+    query = "SELECT in_progress FROM process_locks WHERE process_name = 'db_lock';"
+    try:
+        cur = connection.cursor()
+        cur.execute(query)
+        is_locked = cur.fetchall()[0][0]
+        return is_locked
+    except (psycopg2.InterfaceError, psycopg2.OperationalError) as e:
+        print(datetime.now(timezone.utc).astimezone().isoformat(),
+              f'- Error while executing query: `{query}`.')
+        print(e)
+        connection_read_only = None
+        raise
+    except Exception as e:
+        print(datetime.now(timezone.utc).astimezone().isoformat(),
+              f'- Error while executing query: `{query}`.')
+        print(e)
+        if connection:
+            connection.rollback()
+            connection.close()
+        connection_read_only = None
+        raise
 
 
 def abort_if_db_locked() -> None:
