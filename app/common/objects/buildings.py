@@ -50,8 +50,8 @@ def nearest_building_geom_only(lon: float, lat: float, search_distance_in_meters
     data = db.data_from_db(
         query=db.QUERIES['josm_nearest_building_geom_only'],
         parameters={
-            'latitude': lat,
-            'longitude': lon,
+            'lat': lat,
+            'lon': lon,
             'search_distance': search_distance_in_meters,
         },
         row_as=tuple,
