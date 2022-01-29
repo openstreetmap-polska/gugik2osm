@@ -46,7 +46,7 @@ class NearestBuilding(Resource):
                 lat=lat,
                 lon=lon,
                 search_distance_in_meters=search_distance,
-            )
+            )[0]
             objects.layers.register_export(
                 geojson_geometry=geojson_geometry_string,
                 lb_adresow=0,
