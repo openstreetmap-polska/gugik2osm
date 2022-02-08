@@ -1,3 +1,5 @@
+set jit=on;
+
 insert into bdot_buildings_new (
     powiat,
     lokalnyid,

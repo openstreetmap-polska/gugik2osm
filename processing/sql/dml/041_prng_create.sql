@@ -1,3 +1,5 @@
+set jit=on;
+
 drop table if exists prng_new;
 create table prng_new AS
 SELECT

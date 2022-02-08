@@ -1,3 +1,4 @@
+set jit=on;
 -- aktualizacja simc na podstawie terytu
 -- zgodnosc po woj, pow, gmi, rodz_gmi, miejscowość podstawowa (tm = '01'), nazwa
 

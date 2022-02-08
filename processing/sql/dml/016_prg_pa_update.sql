@@ -1,3 +1,4 @@
+set jit=on;
 update prg.pa
 set osm_ulica = osm_street_name
 from street_names_mappings

@@ -1,3 +1,5 @@
+set jit=on;
+
 drop table if exists osm_adr;
 create table osm_adr as
 with

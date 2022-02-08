@@ -1,3 +1,5 @@
+set jit=on;
+
 drop table if exists tiles_new;
 create table tiles_new as
   select

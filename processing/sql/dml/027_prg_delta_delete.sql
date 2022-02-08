@@ -1,3 +1,5 @@
+set jit=on;
+
 delete from prg.delta_new
 where lokalnyid in (
     select delta_new.lokalnyid

@@ -1,3 +1,4 @@
+set jit=on;
 -- okreslenie nazwy ulic
 -- zgodnosc simc, nazwa ulicy (nazwa_1)
 

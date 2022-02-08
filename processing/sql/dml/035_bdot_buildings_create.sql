@@ -17,7 +17,7 @@ create table if not exists bdot_buildings_new (
     historic text,
     tourism text,
     building_levels smallint,
-    geom_4326 geometry(polygon, 4326) not null
+    geom_4326 geometry(geometry, 4326) not null
 );
 
 drop table if exists bdot_buildings_all_new;
@@ -39,5 +39,5 @@ create table if not exists bdot_buildings_all_new (
     historic text,
     tourism text,
     building_levels smallint,
-    geom_4326 geometry(polygon, 4326) not null
+    geom_4326 geometry(geometry, 4326) not null
 );

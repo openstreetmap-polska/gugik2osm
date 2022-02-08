@@ -1,3 +1,5 @@
+set jit=on;
+
 drop table if exists prg.delta_new;
 create unlogged table prg.delta_new as
     select

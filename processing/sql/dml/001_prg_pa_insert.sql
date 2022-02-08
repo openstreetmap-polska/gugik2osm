@@ -1,3 +1,4 @@
+set jit=on;
 drop table if exists prg.pa;
 create unlogged table prg.pa (
     lokalnyid uuid primary key,
