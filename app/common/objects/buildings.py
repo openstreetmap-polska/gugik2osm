@@ -40,6 +40,45 @@ class ProposedBuilding:
         return self.id, tags, self.geometry
 
 
+def nearest_building_geom_only(lon: float, lat: float, search_distance_in_meters: float) -> List[str]:
+    """
+    Returns the nearest building within search distance of given coordinates (geom only).
+    Query automatically limits search distance to 0.005 degree regardless of parameters.
+    It's a helper method to get some geometry to register data export.
+    """
+
+    data = db.data_from_db(
+        query=db.QUERIES['josm_nearest_building_geom_only'],
+        parameters={
+            'lat': lat,
+            'lon': lon,
+            'search_distance': search_distance_in_meters,
+        },
+        row_as=tuple,
+    )
+
+    return [x[0] for x in data]
+
+
+def nearest_building_josm_xml(lon: float, lat: float, search_distance_in_meters: float) -> list:
+    """
+    Returns the nearest building within search distance of given coordinates.
+    Query automatically limits search distance to 0.005 degree regardless of parameters.
+    """
+
+    data = db.data_from_db(
+        query=db.QUERIES['josm_nearest_building'],
+        parameters={
+            'lat': lat,
+            'lon': lon,
+            'search_distance': search_distance_in_meters,
+        },
+        row_as=dict,
+    )
+
+    return [util.input_feature_factory(**row) for row in data]
+
+
 def proposed_buildings(bbox: Tuple[float, float, float, float]) -> List[ProposedBuilding]:
     """
     Returns proposed buildings within given bounding box. Returns list of instances of ProposedBuilding class.

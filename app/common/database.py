@@ -42,6 +42,8 @@ QUERIES = {
     'admin_geom_where_simc': str(open(join(SQL_PATH, 'admin_geom_where_simc.sql'), 'r').read()),
     'admin_geom_where_terc': str(open(join(SQL_PATH, 'admin_geom_where_terc.sql'), 'r').read()),
     'admin_geom_where_id': str(open(join(SQL_PATH, 'admin_geom_where_id.sql'), 'r').read()),
+    'josm_nearest_building': str(open(join(SQL_PATH, 'josm_nearest_building.sql'), 'r').read()),
+    'josm_nearest_building_geom_only': str(open(join(SQL_PATH, 'josm_nearest_building_geom_only.sql'), 'r').read()),
 }
 conn: Union[PGConnection, None] = None
 connection_read_only: Union[PGConnection, None] = None
@@ -68,7 +70,7 @@ def pgdb() -> PGConnection:
     if conn:
         return conn
     else:
-        conn = pg.connect(dsn=get_dsn())
+        conn = pg.connect(dsn=get_dsn(), options=f'-c statement_timeout={1000*60}')
         return conn
 
 
@@ -79,7 +81,7 @@ def pgdb_read_only() -> PGConnection:
     if connection_read_only:
         return connection_read_only
     else:
-        connection_read_only = pg.connect(dsn=get_dsn(read_only_user=True))
+        connection_read_only = pg.connect(dsn=get_dsn(read_only_user=True), options=f'-c statement_timeout={1000*60}')
         connection_read_only.set_session(readonly=True, autocommit=True)
         return connection_read_only
 
@@ -98,11 +100,27 @@ def is_db_locked() -> bool:
 
     global connection_read_only
     connection = pgdb_read_only()
-    cur = connection.cursor()
-    cur.execute("SELECT in_progress FROM process_locks WHERE process_name = 'db_lock';")
-    is_locked = cur.fetchall()[0][0]
-
-    return is_locked
+    query = "SELECT in_progress FROM process_locks WHERE process_name = 'db_lock';"
+    try:
+        cur = connection.cursor()
+        cur.execute(query)
+        is_locked = cur.fetchall()[0][0]
+        return is_locked
+    except (psycopg2.InterfaceError, psycopg2.OperationalError) as e:
+        print(datetime.now(timezone.utc).astimezone().isoformat(),
+              f'- Error while executing query: `{query}`.')
+        print(e)
+        connection_read_only = None
+        raise
+    except Exception as e:
+        print(datetime.now(timezone.utc).astimezone().isoformat(),
+              f'- Error while executing query: `{query}`.')
+        print(e)
+        if connection:
+            connection.rollback()
+            connection.close()
+        connection_read_only = None
+        raise
 
 
 def abort_if_db_locked() -> None:

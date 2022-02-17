@@ -3,15 +3,18 @@
 # restart services once a week just in case
 # there used to be a problem with unclosed db connections
 0 4 * *  TUE root /opt/gugik2osm/conf/services_restart.sh
+# weekly vacuum
+10 4 * *  TUE postgres psql -d gugik2osm -c "vacuum analyze"
 
 # keep some db tables in ram by continuously requesting data from them
 */1 5-15 * * * ttaras curl -s localhost/random/ > /dev/null
-*/1 5-15 * * * ttaras curl -s localhost/processes/ > /dev/null
 
 # import or update data
 ## minutely
 */1 * * * * ttaras /opt/gugik2osm/git/processing/bash/data_update.sh
 */1 * * * * ttaras /opt/gugik2osm/git/processing/bash/osm_changesets.sh
+*/1 * * * * ttaras curl -s -f localhost/updates/ -o "/var/www/cache/updates.geojson"
+*/1 * * * * ttaras curl -s -f localhost/processes/ -o "/var/www/cache/processes.json"
 ## daily
 0 1 * * MON-FRI ttaras /opt/gugik2osm/git/processing/bash/teryt_processing.sh
 0 0 */1 * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
