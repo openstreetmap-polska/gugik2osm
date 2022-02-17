@@ -15,6 +15,8 @@
 */1 * * * * ttaras /opt/gugik2osm/git/processing/bash/osm_changesets.sh
 */1 * * * * ttaras curl -s -f localhost/updates/ -o "/var/www/cache/updates.geojson"
 */1 * * * * ttaras curl -s -f localhost/processes/ -o "/var/www/cache/processes.json"
+## hourly
+33 */1 * * * ttaras /opt/gugik2osm/git/processing/bash/low_lvl_zoom_tiles_update.sh
 ## daily
 0 1 * * MON-FRI ttaras /opt/gugik2osm/git/processing/bash/teryt_processing.sh
 0 0 */1 * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
