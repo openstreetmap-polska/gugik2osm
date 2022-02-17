@@ -7,4 +7,5 @@ create table tiles_new as
     ST_TileEnvelope(z, x, y) as bbox,
     mvt(z, x, y) as mvt
   from tiles
+  order by z, x, y
 ;
