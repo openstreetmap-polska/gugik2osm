@@ -10,9 +10,8 @@ source /opt/gugik2osm/venv/bin/activate
 
 pip3 install -r /opt/gugik2osm/git/requirements.txt
 
-cp -r /opt/gugik2osm/git/app/* /opt/gugik2osm/app/
-rm -r /opt/gugik2osm/web/*
-cp -r /opt/gugik2osm/git/web/* /opt/gugik2osm/web/
+rsync --verbose --recursive --delete /opt/gugik2osm/git/app/ /opt/gugik2osm/app/
+rsync --verbose --recursive --delete /opt/gugik2osm/git/web/ /opt/gugik2osm/web/
 
 cp /opt/gugik2osm/git/conf/*.sh /opt/gugik2osm/conf/
 cp /opt/gugik2osm/git/conf/*.service /opt/gugik2osm/conf/
