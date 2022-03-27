@@ -12,7 +12,7 @@ with DAG(
     start_date=datetime.datetime(2022, 3, 27),
     schedule_interval="@once",
     catchup=False,
-):
+) as dag:
     pg_version_task_id = "postgresql_version"
     pg_check_version_task = PostgresOperator(
         task_id=pg_version_task_id,
@@ -27,6 +27,7 @@ with DAG(
         message="Testing connectivity. PostgreSQL version: " + xcom_template,
     )
 
+    # set relationship between tasks
     chain(
         pg_check_version_task,
         send_discord_message_task,
