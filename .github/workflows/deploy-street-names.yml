@@ -1,6 +1,6 @@
 # deploy street names mappings to prod
 
-name: deploy-to-prod
+name: deploy-streetnames-to-prod
 
 on:
   push:
