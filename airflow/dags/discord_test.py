@@ -23,6 +23,7 @@ with DAG(
     xcom_template = "{{ task_instance.xcom_pull(task_ids='" + pg_version_task_id + "') }}"
     send_discord_message_task = DiscordWebhookOperator(
         task_id="send_discord_message",
+        http_conn_id="discord_webhook",
         message="Testing connectivity. PostgreSQL version: " + xcom_template,
     )
 
