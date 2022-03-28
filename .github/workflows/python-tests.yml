@@ -36,7 +36,7 @@ jobs:
         # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        python3 -m pytest
+        python3 -m pytest --ignore=airflow
     - name: Test street names mappings with great_expectations
       run: |
         python3 ./great_expectations/check_street_names_mappings.py ./processing/sql/data/street_names_mappings.csv
