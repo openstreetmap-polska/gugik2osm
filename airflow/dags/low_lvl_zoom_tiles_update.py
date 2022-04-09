@@ -13,7 +13,7 @@ with DAG(
 ) as dag:
 
     PostgresOperator(
-        task_id="vacuum_analyze",
+        task_id="refresh_low_lvl_zoom_tiles",
         sql="""
             create temporary table tt (z int, x int, y int, mvt bytea);
             insert into tt select z, x, y, mvt(z, x, y) from tiles where z in (6, 7);
