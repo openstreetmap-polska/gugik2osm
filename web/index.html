@@ -271,10 +271,25 @@
                         <a class="btn btn-success btn-lg btn-block mt-4" id="downloadButton2" target="_blank" href="#">
                             <i class="fas fa-file-download"></i> Pobierz</a>
                     </div>
-                    <br><h6>Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:</h6>
-                    <button type="button" class="btn btn-primary" onclick="reportAddressUsingGeom()">Zgłoś tylko adresy</button>
-                    <button type="button" class="btn btn-primary" onclick="reportBuildingUsingGeom()">Zgłoś tylko budynki</button>
-                    <button type="button" class="btn btn-primary" onclick="reportBothUsingGeom()">Zgłoś adresy i budynki</button>
+                    <br>
+                    <div class="accordion" id="accordionReportButtons">
+                      <div class="card my-2">
+                        <div class="card-header p-0" id="headingReportButtons">
+                          <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseReportButtons" aria-expanded="true" aria-controls="collapseReportButtons">
+                              Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:
+                            </button>
+                          </h2>
+                        </div>
+                        <div id="collapseReportButtons" class="collapse" aria-labelledby="headingReportButtons" data-parent="#accordionReportButtons">
+                          <div class="card-body">
+                            <button type="button" class="btn btn-primary" onclick="reportAddressUsingGeom()">Zgłoś tylko adresy</button>
+                            <button type="button" class="btn btn-primary" onclick="reportBuildingUsingGeom()">Zgłoś tylko budynki</button>
+                            <button type="button" class="btn btn-primary" onclick="reportBothUsingGeom()">Zgłoś adresy i budynki</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
