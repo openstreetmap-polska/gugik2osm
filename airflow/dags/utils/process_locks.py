@@ -64,7 +64,9 @@ def set_process_status_running(process_name: str, postgres_conn_id: str = "postg
         'WHERE process_name = %s',
         (process_name,)
     )
+    print(cur.statusmessage)
     conn.commit()
+    conn.close()
 
 
 def set_process_status_finished(process_name: str, status: str, postgres_conn_id: str = "postgres_default") -> None:
@@ -78,4 +80,6 @@ def set_process_status_finished(process_name: str, status: str, postgres_conn_id
         'WHERE process_name = %s',
         (status, process_name)
     )
+    print(cur.statusmessage)
     conn.commit()
+    conn.close()
