@@ -9,7 +9,7 @@ from airflow.models.baseoperator import chain
 
 from utils.discord import send_dag_run_status
 from utils.process_locks import (
-    any_prg_updates_in_progress,
+    no_prg_updates_in_progress,
     set_process_status_running,
     set_process_status_finished,
     PROCESS_NAMES,
@@ -43,7 +43,7 @@ with DAG(
 
     check_process_locks_task = ShortCircuitOperator(
         task_id="check_if_update_in_progress",
-        python_callable=any_prg_updates_in_progress,
+        python_callable=no_prg_updates_in_progress,
     )
 
     set_process_lock_task = PythonOperator(
