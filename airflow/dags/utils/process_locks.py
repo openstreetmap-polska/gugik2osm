@@ -50,7 +50,7 @@ def any_prg_updates_in_progress() -> bool:
 
 
 def no_prg_updates_in_progress() -> bool:
-    return not any_prg_updates_in_progress
+    return not any_prg_updates_in_progress()
 
 
 def set_process_status_running(process_name: str, postgres_conn_id: str = "postgres_default") -> None:
