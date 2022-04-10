@@ -36,7 +36,7 @@ with DAG(
         webhook_endpoint="webhooks/{{ conn.discord_webhook.login }}/{{ conn.discord_webhook.password }}",
         message="Testing connectivity. PostgreSQL version: " + xcom_template,
     )
-    send_discord_message_task.template_fields = ["webhook_endpoint", "message", "username"]
+    # send_discord_message_task.template_fields = ["webhook_endpoint", "message", "username"]
     # use webhook_endpoint as template getting info from connection where token is a password
     # that way it won't show up in the logs
 

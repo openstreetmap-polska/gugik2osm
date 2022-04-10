@@ -11,7 +11,8 @@
 
 # import or update data
 ## minutely
-*/1 * * * * ttaras /opt/gugik2osm/git/processing/bash/data_update.sh
+# moved to airflow
+#*/1 * * * * ttaras /opt/gugik2osm/git/processing/bash/data_update.sh
 */1 * * * * ttaras /opt/gugik2osm/git/processing/bash/osm_changesets.sh
 */1 * * * * ttaras curl -s -f localhost/updates/ -o "/var/www/cache/updates.geojson"
 */1 * * * * ttaras curl -s -f localhost/processes/ -o "/var/www/cache/processes.json"
