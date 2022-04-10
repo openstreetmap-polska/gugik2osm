@@ -59,14 +59,14 @@ with DAG(
     )
 
     run_partial_update_task = PostgresOperator(
-        task_id="run_partial_update",
+        task_id="run_incremental_update",
         sql="call partial_update()",
         autocommit=True,
         on_failure_callback=mark_process_as_failed,
     )
 
     release_process_lock_task = PythonOperator(
-        task_id="mark_process_as_running",
+        task_id="mark_process_as_succeeded",
         python_callable=mark_process_as_succeeded,
     )
 
