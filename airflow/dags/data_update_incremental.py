@@ -7,8 +7,8 @@ from airflow.operators.python import ShortCircuitOperator, PythonOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.models.baseoperator import chain
 
-from dags.utils.discord import send_dag_run_status
-from dags.utils.process_locks import (
+from utils.discord import send_dag_run_status
+from utils.process_locks import (
     any_prg_updates_in_progress,
     set_process_status_running,
     set_process_status_finished,
