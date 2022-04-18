@@ -128,6 +128,8 @@ declare
     temp_count integer := 0;
 begin
 
+    set session work_mem='128MB';
+
     -- prepare temp tables
     create temporary table exp (file_name text, z int, x int, y int);
     create temporary table exp_bounds (geom geometry(Polygon, 3857));

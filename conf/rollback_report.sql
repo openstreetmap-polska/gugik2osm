@@ -15,13 +15,13 @@ join obszar on st_transform(obszar.geometry, 2180) && a.geom_2180 and st_interse
 dd1 as (
 delete from exclude_bdot_buildings eb
 using budynki b
-where eb.id=b.lokalnyid
+where eb.id=b.lokalnyid and eb.created_at > now() - interval '24 hour'
 returning id
 ),
 dd2 as (
 delete from exclude_prg ea
 using adresy a
-where ea.id=a.lokalnyid
+where ea.id=a.lokalnyid and ea.created_at > now() - interval '24 hour'
 returning id
 ),
 zxy as (

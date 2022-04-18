@@ -1,6 +1,5 @@
 import os
 from os.path import join, dirname, abspath
-import atexit
 from typing import Union, Any, Dict, Optional, Tuple, List, Iterable, Callable
 from datetime import datetime, timezone
 
@@ -45,82 +44,53 @@ QUERIES = {
     'josm_nearest_building': str(open(join(SQL_PATH, 'josm_nearest_building.sql'), 'r').read()),
     'josm_nearest_building_geom_only': str(open(join(SQL_PATH, 'josm_nearest_building_geom_only.sql'), 'r').read()),
 }
-conn: Union[PGConnection, None] = None
-connection_read_only: Union[PGConnection, None] = None
 
 
 def get_dsn(dotenv_file_path: str = '/opt/gugik2osm/conf/.env', read_only_user: bool = False) -> str:
     """Method reads connection parameters from .env file and returns dsn (connection string) for psycopg2."""
 
     load_dotenv(dotenv_file_path, verbose=True)
-    PGHOSTADDR = os.environ['PGHOSTADDR']
-    PGPORT = os.environ['PGPORT']
-    PGDATABASE = os.environ['PGDATABASE']
-    PGUSER = os.environ['PGUSER'] if not read_only_user else os.environ['PGUSER_RO']
-    PGPASSWORD = os.environ['PGPASSWORD'] if not read_only_user else os.environ['PGPASSWORD_RO']
-    dsn = f'host={PGHOSTADDR} port={PGPORT} dbname={PGDATABASE} user={PGUSER} password={PGPASSWORD}'
+    host = os.environ['PGHOSTADDR']
+    port = os.environ['PGPORT']
+    database = os.environ['PGDATABASE']
+    user = os.environ['PGUSER'] if not read_only_user else os.environ['PGUSER_RO']
+    password = os.environ['PGPASSWORD'] if not read_only_user else os.environ['PGPASSWORD_RO']
+    dsn = f'host={host} port={port} dbname={database} user={user} password={password}'
 
     return dsn
 
 
 def pgdb() -> PGConnection:
-    """Method returns connection to the DB. If there is no connection active it creates one."""
+    """Method returns connection to the DB."""
 
-    global conn
-    if conn:
-        return conn
-    else:
-        conn = pg.connect(dsn=get_dsn(), options=f'-c statement_timeout={1000*60}')
-        return conn
+    connection = pg.connect(dsn=get_dsn())
+    cur = connection.cursor()
+    cur.execute(f'SET statement_timeout={1000 * 60};')
+    connection.commit()
+    cur.close()
+    return connection
 
 
 def pgdb_read_only() -> PGConnection:
-    """Method returns connection to the DB. If there is no connection active it creates one."""
+    """Method returns read-only connection to the DB."""
 
-    global connection_read_only
-    if connection_read_only:
-        return connection_read_only
-    else:
-        connection_read_only = pg.connect(dsn=get_dsn(read_only_user=True), options=f'-c statement_timeout={1000*60}')
-        connection_read_only.set_session(readonly=True, autocommit=True)
-        return connection_read_only
-
-
-@atexit.register
-def close_db_connection():
-    """Close the database connection. Method executed upon exit."""
-
-    global conn
-    if conn:
-        conn.close()
+    connection_read_only = pg.connect(dsn=get_dsn(read_only_user=True))
+    connection_read_only.set_session(readonly=True, autocommit=True)
+    cur = connection_read_only.cursor()
+    cur.execute(f'SET statement_timeout={1000 * 60};')
+    return connection_read_only
 
 
 def is_db_locked() -> bool:
     """Checks if db_lock record in process_locks is active."""
 
-    global connection_read_only
     connection = pgdb_read_only()
     query = "SELECT in_progress FROM process_locks WHERE process_name = 'db_lock';"
-    try:
-        cur = connection.cursor()
-        cur.execute(query)
-        is_locked = cur.fetchall()[0][0]
-        return is_locked
-    except (psycopg2.InterfaceError, psycopg2.OperationalError) as e:
-        print(datetime.now(timezone.utc).astimezone().isoformat(),
-              f'- Error while executing query: `{query}`.')
-        print(e)
-        connection_read_only = None
-        raise
-    except Exception as e:
-        print(datetime.now(timezone.utc).astimezone().isoformat(),
-              f'- Error while executing query: `{query}`.')
-        print(e)
-        if connection:
-            connection.rollback()
-            connection.close()
-        connection_read_only = None
-        raise
+    cur = connection.cursor()
+    cur.execute(query)
+    is_locked = cur.fetchall()[0][0]
+    connection.close()
+    return is_locked
 
 
 def abort_if_db_locked() -> None:
@@ -142,7 +112,6 @@ def data_from_db(
     if not bypass_lock:
         abort_if_db_locked()
 
-    global connection_read_only
     connection = pgdb_read_only()
 
     if row_as == dict:
@@ -150,27 +119,13 @@ def data_from_db(
     else:
         cursor_factory_type = None
 
-    with connection.cursor(cursor_factory=cursor_factory_type) as cur:
-        try:
-            cur.execute(query, parameters) if parameters else cur.execute(query)
-        except (psycopg2.InterfaceError, psycopg2.OperationalError) as e:
-            print(datetime.now(timezone.utc).astimezone().isoformat(),
-                  f'- Error while executing query: {query}, with parameters: {parameters}')
-            print(e)
-            connection_read_only = None
-            raise
-        except:
-            print(datetime.now(timezone.utc).astimezone().isoformat(),
-                  f'- Error while executing query: {query}, with parameters: {parameters}')
-            if connection:
-                connection.rollback()
-                connection.close()
-            connection_read_only = None
-            raise
-        results = cur.fetchall()
-        if row_as not in (dict, tuple):
-            results = [row_as(*row) for row in results]
-        return results
+    cur = connection.cursor(cursor_factory=cursor_factory_type)
+    cur.execute(query, parameters) if parameters else cur.execute(query)
+    results = cur.fetchall()
+    connection.close()
+    if row_as not in (dict, tuple):
+        results = [row_as(*row) for row in results]
+    return results
 
 
 def execute_query(query: str, parameters: QueryParametersType = None, bypass_lock: bool = False) -> List[tuple]:
@@ -180,7 +135,6 @@ def execute_query(query: str, parameters: QueryParametersType = None, bypass_loc
     if not bypass_lock:
         abort_if_db_locked()
 
-    global conn
     connection = pgdb()
 
     with connection.cursor() as cur:
@@ -190,7 +144,6 @@ def execute_query(query: str, parameters: QueryParametersType = None, bypass_loc
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   f'- Error while executing query: {query}, with parameters: {parameters}')
             print(e)
-            conn = None
             raise
         except:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
@@ -198,7 +151,6 @@ def execute_query(query: str, parameters: QueryParametersType = None, bypass_loc
             if connection:
                 connection.rollback()
                 connection.close()
-            conn = None
             raise
         try:
             results = cur.fetchall()
@@ -221,7 +173,6 @@ def execute_batch(query: str, parameters: List[QueryParametersType], bypass_lock
     if not bypass_lock:
         abort_if_db_locked()
 
-    global conn
     connection = pgdb()
 
     with connection.cursor() as cur:
@@ -230,7 +181,6 @@ def execute_batch(query: str, parameters: List[QueryParametersType], bypass_lock
         except psycopg2.InterfaceError:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
                   f'- Error while executing query: {query}, with parameters: {parameters}')
-            conn = None
             raise
         except:
             print(datetime.now(timezone.utc).astimezone().isoformat(),
@@ -238,7 +188,6 @@ def execute_batch(query: str, parameters: List[QueryParametersType], bypass_lock
             if connection:
                 connection.rollback()
                 connection.close()
-            conn = None
             raise
         try:
             results = cur.fetchall()
