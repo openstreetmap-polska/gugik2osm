@@ -85,7 +85,7 @@ def _check_dag_antispam_stats(dag_id: str) -> DagAntispamStats:
     else:
         return DagAntispamStats(
             number_of_messages=results["number_of_messages"],
-            last_message_ts=None,
+            last_message_ts=datetime.fromisoformat(results["last_message_ts"]),
         )
 
 
@@ -100,7 +100,7 @@ def _increment_dag_antispam_stats(dag_id: str) -> DagAntispamStats:
     )
     new_number = current_stats.number_of_messages + 1
     new_ts = datetime.now()
-    all_data[dag_id] = {"number_of_messages": new_number, "last_message_ts": new_ts}
+    all_data[dag_id] = {"number_of_messages": new_number, "last_message_ts": new_ts.isoformat()}
     Variable.set(key=AIRFLOW_VAR_ID, value=all_data, serialize_json=True)
 
     return DagAntispamStats(number_of_messages=new_number, last_message_ts=new_ts)
