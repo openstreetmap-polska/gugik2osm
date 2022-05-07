@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import NamedTuple, Optional
 
+from airflow.hooks.base import BaseHook
 from airflow.models.variable import Variable
 from airflow.providers.discord.operators.discord_webhook import DiscordWebhookOperator
 
@@ -16,10 +17,12 @@ AIRFLOW_VAR_ID = "antispam_stats"
 def send_message(message: str, context: dict, http_conn_id: str = "discord_webhook") -> None:
     """Sends message to discord channel."""
 
+    conn = BaseHook.get_connection(http_conn_id)
+
     DiscordWebhookOperator(
         task_id="send_discord_message",
         http_conn_id=http_conn_id,
-        webhook_endpoint="webhooks/{{ conn.discord_webhook.login }}/{{ conn.discord_webhook.password }}",
+        webhook_endpoint=f"webhooks/{conn.login}/{conn.password}",
         message=message,
     ).execute(context)
     # use webhook_endpoint as template getting info from connection where token is a password
