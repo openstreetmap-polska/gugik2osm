@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import NamedTuple, Optional
 
 from airflow.hooks.base import BaseHook
+from airflow.models import DagRun
 from airflow.models.variable import Variable
 from airflow.providers.discord.operators.discord_webhook import DiscordWebhookOperator
 
@@ -36,14 +37,15 @@ def send_dag_run_status(context: dict, antispam: bool = True) -> None:
 
     dag_id = context["dag"].dag_id
     execution_date = context["execution_date"].isoformat()
+    dag_run: DagRun = context["dag_run"]
     url = _dag_run_url(dag_id, execution_date)
     stats = _increment_dag_antispam_stats(dag_id)
     if antispam:
         if _should_send(stats):
             send_message(
                 message=(
-                        "DAG: {{ dag_run.dag_id }} finished with status: {{ dag_run.state }}, " +
-                        "started: {{ dag_run.start_date }}, ended: {{ dag_run.end_date }}.\n" +
+                        f"DAG: {dag_run.dag_id} finished with status: {dag_run.state}, " +
+                        f"started: {dag_run.start_date}, ended: {dag_run.end_date}.\n" +
                         "There were a few messages sent already. To avoid spam new messages will be suppressed " +
                         "for an hour.\n" +
                         url
@@ -55,8 +57,8 @@ def send_dag_run_status(context: dict, antispam: bool = True) -> None:
     else:
         send_message(
             message=(
-                "DAG: {{ dag_run.dag_id }} finished with status: {{ dag_run.state }}, " +
-                "started: {{ dag_run.start_date }}, ended: {{ dag_run.end_date }}.\n" +
+                f"DAG: {dag_run.dag_id} finished with status: {dag_run.state}, " +
+                f"started: {dag_run.start_date}, ended: {dag_run.end_date}.\n" +
                 url
             ),
             context=context,
