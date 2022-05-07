@@ -41,7 +41,8 @@ def send_dag_run_status(context: dict, antispam: bool = True) -> None:
                 message=(
                         "DAG: {{ dag_run.dag_id }} finished with status: {{ dag_run.state }}, " +
                         "started: {{ dag_run.start_date }}, ended: {{ dag_run.end_date }}.\n" +
-                        "There were a few messages sent already. To avoid spam new messages will be suppressed.\n" +
+                        "There were a few messages sent already. To avoid spam new messages will be suppressed " +
+                        "for an hour.\n" +
                         url
                 ),
                 context=context,
@@ -63,7 +64,7 @@ def _should_send(stats: DagAntispamStats) -> bool:
     if (
             stats.number_of_messages > 3
             and stats.last_message_ts
-            and stats.last_message_ts - datetime.now() < timedelta(days=1)
+            and stats.last_message_ts - datetime.now() < timedelta(hours=1)
     ):
         return False
     else:
