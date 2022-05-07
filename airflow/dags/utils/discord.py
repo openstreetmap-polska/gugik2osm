@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, timedelta
 from typing import NamedTuple, Optional
 
@@ -13,6 +14,7 @@ class DagAntispamStats(NamedTuple):
 
 
 AIRFLOW_VAR_ID = "antispam_stats"
+logger = logging.getLogger()
 
 
 def send_message(message: str, context: dict, http_conn_id: str = "discord_webhook") -> None:
@@ -40,20 +42,8 @@ def send_dag_run_status(context: dict, antispam: bool = True) -> None:
     dag_run: DagRun = context["dag_run"]
     url = _dag_run_url(dag_id, execution_date)
     stats = _increment_dag_antispam_stats(dag_id)
-    if antispam:
-        if _should_send(stats):
-            send_message(
-                message=(
-                        f"DAG: {dag_run.dag_id} finished with status: {dag_run.state}, " +
-                        f"started: {dag_run.start_date}, ended: {dag_run.end_date}.\n" +
-                        "There were a few messages sent already. To avoid spam new messages will be suppressed " +
-                        "for an hour.\n" +
-                        url
-                ),
-                context=context,
-            )
-        else:
-            print("Suppressing message to avoid spam.")
+    if antispam and not _should_send(stats):
+        logger.info("Suppressing message to avoid spam.")
     else:
         send_message(
             message=(
