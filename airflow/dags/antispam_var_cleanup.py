@@ -3,7 +3,7 @@ import datetime
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
-from dags.utils.discord import reset_dag_antispam_old_stats
+from utils.discord import reset_dag_antispam_old_stats
 
 with DAG(
     dag_id="antispam_variable_cleanup",
