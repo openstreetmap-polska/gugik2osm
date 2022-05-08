@@ -68,6 +68,7 @@ with DAG(
     release_process_lock_task = PythonOperator(
         task_id="mark_process_as_succeeded",
         python_callable=mark_process_as_succeeded,
+        on_failure_callback=mark_process_as_failed,
     )
 
     # set task execution order
