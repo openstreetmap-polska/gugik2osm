@@ -60,7 +60,7 @@ def _should_send(stats: DagAntispamStats) -> bool:
     if (
             stats.number_of_messages > 3
             and stats.last_message_ts
-            and stats.last_message_ts - datetime.now() < timedelta(hours=1)
+            and abs(stats.last_message_ts - datetime.now()) < timedelta(hours=1)
     ):
         return False
     else:
@@ -114,7 +114,7 @@ def reset_dag_antispam_old_stats() -> None:
         deserialize_json=True,
     )
     for k, v in all_data.items():
-        if datetime.fromisoformat(v["last_message_ts"]) - datetime.now() >= timedelta(hours=1):
+        if abs(datetime.fromisoformat(v["last_message_ts"]) - datetime.now()) >= timedelta(hours=1):
             all_data[k] = {"number_of_messages": 0, "last_message_ts": v["last_message_ts"]}
 
     Variable.set(key=AIRFLOW_VAR_ID, value=all_data, serialize_json=True)
