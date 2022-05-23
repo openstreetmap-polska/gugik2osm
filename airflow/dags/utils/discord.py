@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from typing import NamedTuple, Optional
+from urllib.parse import urlencode
 
 from airflow.hooks.base import BaseHook
 from airflow.models import DagRun
@@ -67,7 +68,9 @@ def _should_send(stats: DagAntispamStats) -> bool:
 
 
 def _dag_run_url(dag_id: str, execution_date: str) -> str:
-    return f"https://budynki.openstreetmap.org.pl/airflow/graph?dag_id={dag_id}&root=&execution_date={execution_date}"
+    return "https://budynki.openstreetmap.org.pl/airflow/graph?" + urlencode(
+        {"dag_id": dag_id, "execution_date": execution_date}
+    )
 
 
 def _check_dag_antispam_stats(dag_id: str) -> DagAntispamStats:
