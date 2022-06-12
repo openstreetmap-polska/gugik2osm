@@ -1,9 +1,15 @@
 import datetime
+from functools import partial
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
 from utils.discord import reset_dag_antispam_old_stats
+from utils.discord import send_dag_run_status
+
+
+send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
+
 
 with DAG(
     dag_id="antispam_variable_cleanup",
@@ -11,6 +17,7 @@ with DAG(
     start_date=datetime.datetime(2022, 3, 27),
     schedule_interval="@hourly",
     catchup=False,
+    on_failure_callback=send_dag_run_status_to_discord,
 ) as dag:
 
     pg_check_version_task = PythonOperator(

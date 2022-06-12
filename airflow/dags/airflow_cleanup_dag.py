@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime, timezone, timedelta
+from functools import partial
 
 from sqlalchemy import delete
 from airflow.models import DAG, Log, DagRun, TaskInstance, TaskReschedule, Variable
@@ -9,12 +10,17 @@ from airflow.operators.python import PythonOperator
 from airflow.utils.state import State
 from airflow.utils.session import provide_session
 
-EXPIRATION_WEEKS = 3
+from utils.discord import send_dag_run_status
+
+
+EXPIRATION_WEEKS = 2
+
+send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
 
 
 @provide_session
 def delete_old_database_entries_by_model(table, date_col, session=None):
-    expiration_date = datetime.now(timezone.utc) - timedelta(weeks=EXPIRATION_WEEKS)
+    expiration_date = datetime.now(timezone.utc) - timedelta(weeks=EXPIRATION_WEEKS, days=1)
     query = delete(table).where(date_col < expiration_date)
 
     if "state" in dir(table):
@@ -51,6 +57,7 @@ dag = DAG(
     dagrun_timeout=timedelta(minutes=20),
     schedule_interval="@daily",
     catchup=False,
+    on_failure_callback=send_dag_run_status_to_discord,
 )
 
 PythonOperator(

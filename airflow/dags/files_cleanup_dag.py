@@ -1,9 +1,15 @@
 import datetime
+from functools import partial
 
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
 from airflow.models.baseoperator import chain
+
+from utils.discord import send_dag_run_status
+
+
+send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
 
 
 with DAG(
@@ -12,6 +18,7 @@ with DAG(
     start_date=datetime.datetime(2022, 5, 23),
     schedule_interval="@daily",
     catchup=False,
+    on_failure_callback=send_dag_run_status_to_discord,
 ) as dag:
 
     start_task = DummyOperator(task_id="start")
