@@ -48,7 +48,7 @@ with DAG(
         task_id="remove_old_airflow_logs",
         bash_command=r"""
             set -e;
-            find /opt/gugik2osm/airflow/logs/**/*.log -mtime +15 -type f -print -delete;
+            find /opt/gugik2osm/airflow/logs/ -name "*.log" -mtime +15 -type f -print -delete;
             find /opt/gugik2osm/airflow/logs/ -empty -type d -delete;
         """.strip(),
     )
