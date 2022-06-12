@@ -110,7 +110,7 @@ def read_inmemory_zipfile(file: BytesIO) -> StringIO:
                 # CSVs are not encoded properly, we need to be careful with non-standard apostrophes
                 # postgres COPY handles quotes inside string even if not properly escaped,
                 # but they need to be a matching pair
-                fixed_text = re.sub('["＂〃ˮײ᳓″״‶˶ʺ“”˝‟]', '"', text)
+                fixed_text = re.sub('["＂〃ˮײ᳓″״‶˶ʺ“”˝‟„]', '"', text)
                 return StringIO(fixed_text)
         raise Exception('Did not find CSV file inside ZIP.')
 
