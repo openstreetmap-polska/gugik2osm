@@ -23,6 +23,16 @@ mark_process_as_succeeded = partial(set_process_status_finished, process_name, S
 send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=True)
 
 
+default_args = {
+    "retries": 1,
+    "retry_delay": datetime.timedelta(seconds=10),
+    "depends_on_past": False,
+    "email": [],
+    "email_on_failure": False,
+    "email_on_retry": False,
+}
+
+
 with DAG(
     dag_id="data_update_incremental",
     description="Updates data every minute",
@@ -30,6 +40,8 @@ with DAG(
     schedule_interval="*/1 * * * *",
     catchup=False,
     on_failure_callback=send_dag_run_status_to_discord,
+    max_active_runs=1,
+    default_args=default_args,
 ) as dag:
 
     insert_expired_tiles_task = BashOperator(

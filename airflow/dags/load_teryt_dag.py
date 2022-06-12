@@ -13,6 +13,15 @@ send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
 postgres_conn_id = "postgres_default"
 teryt_conn_id = "teryt_api_prod"
 
+default_args = {
+    "retries": 1,
+    "retry_delay": datetime.timedelta(minutes=60),
+    "depends_on_past": False,
+    "email": [],
+    "email_on_failure": False,
+    "email_on_retry": False,
+}
+
 
 with DAG(
     dag_id="teryt_loader",
@@ -21,6 +30,8 @@ with DAG(
     schedule_interval="0 1 * * MON-FRI",
     catchup=False,
     on_failure_callback=send_dag_run_status_to_discord,
+    max_active_runs=1,
+    default_args=default_args,
 ) as dag:
 
     recreate_tables = PostgresOperator(
