@@ -122,7 +122,10 @@ def load2pg(content: StringIO, sql: str, connection_name: str = "postgres_defaul
     logger.info('Loading data.')
     cur.copy_expert(sql=sql, file=content)
     logger.info(cur.statusmessage)
+    logger.info(cur.rowcount)
     conn.commit()
+    for notice in conn.notices:
+        logger.info(str(notice).strip())
     conn.close()
     logger.info('Connection closed.')
 
