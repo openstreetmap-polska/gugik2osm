@@ -35,7 +35,7 @@ with DAG(
     )
 
     create_data_backup = BashOperator(
-        task_id="schema_backup",
+        task_id="data_backup",
         bash_command='''
             set -e;
             sudo -u postgres pg_dump --format c --compress 9 --no-owner --no-privileges --file /opt/gugik2osm/temp/export/db.bak --dbname gugik2osm;
