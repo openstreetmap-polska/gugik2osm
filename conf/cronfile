@@ -21,6 +21,8 @@
 # 33 */1 * * * ttaras /opt/gugik2osm/git/processing/bash/low_lvl_zoom_tiles_update.sh
 ## daily
 #0 1 * * MON-FRI ttaras /opt/gugik2osm/git/processing/bash/teryt_processing.sh
+7 6,12,18 * * ttaras chmod -R 777 /opt/gugik2osm/temp_changesets/
+14 6,12,18 * * ttaras chmod -R 777 /opt/gugik2osm/imposm3/imposm_diff/
 0 0 */1 * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
 ## weekly
 0 10 * * WED ttaras /opt/gugik2osm/git/processing/bash/bdot10k_dl.sh
