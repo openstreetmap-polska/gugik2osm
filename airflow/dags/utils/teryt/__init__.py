@@ -4,3 +4,7 @@ from .api import (
     registriesConfiguration,
     wsdl_path,
 )
+from .static_codes_lists import (
+    voivodeship_codes,
+    county_codes,
+)
