@@ -51,4 +51,4 @@
 #4 0 * * * ttaras find /opt/gugik2osm/temp_changesets/**/*.osm.gz -mtime +1 -type f -exec rm {} \;
 #6 0 * * * ttaras find /opt/gugik2osm/temp_changesets/ -empty -type d -delete
 0 3 * *  TUE root journalctl --vacuum-time=10d
-0 1 * * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
+#0 1 * * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/

@@ -8,6 +8,7 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.models.baseoperator import chain
 
 from utils.discord import send_dag_run_status
+from utils.expired_tiles import insert_tiles_from_newest_file
 from utils.process_locks import (
     no_prg_updates_in_progress,
     set_process_status_running,
@@ -44,13 +45,10 @@ with DAG(
     default_args=default_args,
 ) as dag:
 
-    insert_expired_tiles_task = BashOperator(
+    insert_expired_tiles_task = PythonOperator(
         task_id="insert_expired_tiles",
-        bash_command=(
-            "/opt/gugik2osm/venv/bin/python3 -u " +
-            "/opt/gugik2osm/git/processing/scripts/expired_tiles.py " +
-            "--insert-exp-tiles --dir /opt/gugik2osm/imposm3/exptiles/ --dotenv /opt/gugik2osm/conf/.env"
-        ),
+        python_callable=insert_tiles_from_newest_file,
+        op_args=["/opt/gugik2osm/imposm3/exptiles/"],
     )
 
     check_process_locks_task = ShortCircuitOperator(

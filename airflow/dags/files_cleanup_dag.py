@@ -5,8 +5,10 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
 from airflow.models.baseoperator import chain
+from airflow.operators.python import PythonOperator
 
 from utils.discord import send_dag_run_status
+from utils.expired_tiles import remove_folder_older_than_today
 
 
 send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
@@ -31,6 +33,12 @@ with DAG(
             find /opt/gugik2osm/imposm3/imposm_diff/0* -mtime +7 -type f -print -delete;
             find /opt/gugik2osm/imposm3/imposm_diff/0* -empty -type d -delete;
         """.strip(),
+    )
+
+    remove_old_expired_tiles_task = PythonOperator(
+        task_id="remove_old_expired_tiles_data",
+        python_callable=remove_folder_older_than_today,
+        op_args=["/opt/gugik2osm/imposm3/exptiles/"],
     )
 
     remove_old_changesets_task = BashOperator(
@@ -64,6 +72,7 @@ with DAG(
         start_task,
         [
             remove_old_imposm_files_task,
+            remove_old_imposm_data_task,
             remove_old_changesets_task,
             truncate_gugik2osm_log_files_task,
             remove_old_airflow_logs_task,
