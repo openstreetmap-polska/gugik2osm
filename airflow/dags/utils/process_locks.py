@@ -11,11 +11,15 @@ class StatusNames(NamedTuple):
 class ProcessNames(NamedTuple):
     full_update: str
     incremental_update: str
+    teryt_update: str
+    db_lock: str
 
 
 PROCESS_NAMES = ProcessNames(
     full_update="prg_full_update",
     incremental_update="prg_partial_update",
+    teryt_update="teryt_update",
+    db_lock="db_lock"
 )
 
 STATUSES = StatusNames("SUCCESS", "FAIL")
