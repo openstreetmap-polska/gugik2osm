@@ -30,6 +30,24 @@ def get_data(sql: str, params: Optional[dict], postgres_conn_id: str = "postgres
     return results
 
 
+def full_prg_update_in_progress() -> bool:
+    """Checks if full data update is in progress and returns True or False."""
+
+    rows = get_data(
+        sql="""
+            SELECT in_progress
+            FROM process_locks
+            WHERE process_name = %(full_update_name)s
+        """,
+        params={
+            "full_update_name": PROCESS_NAMES.full_update,
+        },
+    )
+    updates_in_progress = [row[0] for row in rows]
+
+    return any(updates_in_progress)
+
+
 def any_prg_updates_in_progress() -> bool:
     """Checks if any PRG data updates are in progress and returns True or False."""
 

@@ -4,8 +4,10 @@ from functools import partial
 from airflow import DAG
 from airflow.models.baseoperator import chain
 from airflow.operators.bash import BashOperator
+from airflow.sensors.python import PythonSensor
 
 from utils.discord import send_dag_run_status
+from utils.process_locks import full_prg_update_in_progress
 
 
 send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
@@ -19,6 +21,14 @@ with DAG(
     catchup=False,
     on_failure_callback=send_dag_run_status_to_discord,
 ) as dag:
+
+    full_update_sensor_task = PythonSensor(
+        task_id="full_update_sensor",
+        python_callable=lambda: not full_prg_update_in_progress(),
+        timeout=datetime.timedelta(hours=24).total_seconds(),
+        mode="reschedule",
+        poke_interval=datetime.timedelta(hours=1).total_seconds(),
+    )
 
     vacuum_analyze_task = BashOperator(
         task_id="vacuum_analyze",
@@ -44,6 +54,7 @@ with DAG(
     )
 
     chain(
+        full_update_sensor_task,
         vacuum_analyze_task,
         create_schema_backup,
         create_data_backup,
