@@ -72,7 +72,7 @@ with DAG(
         start_task,
         [
             remove_old_imposm_files_task,
-            remove_old_imposm_data_task,
+            remove_old_expired_tiles_task,
             remove_old_changesets_task,
             truncate_gugik2osm_log_files_task,
             remove_old_airflow_logs_task,
