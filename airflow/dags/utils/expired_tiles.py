@@ -5,8 +5,7 @@ from os.path import join
 from os import listdir
 from typing import List, Tuple, Generator
 
-from airflow.hooks.base import BaseHook
-
+from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 logger = logging.getLogger()
 
@@ -74,7 +73,7 @@ def insert_tiles_into_db(
     """.strip()
 
     if len(list_of_tiles) > 0:
-        conn = BaseHook.get_connection(postgres_connection_name)
+        conn = PostgresHook(postgres_conn_id=postgres_connection_name).get_conn()
         cur = conn.cursor()
         try:
             logger.info(f"Number of tiles to insert: {len(list_of_tiles)}")
