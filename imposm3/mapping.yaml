@@ -115,6 +115,12 @@ tables:
     mapping:
       "abandoned:building": [__any__]
       "demolished:building": [__any__]
+      "was:building": [__any__]
+      "razed:building": [__any__]
+      "disused:building": [__any__]
+      "removed:building": [__any__]
+      "destroyed:building": [__any__]
+      "man_made": ["foundations"]
   admin:
     columns:
     - name: osm_id
