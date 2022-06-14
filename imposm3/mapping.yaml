@@ -248,30 +248,6 @@ tables:
       leisure: [__any__]
       office: [__any__]
       sport: [__any__]
-  monitoring_station_points:
-    type: point
-    columns:
-    - name: osm_id
-      type: id
-    - name: geometry
-      type: geometry
-    - name: tags
-      type: hstore_tags
-    mapping:
-      man_made:
-      - monitoring_station
-  monitoring_station_areas:
-    type: polygon
-    columns:
-    - name: osm_id
-      type: id
-    - name: geometry
-      type: geometry
-    - name: tags
-      type: hstore_tags
-    mapping:
-      man_made:
-      - monitoring_station
   woods:
     type: polygon
     columns:
