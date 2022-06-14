@@ -1,1 +1,0 @@
--- Tutaj wpisujemy polecenia które będą uruchomione po aktualizacji bazy
