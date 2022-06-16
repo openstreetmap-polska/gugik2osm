@@ -10,7 +10,7 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 logger = logging.getLogger()
 
 
-def expired_tiles_from_newest_file(base_dir: str) -> Tuple[str, List[str]]:
+def expired_tiles_from_n_newest_files(base_dir: str, n: int = 3) -> Generator[Tuple[str, List[str]], None, None]:
 
     sorted_dirs = sorted(listdir(base_dir), reverse=True)
     if len(sorted_dirs) == 0:
@@ -20,13 +20,10 @@ def expired_tiles_from_newest_file(base_dir: str) -> Tuple[str, List[str]]:
     path = join(base_dir, newest_dir)
     files_with_tiles = [x for x in listdir(path) if x.endswith('.tiles')]
 
-    if len(files_with_tiles) == 0:
-        return tuple()
-
-    newest_file = sorted(files_with_tiles, reverse=True)[0]
-    with open(join(path, newest_file), 'r') as f:
-        lines = f.readlines()
-    return newest_file, lines
+    for file_path in sorted(files_with_tiles, reverse=True)[:n]:
+        with open(join(path, file_path), 'r') as f:
+            lines = f.readlines()
+            yield file_path, lines
 
 
 def expired_tiles_from_all_todays_files(base_dir: str) -> Generator[Tuple[str, List[str]], None, None]:
@@ -72,11 +69,12 @@ def insert_tiles_into_db(
         on conflict do nothing
     """.strip()
 
+    logger.info(f"Inserting tiles from: {file_name}.")
     if len(list_of_tiles) > 0:
         conn = PostgresHook(postgres_conn_id=postgres_connection_name).get_conn()
         cur = conn.cursor()
+        logger.info(f"Number of tiles to insert: {len(list_of_tiles)}")
         try:
-            logger.info(f"Number of tiles to insert: {len(list_of_tiles)}")
             cur.execute(temp_table_ddl)
             values = [
                 cur.mogrify("(%s,%s,%s,%s)", tup).decode('utf8')
@@ -122,6 +120,6 @@ def remove_folder_older_than_today(base_dir: str) -> None:
         shutil.rmtree(path)
 
 
-def insert_tiles_from_newest_file(folder: str) -> None:
-    file_name, list_of_tiles = expired_tiles_from_newest_file(folder)
-    insert_tiles_into_db(file_name, list_of_tiles)
+def insert_tiles_from_n_newest_files(folder: str, n: int = 3) -> None:
+    for file_name, list_of_tiles in expired_tiles_from_n_newest_files(base_dir=folder, n=n):
+        insert_tiles_into_db(file_name, list_of_tiles)

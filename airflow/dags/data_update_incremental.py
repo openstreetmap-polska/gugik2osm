@@ -8,7 +8,7 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.models.baseoperator import chain
 
 from utils.discord import send_dag_run_status
-from utils.expired_tiles import insert_tiles_from_newest_file
+from utils.expired_tiles import insert_tiles_from_n_newest_files
 from utils.process_locks import (
     no_prg_updates_in_progress,
     set_process_status_running,
@@ -47,7 +47,7 @@ with DAG(
 
     insert_expired_tiles_task = PythonOperator(
         task_id="insert_expired_tiles",
-        python_callable=insert_tiles_from_newest_file,
+        python_callable=insert_tiles_from_n_newest_files,
         op_args=["/opt/gugik2osm/imposm3/exptiles/"],
     )
 
