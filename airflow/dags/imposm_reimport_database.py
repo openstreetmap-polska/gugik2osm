@@ -65,7 +65,7 @@ with DAG(
         bash_command='''
             set -e;
             cd /opt/gugik2osm/imposm3/ ;
-            sudo -u ttaras wget https://download.geofabrik.de/europe/poland-latest.osm.pbf ;
+            sudo -u ttaras wget --quiet https://download.geofabrik.de/europe/poland-latest.osm.pbf ;
         '''.strip()
     )
 
