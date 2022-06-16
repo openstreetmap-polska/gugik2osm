@@ -35,18 +35,21 @@ with DAG(
         """.strip(),
     )
 
-    remove_old_expired_tiles_task = PythonOperator(
+    remove_old_expired_tiles_task = BashOperator(
         task_id="remove_old_expired_tiles_data",
-        python_callable=remove_folder_older_than_today,
-        op_args=["/opt/gugik2osm/imposm3/exptiles/"],
+        bash_command=r"""
+            set -e;
+            sudo find /opt/gugik2osm/imposm3/exptiles/ -mtime +2 -type f -print -delete;
+            sudo find /opt/gugik2osm/imposm3/exptiles/ -empty -type d -delete;
+        """.strip(),
     )
 
     remove_old_changesets_task = BashOperator(
         task_id="remove_old_changesets",
         bash_command=r"""
             set -e;
-            find /opt/gugik2osm/temp_changesets/ -name "*.osm.gz" -mtime +1 -type f -print -delete;
-            find /opt/gugik2osm/temp_changesets/ -empty -type d -delete;
+            sudo find /opt/gugik2osm/temp_changesets/ -name "*.osm.gz" -mtime +1 -type f -print -delete;
+            sudo find /opt/gugik2osm/temp_changesets/ -empty -type d -delete;
         """.strip(),
     )
 
