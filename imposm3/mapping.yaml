@@ -106,12 +106,8 @@ tables:
       type: id
     - name: geometry
       type: geometry
-    - key: "abandoned:building"
-      name: abandoned_building
-      type: string
-    - key: "demolished:building"
-      name: demolished_building
-      type: string
+    - name: tags
+      type: hstore_tags
     mapping:
       "abandoned:building": [__any__]
       "demolished:building": [__any__]
@@ -284,4 +280,3 @@ tables:
     mapping:
       natural:
       - tree
-
