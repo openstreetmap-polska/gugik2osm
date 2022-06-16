@@ -78,7 +78,7 @@ with DAG(
     )
 
     start_imposm_service_task = BashOperator(
-        task_id="stop_imposm_service",
+        task_id="start_imposm_service",
         bash_command='''
             set -e;
             sudo service imposm stop;
