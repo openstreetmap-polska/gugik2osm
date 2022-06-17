@@ -1,4 +1,5 @@
 import datetime
+import logging
 from functools import partial
 from pathlib import Path
 
@@ -22,17 +23,23 @@ mark_process_as_succeeded = partial(set_process_status_finished, process_name, S
 send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
 
 
+logger = logging.getLogger()
+
+
 def check_imposm_state(diff_folder: str) -> datetime.datetime:
     path = Path(diff_folder) / "last.state.txt"
     content = path.read_text(encoding="utf-8")
-    first_line = content.split("\n")[0].strip().replace(r"\:", ":")
+    first_line = content.split("\n")[0].strip().replace(r"\:", ":").replace("Z", "+00:00")
+    logger.info(f"Imposm3 state: {first_line}")
     timestamp = datetime.datetime.fromisoformat(first_line.split("=")[1])
     return timestamp
 
 
 def imposm_state_lag(diff_folder: str) -> datetime.timedelta:
     imposm_state_ts = check_imposm_state(diff_folder)
-    return abs(datetime.datetime.now() - imposm_state_ts)
+    delta = abs(datetime.datetime.now() - imposm_state_ts)
+    logger.info(delta)
+    return delta
 
 
 with DAG(
