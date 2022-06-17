@@ -26,7 +26,7 @@ def check_imposm_state(diff_folder: str) -> datetime.datetime:
     path = Path(diff_folder) / "last.state.txt"
     content = path.read_text(encoding="utf-8")
     first_line = content.split("\n")[0].strip().replace(r"\:", ":")
-    timestamp = datetime.datetime.fromisoformat(first_line.split("=")[0])
+    timestamp = datetime.datetime.fromisoformat(first_line.split("=")[1])
     return timestamp
 
 
