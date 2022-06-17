@@ -37,7 +37,7 @@ def check_imposm_state(diff_folder: str) -> datetime.datetime:
 
 def imposm_state_lag(diff_folder: str) -> datetime.timedelta:
     imposm_state_ts = check_imposm_state(diff_folder)
-    delta = abs(datetime.datetime.now() - imposm_state_ts)
+    delta = abs(datetime.datetime.now(datetime.timezone.utc) - imposm_state_ts)
     logger.info(delta)
     return delta
 
