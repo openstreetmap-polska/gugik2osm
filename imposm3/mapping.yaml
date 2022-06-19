@@ -116,6 +116,7 @@ tables:
       "disused:building": [__any__]
       "removed:building": [__any__]
       "destroyed:building": [__any__]
+      "proposed:building": [__any__]
       man_made: [foundations]
   admin:
     columns:
