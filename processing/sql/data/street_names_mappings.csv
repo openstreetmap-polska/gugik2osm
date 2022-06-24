@@ -4798,11 +4798,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0972080,28374,ks. Józefa Ożoga,Księdza Józefa Ożoga
 0362080,36450,ks. Józefa Panasia,Księdza Józefa Panasia
 0169680,56807,Ks. Józefa Paszoty,Księdza Józefa Paszoty
-0974328,33487,ks. Józefa Poniatowskiego,Księdza Józefa Poniatowskiego
-0920539,33487,ks. Józefa Poniatowskiego,Księdza Józefa Poniatowskiego
-0947308,33487,ks. Józefa Poniatowskiego,Księdza Józefa Poniatowskiego
-0977278,33487,ks. Józefa Poniatowskiego,Księdza Józefa Poniatowskiego
-0934659,52930,Ks. Józefa Poniatowskiego,Księdza Józefa Poniatowskiego
 0644750,52265,ks. Józefa Przybyły,Księdza Józefa Przybyły
 0954685,30267,ks. Józefa Rogalińskiego,Księdza Józefa Rogalińskiego
 0165681,34894,ks. Józefa Rotty,Księdza Józefa Rotty
@@ -4875,6 +4870,9 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0941286,25114,ks. kard. Stefana Wyszyńskiego,Księdza Kardynała Stefana Wyszyńskiego
 0929428,25114,ks. kard. Stefana Wyszyńskiego,Księdza Kardynała Stefana Wyszyńskiego
 0935558,25114,ks. kard. Stefana Wyszyńskiego,Księdza Kardynała Stefana Wyszyńskiego
+0947308,33487,ks. Józefa Poniatowskiego,Księcia Józefa Poniatowskiego
+0920539,33487,ks. Józefa Poniatowskiego,Księcia Józefa Poniatowskiego
+0977278,33487,ks. Józefa Poniatowskiego,Księcia Józefa Poniatowskiego
 0959435,25114,ks. kard. Stefana Wyszyńskiego,Księdza Kardynała Stefana Wyszyńskiego
 0966330,25114,ks. kard. Stefana Wyszyńskiego,Księdza Kardynała Stefana Wyszyńskiego
 0921237,25114,ks. kard. Stefana Wyszyńskiego,Księdza Kardynała Stefana Wyszyńskiego
@@ -9815,7 +9813,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0937474,24836,W. Wróblewskiego,Walery Wróblewskiego
 0947930,34308,wachm. Tarzana,Wachmistrza Tarzana
 0982724,19910,Wały gen. Władysława Sikorskiego,Wały Generała Władysława Sikorskiego
-0954047,23601,Wały ks. Józefa Poniatowskiego,Wały Księdza Józefa Poniatowskiego
 0954604,49121,Wały Księcia J. Poniatowskiego,Wały Księcia Józefa Poniatowskiego
 0977539,23703,Waryńskiego,Ludwika Waryńskiego
 0495467,23703,Waryńskiego,Ludwika Waryńskiego
@@ -11394,3 +11391,43 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0966412,56229,ppłk. Leona Jakuba Gnatowskiego,Podpułkownika Leona Jakuba Gnatowskiego
 0261953,48121,Św. Jana,Świętego Jana
 0005032,55460,Św. Rity,Świętej Rity
+0983681,59685,Aleja gen. Charles'a de Gaulle'a,Aleja Generała Charlesa de Gaulle'a
+0971614,33284,E. Orzeszkowej,Elizy Orzeszkowej
+0987510,59569,Gen. Mikołaja Bołtucia,Generała Mikołaja Bołtucia
+0971614,33503,K. I. Gałczyńskiego,Konstantego Ildefonsa Gałczyńskiego
+0947030,59656,Kpt. Józefa Kurka-Halnego,Kapitana Józefa Kurka-Halnego
+0948667,59546,Ks. Dominika Jędrzejewskiego,Księdza Dominika Jędrzejewskiego
+0951617,52930,Ks. Józefa Poniatowskiego,Księcia Józefa Poniatowskiego
+0551527,59690,Ks. Jędrzeja Kitowicza,Księdza Jędrzeja Kitowicza
+0987064,59525,Ks. Kanonika Jana Puka,Księdza Kanonika Jana Puka
+0222108,59691,Ks. Kanonika Mieczysława Jesionka,Księdza Kanonika Mieczysława Jesionka
+0519558,59702,Ks. Skłodowskiego,Księdza Mariana Skłodowskiego
+0242750,52412,Ks. Władysława Siarkowskiego,Księdza Władysława Siarkowskiego
+0038267,27348,M. Konopnickiej,Marii Konopnickiej
+0967334,59684,Mjr.Hubala,Majora Hubala
+0951876,59699,O. Adama F. Studzińskiego,Ojca Adama Studzińskiego
+0932726,59574,Osiedle im. Władysława Jagiełły,Osiedle Władysława Jagiełły
+0965016,53309,Plac Rondo im. Rodłaków,Rondo imienia Rodłaków
+0984657,59565,Plac św. Jana Pawła II,Plac Świętego Jana Pawła II
+0954449,59709,Skwer ks. Stanisława Chłopeckiego,Skwer Księdza Stanisława Chłopeckiego
+0543516,35079,Wł. Reymonta,Władysława Reymonta
+0951876,59701,gen. Emila Fieldorfa Nila,Generała Emila Fieldorfa Nila
+0515885,06485,gen. Józefa Hallera,Generała Józefa Hallera
+0986283,10495,gen. Józefa Kustronia,Generała Józefa Kustronia
+0930414,06191,gen. Stefana Grota-Roweckiego,Generała Stefana Grota-Roweckiego
+0582812,59627,kpt. Kazimierza Rzaniaka,Kapitana Kazimierza Rzaniaka
+0934837,41313,ks. Feliksa Bolta,Księdza Feliksa Bolta
+0981682,59655,ks. Józefa Skwiruta,Księdza Józefa Skwiruta
+0934553,36746,ks. Józefa Wryczy,Księdza Józefa Wryczy
+0921645,20010,ks. Piotra Skargi,Księdza Piotra Skargi
+0935802,58563,ks. Prałata Józefa Steca,Księdza Prałata Józefa Steca
+0934837,24847,ks. ppłk. Józefa Wryczy,Księdza Podpułkownika Józefa Wryczy
+0007657,58604,ppłka. pil. Mariana Pisarka,Podpułkownika Pilota Mariana Pisarka
+0957620,59591,płk. Bolesława Mościckiego,Pułkownika Bolesława Mościckiego
+0010599,58888,płk. pil. Tadeusza Koca,Pułkownika Pilota Tadeusza Koca
+0519423,48374,Św. Anny,Świętej Anny
+0947030,48119,Św. Barbary,Świętej Barbary
+0215338,00339,św. Anny,Świętej Anny
+0934659,52930,Ks. Józefa Poniatowskiego,Księcia Józefa Poniatowskiego
+0954047,23601,Wały ks. Józefa Poniatowskiego,Wały Księcia Józefa Poniatowskiego
+0974328,33487,ks. Józefa Poniatowskiego,Księcia Józefa Poniatowskiego
