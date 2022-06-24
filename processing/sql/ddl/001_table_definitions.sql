@@ -491,8 +491,7 @@ CREATE TABLE if not exists teryt.wmrodz (
 CREATE TABLE IF NOT EXISTS osm_abandoned_or_demolished_buildings (
     id integer NOT NULL,
     osm_id bigint NOT NULL,
-    abandoned_building character varying,
-    demolished_building character varying,
+    tags hstore,
     geometry geometry(Geometry,4326),
     CONSTRAINT osm_abandoned_or_demolished_buildings_pkey PRIMARY KEY (osm_id, id)
 );

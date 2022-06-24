@@ -1,7 +1,23 @@
 import datetime
+from functools import partial
 
 from airflow import DAG
 from airflow.providers.postgres.operators.postgres import PostgresOperator
+
+from utils.discord import send_dag_run_status
+
+
+send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
+
+
+default_args = {
+    "retries": 1,
+    "retry_delay": datetime.timedelta(seconds=10),
+    "depends_on_past": False,
+    "email": [],
+    "email_on_failure": False,
+    "email_on_retry": False,
+}
 
 
 with DAG(
@@ -10,6 +26,9 @@ with DAG(
     start_date=datetime.datetime(2022, 3, 27),
     schedule_interval="@hourly",
     catchup=False,
+    on_failure_callback=send_dag_run_status_to_discord,
+    max_active_runs=1,
+    default_args=default_args,
 ) as dag:
 
     PostgresOperator(

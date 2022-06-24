@@ -39,6 +39,7 @@ var map = new mapboxgl.Map({
                     "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 ],
                 "tileSize": 256,
+                "attribution": "dane <a class=\"text-primary\" href=https://www.openstreetmap.org/copyright>OpenStreetMap ©</a>"
             },
             "pol-raster-tiles": {
                 "type": "raster",
@@ -71,17 +72,17 @@ var map = new mapboxgl.Map({
         "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
         "layers": [
             {
-//                "id": "simple-tiles",
-//                "type": "raster",
-//                "source": "raster-tiles",
-//                "minzoom": 0,
-//                "maxzoom": 21
-//            }, {
-                "id": "polish-tiles",
+                "id": "simple-tiles",
                 "type": "raster",
-                "source": "pol-raster-tiles",
-                "minzoom": 5,
-                "maxzoom": 20
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 19
+//            }, {
+//                "id": "polish-tiles",
+//                "type": "raster",
+//                "source": "pol-raster-tiles",
+//                "minzoom": 5,
+//                "maxzoom": 20
             }, {
                 "id": "buildings",
                 "type": "fill",

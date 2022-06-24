@@ -1,0 +1,1667 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="TerytWs1" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"><script/>
+<wsp:Policy wsu:Id="custom_policy">
+<wsp:ExactlyOne>
+<wsp:All>
+<sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy>
+<sp:TransportToken>
+<wsp:Policy>
+<sp:HttpsToken RequireClientCertificate="false"/> 
+</wsp:Policy>
+</sp:TransportToken>
+<sp:AlgorithmSuite>
+<wsp:Policy>
+<sp:Basic256/> 
+</wsp:Policy>
+</sp:AlgorithmSuite>
+<sp:Layout>
+<wsp:Policy>
+<sp:Strict/> 
+</wsp:Policy>
+</sp:Layout>
+<sp:IncludeTimestamp/> 
+</wsp:Policy>
+</sp:TransportBinding>
+<sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy>
+<sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+<wsp:Policy>
+<sp:WssUsernameToken10/> 
+</wsp:Policy>
+</sp:UsernameToken>
+</wsp:Policy>
+</sp:SignedSupportingTokens>
+<sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy/> 
+</sp:Wss11>
+<sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy>
+<sp:MustSupportIssuedTokens/> 
+<sp:RequireClientEntropy/> 
+<sp:RequireServerEntropy/> 
+</wsp:Policy>
+</sp:Trust10>
+<wsaw:UsingAddressing/> 
+</wsp:All>
+</wsp:ExactlyOne>
+</wsp:Policy>
+<wsdl:types>
+<xsd:schema targetNamespace="http://tempuri.org/Imports">
+<xsd:import schemaLocation="https://uslugaterytws1test.stat.gov.pl/wsdl/xsd0.xsd" namespace="http://tempuri.org/"/> 
+<xsd:import schemaLocation="https://uslugaterytws1test.stat.gov.pl/wsdl/xsd1.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/"/> 
+<xsd:import schemaLocation="https://uslugaterytws1test.stat.gov.pl/wsdl/xsd2.xsd" namespace="http://schemas.datacontract.org/2004/07/TerytUslugaWs1"/>
+<xsd:import schemaLocation="https://uslugaterytws1test.stat.gov.pl/wsdl/xsd3.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/> 
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="ITerytWs1_CzyZalogowany_InputMessage">
+<wsdl:part name="parameters" element="tns:CzyZalogowany"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_CzyZalogowany_OutputMessage">
+<wsdl:part name="parameters" element="tns:CzyZalogowanyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_Zweryfikowany_InputMessage">
+<wsdl:part name="parameters" element="tns:Zweryfikowany"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_Zweryfikowany_OutputMessage">
+<wsdl:part name="parameters" element="tns:ZweryfikowanyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzDateAktualnegoKatTerc_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzDateAktualnegoKatTerc"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzDateAktualnegoKatTerc_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzDateAktualnegoKatTercResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzDateAktualnegoKatNTS_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzDateAktualnegoKatNTS"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzDateAktualnegoKatNTS_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzDateAktualnegoKatNTSResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzDateAktualnegoKatSimc_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzDateAktualnegoKatSimc"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzDateAktualnegoKatSimc_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzDateAktualnegoKatSimcResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzDateAktualnegoKatUlic_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzDateAktualnegoKatUlic"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzDateAktualnegoKatUlic_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzDateAktualnegoKatUlicResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeWojewodztw_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeWojewodztw"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeWojewodztw_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeWojewodztwResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListePowiatow_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListePowiatow"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListePowiatow_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListePowiatowResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeGmin_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeGmin"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeGmin_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeGminResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzGminyiPowDlaWoj_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzGminyiPowDlaWoj"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzGminyiPowDlaWoj_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzGminyiPowDlaWojResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeRegionow_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeRegionow"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeRegionow_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeRegionowResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListePodregionow_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListePodregionow"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListePodregionow_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListePodregionowResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeWojewodztwWRegionie_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeWojewodztwWRegionie"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeWojewodztwWRegionie_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeWojewodztwWRegionieResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListePowiatowWPodregionie_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListePowiatowWPodregionie"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListePowiatowWPodregionie_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListePowiatowWPodregionieResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeGminPowiecie_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeGminPowiecie"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeGminPowiecie_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeGminPowiecieResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeUlicDlaMiejscowosci_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeUlicDlaMiejscowosci"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeUlicDlaMiejscowosci_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeUlicDlaMiejscowosciResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeMiejscowosciWGminie_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeMiejscowosciWGminie"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeMiejscowosciWGminie_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeMiejscowosciWGminieResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeMiejscowosciWGminieZSymbolem_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeMiejscowosciWGminieZSymbolem"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeMiejscowosciWGminieZSymbolem_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeMiejscowosciWGminieZSymbolemResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeMiejscowosciWRodzajuGminy_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeMiejscowosciWRodzajuGminy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzListeMiejscowosciWRodzajuGminy_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzListeMiejscowosciWRodzajuGminyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzSlownikRodzajowJednostek_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzSlownikRodzajowJednostek"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzSlownikRodzajowJednostek_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzSlownikRodzajowJednostekResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzSlownikRodzajowSIMC_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzSlownikRodzajowSIMC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzSlownikRodzajowSIMC_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzSlownikRodzajowSIMCResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzSlownikCechULIC_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzSlownikCechULIC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzSlownikCechULIC_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzSlownikCechULICResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogTERCAdr_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogTERCAdr"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogTERCAdr_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogTERCAdrResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogTERC_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogTERC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogTERC_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogTERCResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogNTS_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogNTS"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogNTS_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogNTSResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogSIMCAdr_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogSIMCAdr"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogSIMCAdr_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogSIMCAdrResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogSIMC_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogSIMC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogSIMC_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogSIMCResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogSIMCStat_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogSIMCStat"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogSIMCStat_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogSIMCStatResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogULIC_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogULIC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogULIC_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogULICResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogULICAdr_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogULICAdr"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogULICAdr_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogULICAdrResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogULICBezDzielnic_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogULICBezDzielnic"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogULICBezDzielnic_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogULICBezDzielnicResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzStaryKatalogULIC_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzStaryKatalogULIC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzStaryKatalogULIC_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzStaryKatalogULICResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogWMRODZ_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogWMRODZ"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzKatalogWMRODZ_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzKatalogWMRODZResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyTercUrzedowy_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyTercUrzedowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyTercUrzedowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyTercUrzedowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyTercAdresowy_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyTercAdresowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyTercAdresowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyTercAdresowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyNTS_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyNTS"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyNTS_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyNTSResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianySimcUrzedowy_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianySimcUrzedowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianySimcUrzedowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianySimcUrzedowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianySimcAdresowy_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianySimcAdresowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianySimcAdresowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianySimcAdresowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianySimcStatystyczny_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianySimcStatystyczny"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianySimcStatystyczny_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianySimcStatystycznyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyUlicUrzedowy_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyUlicUrzedowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyUlicUrzedowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyUlicUrzedowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyUlicAdresowy_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyUlicAdresowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyUlicAdresowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyUlicAdresowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyUlicBezDzielnic_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyUlicBezDzielnic"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzZmianyUlicBezDzielnic_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzZmianyUlicBezDzielnicResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzGeoTerytPlikPelny_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzGeoTerytPlikPelny"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzGeoTerytPlikPelny_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzGeoTerytPlikPelnyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzGeoTerytPlikRoznicowy_InputMessage">
+<wsdl:part name="parameters" element="tns:PobierzGeoTerytPlikRoznicowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_PobierzGeoTerytPlikRoznicowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:PobierzGeoTerytPlikRoznicowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresDlaMiejscowosci_InputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresDlaMiejscowosci"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresDlaMiejscowosci_OutputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresDlaMiejscowosciResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresDlaMiejscowosciAdresowy_InputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresDlaMiejscowosciAdresowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresDlaMiejscowosciAdresowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresDlaMiejscowosciAdresowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresDlaUlic_InputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresDlaUlic"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresDlaUlic_OutputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresDlaUlicResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresDlaUlicAdresowy_InputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresDlaUlicAdresowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresDlaUlicAdresowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresDlaUlicAdresowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresWmiejscowosci_InputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresWmiejscowosci"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresWmiejscowosci_OutputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresWmiejscowosciResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresWmiejscowosciAdresowy_InputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresWmiejscowosciAdresowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujAdresWmiejscowosciAdresowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujAdresWmiejscowosciAdresowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujNazwaAdresUlic_InputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujNazwaAdresUlic"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujNazwaAdresUlic_OutputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujNazwaAdresUlicResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujNazwaAdresUlicAdresowy_InputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujNazwaAdresUlicAdresowy"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WeryfikujNazwaAdresUlicAdresowy_OutputMessage">
+<wsdl:part name="parameters" element="tns:WeryfikujNazwaAdresUlicAdresowyResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJPT_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJPT"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJPT_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJPTResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowosc_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowosc"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowosc_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWJPT_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWJPT"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWJPT_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWJPTResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUlice_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUlice"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUlice_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJednostkeWRejestrze_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJednostkeWRejestrze"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJednostkeWRejestrze_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJednostkeWRejestrzeResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJednostkeWRejestrzeWebLS_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJednostkeWRejestrzeWebLS"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJednostkeWRejestrzeWebLS_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJednostkeWRejestrzeWebLSResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJednostkeWRejestrzeWebLSCount_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJednostkeWRejestrzeWebLSCount"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJednostkeWRejestrzeWebLSCount_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJednostkeWRejestrzeWebLSCountResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJednostkeWRejestrzeWebLSZSortowaniem_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJednostkeWRejestrzeWebLSZSortowaniem"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajJednostkeWRejestrzeWebLSZSortowaniem_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajJednostkeWRejestrzeWebLSZSortowaniemResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWRejestrze_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWRejestrze"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWRejestrze_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWRejestrzeResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWRejestrze_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWRejestrze"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWRejestrze_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWRejestrzeResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWeb_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWeb"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWeb_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWebResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWebLS_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWebLS"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWebLS_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWebLSResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWebCount_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWebCount"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWebCount_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWebCountResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWebCountLS_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWebCountLS"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajMiejscowoscWebCountLS_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajMiejscowoscWebCountLSResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWeb_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWeb"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWeb_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWebResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWebCount_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWebCount"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWebCount_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWebCountResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWebLS_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWebLS"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWebLS_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWebLSResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWebLSCount_InputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWebLSCount"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_WyszukajUliceWebLSCount_OutputMessage">
+<wsdl:part name="parameters" element="tns:WyszukajUliceWebLSCountResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_TerytWLiczbach_InputMessage">
+<wsdl:part name="parameters" element="tns:TerytWLiczbach"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_TerytWLiczbach_OutputMessage">
+<wsdl:part name="parameters" element="tns:TerytWLiczbachResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_CiekawostkiTERC_InputMessage">
+<wsdl:part name="parameters" element="tns:CiekawostkiTERC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_CiekawostkiTERC_OutputMessage">
+<wsdl:part name="parameters" element="tns:CiekawostkiTERCResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_CiekawostkiSIMC_InputMessage">
+<wsdl:part name="parameters" element="tns:CiekawostkiSIMC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_CiekawostkiSIMC_OutputMessage">
+<wsdl:part name="parameters" element="tns:CiekawostkiSIMCResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_CiekawostkiULIC_InputMessage">
+<wsdl:part name="parameters" element="tns:CiekawostkiULIC"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_CiekawostkiULIC_OutputMessage">
+<wsdl:part name="parameters" element="tns:CiekawostkiULICResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_LicznoscJednostek_InputMessage">
+<wsdl:part name="parameters" element="tns:LicznoscJednostek"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_LicznoscJednostek_OutputMessage">
+<wsdl:part name="parameters" element="tns:LicznoscJednostekResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_ObiektyZZ_InputMessage">
+<wsdl:part name="parameters" element="tns:ObiektyZZ"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_ObiektyZZ_OutputMessage">
+<wsdl:part name="parameters" element="tns:ObiektyZZResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresBudynkow_InputMessage">
+<wsdl:part name="parameters" element="tns:AdresBudynkow"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresBudynkow_OutputMessage">
+<wsdl:part name="parameters" element="tns:AdresBudynkowResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresBudynkowMieszkania_InputMessage">
+<wsdl:part name="parameters" element="tns:AdresBudynkowMieszkania"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresBudynkowMieszkania_OutputMessage">
+<wsdl:part name="parameters" element="tns:AdresBudynkowMieszkaniaResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_ZbiorObiektowZZ_InputMessage">
+<wsdl:part name="parameters" element="tns:ZbiorObiektowZZ"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_ZbiorObiektowZZ_OutputMessage">
+<wsdl:part name="parameters" element="tns:ZbiorObiektowZZResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkowZIdentyfikatoremAdresu_InputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowZIdentyfikatoremAdresu"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkowZIdentyfikatoremAdresu_OutputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowZIdentyfikatoremAdresuResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkowZIdentyfikatoremBudynku_InputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowZIdentyfikatoremBudynku"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkowZIdentyfikatoremBudynku_OutputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowZIdentyfikatoremBudynkuResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkow_InputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkow"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkow_OutputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkowZLiczbaMieszkan_InputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowZLiczbaMieszkan"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkowZLiczbaMieszkan_OutputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowZLiczbaMieszkanResponse"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkowImieszkania_InputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowImieszkania"/> 
+</wsdl:message>
+<wsdl:message name="ITerytWs1_AdresyBudynkowImieszkania_OutputMessage">
+<wsdl:part name="parameters" element="tns:AdresyBudynkowImieszkaniaResponse"/> 
+</wsdl:message>
+<wsdl:portType name="ITerytWs1">
+<wsdl:operation name="CzyZalogowany">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/CzyZalogowany" message="tns:ITerytWs1_CzyZalogowany_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/CzyZalogowanyResponse" message="tns:ITerytWs1_CzyZalogowany_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="Zweryfikowany">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/Zweryfikowany" message="tns:ITerytWs1_Zweryfikowany_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/ZweryfikowanyResponse" message="tns:ITerytWs1_Zweryfikowany_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzDateAktualnegoKatTerc">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatTerc" message="tns:ITerytWs1_PobierzDateAktualnegoKatTerc_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatTercResponse" message="tns:ITerytWs1_PobierzDateAktualnegoKatTerc_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzDateAktualnegoKatNTS">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatNTS" message="tns:ITerytWs1_PobierzDateAktualnegoKatNTS_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatNTSResponse" message="tns:ITerytWs1_PobierzDateAktualnegoKatNTS_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzDateAktualnegoKatSimc">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatSimc" message="tns:ITerytWs1_PobierzDateAktualnegoKatSimc_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatSimcResponse" message="tns:ITerytWs1_PobierzDateAktualnegoKatSimc_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzDateAktualnegoKatUlic">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatUlic" message="tns:ITerytWs1_PobierzDateAktualnegoKatUlic_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatUlicResponse" message="tns:ITerytWs1_PobierzDateAktualnegoKatUlic_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeWojewodztw">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeWojewodztw" message="tns:ITerytWs1_PobierzListeWojewodztw_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeWojewodztwResponse" message="tns:ITerytWs1_PobierzListeWojewodztw_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListePowiatow">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListePowiatow" message="tns:ITerytWs1_PobierzListePowiatow_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListePowiatowResponse" message="tns:ITerytWs1_PobierzListePowiatow_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeGmin">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeGmin" message="tns:ITerytWs1_PobierzListeGmin_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeGminResponse" message="tns:ITerytWs1_PobierzListeGmin_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzGminyiPowDlaWoj">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzGminyiPowDlaWoj" message="tns:ITerytWs1_PobierzGminyiPowDlaWoj_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzGminyiPowDlaWojResponse" message="tns:ITerytWs1_PobierzGminyiPowDlaWoj_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeRegionow">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeRegionow" message="tns:ITerytWs1_PobierzListeRegionow_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeRegionowResponse" message="tns:ITerytWs1_PobierzListeRegionow_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListePodregionow">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListePodregionow" message="tns:ITerytWs1_PobierzListePodregionow_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListePodregionowResponse" message="tns:ITerytWs1_PobierzListePodregionow_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeWojewodztwWRegionie">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeWojewodztwWRegionie" message="tns:ITerytWs1_PobierzListeWojewodztwWRegionie_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeWojewodztwWRegionieResponse" message="tns:ITerytWs1_PobierzListeWojewodztwWRegionie_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListePowiatowWPodregionie">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListePowiatowWPodregionie" message="tns:ITerytWs1_PobierzListePowiatowWPodregionie_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListePowiatowWPodregionieResponse" message="tns:ITerytWs1_PobierzListePowiatowWPodregionie_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeGminPowiecie">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeGminPowiecie" message="tns:ITerytWs1_PobierzListeGminPowiecie_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeGminPowiecieResponse" message="tns:ITerytWs1_PobierzListeGminPowiecie_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeUlicDlaMiejscowosci">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeUlicDlaMiejscowosci" message="tns:ITerytWs1_PobierzListeUlicDlaMiejscowosci_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeUlicDlaMiejscowosciResponse" message="tns:ITerytWs1_PobierzListeUlicDlaMiejscowosci_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeMiejscowosciWGminie">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWGminie" message="tns:ITerytWs1_PobierzListeMiejscowosciWGminie_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWGminieResponse" message="tns:ITerytWs1_PobierzListeMiejscowosciWGminie_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeMiejscowosciWGminieZSymbolem">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWGminieZSymbolem" message="tns:ITerytWs1_PobierzListeMiejscowosciWGminieZSymbolem_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWGminieZSymbolemResponse" message="tns:ITerytWs1_PobierzListeMiejscowosciWGminieZSymbolem_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzListeMiejscowosciWRodzajuGminy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWRodzajuGminy" message="tns:ITerytWs1_PobierzListeMiejscowosciWRodzajuGminy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWRodzajuGminyResponse" message="tns:ITerytWs1_PobierzListeMiejscowosciWRodzajuGminy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzSlownikRodzajowJednostek">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzSlownikRodzajowJednostek" message="tns:ITerytWs1_PobierzSlownikRodzajowJednostek_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzSlownikRodzajowJednostekResponse" message="tns:ITerytWs1_PobierzSlownikRodzajowJednostek_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzSlownikRodzajowSIMC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzSlownikRodzajowSIMC" message="tns:ITerytWs1_PobierzSlownikRodzajowSIMC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzSlownikRodzajowSIMCResponse" message="tns:ITerytWs1_PobierzSlownikRodzajowSIMC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzSlownikCechULIC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzSlownikCechULIC" message="tns:ITerytWs1_PobierzSlownikCechULIC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzSlownikCechULICResponse" message="tns:ITerytWs1_PobierzSlownikCechULIC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogTERCAdr">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogTERCAdr" message="tns:ITerytWs1_PobierzKatalogTERCAdr_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogTERCAdrResponse" message="tns:ITerytWs1_PobierzKatalogTERCAdr_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogTERC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogTERC" message="tns:ITerytWs1_PobierzKatalogTERC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogTERCResponse" message="tns:ITerytWs1_PobierzKatalogTERC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogNTS">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogNTS" message="tns:ITerytWs1_PobierzKatalogNTS_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogNTSResponse" message="tns:ITerytWs1_PobierzKatalogNTS_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogSIMCAdr">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogSIMCAdr" message="tns:ITerytWs1_PobierzKatalogSIMCAdr_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogSIMCAdrResponse" message="tns:ITerytWs1_PobierzKatalogSIMCAdr_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogSIMC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogSIMC" message="tns:ITerytWs1_PobierzKatalogSIMC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogSIMCResponse" message="tns:ITerytWs1_PobierzKatalogSIMC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogSIMCStat">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogSIMCStat" message="tns:ITerytWs1_PobierzKatalogSIMCStat_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogSIMCStatResponse" message="tns:ITerytWs1_PobierzKatalogSIMCStat_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogULIC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogULIC" message="tns:ITerytWs1_PobierzKatalogULIC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogULICResponse" message="tns:ITerytWs1_PobierzKatalogULIC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogULICAdr">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogULICAdr" message="tns:ITerytWs1_PobierzKatalogULICAdr_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogULICAdrResponse" message="tns:ITerytWs1_PobierzKatalogULICAdr_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogULICBezDzielnic">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogULICBezDzielnic" message="tns:ITerytWs1_PobierzKatalogULICBezDzielnic_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogULICBezDzielnicResponse" message="tns:ITerytWs1_PobierzKatalogULICBezDzielnic_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzStaryKatalogULIC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzStaryKatalogULIC" message="tns:ITerytWs1_PobierzStaryKatalogULIC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzStaryKatalogULICResponse" message="tns:ITerytWs1_PobierzStaryKatalogULIC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogWMRODZ">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogWMRODZ" message="tns:ITerytWs1_PobierzKatalogWMRODZ_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzKatalogWMRODZResponse" message="tns:ITerytWs1_PobierzKatalogWMRODZ_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyTercUrzedowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyTercUrzedowy" message="tns:ITerytWs1_PobierzZmianyTercUrzedowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyTercUrzedowyResponse" message="tns:ITerytWs1_PobierzZmianyTercUrzedowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyTercAdresowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyTercAdresowy" message="tns:ITerytWs1_PobierzZmianyTercAdresowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyTercAdresowyResponse" message="tns:ITerytWs1_PobierzZmianyTercAdresowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyNTS">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyNTS" message="tns:ITerytWs1_PobierzZmianyNTS_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyNTSResponse" message="tns:ITerytWs1_PobierzZmianyNTS_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianySimcUrzedowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianySimcUrzedowy" message="tns:ITerytWs1_PobierzZmianySimcUrzedowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianySimcUrzedowyResponse" message="tns:ITerytWs1_PobierzZmianySimcUrzedowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianySimcAdresowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianySimcAdresowy" message="tns:ITerytWs1_PobierzZmianySimcAdresowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianySimcAdresowyResponse" message="tns:ITerytWs1_PobierzZmianySimcAdresowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianySimcStatystyczny">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianySimcStatystyczny" message="tns:ITerytWs1_PobierzZmianySimcStatystyczny_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianySimcStatystycznyResponse" message="tns:ITerytWs1_PobierzZmianySimcStatystyczny_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyUlicUrzedowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyUlicUrzedowy" message="tns:ITerytWs1_PobierzZmianyUlicUrzedowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyUlicUrzedowyResponse" message="tns:ITerytWs1_PobierzZmianyUlicUrzedowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyUlicAdresowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyUlicAdresowy" message="tns:ITerytWs1_PobierzZmianyUlicAdresowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyUlicAdresowyResponse" message="tns:ITerytWs1_PobierzZmianyUlicAdresowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyUlicBezDzielnic">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyUlicBezDzielnic" message="tns:ITerytWs1_PobierzZmianyUlicBezDzielnic_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzZmianyUlicBezDzielnicResponse" message="tns:ITerytWs1_PobierzZmianyUlicBezDzielnic_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzGeoTerytPlikPelny">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzGeoTerytPlikPelny" message="tns:ITerytWs1_PobierzGeoTerytPlikPelny_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzGeoTerytPlikPelnyResponse" message="tns:ITerytWs1_PobierzGeoTerytPlikPelny_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="PobierzGeoTerytPlikRoznicowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/PobierzGeoTerytPlikRoznicowy" message="tns:ITerytWs1_PobierzGeoTerytPlikRoznicowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/PobierzGeoTerytPlikRoznicowyResponse" message="tns:ITerytWs1_PobierzGeoTerytPlikRoznicowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresDlaMiejscowosci">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaMiejscowosci" message="tns:ITerytWs1_WeryfikujAdresDlaMiejscowosci_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaMiejscowosciResponse" message="tns:ITerytWs1_WeryfikujAdresDlaMiejscowosci_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresDlaMiejscowosciAdresowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaMiejscowosciAdresowy" message="tns:ITerytWs1_WeryfikujAdresDlaMiejscowosciAdresowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaMiejscowosciAdresowyResponse" message="tns:ITerytWs1_WeryfikujAdresDlaMiejscowosciAdresowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresDlaUlic">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaUlic" message="tns:ITerytWs1_WeryfikujAdresDlaUlic_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaUlicResponse" message="tns:ITerytWs1_WeryfikujAdresDlaUlic_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresDlaUlicAdresowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaUlicAdresowy" message="tns:ITerytWs1_WeryfikujAdresDlaUlicAdresowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaUlicAdresowyResponse" message="tns:ITerytWs1_WeryfikujAdresDlaUlicAdresowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresWmiejscowosci">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresWmiejscowosci" message="tns:ITerytWs1_WeryfikujAdresWmiejscowosci_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresWmiejscowosciResponse" message="tns:ITerytWs1_WeryfikujAdresWmiejscowosci_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresWmiejscowosciAdresowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresWmiejscowosciAdresowy" message="tns:ITerytWs1_WeryfikujAdresWmiejscowosciAdresowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujAdresWmiejscowosciAdresowyResponse" message="tns:ITerytWs1_WeryfikujAdresWmiejscowosciAdresowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WeryfikujNazwaAdresUlic">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujNazwaAdresUlic" message="tns:ITerytWs1_WeryfikujNazwaAdresUlic_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujNazwaAdresUlicResponse" message="tns:ITerytWs1_WeryfikujNazwaAdresUlic_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WeryfikujNazwaAdresUlicAdresowy">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujNazwaAdresUlicAdresowy" message="tns:ITerytWs1_WeryfikujNazwaAdresUlicAdresowy_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WeryfikujNazwaAdresUlicAdresowyResponse" message="tns:ITerytWs1_WeryfikujNazwaAdresUlicAdresowy_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajJPT">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJPT" message="tns:ITerytWs1_WyszukajJPT_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJPTResponse" message="tns:ITerytWs1_WyszukajJPT_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowosc">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowosc" message="tns:ITerytWs1_WyszukajMiejscowosc_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscResponse" message="tns:ITerytWs1_WyszukajMiejscowosc_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWJPT">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWJPT" message="tns:ITerytWs1_WyszukajMiejscowoscWJPT_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWJPTResponse" message="tns:ITerytWs1_WyszukajMiejscowoscWJPT_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajUlice">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUlice" message="tns:ITerytWs1_WyszukajUlice_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceResponse" message="tns:ITerytWs1_WyszukajUlice_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajJednostkeWRejestrze">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrze" message="tns:ITerytWs1_WyszukajJednostkeWRejestrze_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeResponse" message="tns:ITerytWs1_WyszukajJednostkeWRejestrze_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajJednostkeWRejestrzeWebLS">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLS" message="tns:ITerytWs1_WyszukajJednostkeWRejestrzeWebLS_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLSResponse" message="tns:ITerytWs1_WyszukajJednostkeWRejestrzeWebLS_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajJednostkeWRejestrzeWebLSCount">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLSCount" message="tns:ITerytWs1_WyszukajJednostkeWRejestrzeWebLSCount_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLSCountResponse" message="tns:ITerytWs1_WyszukajJednostkeWRejestrzeWebLSCount_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajJednostkeWRejestrzeWebLSZSortowaniem">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLSZSortowaniem" message="tns:ITerytWs1_WyszukajJednostkeWRejestrzeWebLSZSortowaniem_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLSZSortowaniemResponse" message="tns:ITerytWs1_WyszukajJednostkeWRejestrzeWebLSZSortowaniem_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWRejestrze">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWRejestrze" message="tns:ITerytWs1_WyszukajMiejscowoscWRejestrze_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWRejestrzeResponse" message="tns:ITerytWs1_WyszukajMiejscowoscWRejestrze_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWRejestrze">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWRejestrze" message="tns:ITerytWs1_WyszukajUliceWRejestrze_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWRejestrzeResponse" message="tns:ITerytWs1_WyszukajUliceWRejestrze_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWeb">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWeb" message="tns:ITerytWs1_WyszukajMiejscowoscWeb_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebResponse" message="tns:ITerytWs1_WyszukajMiejscowoscWeb_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWebLS">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebLS" message="tns:ITerytWs1_WyszukajMiejscowoscWebLS_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebLSResponse" message="tns:ITerytWs1_WyszukajMiejscowoscWebLS_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWebCount">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebCount" message="tns:ITerytWs1_WyszukajMiejscowoscWebCount_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebCountResponse" message="tns:ITerytWs1_WyszukajMiejscowoscWebCount_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWebCountLS">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebCountLS" message="tns:ITerytWs1_WyszukajMiejscowoscWebCountLS_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebCountLSResponse" message="tns:ITerytWs1_WyszukajMiejscowoscWebCountLS_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWeb">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWeb" message="tns:ITerytWs1_WyszukajUliceWeb_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWebResponse" message="tns:ITerytWs1_WyszukajUliceWeb_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWebCount">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWebCount" message="tns:ITerytWs1_WyszukajUliceWebCount_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWebCountResponse" message="tns:ITerytWs1_WyszukajUliceWebCount_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWebLS">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWebLS" message="tns:ITerytWs1_WyszukajUliceWebLS_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWebLSResponse" message="tns:ITerytWs1_WyszukajUliceWebLS_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWebLSCount">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWebLSCount" message="tns:ITerytWs1_WyszukajUliceWebLSCount_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/WyszukajUliceWebLSCountResponse" message="tns:ITerytWs1_WyszukajUliceWebLSCount_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="TerytWLiczbach">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/TerytWLiczbach" message="tns:ITerytWs1_TerytWLiczbach_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/TerytWLiczbachResponse" message="tns:ITerytWs1_TerytWLiczbach_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="CiekawostkiTERC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/CiekawostkiTERC" message="tns:ITerytWs1_CiekawostkiTERC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/CiekawostkiTERCResponse" message="tns:ITerytWs1_CiekawostkiTERC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="CiekawostkiSIMC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/CiekawostkiSIMC" message="tns:ITerytWs1_CiekawostkiSIMC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/CiekawostkiSIMCResponse" message="tns:ITerytWs1_CiekawostkiSIMC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="CiekawostkiULIC">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/CiekawostkiULIC" message="tns:ITerytWs1_CiekawostkiULIC_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/CiekawostkiULICResponse" message="tns:ITerytWs1_CiekawostkiULIC_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="LicznoscJednostek">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/LicznoscJednostek" message="tns:ITerytWs1_LicznoscJednostek_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/LicznoscJednostekResponse" message="tns:ITerytWs1_LicznoscJednostek_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="ObiektyZZ">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/ObiektyZZ" message="tns:ITerytWs1_ObiektyZZ_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/ObiektyZZResponse" message="tns:ITerytWs1_ObiektyZZ_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="AdresBudynkow">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/AdresBudynkow" message="tns:ITerytWs1_AdresBudynkow_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/AdresBudynkowResponse" message="tns:ITerytWs1_AdresBudynkow_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="AdresBudynkowMieszkania">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/AdresBudynkowMieszkania" message="tns:ITerytWs1_AdresBudynkowMieszkania_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/AdresBudynkowMieszkaniaResponse" message="tns:ITerytWs1_AdresBudynkowMieszkania_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="ZbiorObiektowZZ">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/ZbiorObiektowZZ" message="tns:ITerytWs1_ZbiorObiektowZZ_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/ZbiorObiektowZZResponse" message="tns:ITerytWs1_ZbiorObiektowZZ_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkowZIdentyfikatoremAdresu">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowZIdentyfikatoremAdresu" message="tns:ITerytWs1_AdresyBudynkowZIdentyfikatoremAdresu_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowZIdentyfikatoremAdresuResponse" message="tns:ITerytWs1_AdresyBudynkowZIdentyfikatoremAdresu_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkowZIdentyfikatoremBudynku">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowZIdentyfikatoremBudynku" message="tns:ITerytWs1_AdresyBudynkowZIdentyfikatoremBudynku_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowZIdentyfikatoremBudynkuResponse" message="tns:ITerytWs1_AdresyBudynkowZIdentyfikatoremBudynku_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkow">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkow" message="tns:ITerytWs1_AdresyBudynkow_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowResponse" message="tns:ITerytWs1_AdresyBudynkow_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkowZLiczbaMieszkan">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowZLiczbaMieszkan" message="tns:ITerytWs1_AdresyBudynkowZLiczbaMieszkan_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowZLiczbaMieszkanResponse" message="tns:ITerytWs1_AdresyBudynkowZLiczbaMieszkan_OutputMessage"/> 
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkowImieszkania">
+<wsdl:input wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowImieszkania" message="tns:ITerytWs1_AdresyBudynkowImieszkania_InputMessage"/> 
+<wsdl:output wsaw:Action="http://tempuri.org/ITerytWs1/AdresyBudynkowImieszkaniaResponse" message="tns:ITerytWs1_AdresyBudynkowImieszkania_OutputMessage"/> 
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="custom" type="tns:ITerytWs1">
+<wsp:PolicyReference URI="#custom_policy"/> 
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/> 
+<wsdl:operation name="CzyZalogowany">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/CzyZalogowany" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="Zweryfikowany">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/Zweryfikowany" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzDateAktualnegoKatTerc">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatTerc" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzDateAktualnegoKatNTS">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatNTS" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzDateAktualnegoKatSimc">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatSimc" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzDateAktualnegoKatUlic">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzDateAktualnegoKatUlic" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeWojewodztw">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeWojewodztw" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListePowiatow">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListePowiatow" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeGmin">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeGmin" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzGminyiPowDlaWoj">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzGminyiPowDlaWoj" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeRegionow">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeRegionow" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListePodregionow">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListePodregionow" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeWojewodztwWRegionie">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeWojewodztwWRegionie" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListePowiatowWPodregionie">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListePowiatowWPodregionie" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeGminPowiecie">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeGminPowiecie" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeUlicDlaMiejscowosci">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeUlicDlaMiejscowosci" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeMiejscowosciWGminie">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWGminie" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeMiejscowosciWGminieZSymbolem">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWGminieZSymbolem" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzListeMiejscowosciWRodzajuGminy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzListeMiejscowosciWRodzajuGminy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzSlownikRodzajowJednostek">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzSlownikRodzajowJednostek" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzSlownikRodzajowSIMC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzSlownikRodzajowSIMC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzSlownikCechULIC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzSlownikCechULIC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogTERCAdr">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogTERCAdr" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogTERC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogTERC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogNTS">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogNTS" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogSIMCAdr">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogSIMCAdr" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogSIMC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogSIMC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogSIMCStat">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogSIMCStat" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogULIC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogULIC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogULICAdr">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogULICAdr" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogULICBezDzielnic">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogULICBezDzielnic" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzStaryKatalogULIC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzStaryKatalogULIC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzKatalogWMRODZ">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzKatalogWMRODZ" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyTercUrzedowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianyTercUrzedowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyTercAdresowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianyTercAdresowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyNTS">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianyNTS" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianySimcUrzedowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianySimcUrzedowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianySimcAdresowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianySimcAdresowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianySimcStatystyczny">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianySimcStatystyczny" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyUlicUrzedowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianyUlicUrzedowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyUlicAdresowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianyUlicAdresowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzZmianyUlicBezDzielnic">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzZmianyUlicBezDzielnic" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzGeoTerytPlikPelny">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzGeoTerytPlikPelny" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="PobierzGeoTerytPlikRoznicowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/PobierzGeoTerytPlikRoznicowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresDlaMiejscowosci">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaMiejscowosci" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresDlaMiejscowosciAdresowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaMiejscowosciAdresowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresDlaUlic">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaUlic" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresDlaUlicAdresowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WeryfikujAdresDlaUlicAdresowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresWmiejscowosci">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WeryfikujAdresWmiejscowosci" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WeryfikujAdresWmiejscowosciAdresowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WeryfikujAdresWmiejscowosciAdresowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WeryfikujNazwaAdresUlic">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WeryfikujNazwaAdresUlic" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WeryfikujNazwaAdresUlicAdresowy">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WeryfikujNazwaAdresUlicAdresowy" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajJPT">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajJPT" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowosc">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajMiejscowosc" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWJPT">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWJPT" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajUlice">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajUlice" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajJednostkeWRejestrze">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrze" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajJednostkeWRejestrzeWebLS">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLS" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajJednostkeWRejestrzeWebLSCount">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLSCount" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajJednostkeWRejestrzeWebLSZSortowaniem">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajJednostkeWRejestrzeWebLSZSortowaniem" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWRejestrze">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWRejestrze" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWRejestrze">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajUliceWRejestrze" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWeb">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWeb" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWebLS">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebLS" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWebCount">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebCount" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajMiejscowoscWebCountLS">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajMiejscowoscWebCountLS" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWeb">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajUliceWeb" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWebCount">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajUliceWebCount" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWebLS">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajUliceWebLS" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="WyszukajUliceWebLSCount">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/WyszukajUliceWebLSCount" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="TerytWLiczbach">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/TerytWLiczbach" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CiekawostkiTERC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/CiekawostkiTERC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CiekawostkiSIMC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/CiekawostkiSIMC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CiekawostkiULIC">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/CiekawostkiULIC" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="LicznoscJednostek">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/LicznoscJednostek" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ObiektyZZ">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/ObiektyZZ" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AdresBudynkow">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/AdresBudynkow" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AdresBudynkowMieszkania">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/AdresBudynkowMieszkania" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ZbiorObiektowZZ">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/ZbiorObiektowZZ" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkowZIdentyfikatoremAdresu">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/AdresyBudynkowZIdentyfikatoremAdresu" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkowZIdentyfikatoremBudynku">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/AdresyBudynkowZIdentyfikatoremBudynku" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkow">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/AdresyBudynkow" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkowZLiczbaMieszkan">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/AdresyBudynkowZLiczbaMieszkan" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AdresyBudynkowImieszkania">
+<soap:operation soapAction="http://tempuri.org/ITerytWs1/AdresyBudynkowImieszkania" style="document"/> 
+<wsdl:input>
+<soap:body use="literal"/> 
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/> 
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="TerytWs1">
+<wsdl:port name="custom" binding="tns:custom">
+<soap:address location="https://uslugaterytws1test.stat.gov.pl/TerytWs1.svc"/> 
+<wsa10:EndpointReference>
+<wsa10:Address>https://uslugaterytws1test.stat.gov.pl/TerytWs1.svc</wsa10:Address> 
+</wsa10:EndpointReference>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

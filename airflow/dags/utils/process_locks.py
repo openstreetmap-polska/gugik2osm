@@ -11,11 +11,15 @@ class StatusNames(NamedTuple):
 class ProcessNames(NamedTuple):
     full_update: str
     incremental_update: str
+    teryt_update: str
+    db_lock: str
 
 
 PROCESS_NAMES = ProcessNames(
     full_update="prg_full_update",
     incremental_update="prg_partial_update",
+    teryt_update="teryt_update",
+    db_lock="db_lock"
 )
 
 STATUSES = StatusNames("SUCCESS", "FAIL")
@@ -28,6 +32,24 @@ def get_data(sql: str, params: Optional[dict], postgres_conn_id: str = "postgres
     results = pg_hook.get_records(sql=sql, parameters=params) if params else pg_hook.get_records(sql=sql)
 
     return results
+
+
+def full_prg_update_in_progress() -> bool:
+    """Checks if full data update is in progress and returns True or False."""
+
+    rows = get_data(
+        sql="""
+            SELECT in_progress
+            FROM process_locks
+            WHERE process_name = %(full_update_name)s
+        """,
+        params={
+            "full_update_name": PROCESS_NAMES.full_update,
+        },
+    )
+    updates_in_progress = [row[0] for row in rows]
+
+    return any(updates_in_progress)
 
 
 def any_prg_updates_in_progress() -> bool:
