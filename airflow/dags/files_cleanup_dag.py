@@ -30,8 +30,8 @@ with DAG(
         task_id="remove_old_imposm_files",
         bash_command=r"""
             set -e;
-            find /opt/gugik2osm/imposm3/imposm_diff/0* -mtime +7 -type f -print -delete;
-            find /opt/gugik2osm/imposm3/imposm_diff/0* -empty -type d -delete;
+            sudo find /opt/gugik2osm/imposm3/imposm_diff/0* -mtime +7 -type f -print -delete;
+            sudo find /opt/gugik2osm/imposm3/imposm_diff/0* -empty -type d -delete;
         """.strip(),
     )
 
