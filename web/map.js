@@ -39,6 +39,8 @@ var map = new mapboxgl.Map({
                     "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 ],
                 "tileSize": 256,
+                "minzoom": 0,
+                "maxzoom": 19,
                 "attribution": "dane <a class=\"text-primary\" href=https://www.openstreetmap.org/copyright>OpenStreetMap ©</a>"
             },
             "pol-raster-tiles": {
@@ -74,9 +76,7 @@ var map = new mapboxgl.Map({
             {
                 "id": "simple-tiles",
                 "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 19
+                "source": "raster-tiles"
 //            }, {
 //                "id": "polish-tiles",
 //                "type": "raster",
