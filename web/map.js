@@ -715,7 +715,7 @@ async function goToRandomLocation() {
     //disable orto layer if present
     if (o.checked) {
         map.removeLayer("orto");
-        toggleMapLayer({id: "polish-tiles", toggle: "on"});
+        toggleMapLayer({id: "simple-tiles", toggle: "on"});
         o.removeAttribute("checked");
     }
 
@@ -754,11 +754,11 @@ function toggleOrtoLayer() {
     // seems like mapbox gl js library still requests tiles even if layer
     // is not visible so we'll just add and remove the layer as needed
     if (document.getElementById("ortoLayerToggle").checked) {
-        map.addLayer(ortoLayerDefinition, "polish-tiles");
-        toggleMapLayer({id: "polish-tiles", toggle: "off"});
+        map.addLayer(ortoLayerDefinition, "simple-tiles");
+        toggleMapLayer({id: "simple-tiles", toggle: "off"});
     } else {
         map.removeLayer(ortoLayerDefinition.id);
-        toggleMapLayer({id: "polish-tiles", toggle: "on"});
+        toggleMapLayer({id: "simple-tiles", toggle: "on"});
     }
 }
 
