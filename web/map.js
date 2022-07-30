@@ -39,6 +39,8 @@ var map = new mapboxgl.Map({
                     "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 ],
                 "tileSize": 256,
+                "minzoom": 0,
+                "maxzoom": 19,
                 "attribution": "dane <a class=\"text-primary\" href=https://www.openstreetmap.org/copyright>OpenStreetMap ©</a>"
             },
             "pol-raster-tiles": {
@@ -74,9 +76,7 @@ var map = new mapboxgl.Map({
             {
                 "id": "simple-tiles",
                 "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 19
+                "source": "raster-tiles"
 //            }, {
 //                "id": "polish-tiles",
 //                "type": "raster",
@@ -715,7 +715,7 @@ async function goToRandomLocation() {
     //disable orto layer if present
     if (o.checked) {
         map.removeLayer("orto");
-        toggleMapLayer({id: "polish-tiles", toggle: "on"});
+        toggleMapLayer({id: "simple-tiles", toggle: "on"});
         o.removeAttribute("checked");
     }
 
@@ -754,11 +754,11 @@ function toggleOrtoLayer() {
     // seems like mapbox gl js library still requests tiles even if layer
     // is not visible so we'll just add and remove the layer as needed
     if (document.getElementById("ortoLayerToggle").checked) {
-        map.addLayer(ortoLayerDefinition, "polish-tiles");
-        toggleMapLayer({id: "polish-tiles", toggle: "off"});
+        map.addLayer(ortoLayerDefinition, "simple-tiles");
+        toggleMapLayer({id: "simple-tiles", toggle: "off"});
     } else {
         map.removeLayer(ortoLayerDefinition.id);
-        toggleMapLayer({id: "polish-tiles", toggle: "on"});
+        toggleMapLayer({id: "simple-tiles", toggle: "on"});
     }
 }
 

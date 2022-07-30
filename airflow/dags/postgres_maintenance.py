@@ -32,7 +32,7 @@ with DAG(
 
     vacuum_analyze_task = BashOperator(
         task_id="vacuum_analyze",
-        bash_command='sudo -u postgres psql -d gugik2osm -c "VACUUM ANALYZE"'
+        bash_command='set -e; sudo -u postgres psql -d gugik2osm -c "VACUUM ANALYZE"'
     )
 
     create_schema_backup = BashOperator(
