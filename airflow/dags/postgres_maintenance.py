@@ -4,6 +4,7 @@ from functools import partial
 from airflow import DAG
 from airflow.models.baseoperator import chain
 from airflow.operators.bash import BashOperator
+from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.sensors.python import PythonSensor
 
 from utils.discord import send_dag_run_status
@@ -30,9 +31,10 @@ with DAG(
         poke_interval=datetime.timedelta(hours=1).total_seconds(),
     )
 
-    vacuum_analyze_task = BashOperator(
+    vacuum_analyze_task = PostgresOperator(
         task_id="vacuum_analyze",
-        bash_command='sudo -u postgres psql -d gugik2osm -c "VACUUM ANALYZE"'
+        sql="VACUUM ANALYZE",
+        autocommit=True,
     )
 
     create_schema_backup = BashOperator(
