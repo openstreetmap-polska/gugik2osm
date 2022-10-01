@@ -58,9 +58,9 @@ with DAG(
     #     '''.strip()
     # )
 
-    chain(
-        full_update_sensor_task,
-        vacuum_analyze_task,
+    # chain(
+        # full_update_sensor_task,
+        # vacuum_analyze_task,
         # create_schema_backup,
         # create_data_backup,
-    )
+    # )
