@@ -19,7 +19,8 @@ create unlogged table prg.pa (
     teryt_simc text,
     teryt_ulica text,
     teryt_ulic text,
-    osm_ulica text
+    osm_ulica text,
+    status
 );
 INSERT INTO prg.pa
     SELECT
@@ -43,7 +44,7 @@ INSERT INTO prg.pa
     LEFT JOIN prg.jednostki_administracyjne ja4 on pa.komponent_03 = ja4.gmlid
     LEFT JOIN prg.miejscowosci m on pa.komponent_04 = m.gmlid
     LEFT JOIN prg.ulice u on pa.komponent_05 = u.gmlid
-    WHERE pa.status in ('istniejacy', 'wTrakcieBudowy')
+    WHERE 1=1
         and pa.numerporzadkowy is not null
         and coalesce(pa.numerporzadkowy, '') <> coalesce(pa.ulica, '')
         and pa.numerporzadkowy !~ '^\d+([ ]+\d+)+$'
