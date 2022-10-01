@@ -4,6 +4,7 @@ from functools import partial
 from airflow import DAG
 from airflow.models.baseoperator import chain
 from airflow.operators.bash import BashOperator
+from airflow.operators.dummy import DummyOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.sensors.python import PythonSensor
 
@@ -23,41 +24,43 @@ with DAG(
     on_failure_callback=send_dag_run_status_to_discord,
 ) as dag:
 
-    full_update_sensor_task = PythonSensor(
-        task_id="full_update_sensor",
-        python_callable=lambda: not full_prg_update_in_progress(),
-        timeout=datetime.timedelta(hours=24).total_seconds(),
-        mode="reschedule",
-        poke_interval=datetime.timedelta(hours=1).total_seconds(),
-    )
+    DummyOperator(task_id="not_implemented_yet")
 
-    vacuum_analyze_task = PostgresOperator(
-        task_id="vacuum_analyze",
-        sql="VACUUM ANALYZE",
-        autocommit=True,
-    )
+    # full_update_sensor_task = PythonSensor(
+    #     task_id="full_update_sensor",
+    #     python_callable=lambda: not full_prg_update_in_progress(),
+    #     timeout=datetime.timedelta(hours=24).total_seconds(),
+    #     mode="reschedule",
+    #     poke_interval=datetime.timedelta(hours=1).total_seconds(),
+    # )
+    #
+    # vacuum_analyze_task = PostgresOperator(
+    #     task_id="vacuum_analyze",
+    #     sql="VACUUM ANALYZE",
+    #     autocommit=True,
+    # )
 
-    create_schema_backup = BashOperator(
-        task_id="schema_backup",
-        bash_command='''
-            set -e;
-            sudo -u postgres pg_dump --format p --schema-only --no-owner --no-privileges --file /opt/gugik2osm/temp/export/db_only_schema.sql --dbname gugik2osm;
-            sudo -u postgres mv /opt/gugik2osm/temp/export/db_only_schema.sql /var/www/data/dbbackup/db_only_schema.sql;
-        '''.strip()
-    )
-
-    create_data_backup = BashOperator(
-        task_id="data_backup",
-        bash_command='''
-            set -e;
-            sudo -u postgres pg_dump --format c --compress 9 --no-owner --no-privileges --file /opt/gugik2osm/temp/export/db.bak --dbname gugik2osm;
-            sudo -u postgres mv /opt/gugik2osm/temp/export/db.bak /var/www/data/dbbackup/db.bak;
-        '''.strip()
-    )
+    # create_schema_backup = BashOperator(
+    #     task_id="schema_backup",
+    #     bash_command='''
+    #         set -e;
+    #         sudo -u postgres pg_dump --format p --schema-only --no-owner --no-privileges --file /opt/gugik2osm/temp/export/db_only_schema.sql --dbname gugik2osm;
+    #         sudo -u postgres mv /opt/gugik2osm/temp/export/db_only_schema.sql /var/www/data/dbbackup/db_only_schema.sql;
+    #     '''.strip()
+    # )
+    #
+    # create_data_backup = BashOperator(
+    #     task_id="data_backup",
+    #     bash_command='''
+    #         set -e;
+    #         sudo -u postgres pg_dump --format c --compress 9 --no-owner --no-privileges --file /opt/gugik2osm/temp/export/db.bak --dbname gugik2osm;
+    #         sudo -u postgres mv /opt/gugik2osm/temp/export/db.bak /var/www/data/dbbackup/db.bak;
+    #     '''.strip()
+    # )
 
     chain(
         full_update_sensor_task,
         vacuum_analyze_task,
-        create_schema_backup,
-        create_data_backup,
+        # create_schema_backup,
+        # create_data_backup,
     )
