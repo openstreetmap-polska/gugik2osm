@@ -20,7 +20,7 @@ create unlogged table prg.pa (
     teryt_ulica text,
     teryt_ulic text,
     osm_ulica text,
-    status
+    status text
 );
 INSERT INTO prg.pa
     SELECT
