@@ -48,12 +48,7 @@ INSERT INTO prg.pa
     WHERE 1=1
         and pa.numerporzadkowy is not null
         and coalesce(pa.numerporzadkowy, '') <> coalesce(pa.ulica, '')
-        and pa.numerporzadkowy !~ '^\d+([ ]+\d+)+$'
-        and pa.numerporzadkowy !~ '^B\.*N\.*.*$'
-        and pa.numerporzadkowy !~ '^[\.0 \-]+$'
         and trim(pa.numerporzadkowy) <> ''
-        and pa.numerporzadkowy not like '%,%'
-        and pa.numerporzadkowy not ilike '% do %'
         and pa.numerporzadkowy not ilike '%test%'
         and m.nazwa is not null
         and (u.nazwaglownaczesc is null or (u.nazwaglownaczesc is not null and u.nazwaglownaczesc <> '???'))

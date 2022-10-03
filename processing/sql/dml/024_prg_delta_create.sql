@@ -19,6 +19,11 @@ create unlogged table prg.delta_new as
     where 1=1
         and osm.hash is null
         and pa.status in ('istniejacy', 'wTrakcieBudowy')
+        and pa.numerporzadkowy not like '%,%'
+        and pa.numerporzadkowy not ilike '% do %'
+        and pa.numerporzadkowy !~ '^\d+([ ]+\d+)+$'
+        and pa.numerporzadkowy !~ '^B\.*N\.*.*$'
+        and pa.numerporzadkowy !~ '^[\.0 \-]+$'
 ;
 create index if not exists delta_gis_new on prg.delta_new using gist (geom);
 cluster prg.delta_new using delta_gis_new;
