@@ -22,7 +22,7 @@ create unlogged table prg.pa (
     osm_ulica text,
     status text
 );
-INSERT INTO prg.pa
+INSERT INTO prg.pa (lokalnyid, woj, pow, gmi, terc6, teryt7, msc, simc, ul, ulic, numerporzadkowy, nr, pna, gml, status)
     SELECT
        pa.lokalnyid::uuid                                                                    lokalnyid,
        trim(ja2.nazwa)                                                                       woj,
