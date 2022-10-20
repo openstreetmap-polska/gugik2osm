@@ -19,9 +19,10 @@ create unlogged table prg.pa (
     teryt_simc text,
     teryt_ulica text,
     teryt_ulic text,
-    osm_ulica text
+    osm_ulica text,
+    status text
 );
-INSERT INTO prg.pa
+INSERT INTO prg.pa (lokalnyid, woj, pow, gmi, terc6, teryt7, msc, simc, ul, ulic, numerporzadkowy, nr, pna, gml, status)
     SELECT
        pa.lokalnyid::uuid                                                                    lokalnyid,
        trim(ja2.nazwa)                                                                       woj,
@@ -36,22 +37,18 @@ INSERT INTO prg.pa
        pa.numerporzadkowy,
        ltrim(rtrim(replace(replace(upper(trim(pa.numerporzadkowy)), '\', '/'), ' ', ''), './'), '.0/') nr,
        case when pa.kodpocztowy = '00-000' then null else pa.kodpocztowy end                 pna,
-       ST_GeomFromGML((xpath('/geometry/*', pa.geometry::xml))[1]::text) geom
+       ST_GeomFromGML((xpath('/geometry/*', pa.geometry::xml))[1]::text) geom,
+       status
     FROM prg.punkty_adresowe pa
     LEFT JOIN prg.jednostki_administracyjne ja2 on pa.komponent_01 = ja2.gmlid
     LEFT JOIN prg.jednostki_administracyjne ja3 on pa.komponent_02 = ja3.gmlid
     LEFT JOIN prg.jednostki_administracyjne ja4 on pa.komponent_03 = ja4.gmlid
     LEFT JOIN prg.miejscowosci m on pa.komponent_04 = m.gmlid
     LEFT JOIN prg.ulice u on pa.komponent_05 = u.gmlid
-    WHERE pa.status in ('istniejacy', 'wTrakcieBudowy')
+    WHERE 1=1
         and pa.numerporzadkowy is not null
         and coalesce(pa.numerporzadkowy, '') <> coalesce(pa.ulica, '')
-        and pa.numerporzadkowy !~ '^\d+([ ]+\d+)+$'
-        and pa.numerporzadkowy !~ '^B\.*N\.*.*$'
-        and pa.numerporzadkowy !~ '^[\.0 \-]+$'
         and trim(pa.numerporzadkowy) <> ''
-        and pa.numerporzadkowy not like '%,%'
-        and pa.numerporzadkowy not ilike '% do %'
         and pa.numerporzadkowy not ilike '%test%'
         and m.nazwa is not null
         and (u.nazwaglownaczesc is null or (u.nazwaglownaczesc is not null and u.nazwaglownaczesc <> '???'))

@@ -9,7 +9,8 @@ select
         prg.numerporzadkowy nr,
         prg.pna,
         prg.nr nr_standaryzowany,
-        prg.gml geom_2180
+        prg.gml geom_2180,
+        prg.status
 into addresses_new
 from prg.pa prg
 join teryt.simc on prg.teryt_simc = simc.sym

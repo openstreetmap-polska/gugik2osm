@@ -4,7 +4,7 @@
 # there used to be a problem with unclosed db connections
 #0 4 * *  TUE root /opt/gugik2osm/conf/services_restart.sh
 # weekly vacuum - moved to airflow
-#10 4 * *  TUE postgres psql -d gugik2osm -c "vacuum analyze"
+10 4 * *  TUE postgres psql -d gugik2osm -c "vacuum analyze"
 
 # keep some db tables in ram by continuously requesting data from them
 */1 5-15 * * * ttaras curl -s localhost/random/ > /dev/null
@@ -39,7 +39,7 @@
 20 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_teryt_ul.sh >> /opt/gugik2osm/log/exports.log 2>&1
 25 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_osm_buildings.sh >> /opt/gugik2osm/log/exports.log 2>&1
 0 23 * * SUN postgres /opt/gugik2osm/git/processing/bash/export_prg_addresses.sh >> /opt/gugik2osm/log/exports.log 2>&1
-#0 1 * * MON postgres /opt/gugik2osm/conf/export_db_backup.sh >> /opt/gugik2osm/log/exports.log 2>&1
+0 1 * * MON postgres /opt/gugik2osm/conf/export_db_backup.sh >> /opt/gugik2osm/log/exports.log 2>&1
 
 # clean old files
 #0 1 * * * ttaras truncate -s 20000000 /opt/gugik2osm/log/data_update.log
