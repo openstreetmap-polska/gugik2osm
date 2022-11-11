@@ -6,7 +6,7 @@ from flask import Flask
 from resources.internal import (JosmData, MapboxVectorTile, RandomLocation, Exclude, Processes, LatestUpdates,
                                 AvailableLayers, MarkTileForReload)
 from resources.sc import ProposedAddresses, ReportProposedAddress, ProposedBuildings, ReportProposedBuilding
-from resources.josm_plugins import NearestBuilding
+from resources.josm_plugins import NearestBuilding, NearestBuildingGeojson
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,6 +25,7 @@ api.add_resource(ReportProposedAddress, '/sc/proposed_addresses/report')
 api.add_resource(ProposedBuildings, '/sc/proposed_buildings')
 api.add_resource(ReportProposedBuilding, '/sc/proposed_buildings/report')
 api.add_resource(NearestBuilding, '/josm_plugins/nearest_building')
+api.add_resource(NearestBuildingGeojson, '/josm_plugins/v2/nearest_building')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=environ.get('flask_debug', False))

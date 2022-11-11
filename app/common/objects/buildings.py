@@ -79,6 +79,25 @@ def nearest_building_josm_xml(lon: float, lat: float, search_distance_in_meters:
     return [util.input_feature_factory(**row) for row in data]
 
 
+def nearest_building_josm_geojson(lon: float, lat: float, search_distance_in_meters: float) -> dict:
+    """
+    Returns the nearest building within search distance of given coordinates.
+    Query automatically limits search distance to 0.005 degree regardless of parameters.
+    """
+
+    data = db.data_from_db(
+        query=db.QUERIES['josm_nearest_building_geojson'],
+        parameters={
+            'lat': lat,
+            'lon': lon,
+            'search_distance': search_distance_in_meters,
+        },
+        row_as=tuple,
+    )
+
+    return data[0][0]
+
+
 def proposed_buildings(bbox: Tuple[float, float, float, float]) -> List[ProposedBuilding]:
     """
     Returns proposed buildings within given bounding box. Returns list of instances of ProposedBuilding class.
