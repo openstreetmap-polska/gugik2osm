@@ -92,6 +92,15 @@ class NearestBuildingGeojson(Resource):
             lon=lon,
             search_distance_in_meters=search_distance,
         )
+        number_of_buildings = len(geojson_dict["features"])
+
+        if number_of_buildings > 0:
+            geojson_geometry_string = json.dumps(geojson_dict["features"][0]["geometry"])
+            objects.layers.register_export(
+                geojson_geometry=geojson_geometry_string,
+                lb_adresow=0,
+                lb_budynkow=number_of_buildings,
+            )
 
         return Response(
             json.dumps(geojson_dict),
