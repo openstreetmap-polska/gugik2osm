@@ -77,6 +77,8 @@ if __name__ == '__main__':
             except pg.Error as e:
                 print(datetime.now(timezone.utc).astimezone().isoformat(), '- There was a problem executing query.', e)
 
-            for tup in cur.fetchall():
-                url, file_path = prepare_url_and_filepath(tup[0])
-                download_file(url, file_path)
+            rows = cur.fetchall()
+
+        for tup in rows:
+            url, file_path = prepare_url_and_filepath(tup[0])
+            download_file(url, file_path)
