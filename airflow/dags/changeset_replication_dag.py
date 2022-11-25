@@ -10,8 +10,8 @@ from airflow.operators.python import PythonOperator, ShortCircuitOperator
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-from dags.utils.osm.changesets import find_newest_changeset_replication_sequence, changesets_between_sequences
-from dags.utils.parquet import changeset_schema
+from utils.osm.changesets import find_newest_changeset_replication_sequence, changesets_between_sequences
+from utils.parquet import changeset_schema
 from utils.discord import send_dag_run_status
 
 

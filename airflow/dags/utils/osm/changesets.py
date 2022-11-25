@@ -8,8 +8,8 @@ from io import BytesIO
 from typing import Dict, Generator, Union, Iterable
 from xml.dom.minidom import Element
 
-from dags.utils import send_request, parse_bool
-from dags.utils.osm.replication import (
+from .. import send_request, parse_bool
+from .replication import (
     ReplicationSequence,
     format_replication_sequence,
     REPLICATION_CHANGESETS_URL,

@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from math import floor
 from typing import Union
 
-from dags.utils import send_request
+from .. import send_request
 
 LOGGER = logging.getLogger(__name__)
 
