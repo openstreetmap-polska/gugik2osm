@@ -52,13 +52,13 @@ def get_changeset_replication_sequence(url: str) -> ReplicationSequence:
 
     response = send_request(url)
     data = response.text.splitlines()
-    ts = data[1].split("=")[1]
+    ts = data[1].split(": ")[1]
     ts_components = ts.split(" ")
     ts_fixed = f"{ts_components[0]} {ts_components[1][:-3]}{ts_components[2]}"
-    seq = data[2].split("=")[1]
+    seq = int(data[2].split(": ")[1])
     dt = datetime.fromisoformat(ts_fixed)
 
-    return ReplicationSequence(timestamp=dt, number=int(seq), formatted=format_replication_sequence(seq))
+    return ReplicationSequence(timestamp=dt, number=seq, formatted=format_replication_sequence(seq))
 
 
 def find_newest_changeset_replication_sequence(
