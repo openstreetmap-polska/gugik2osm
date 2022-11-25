@@ -1,3 +1,4 @@
+pyarrow==10.0.1
 alembic==1.8.0
 amqp==5.0.9
 anyio==3.6.1
