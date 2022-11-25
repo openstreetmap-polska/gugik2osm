@@ -28,13 +28,12 @@ def print_runtime(logger: Logger) -> Callable:
 
 def parse_bool(val: str) -> bool:
     val = val.lower()
-    match val:
-        case "true":
-            return True
-        case "false":
-            return False
-        case _:
-            raise ValueError(f"Couldn't parse {val} as bool.")
+    if val == "true":
+        return True
+    elif val == "false":
+        return False
+    else:
+        raise ValueError(f"Couldn't parse {val} as bool.")
 
 
 @print_runtime(LOGGER)
