@@ -21,7 +21,7 @@ logger = logging.getLogger()
 send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
 
 last_processed_sequence_variable_name = "last_processed_changeset_sequence"
-s3_bucket_name = "s3://tt-osm-changesets/"
+s3_bucket_name = "tt-osm-changesets"
 
 
 def check_if_anything_to_run(**kwargs) -> bool:
