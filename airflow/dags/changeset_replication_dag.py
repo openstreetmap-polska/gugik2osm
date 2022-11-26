@@ -43,17 +43,17 @@ def process_changesets(**kwargs) -> None:
     ti: TaskInstance = kwargs["ti"]
     processed_datetime = ti.start_date
     date_str = processed_datetime.date().isoformat()
-    ts_str = processed_datetime.isoformat()
+    file_name = processed_datetime.strftime("%Y%m%d%H%M%S")
     with TemporaryDirectory() as temp_dir_name:
         temp_dir = Path(temp_dir_name)
-        parquet_file_path = temp_dir / f"{ts_str}.parquet"
+        parquet_file_path = temp_dir / f"{file_name}.parquet"
         pq.write_table(table, parquet_file_path.as_posix())
         logger.info("Temp file saved successfully.")
         hook = S3Hook(aws_conn_id="aws_tt_s3")
         hook.load_file(
             filename=parquet_file_path,
             bucket_name=s3_bucket_name,
-            key=f"replication/dag_run_date={date_str}/{ts_str}.parquet",
+            key=f"replication/dag_run_date={date_str}/{file_name}.parquet",
         )
         hook.load_string(
             string_data=newest.formatted,
