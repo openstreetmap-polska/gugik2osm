@@ -40,8 +40,8 @@ def process_changesets(**kwargs) -> None:
     table = pa.Table.from_pylist(data, changeset_schema)
     logger.info(f"Converted changesets to PyArrow Table with: {table.num_rows} rows.")
     ti: TaskInstance = kwargs["ti"]
-    processed_datetime = ti.end_date
-    relative_path = f"{processed_datetime.date().isoformat()}/{processed_datetime.isoformat().parquet}"
+    processed_datetime = ti.start_date
+    relative_path = f"{processed_datetime.date().isoformat()}/{processed_datetime.isoformat()}.parquet"
     logger.info(f"Saving to file name: {relative_path}")
     file_path = date_base_dir / relative_path
     file_path.parent.mkdir(exist_ok=True)  # make sure dir exists
