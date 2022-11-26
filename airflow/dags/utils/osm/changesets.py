@@ -5,7 +5,7 @@ import xml.dom.pulldom
 from dataclasses import dataclass
 from datetime import datetime
 from io import BytesIO
-from typing import Dict, Generator, Union, Iterable
+from typing import Dict, Generator, Union, Iterable, Optional
 from xml.dom.minidom import Element
 
 from .. import send_request, parse_bool
@@ -24,10 +24,10 @@ LOGGER = logging.getLogger(__name__)
 class Changeset:
     id: int
     created_at: datetime
-    closed_at: datetime
+    closed_at: Optional[datetime]
     open: bool
     num_changes: int
-    user: str
+    user: Optional[str]
     uid: int
     min_lat: float
     max_lat: float
@@ -88,10 +88,12 @@ def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, No
                 counter += 1
                 if type(child) == Element and child.tagName == "tag":
                     tags[child.getAttribute("k")] = child.getAttribute("v")
+            created_at = element.getAttribute("created_at")
+            closed_at = element.getAttribute("closed_at")
             yield Changeset(
                 id=int(element.getAttribute("id")),
-                created_at=datetime.fromisoformat(element.getAttribute("created_at")),
-                closed_at=datetime.fromisoformat(element.getAttribute("closed_at")),
+                created_at=datetime.fromisoformat(created_at.replace("Z", "+00:00")),
+                closed_at=datetime.fromisoformat(closed_at.replace("Z", "+00:00")) if closed_at else None,
                 open=parse_bool(element.getAttribute("open")),
                 num_changes=int(element.getAttribute("num_changes")),
                 user=element.getAttribute("user"),
