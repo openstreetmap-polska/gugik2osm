@@ -1,4 +1,5 @@
 import gzip
+import json
 import logging
 import urllib.parse
 import xml.dom.pulldom
@@ -44,6 +45,7 @@ class Changeset:
         data["bot"] = self.tags.get("bot")
         data["review_requested"] = self.tags.get("review_requested")
         data["hashtags"] = self.tags.get("hashtags")
+        data["tags"] = json.dumps(data["tags"])
         return data
 
 
