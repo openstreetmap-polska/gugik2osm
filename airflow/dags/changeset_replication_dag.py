@@ -53,6 +53,12 @@ def process_changesets(**kwargs) -> None:
         hook.load_file(
             filename=parquet_file_path,
             bucket_name=s3_bucket_name,
+            key=f"replication/last.parquet",
+            replace=True,
+        )
+        hook.load_file(
+            filename=parquet_file_path,
+            bucket_name=s3_bucket_name,
             key=f"replication/dag_run_date={date_str}/{file_name}.parquet",
         )
         hook.load_string(
