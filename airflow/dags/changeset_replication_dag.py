@@ -21,7 +21,7 @@ logger = logging.getLogger()
 send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
 
 last_processed_sequence_variable_name = "last_processed_changeset_sequence"
-s3_bucket_resource_name = "arn:aws:s3:::tt-osm-changesets"
+s3_bucket_name = "s3://tt-osm-changesets/"
 
 
 def check_if_anything_to_run(**kwargs) -> bool:
@@ -52,12 +52,12 @@ def process_changesets(**kwargs) -> None:
         hook = S3Hook(aws_conn_id="aws_tt_s3")
         hook.load_file(
             filename=parquet_file_path,
-            bucket_name=s3_bucket_resource_name,
+            bucket_name=s3_bucket_name,
             key=f"replication/dag_run_date={date_str}/{ts_str}.parquet",
         )
         hook.load_string(
             string_data=newest.formatted,
-            bucket_name=s3_bucket_resource_name,
+            bucket_name=s3_bucket_name,
             key="state.txt",
             replace=True,
         )
