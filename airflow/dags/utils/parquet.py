@@ -2,8 +2,8 @@ import pyarrow as pa
 
 changeset_schema = pa.schema([
     pa.field("id", pa.int64(), False),
-    pa.field("created_at", pa.timestamp(unit="s"), False),
-    pa.field("closed_at", pa.timestamp(unit="s"), True),
+    pa.field("created_at", pa.timestamp(unit="s", tz="+00:00"), False),
+    pa.field("closed_at", pa.timestamp(unit="s", tz="+00:00"), True),
     pa.field("open", pa.bool_(), False),
     pa.field("num_changes", pa.int32(), True),
     pa.field("user", pa.string(), True),
