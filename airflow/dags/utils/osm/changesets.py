@@ -81,11 +81,11 @@ def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, No
     for event, element in event_stream:
         element: Element = element  # just for typing
         if event == xml.dom.pulldom.START_ELEMENT and element.tagName == "changeset":
+            counter += 1
             event_stream.expandNode(element)
             tags = {}
             for child in element.childNodes:
                 child: Element = child  # for typing
-                counter += 1
                 if type(child) == Element and child.tagName == "tag":
                     tags[child.getAttribute("k")] = child.getAttribute("v")
             created_at = element.getAttribute("created_at")
@@ -109,7 +109,7 @@ def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, No
                 comments_count=int(element.getAttribute("comments_count")),
                 tags=tags,
             )
-    LOGGER.info(f"Finished parsing file downloaded from: {url} . There were {counter} nodes.")
+    LOGGER.info(f"Finished parsing file downloaded from: {url} . There were {counter} changesets.")
 
 
 def changesets_between_sequences(
