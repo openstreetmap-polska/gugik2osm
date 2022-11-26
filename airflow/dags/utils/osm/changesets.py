@@ -29,10 +29,10 @@ class Changeset:
     num_changes: int
     user: Optional[str]
     uid: int
-    min_lat: float
-    max_lat: float
-    min_lon: float
-    max_lon: float
+    min_lat: Optional[float]
+    max_lat: Optional[float]
+    min_lon: Optional[float]
+    max_lon: Optional[float]
     comments_count: int
     tags: Dict[str, str]
 
@@ -90,6 +90,10 @@ def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, No
                     tags[child.getAttribute("k")] = child.getAttribute("v")
             created_at = element.getAttribute("created_at")
             closed_at = element.getAttribute("closed_at")
+            min_lat = element.getAttribute("min_lat")
+            max_lat = element.getAttribute("max_lat")
+            min_lon = element.getAttribute("min_lon")
+            max_lon = element.getAttribute("max_lon")
             yield Changeset(
                 id=int(element.getAttribute("id")),
                 created_at=datetime.fromisoformat(created_at.replace("Z", "+00:00")),
@@ -98,10 +102,10 @@ def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, No
                 num_changes=int(element.getAttribute("num_changes")),
                 user=element.getAttribute("user"),
                 uid=int(element.getAttribute("uid")),
-                min_lat=float(element.getAttribute("min_lat")),
-                max_lat=float(element.getAttribute("max_lat")),
-                min_lon=float(element.getAttribute("min_lon")),
-                max_lon=float(element.getAttribute("max_lon")),
+                min_lat=float(min_lat) if min_lat != "" else None,
+                max_lat=float(max_lat) if max_lat != "" else None,
+                min_lon=float(min_lon) if min_lon != "" else None,
+                max_lon=float(max_lon) if max_lon != "" else None,
                 comments_count=int(element.getAttribute("comments_count")),
                 tags=tags,
             )
