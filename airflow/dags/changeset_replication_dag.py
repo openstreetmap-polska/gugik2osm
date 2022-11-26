@@ -64,7 +64,7 @@ def process_changesets(**kwargs) -> None:
         hook.load_string(
             string_data=newest.formatted,
             bucket_name=s3_bucket_name,
-            key="state.txt",
+            key="replication/state.txt",
             replace=True,
         )
         logger.info("Files uploaded to s3 successfully.")
