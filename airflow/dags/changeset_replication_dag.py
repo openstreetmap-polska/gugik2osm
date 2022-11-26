@@ -46,7 +46,7 @@ def process_changesets(**kwargs) -> None:
     ts_str = processed_datetime.isoformat()
     with TemporaryDirectory() as temp_dir_name:
         temp_dir = Path(temp_dir_name)
-        parquet_file_path = temp_dir / date_str / f"{ts_str}.parquet"
+        parquet_file_path = temp_dir / f"{ts_str}.parquet"
         pq.write_table(table, parquet_file_path.as_posix())
         logger.info("Temp file saved successfully.")
         hook = S3Hook(aws_conn_id="aws_tt_s3")
