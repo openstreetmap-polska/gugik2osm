@@ -7,7 +7,6 @@ from typing import List
 import pyarrow as pa
 import pyarrow.parquet as pq
 from airflow import DAG
-from airflow.models import TaskInstance
 from airflow.models.baseoperator import chain
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
@@ -61,10 +60,8 @@ def process_changesets(**kwargs) -> None:
                 data.append(changeset.transform_to_dict())
     logger.info("Finished processing changesets.")
 
-    ti: TaskInstance = kwargs["ti"]
-    processed_datetime = ti.start_date
     hook.load_string(
-        string_data=processed_datetime.isoformat(),
+        string_data=datetime.datetime.utcnow().isoformat(),
         bucket_name=s3_bucket_name,
         key="full/dag_run_date.txt",
         replace=True,
