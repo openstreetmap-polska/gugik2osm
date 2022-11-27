@@ -42,10 +42,10 @@ def process_changesets(**kwargs) -> None:
     currently_processed_year = 2005  # first changesets in the files are from 2005
     for changeset in parse_full_changeset_file(temp_file_name):
         if not changeset.open:
-            changeset_year = changeset.closed_at.year
+            changeset_year = changeset.created_at.year
             if changeset_year != currently_processed_year:
                 currently_processed_year = changeset_year
-                key = f"closed_year={changeset_year}/{changeset_year}.parquet"
+                key = f"opened_year={changeset_year}/{changeset_year}.parquet"
                 path = temp_parquet_dir / f"{changeset_year}.parquet"
                 save_parquet(data, path.as_posix())
                 logger.info(f"Uploading file: {path} to: s3://{s3_bucket_name}/{key}")
