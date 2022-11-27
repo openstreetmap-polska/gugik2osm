@@ -39,7 +39,6 @@ def save_parquet(data: List[dict], file_path: str) -> None:
 def process_changesets(**kwargs) -> None:
     hook = S3Hook(aws_conn_id="aws_tt_s3")
     logger.info(f"Processing file: {temp_file_name.as_posix()}")
-    paths_to_upload = []
     data = []
     currently_processed_year = 2005  # first changesets in the files are from 2005
     for changeset in parse_full_changeset_file(temp_file_name):
@@ -49,7 +48,6 @@ def process_changesets(**kwargs) -> None:
                 key = f"closed_year={changeset_year}/{changeset_year}.parquet"
                 path = temp_parquet_dir / f"{changeset_year}.parquet"
                 save_parquet(data, path.as_posix())
-                paths_to_upload.append((path, key))
                 logger.info(f"Uploading file: {path} to: s3://{s3_bucket_name}/{key}")
                 hook.load_file(
                     filename=path,
