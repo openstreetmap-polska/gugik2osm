@@ -2,7 +2,7 @@ import datetime
 import logging
 from functools import partial
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -34,30 +34,35 @@ def save_parquet(data: List[dict], file_path: str) -> None:
     logger.info(f"Parquet file saved successfully to: {file_path}")
 
 
+def upload_parquet(hook: S3Hook, path: str, key: str) -> None:
+    logger.info(f"Uploading file: {path} to: s3://{s3_bucket_name}/{key}")
+    hook.load_file(
+        filename=path,
+        bucket_name=s3_bucket_name,
+        key=f"full/{key}",
+        replace=True,
+    )
+    logger.info("Upload finished.")
+
+
 def process_changesets(**kwargs) -> None:
     hook = S3Hook(aws_conn_id="aws_tt_s3")
     logger.info(f"Processing file: {temp_file_name.as_posix()}")
-    data = []
-    currently_processed_year = 2005  # first changesets in the files are from 2005
+    current_year = datetime.datetime.utcnow().year
+    data: Dict[int, List[dict]] = {
+        year: []
+        for year in range(2005, current_year + 1)  # first changesets in the files are from 2005
+    }
     for changeset in parse_full_changeset_file(temp_file_name):
         if not changeset.open:
             changeset_year = changeset.created_at.year
-            if changeset_year != currently_processed_year:
-                currently_processed_year = changeset_year
-                key = f"opened_year={changeset_year}/{changeset_year}.parquet"
-                path = temp_parquet_dir / f"{changeset_year}.parquet"
-                save_parquet(data, path.as_posix())
-                logger.info(f"Uploading file: {path} to: s3://{s3_bucket_name}/{key}")
-                hook.load_file(
-                    filename=path,
-                    bucket_name=s3_bucket_name,
-                    key=f"full/{key}",
-                    replace=True,
-                )
-                logger.info("Upload finished.")
-                data = [changeset.transform_to_dict()]
-            else:
-                data.append(changeset.transform_to_dict())
+            data[changeset_year].append(changeset.transform_to_dict())
+    for changeset_year, features in data.items():
+        key = f"opened_year={changeset_year}/{changeset_year}.parquet"
+        path = temp_parquet_dir / f"{changeset_year}.parquet"
+        save_parquet(data=features, file_path=path.as_posix())
+        upload_parquet(hook=hook, path=path.as_posix(), key=key)
+        del data[changeset_year]
     logger.info("Finished processing changesets.")
 
     hook.load_string(
