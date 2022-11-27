@@ -2,16 +2,15 @@ import datetime
 import logging
 from functools import partial
 from pathlib import Path
-from tempfile import TemporaryDirectory
 from typing import List
 
 import pyarrow as pa
 import pyarrow.parquet as pq
-from airflow import DAG, AirflowException
-from airflow.models import Variable, TaskInstance
+from airflow import DAG
+from airflow.models import TaskInstance
 from airflow.models.baseoperator import chain
 from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator, ShortCircuitOperator
+from airflow.operators.python import PythonOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
 from utils.discord import send_dag_run_status
