@@ -1,3 +1,4 @@
+import bz2
 import gzip
 import json
 import logging
@@ -6,17 +7,17 @@ import xml.dom.pulldom
 from dataclasses import dataclass
 from datetime import datetime
 from io import BytesIO
-from typing import Dict, Generator, Union, Iterable, Optional
+from pathlib import Path
+from typing import Dict, Generator, Union, Optional
 from xml.dom.minidom import Element
 
-from .. import send_request, parse_bool
 from .replication import (
     ReplicationSequence,
     format_replication_sequence,
     REPLICATION_CHANGESETS_URL,
     replication_sequence_to_int,
 )
-
+from .. import send_request, parse_bool
 
 LOGGER = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ class Changeset:
     open: bool
     num_changes: int
     user: Optional[str]
-    uid: int
+    uid: Optional[int]
     min_lat: Optional[float]
     max_lat: Optional[float]
     min_lon: Optional[float]
@@ -71,14 +72,9 @@ def find_newest_changeset_replication_sequence(
     return get_changeset_replication_sequence(url)
 
 
-def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, None]:
-    """Downloads gzip compressed XML file from URL and parses out Changeset."""
-
-    response = send_request(url)
-    LOGGER.info("Decompressing...")
-    xml_data = gzip.GzipFile(fileobj=BytesIO(response.content))
+def parse_xml_file(file: Union[gzip.GzipFile, bz2.BZ2File]) -> Generator[Changeset, None, None]:
     LOGGER.info("Parsing XML...")
-    event_stream = xml.dom.pulldom.parse(xml_data)
+    event_stream = xml.dom.pulldom.parse(file)
     counter = 0
     for event, element in event_stream:
         element: Element = element  # just for typing
@@ -96,14 +92,16 @@ def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, No
             max_lat = element.getAttribute("max_lat")
             min_lon = element.getAttribute("min_lon")
             max_lon = element.getAttribute("max_lon")
+            user = element.getAttribute("user")
+            uid = element.getAttribute("uid")
             yield Changeset(
                 id=int(element.getAttribute("id")),
                 created_at=datetime.fromisoformat(created_at.replace("Z", "+00:00")),
                 closed_at=datetime.fromisoformat(closed_at.replace("Z", "+00:00")) if closed_at else None,
                 open=parse_bool(element.getAttribute("open")),
                 num_changes=int(element.getAttribute("num_changes")),
-                user=element.getAttribute("user"),
-                uid=int(element.getAttribute("uid")),
+                user=user if user != "" else None,
+                uid=int(uid) if uid != "" else None,
                 min_lat=float(min_lat) if min_lat != "" else None,
                 max_lat=float(max_lat) if max_lat != "" else None,
                 min_lon=float(min_lon) if min_lon != "" else None,
@@ -111,7 +109,17 @@ def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, No
                 comments_count=int(element.getAttribute("comments_count")),
                 tags=tags,
             )
-    LOGGER.info(f"Finished parsing file downloaded from: {url} . There were {counter} changesets.")
+    LOGGER.info(f"Finished parsing file. There were {counter} changesets.")
+
+
+def download_and_parse_changeset_file(url: str) -> Generator[Changeset, None, None]:
+    """Downloads gzip compressed XML file from URL and parses out Changeset."""
+
+    response = send_request(url)
+    LOGGER.info("Decompressing...")
+    xml_data = gzip.GzipFile(fileobj=BytesIO(response.content))
+    for changeset in parse_xml_file(xml_data):
+        yield changeset
 
 
 def changesets_between_sequences(
@@ -129,4 +137,11 @@ def changesets_between_sequences(
     for seq in range(start_sequence, end_sequence + 1):
         osc_url = urllib.parse.urljoin(replication_url, f"{format_replication_sequence(seq)}.osm.gz")
         for changeset in download_and_parse_changeset_file(osc_url):
+            yield changeset
+
+
+def parse_full_changeset_file(file_path: Union[Path, str]) -> Generator[Changeset, None, None]:
+    with bz2.BZ2File(file_path) as fp:
+        LOGGER.info("Decompressing...")
+        for changeset in parse_xml_file(fp):
             yield changeset

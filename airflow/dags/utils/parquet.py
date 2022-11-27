@@ -7,7 +7,7 @@ changeset_schema = pa.schema([
     pa.field("open", pa.bool_(), False),
     pa.field("num_changes", pa.int32(), True),
     pa.field("user", pa.string(), True),
-    pa.field("uid", pa.int32(), False),
+    pa.field("uid", pa.int32(), True),
     pa.field("min_lat", pa.float64(), True),
     pa.field("max_lat", pa.float64(), True),
     pa.field("min_lon", pa.float64(), True),
