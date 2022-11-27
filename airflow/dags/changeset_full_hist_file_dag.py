@@ -110,5 +110,5 @@ with DAG(
     chain(
         download_xml_file_task,
         process_changesets_task,
-        delete_xml_file_task,
+        [delete_xml_file_task, delete_local_parquet_files],
     )
