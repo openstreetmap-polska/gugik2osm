@@ -109,6 +109,8 @@ def parse_xml_file(file: Union[gzip.GzipFile, bz2.BZ2File]) -> Generator[Changes
                 comments_count=int(element.getAttribute("comments_count")),
                 tags=tags,
             )
+            if counter % 10000:
+                LOGGER.info(f"Processed: {counter} features.")
     LOGGER.info(f"Finished parsing file. There were {counter} changesets.")
 
 
