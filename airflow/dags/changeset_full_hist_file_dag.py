@@ -45,6 +45,7 @@ def process_changesets(**kwargs) -> None:
         if not changeset.open:
             changeset_year = changeset.closed_at.year
             if changeset_year != currently_processed_year:
+                currently_processed_year = changeset_year
                 key = f"closed_year={changeset_year}/{changeset_year}.parquet"
                 path = temp_parquet_dir / f"{changeset_year}.parquet"
                 save_parquet(data, path.as_posix())
@@ -59,16 +60,17 @@ def process_changesets(**kwargs) -> None:
                 data = [changeset.transform_to_dict()]
             else:
                 data.append(changeset.transform_to_dict())
+    logger.info("Finished processing changesets.")
 
-        ti: TaskInstance = kwargs["ti"]
-        processed_datetime = ti.start_date
-        hook.load_string(
-            string_data=processed_datetime.isoformat(),
-            bucket_name=s3_bucket_name,
-            key="full/dag_run_date.txt",
-            replace=True,
-        )
-        logger.info("Files uploaded to s3 successfully.")
+    ti: TaskInstance = kwargs["ti"]
+    processed_datetime = ti.start_date
+    hook.load_string(
+        string_data=processed_datetime.isoformat(),
+        bucket_name=s3_bucket_name,
+        key="full/dag_run_date.txt",
+        replace=True,
+    )
+    logger.info("Files uploaded to s3 successfully.")
 
 
 with DAG(
