@@ -11,6 +11,8 @@ from pathlib import Path
 from typing import Dict, Generator, Union, Optional
 from xml.dom.minidom import Element
 
+import lxml.etree
+
 from .replication import (
     ReplicationSequence,
     format_replication_sequence,
@@ -142,8 +144,56 @@ def changesets_between_sequences(
             yield changeset
 
 
+def me_xml_iterator(context: lxml.etree.iterparse) -> Generator[lxml.etree._Element, None, None]:
+    """Memory efficient XML iterator."""
+
+    for _event, elem in context:
+        yield elem
+        elem.clear()
+        while elem.getprevious() is not None:
+            del elem.getparent()[0]
+    del context
+
+
+def parse_lxml_element(element: lxml.etree._Element) -> Changeset:
+    tags = {}
+    for child in element.iterchildren(tag="tag"):
+        tags[child.attrib.get("k")] = child.attrib.get("v")
+    created_at = element.attrib.get("created_at")
+    closed_at = element.attrib.get("closed_at")
+    min_lat = element.attrib.get("min_lat")
+    max_lat = element.attrib.get("max_lat")
+    min_lon = element.attrib.get("min_lon")
+    max_lon = element.attrib.get("max_lon")
+    user = element.attrib.get("user")
+    uid = element.attrib.get("uid")
+    return Changeset(
+        id=int(element.attrib.get("id")),
+        created_at=datetime.fromisoformat(created_at.replace("Z", "+00:00")),
+        closed_at=datetime.fromisoformat(closed_at.replace("Z", "+00:00")) if closed_at else None,
+        open=parse_bool(element.attrib.get("open")),
+        num_changes=int(element.attrib.get("num_changes")),
+        user=user,
+        uid=int(uid) if uid else None,
+        min_lat=float(min_lat) if min_lat else None,
+        max_lat=float(max_lat) if max_lat else None,
+        min_lon=float(min_lon) if min_lon else None,
+        max_lon=float(max_lon) if max_lon else None,
+        comments_count=int(element.attrib.get("comments_count")),
+        tags=tags,
+    )
+
+
 def parse_full_changeset_file(file_path: Union[Path, str]) -> Generator[Changeset, None, None]:
     with bz2.BZ2File(file_path) as fp:
         LOGGER.info("Decompressing...")
-        for changeset in parse_xml_file(fp):
+        # create context for xml parser iterator
+        context = lxml.etree.iterparse(
+            source=fp,
+            events=("end",),
+            tag="changeset",
+            remove_blank_text=True
+        )
+        for element in me_xml_iterator(context):
+            changeset = parse_lxml_element(element)
             yield changeset

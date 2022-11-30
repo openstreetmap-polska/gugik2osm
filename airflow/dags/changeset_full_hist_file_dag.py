@@ -1,11 +1,14 @@
+import csv
 import datetime
 import logging
+import os
 from functools import partial
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Union
 
-import pyarrow as pa
-import pyarrow.parquet as pq
+import pyarrow
+import pyarrow.csv
+import pyarrow.parquet
 from airflow import DAG
 from airflow.models.baseoperator import chain
 from airflow.operators.bash import BashOperator
@@ -23,48 +26,72 @@ send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
 s3_bucket_name = "tt-osm-changesets"
 temp_dir = Path("/opt/gugik2osm/temp_changesets/")
 temp_parquet_dir = temp_dir / "parquet"
+temp_csv_dir = temp_dir / "csv"
 temp_file_name = temp_dir / "changesets-latest.osm.bz2"
 file_url = "https://planet.osm.org/planet/changesets-latest.osm.bz2"
 
 
-def save_parquet(data: List[dict], file_path: str) -> None:
-    table = pa.Table.from_pylist(data, changeset_schema)
-    logger.info(f"Converted changesets to PyArrow Table with: {table.num_rows} rows.")
-    pq.write_table(table, file_path)
-    logger.info(f"Parquet file saved successfully to: {file_path}")
+def list_files(directory: Union[Path, str], extension: str) -> List[Path]:
+    dir_contents: List[str] = os.listdir(directory)
+    return [directory / Path(file) for file in dir_contents if file.endswith(extension)]
 
 
-def upload_parquet(hook: S3Hook, path: str, key: str) -> None:
-    logger.info(f"Uploading file: {path} to: s3://{s3_bucket_name}/{key}")
-    hook.load_file(
-        filename=path,
-        bucket_name=s3_bucket_name,
-        key=f"full/{key}",
-        replace=True,
-    )
-    logger.info("Upload finished.")
+def convert_csv_to_parquet(csv_dir: Path, parquet_dir: Path) -> None:
+    csv_files = list_files(csv_dir, "csv")
+    def invalid_row_handler(row: pyarrow.csv.InvalidRow) -> str:
+        logger.warning(f"row could not be parsed: {row}")
+        return "skip"
+    for csv_file in csv_files:
+        csv_path = csv_file.as_posix()
+        parquet_path = parquet_dir / csv_file.name.replace("csv", "parquet")
+        csv_data = pyarrow.csv.read_csv(
+            input_file=csv_path,
+            read_options=pyarrow.csv.ReadOptions(column_names=changeset_schema.names),
+            parse_options=pyarrow.csv.ParseOptions(newlines_in_values=True, invalid_row_handler=invalid_row_handler),
+            convert_options=pyarrow.csv.ConvertOptions(column_types=changeset_schema),
+        )
+        pyarrow.parquet.write_table(
+            table=csv_data,
+            where=parquet_path,
+            # row_group_size=100000,
+        )
 
 
-def process_changesets(**kwargs) -> None:
+def save_to_csv(xml_file: Path, output_dir: Path, chunk_size: int = 10000000):
+    current_chunk = 0
+    chunk_file_path = output_dir / f"{current_chunk}.csv"
+    counter = 0
+    csvfile = open(chunk_file_path, 'w', newline='')
+    try:
+        writer = csv.DictWriter(csvfile, fieldnames=changeset_schema.names)
+        for changeset in parse_full_changeset_file(xml_file):
+            writer.writerow(changeset.transform_to_dict())
+            counter += 1
+            if counter > chunk_size:
+                csvfile.close()
+                current_chunk += 1
+                chunk_file_path = output_dir / f"{current_chunk}.csv"
+                print("writing chunk", chunk_file_path)
+                csvfile = open(chunk_file_path, 'w', newline='')
+                writer = csv.DictWriter(csvfile, fieldnames=changeset_schema.names)
+                counter = 0
+    finally:
+        csvfile.close()
+
+
+def upload_parquet(parquet_dir: Path) -> None:
     hook = S3Hook(aws_conn_id="aws_tt_s3")
-    logger.info(f"Processing file: {temp_file_name.as_posix()}")
-    current_year = datetime.datetime.utcnow().year
-    data: Dict[int, List[dict]] = {
-        year: []
-        for year in range(2005, current_year + 1)  # first changesets in the files are from 2005
-    }
-    for changeset in parse_full_changeset_file(temp_file_name):
-        if not changeset.open:
-            changeset_year = changeset.created_at.year
-            data[changeset_year].append(changeset.transform_to_dict())
-    for changeset_year, features in data.items():
-        key = f"opened_year={changeset_year}/{changeset_year}.parquet"
-        path = temp_parquet_dir / f"{changeset_year}.parquet"
-        save_parquet(data=features, file_path=path.as_posix())
-        upload_parquet(hook=hook, path=path.as_posix(), key=key)
-        del data[changeset_year]
-    logger.info("Finished processing changesets.")
-
+    current_parquet_files = [file for file in hook.list_keys(bucket_name=s3_bucket_name, prefix="full/") if file.endswith("parquet")]
+    hook.delete_objects(bucket=s3_bucket_name, keys=current_parquet_files)
+    files_to_upload = list_files(directory=parquet_dir, extension="parquet")
+    for file in files_to_upload:
+        s3_key = f"full/{file.name}"
+        logger.info(f"Uploading file: {file.as_posix()} to: s3://{s3_bucket_name}/{s3_key}")
+        hook.load_file(
+            bucket_name=s3_bucket_name,
+            key=s3_key,
+            filename=file,
+        )
     hook.load_string(
         string_data=datetime.datetime.utcnow().isoformat(),
         bucket_name=s3_bucket_name,
@@ -77,8 +104,8 @@ def process_changesets(**kwargs) -> None:
 with DAG(
     dag_id="changesets_full_hist_file_to_parquet",
     description="Downloads changeset full history files and converts them to parquet.",
-    start_date=datetime.datetime(2022, 11, 27),
-    schedule_interval=None,
+    start_date=datetime.datetime(2022, 11, 20),
+    schedule_interval=datetime.timedelta(weeks=1),
     catchup=False,
     max_active_runs=1,
     # on_failure_callback=send_dag_run_status_to_discord,
@@ -91,16 +118,45 @@ with DAG(
         """.strip(),
     )
 
-    process_changesets_task = PythonOperator(
-        task_id="process_changesets",
-        python_callable=process_changesets,
+    convert_xml_to_csv_task = PythonOperator(
+        task_id="convert_xml_to_csv",
+        python_callable=save_to_csv,
+        op_kwargs={
+            "xml_file": temp_file_name,
+            "output_dir": temp_csv_dir,
+            "chunk_size": 10000000,
+        },
+    )
+
+    convert_csv_to_parquet_task = PythonOperator(
+        task_id="convert_csv_to_parquet",
+        python_callable=convert_csv_to_parquet,
+        op_kwargs={
+            "csv_dir": temp_csv_dir,
+            "parquet_dir": temp_parquet_dir,
+        },
+    )
+
+    upload_parquet_task = PythonOperator(
+        task_id="upload_parquet",
+        python_callable=upload_parquet,
+        op_kwargs={
+            "parquet_dir": temp_parquet_dir,
+        }
     )
 
     delete_local_parquet_files = BashOperator(
         task_id="delete_parquet_files",
         bash_command=f"""
             rm -r {temp_parquet_dir.as_posix()}/*
-        """
+        """.strip(),
+    )
+
+    delete_local_csv_files = BashOperator(
+        task_id="delete_parquet_files",
+        bash_command=f"""
+            rm -r {temp_csv_dir.as_posix()}/*
+        """.strip(),
     )
 
     delete_xml_file_task = BashOperator(
@@ -112,6 +168,12 @@ with DAG(
 
     chain(
         download_xml_file_task,
-        process_changesets_task,
-        [delete_xml_file_task, delete_local_parquet_files],
+        convert_xml_to_csv_task,
+        convert_csv_to_parquet_task,
+        upload_parquet_task,
+        [
+            delete_xml_file_task,
+            delete_local_parquet_files,
+            delete_local_csv_files,
+        ],
     )
