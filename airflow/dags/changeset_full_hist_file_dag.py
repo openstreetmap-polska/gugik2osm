@@ -153,7 +153,7 @@ with DAG(
     )
 
     delete_local_csv_files = BashOperator(
-        task_id="delete_parquet_files",
+        task_id="delete_csv_files",
         bash_command=f"""
             rm -r {temp_csv_dir.as_posix()}/*
         """.strip(),
