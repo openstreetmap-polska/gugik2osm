@@ -101,14 +101,20 @@ def upload_parquet(parquet_dir: Path) -> None:
     logger.info("Files uploaded to s3 successfully.")
 
 
+default_args = {
+    "retries": 2,
+    "retry_delay": datetime.timedelta(minutes=15),
+}
+
 with DAG(
     dag_id="changesets_full_hist_file_to_parquet",
     description="Downloads changeset full history files and converts them to parquet.",
-    start_date=datetime.datetime(2022, 11, 20),
-    schedule_interval=datetime.timedelta(weeks=1),
+    start_date=datetime.datetime(2022, 11, 26),
+    schedule_interval="0 7 * * 6",
     catchup=False,
     max_active_runs=1,
-    # on_failure_callback=send_dag_run_status_to_discord,
+    default_args=default_args,
+    on_failure_callback=send_dag_run_status_to_discord,
 ) as dag:
 
     download_xml_file_task = BashOperator(
