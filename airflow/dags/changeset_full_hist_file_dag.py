@@ -67,11 +67,13 @@ def save_to_csv(xml_file: Path, output_dir: Path, chunk_size: int = 10000000):
         for changeset in parse_full_changeset_file(xml_file):
             writer.writerow(changeset.transform_to_dict())
             counter += 1
+            if counter % 100000 == 0:
+                logger.info(f"Processed {counter} rows in chunk {current_chunk}")
             if counter > chunk_size:
                 csvfile.close()
                 current_chunk += 1
                 chunk_file_path = output_dir / f"{current_chunk}.csv"
-                print("writing chunk", chunk_file_path)
+                logger.info(f"writing chunk: {chunk_file_path}")
                 csvfile = open(chunk_file_path, 'w', newline='')
                 writer = csv.DictWriter(csvfile, fieldnames=changeset_schema.names)
                 counter = 0
