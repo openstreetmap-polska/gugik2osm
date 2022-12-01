@@ -106,6 +106,7 @@ def upload_parquet(parquet_dir: Path) -> None:
 default_args = {
     "retries": 2,
     "retry_delay": datetime.timedelta(minutes=15),
+    "execution_timeout": datetime.timedelta(hours=12),
 }
 
 with DAG(
@@ -115,6 +116,7 @@ with DAG(
     schedule_interval="0 7 * * 6",
     catchup=False,
     max_active_runs=1,
+    dagrun_timeout=datetime.timedelta(days=1),
     default_args=default_args,
     on_failure_callback=send_dag_run_status_to_discord,
 ) as dag:
