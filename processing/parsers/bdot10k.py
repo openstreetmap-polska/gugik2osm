@@ -855,20 +855,24 @@ if __name__ == '__main__':
             params['prepare_tables'] = args['prep_tables']
         else:
             params = {}
-
-        if args['writer'][0] == 'stdout':
-            StdOutWriter(file_path, only_basic_fields=args['basic_fields']).run(limit=args['limit'][0] if args['limit'] else None)
-        elif args['writer'][0] == 'csv':
-            CSVWriter(file_path, args['csv_directory'][0], only_basic_fields=args['basic_fields']).run(
-                headers=args['csv_headers'][0] if args['csv_headers'] is not None else True)
-        elif args['writer'][0] == 'sqlite':
-            SQLiteWriter(file_path, args['sqlite_file'][0], only_basic_fields=args['basic_fields']).run(**params)
-        elif args['writer'][0] == 'postgresql':
-            pgw = PostgreSQLWriter(file_path, args['dsn'][0], only_basic_fields=args['basic_fields'])
-            pgw.run(**params)
-            if idx == 0 and args['create_lookup_tables']:
-                pgw.create_lookup_tables()
-            if idx == 0 and args['create_view']:
-                pgw.create_view()
-        else:
-            print(args)
+        try:
+            if args['writer'][0] == 'stdout':
+                StdOutWriter(file_path, only_basic_fields=args['basic_fields']).run(limit=args['limit'][0] if args['limit'] else None)
+            elif args['writer'][0] == 'csv':
+                CSVWriter(file_path, args['csv_directory'][0], only_basic_fields=args['basic_fields']).run(
+                    headers=args['csv_headers'][0] if args['csv_headers'] is not None else True)
+            elif args['writer'][0] == 'sqlite':
+                SQLiteWriter(file_path, args['sqlite_file'][0], only_basic_fields=args['basic_fields']).run(**params)
+            elif args['writer'][0] == 'postgresql':
+                pgw = PostgreSQLWriter(file_path, args['dsn'][0], only_basic_fields=args['basic_fields'])
+                pgw.run(**params)
+                if idx == 0 and args['create_lookup_tables']:
+                    pgw.create_lookup_tables()
+                if idx == 0 and args['create_view']:
+                    pgw.create_view()
+            else:
+                print(args)
+        except Exception as e:
+            print(f"Problem during parsing of: [{file_path}]. Skipping.")
+            print("Exception:")
+            print(e)
