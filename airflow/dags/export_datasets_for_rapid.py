@@ -109,7 +109,7 @@ with DAG(
         """.strip(),
     )
     move_buildings_file = BashOperator(
-        task_id="move_addresses_file",
+        task_id="move_buildings_file",
         bash_command="mv /opt/gugik2osm/temp/export/buildings_for_rapid.gpkg /var/www/data/buildings_for_rapid.gpkg",
     )
 
