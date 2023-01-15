@@ -20,7 +20,7 @@ with DAG(
     on_failure_callback=send_dag_run_status_to_discord,
 ) as dag:
 
-    pg_check_version_task = PythonOperator(
+    PythonOperator(
         task_id="reset_counters_that_have_old_timestamps",
         python_callable=reset_dag_antispam_old_stats,
     )
