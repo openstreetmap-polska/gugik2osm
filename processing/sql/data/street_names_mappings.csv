@@ -200,7 +200,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0977380,40777,Aleja św. Mikołaja,Aleja Świętego Mikołaja
 0957650,53880,Aleja T. Kościuszki,Aleja Tadeusza Kościuszki
 0928363,48469,Aleje Prof. Sylwestra Kaliskiego,Aleje Profesora Sylwestra Kaliskiego
-0947308,53140,Antoniego Hedy ps. Szary,Antoniego Hedy ps. Szary
 0964583,00467,Asnyka,Adama Asnyka
 0949690,00467,Asnyka,Adama Asnyka
 0920249,00467,Asnyka,Adama Asnyka
@@ -302,6 +301,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0975760,00566,Baczyńskiego,Krzysztofa Kamila Baczyńskiego
 0921668,00566,Baczyńskiego,Krzysztofa Kamila Baczyńskiego
 0511634,00566,Baczyńskiego,Krzysztofa Kamila Baczyńskiego
+0947308,53140,Antoniego Hedy ps. Szary,"Antoniego Hedy ps. ""Szary"""
 0982641,00566,Baczyńskiego,Krzysztofa Kamila Baczyńskiego
 0977338,00761,Barlickiego,Norberta Barlickiego
 0988394,00761,Barlickiego,Norberta Barlickiego
@@ -508,8 +508,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0921792,02120,Broniewskiego,Władysława Broniewskiego
 0957620,02120,Broniewskiego,Władysława Broniewskiego
 0143254,02120,Broniewskiego,Władysława Broniewskiego
-0980671,53262,Bronisława Ostrowskiego ps. Cichy,Bronisława Ostrowskiego ps. Cichy
-0243754,53260,Bronisława Wieczorkiewicza ps. Wilk,Bronisława Wieczorkiewicza ps. Wilk
 0965252,02224,Brzechwy,Jana Brzechwy
 0924098,02224,Brzechwy,Jana Brzechwy
 0177170,02224,Brzechwy,Jana Brzechwy
@@ -594,6 +592,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0983155,02844,Chopina,Fryderyka Chopina
 0004417,02844,Chopina,Fryderyka Chopina
 0965401,02844,Chopina,Fryderyka Chopina
+0980671,53262,Bronisława Ostrowskiego ps. Cichy,"Bronisława Ostrowskiego ps. ""Cichy"""
 0988394,02844,Chopina,Fryderyka Chopina
 0985734,02844,Chopina,Fryderyka Chopina
 0429016,02844,Chopina,Fryderyka Chopina
@@ -761,7 +760,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0964979,34995,Cypriana K. Norwida,Cypriana Kamila Norwida
 0218489,37648,Cz. Miłosza,Czesława Miłosza
 0846790,37648,Cz. Miłosza,Czesława Miłosza
-0972192,40305,Czesławy Puzon ps. Baśka,Czesławy Puzon ps. Baśka
 0938120,03635,Daszyńskiego,Ignacego Daszyńskiego
 0988359,03635,Daszyńskiego,Ignacego Daszyńskiego
 0988365,03635,Daszyńskiego,Ignacego Daszyńskiego
@@ -1067,7 +1065,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0160235,34892,Fr. Kowalewskiego,Franciszka Kowalewskiego
 0937110,41306,Fr. Sójki,Franciszka Sójki
 0649090,48161,Franciszka G. Gołębiowskiego,Franciszka Grzegorza Gołębiowskiego
-0964650,55060,Franciszka Niepokólczyckiego ps. Halny,Franciszka Niepokólczyckiego ps. Halny
 0965252,05171,Fredry,Aleksandra Fredry
 0924098,05171,Fredry,Aleksandra Fredry
 0928854,05171,Fredry,Aleksandra Fredry
@@ -1318,12 +1315,10 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0988684,06189,gen. Grota-Roweckiego,Generała Stefana Grota-Roweckiego
 0972447,48370,Gen. Grota-Roweckiego,Generała Stefana Grota-Roweckiego
 0932815,48370,Gen. Grota-Roweckiego,Generała Stefana Grota-Roweckiego
-0983818,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
-0932710,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
-0291440,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
-0954604,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
-0980850,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
-0613903,27399,gen. Grota Roweckiego,Gererała Stefana Grota Roweckiego
+0932710,27399,gen. Grota Roweckiego,Generała Stefana Grota Roweckiego
+0980850,27399,gen. Grota Roweckiego,Generała Stefana Grota Roweckiego
+0954604,27399,gen. Grota Roweckiego,Generała Stefana Grota Roweckiego
+0983818,27399,gen. Grota Roweckiego,Generała Stefana Grota Roweckiego
 0987331,50609,Gen. Grota Roweckiego,Generała Stefana Grota-Roweckiego
 0922410,15157,gen. Gustawa Orlicz-Dreszera,Generała Gustawa Orlicz-Dreszera
 0929902,15157,gen. Gustawa Orlicz-Dreszera,Generała Gustawa Orlicz-Dreszera
@@ -1866,7 +1861,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0977210,48105,Gen. Leopolda Okulickiego,Generała Leopolda Okulickiego
 0959435,14931,gen. Leopolda Okulickiego Niedźwiadka,"Generała Leopolda Okulickiego ""Niedźwiadka"""
 0957650,53732,Gen. Leopolda Okulickiego Niedźwiadka,"Generała Leopolda Okulickiego ""Niedźwiadka"""
-0967430,32090,gen. Leopolda Okulickiego ps. Niedźwiadek,Generała Leopolda Okulickiego ps. Niedźwiadek
 0002973,26446,gen. Lucjana Żeligowskiego,Generała Lucjana Żeligowskiego
 0957650,26446,gen. Lucjana Żeligowskiego,Generała Lucjana Żeligowskiego
 0959435,26446,gen. Lucjana Żeligowskiego,Generała Lucjana Żeligowskiego
@@ -2103,7 +2097,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0934620,29578,gen. Stanisława Skalskiego,Generała Stanisława Skalskiego
 0918123,29578,gen. Stanisława Skalskiego,Generała Stanisława Skalskiego
 0982724,28624,gen. Stanisława Skrzyńskiego,Generała Stanisława Skrzyńskiego
-0977976,50417,gen. Stanisława Sojczyńskiego ps. Warszyc,Generała Stanisława Sojczyńskiego ps. Warszyc
 0922410,20591,gen. Stanisława Sosabowskiego,Generała Stanisława Sosabowskiego
 0930868,20591,gen. Stanisława Sosabowskiego,Generała Stanisława Sosabowskiego
 0977373,20591,gen. Stanisława Sosabowskiego,Generała Stanisława Sosabowskiego
@@ -2245,7 +2238,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0945380,24832,gen. Walerego Wróblewskiego,Generała Walerego Wróblewskiego
 0981682,03489,gen. Waleriana Czumy,Generała Waleriana Czumy
 0918123,03489,gen. Waleriana Czumy,Generała Waleriana Czumy
-0847245,50527,Gen. Waraksiewicza,Generała Mikołaja Adolfa Waraksiewicza
 0959435,03854,gen. Wieniawy-Długoszowskiego,Generała Bolesława Wieniawy-Długoszowskiego
 0928363,48355,gen. Wiktora Thommée,Generała Wiktora Thommée
 0930868,53889,gen. Wilhelma Orlik-Rückemanna,Generała Wilhelma Orlik-Rückemanna
@@ -2584,7 +2576,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0937280,35082,H. Wieniawskiego,Henryka Wieniawskiego
 0968078,35082,H. Wieniawskiego,Henryka Wieniawskiego
 0980671,30931,harcm. Jerzego Czerwińskiego,Harcmistrza Jerzego Czerwińskiego
-0964650,55064,Henryka Flamego ps. Bartek,Henryka Flamego ps. Bartek
 0930868,39708,hetm. Jana Karola Chodkiewicza,Hetmana Jana Karola Chodkiewicza
 0930868,55218,hetm. Jana Tarnowskiego,Hetmana Jana Tarnowskiego
 0923584,51461,hetm. Jana Zamoyskiego,Hetmana Jana Zamoyskiego
@@ -2594,8 +2585,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0930868,39709,hetm. Stefana Czarnieckiego,Hetmana Stefana Czarnieckiego
 0930868,55220,hetm. Stefana Żółkiewskiego,Hetmana Stefana Żółkiewskiego
 0972447,38140,Hetmana A. M. Sieniawskiego,Hetmana Adama Sieniawskiego
-0964650,55055,Hieronima Dekutowskiego ps. Zapora,Hieronima Dekutowskiego ps. Zapora
-0987897,56770,Hieronima Miąca ps. „Korsarz”,Hieronima Miąca ps. „Korsarz”
 0928854,45093,hm. Bernarda Myśliwka,Harcmistrza Bernarda Myśliwka
 0928989,34503,hm. Marcina Strachanowskiego,Harcmistrza Marcina Strachanowskiego
 0959903,46228,hm. Marii Rydarowskiej,Harcmistrza Marii Rydarowskiej
@@ -2620,6 +2609,8 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0815239,31833,I. Paderewskiego,Ignacego Paderewskiego
 0937280,31833,I. Paderewskiego,Ignacego Paderewskiego
 0968078,31833,I. Paderewskiego,Ignacego Paderewskiego
+0964650,55064,Henryka Flamego ps. Bartek,"Henryka Flamego ps. ""Bartek"""
+0987897,56770,Hieronima Miąca ps. „Korsarz”,"Hieronima Miąca ps. ""Korsarz"""
 0164180,49260,I.K. Chodkiewicza,Jana Karola Chodkiewicza
 0988603,38380,Ig. Paderewskiego,Ignacego Paderewskiego
 0967245,39569,Ignacego J. Paderewskiego,Ignacego Jana Paderewskiego
@@ -2741,7 +2732,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0988684,07040,Jagiełły,Władysława Jagiełły
 0609209,35422,Jana K. Chodkiewicza,Jana Karola Chodkiewicza
 0983333,18433,Jana M. Rakowskiego,Jana Michała Rakowskiego
-0977976,45818,Janiny Smoleńskiej ps. Jachna,Janiny Smoleńskiej ps. Jachna
 0974328,07616,Joselewicza,Berka Joselewicza
 0974618,07616,Joselewicza,Berka Joselewicza
 0968078,07616,Joselewicza,Berka Joselewicza
@@ -2884,7 +2874,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0968569,08056,Karłowicza,Mieczysława Karłowicza
 0945232,08056,Karłowicza,Mieczysława Karłowicza
 0945746,08056,Karłowicza,Mieczysława Karłowicza
-0964650,55059,Kazimierza Kamieńskiego ps. Huzar,Kazimierza Kamieńskiego ps. Huzar
 0977539,08431,Kilińskiego,Jana Kilińskiego
 0980352,08431,Kilińskiego,Jana Kilińskiego
 0964583,08431,Kilińskiego,Jana Kilińskiego
@@ -4309,7 +4298,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0416864,02293,ks. Brzóski,Księdza Stanisława Brzóski
 0975747,02293,ks. Brzóski,Księdza Stanisława Brzóski
 0689059,02293,ks. Brzóski,Księdza Stanisława Brzóski
-0977278,02293,ks. Brzóski,Księdza Mariana Brzóski
 0689160,02293,ks. Brzóski,Księdza Stanisława Brzóski
 0597943,33723,ks. Budzyńskiego,Księdza Józefa Budzyńskiego
 0084669,32573,ks. Burdyna,Księdza Bernarda Burdyna
@@ -4436,7 +4424,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0986283,16332,ks. Grzegorza Piramowicza,Księdza Grzegorza Piramowicza
 0167786,40173,ks. Grzeni,Księdza Hieronima Grzeni
 0025135,31120,ks. Grzybowskiego,Księdza Pawła Grzybowskiego
-0025170,31120,ks. Grzybowskiego,Księdza Pawała Grzybowskiego
 0932293,11806,ks. Gustawa Łysika,Księdza Gustawa Łysika
 0972447,46055,ks. Haasa Paneckiego,Księdza Haasa Paneckiego
 0957650,53874,Ks. Harcmistrza Ignacego Skorupki,Księdza Harcmistrza Ignacego Skorupki
@@ -5200,7 +5187,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0689160,17146,ks. Popiełuszki,Księdza Jerzego Popiełuszki
 0930851,17146,ks. Popiełuszki,Księdza Jerzego Popiełuszki
 0983126,24847,ks. ppłk. Józefa Wryczy,Księdza Podpułkownika Józefa Wryczy
-0164670,24847,ks. ppłk. Józefa Wryczy,Księdza Pułkownika Józefa Wryczy
 0929724,24847,ks. ppłk. Józefa Wryczy,Księdza Podpułkownika Józefa Wryczy
 0977670,45827,ks. prał. Mariana Szczęsnego,Księdza Prałata Mariana Szczęsnego
 0207014,55124,ks. Prałata Aleksandra Szymańskiego,Księdza Prałata Aleksandra Szymańskiego
@@ -5263,7 +5249,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0935529,20008,ks. Skargi,Księdza Piotra Skargi
 0977539,20098,ks. Skorupki,Księdza Ignacego Jana Skorupki
 0978734,20098,ks. Skorupki,Księdza Ignacego Jana Skorupki
-0947225,20098,ks. Skorupki,Księdza Ignacego Skorupki
 0975747,20098,ks. Skorupki,Księdza Ignacego Jana Skorupki
 0968078,20098,ks. Skorupki,Księdza Ignacego Jana Skorupki
 0902493,20098,ks. Skorupki,Księdza Ignacego Jana Skorupki
@@ -5506,7 +5491,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0203000,51176,ks. Wojciecha Sierakowskiego,Księdza Wojciecha Sierakowskiego
 0473000,53181,Ks. Wojciecha Zinka,Księdza Wojciecha Zinka
 0166930,37275,ks. Wryczy,Księdza Józefa Wryczy
-0935127,37275,ks. Wryczy,Księdza Podpułkownika Józefa Wryczy
 0967297,48597,Ks. Wujka,Księdza Jakuba Wujka
 0166120,38478,ks. Z. Jutrzenka Trzebiatowskiego,Księdza Zbigniewa Jutrzenka Trzebiatowskiego
 0846731,37651,ks. Z. Szulca,Księdza Zygmunta Szulca
@@ -5553,7 +5537,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0916740,34020,L. Waryńskiego,Ludwika Waryńskiego
 0942222,31704,L. Zamenhofa,Ludwika Zamenhofa
 0988603,38381,Ludw. Waryńskiego,Ludwika Waryńskiego
-0964650,55056,Łukasza Cieplińskiego ps. Pług,Łukasza Cieplińskiego ps. Pług
 0937280,35067,M. Bałuckiego,Michała Bałuckiego
 0937280,01610,M. Bogusza,Mariana Bogusza
 0937280,33686,M. C. Skłodowskiej,Marii Skłodowskiej-Curie
@@ -6138,7 +6121,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0930851,12734,Mickiewicza,Adama Mickiewicza
 0974096,12734,Mickiewicza,Adama Mickiewicza
 0927642,12734,Mickiewicza,Adama Mickiewicza
-0964650,55063,Mieczysława Dziemieszkiewicza ps. Rój,Mieczysława Dziemieszkiewicza ps. Rój
 0947030,48623,mjr AK S. Gądzio-Kos,Majora AK Stefana Gądzio-Kos
 0982954,51082,mjr H. Sucharskiego,Majora Henryka Sucharskiego
 0186298,51561,mjr T. Kuncewicza,Majora Tadeusza Kuncewicza
@@ -6561,7 +6543,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0988313,47530,Ochla-ks. Wł. Terlikowskiego,Ochla-Księdza Władysława Terlikowskiego
 0598990,07124,Ojca św. Jana Pawła II,Jana Pawła II
 0581907,07124,Ojca św. Jana Pawła II,Jana Pawła II
-0613903,55827,Ojca Św. Jana Pawła II,Jana Pawła II
 0942104,47998,Okrzei Stefana,Stefana Okrzei
 0804158,15209,Orzeszkowej,Elizy Orzeszkowej
 0964583,15209,Orzeszkowej,Elizy Orzeszkowej
@@ -7042,7 +7023,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0161329,55137,plac Św. Józefa,Plac Świętego Józefa
 0977290,45816,plac św. Katarzyny,Plac Świętej Katarzyny
 0982724,49792,plac Św. Katarzyny,Plac Świętej Katarzyny
-0959435,08254,plac św. Kazimierza,Plac Świętej Kazimierza
 0981682,31934,plac św. Kingi,Plac Świętej Kingi
 0936546,36108,plac św. Konstantyna i Heleny,Plac Świętych Konstantyna i Heleny
 0986283,10156,plac św. Krzysztofa,Plac Świętego Krzysztofa
@@ -7176,7 +7156,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0954225,24024,płk. Władysława Wiecierzyńskiego,Pułkownika Władysława Wiecierzyńskiego
 0525760,21695,płk. Zbigniewa Szacherskiego,Pułkownika Zbigniewa Szacherskiego
 0951675,40265,plut. Gerarda Makosza,Plutonowego Gerarda Makosza
-0977456,51763,Podpułkownika Jerzego Dąbrowskiego ps. Łupaszka,Podpułkownika Jerzego Dąbrowskiego ps. Łupaszka
 0524708,44347,Polipol Aleja,Aleja Polipol
 0922410,53370,por. Anatola Radziwonika,Porucznika Anatola Radziwonika
 0950463,33383,por. Antoniego Stawarza,Porucznika Antoniego Stawarza
@@ -8430,7 +8409,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0940163,33916,St. Wyspiańskiego,Stanisława Wyspiańskiego
 0988603,33916,St. Wyspiańskiego,Stanisława Wyspiańskiego
 0846837,33916,St. Wyspiańskiego,Stanisława Wyspiańskiego
-0956313,50323,St. Żeromskiego,Stanisława Wyspiańskiego
 0924098,20797,Staffa,Leopolda Staffa
 0928854,20797,Staffa,Leopolda Staffa
 0939409,20797,Staffa,Leopolda Staffa
@@ -9605,7 +9583,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0967647,50306,T. Kotarbińskiego,Tadeusza Kotarbińskiego
 0988490,34071,T. Zana,Tomasza Zana
 0950262,34071,T. Zana,Tomasza Zana
-0976586,51325,Tadeusza Zawadzkiego ps. Zośka,Tadeusza Zawadzkiego ps. Zośka
 0212498,22737,Teligi,Leonida Teligi
 0941518,22737,Teligi,Leonida Teligi
 0050848,22737,Teligi,Leonida Teligi
@@ -9936,7 +9913,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0937280,35079,Wł. Reymonta,Władysława Reymonta
 0167467,35079,Wł. Reymonta,Władysława Reymonta
 0930609,33892,Wł. Sikorskiego,Władysława Sikorskiego
-0974133,20176,Władysława Skubisza ps. Pingwin,Władysława Skubisza ps. Pingwin
 0977539,24903,Wybickiego,Józefa Wybickiego
 0982954,24903,Wybickiego,Józefa Wybickiego
 0988359,24903,Wybickiego,Józefa Wybickiego
@@ -10362,7 +10338,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0732921,39815,E. i H. Bieleckich,Eugenii i Henryka Bieleckich
 0920380,33284,E. Orzeszkowej,Elizy Orzeszkowej
 0920380,34069,E. Plater,Emilii Plater
-0512450,11127,Eugeniusza Lipińskiego ps. Mrówka,Eugeniusza Lipińskiego ps. Mrówka
 0920380,46257,F. Adwenta,Filipa Adwenta
 0920380,33732,F. Chopina,Fryderyka Chopina
 0920380,37893,F. Hynka,Franciszka Hynka
@@ -10695,8 +10670,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0009478,37955,mjr. Edwarda Ziółkowskiego,Majora Edwarda Ziółkowskiego
 0918123,44410,mjr. Franciszka Michała Amałowicza Tatara,Majora Franciszka Michała Amałowicza Tatara
 0125954,38412,mjr. H. Sucharskiego,Majora Henryka Sucharskiego
-0930839,03980,mjr. Henryka Dobrzańskiego,"Majora Henryka Dobrzańskiego ""Hubala"""
-0523689,03980,mjr. Henryka Dobrzańskiego,"Majora Henryka Dobrzańskiego ""Hubala"""
 0984752,06775,mjr. Henryka Hubala-Dobrzańskiego,"Majora Henryka Dobrzańskiego ""Hubala"""
 0000780,21499,mjr. Henryka Sucharskiego,Majora Henryka Sucharskiego
 0515968,21499,mjr. Henryka Sucharskiego,Majora Henryka Sucharskiego
@@ -10708,7 +10681,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0973748,06771,mjr. Hubala,"Majora Henryka Dobrzańskiego ""Hubala"""
 0630244,06771,mjr. Hubala,"Majora Henryka Dobrzańskiego ""Hubala"""
 0008875,03715,mjr. Jacka Decowskiego,Majora Jacka Decowskiego
-0972750,16376,mjr. Jana Piwnika-Ponurego,Majora Jana Piwnika-Ponurego
 0111515,36484,mjr. Jerzego Grobickiego,Majora Jerzego Grobickiego
 0618639,01253,mjr. Romana Bielawskiego,Majora Romana Bielawskiego
 0921591,56042,Mjr. Stefana Waltera,Majora Stefana Waltera
@@ -10723,6 +10695,8 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0008763,31683,Pawła J. Sapiehy,Pawła Jana Sapiehy
 0973524,47315,Pl. 15 Stycznia,Plac 15 Stycznia
 0975813,56982,Pl. T. Kościuszki,Plac Tadeusza Kościuszki
+0523689,03980,mjr. Henryka Dobrzańskiego,Majora Henryka Dobrzańskiego
+0930839,03980,mjr. Henryka Dobrzańskiego,Majora Henryka Dobrzańskiego
 0000780,25106,plac kard. Stefana Wyszyńskiego,Plac Kardynała Stefana Wyszyńskiego
 0969310,55918,plac kard. Wyszyńskiego,Plac Kardynała Stefana Wyszyńskiego
 0682560,44070,plac ks. Kanonika Dymitrowicza,Plac Księdza Kanonika Dymitrowicza
@@ -10862,8 +10836,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0920380,39435,W. Syrokomli,Władysława Syrokomli
 0920380,39438,W. Westfala,Witolda Westfala
 0115039,34244,W. Witosa,Wincentego Witosa
-0968871,35079,Wł. Reymonta,Właysława Reymonta
-0920380,35079,Wł. Reymonta,Właysława Reymonta
 0523689,34144,Wł. St. Reymonta,Władysława Stanisława Reymonta
 0005693,35354,Wolfganga A. Mozarta,Wolfganga Amadeusza Mozarta
 0920380,37910,Z. Krasińskiego,Zygmunta Krasińskiego
@@ -10885,6 +10857,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0972750,45534,por. Ostrego,"Porucznika ""Ostrego"""
 0585897,43303,prof. Jana Kozłowskiego,Profesora Jana Kozłowskiego
 0585897,39264,prof. Wacława Strażewicza,Profesora Wacława Strażewicza
+0968871,35079,Wł. Reymonta,Władysława Reymonta
 0585839,36087,płk. Andrzeja Kopy,Pułkownika Andrzeja Kopy
 0166835,03653,płk. Dąbka,Pułkownika Stanisława Dąbka
 0973375,56630,płk. Rębajło,"Pułkownika Karola Kality ""Rębajło"""
@@ -10940,7 +10913,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0964991,01689,Bohaterów Września 1939 r.,Bohaterów Września 1939 roku
 0151845,01689,Bohaterów Września 1939 r.,Bohaterów Września 1939 roku
 0974328,49590,J.H.Dąbrowskiego,Jana Henryka Dąbrowskiego
-0964650,55061,Jerzego Jaskulskiego ps.Zagończyk,Jerzego Jaskulskiego ps. Zagończyk
 0937132,51484,Kardynała M.Ledóchowskiego,Kardynała Mieczysława Ledóchowskiego
 0930070,08892,Kolonia Krakowskie Przedm.,Kolonia Krakowskie Przedmieście
 0167467,49963,M.C.Skłodowskiej,Marii Skłodowskiej-Curie
@@ -11274,7 +11246,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0949023,59041,pl. Józefa Piłsudskiego,Plac Józefa Piłsudskiego
 0949023,59040,pl. Kościuszki,Plac Tadeusza Kościuszki
 0949023,59042,pl. Wolności,Plac Wolności
-0965016,46302,płk. Witolda Pileckiego,Rotmistrza Witolda Pileckiego
 0949336,48119,Św. Barbary,Świętej Barbary
 0949336,48921,Św. Floriana,Świętego Floriana
 0243062,50386,Św. Krzysztofa,Świętego Krzysztofa
@@ -11380,14 +11351,13 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0988075,59450,Króla Wł. Jagiełły,Króla Władysława Jagiełły
 0988075,59449,Króla Wł. Łokietka,Króla Władysława Łokietka
 0988075,48702,Ks. Kardynała Stefana Wyszyńskiego,Księdza Kardynała Stefana Wyszyńskiego
-0988075,33686,M. C. Skłodowskiej,Marii Curie-Skłodowskiej
 0988075,31700,M. Kopernika,Mikołaja Kopernika
 0972192,59458,Prof. Adama Grucy,Profesora Adama Grucy
 0987510,59438,Płk. Lisa-Kuli,Pułkownika Lisa-Kuli
 0988075,34991,St. Moniuszki,Stanisława Moniuszki
-0988075,27399,gen. Grota Roweckiego,Generała StefanaGrota Roweckiego
 0972192,35597,im. Jana Pawła II,Jana Pawła II
 0572200,59502,im. ks. Pawła Kwiatkowskiego,Księdza Pawła Kwiatkowskiego
+0988075,27399,gen. Grota Roweckiego,Generała Stefana Grota Roweckiego
 0966412,56229,ppłk. Leona Jakuba Gnatowskiego,Podpułkownika Leona Jakuba Gnatowskiego
 0261953,48121,Św. Jana,Świętego Jana
 0005032,55460,Św. Rity,Świętej Rity
@@ -11526,3 +11496,46 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0586098,07492,św. Jerzego,Świętego Jerzego
 0968687,07492,św. Jerzego,Świętego Jerzego
 0586098,60194,św. Tymoteusza,Świętego Tymoteusza
+0918123,60352,J. R. Tolkiena,Johna Ronalda Tolkiena
+0465288,60076,Ks. Józefa Wirmańskiego,Księdza Józefa Wirmańskiego
+0165385,60472,Ks. Witaszka,Księdza Kornela Witaszka
+0966079,10507,gen. Tadeusza Kutrzeby,Generała Tadeusza Kutrzeby
+0164960,60471,ks. Prałata dr Hilarego Jastaka,Księdza Prałata Doktora Hilarego Jastaka
+0988649,48921,Św. Floriana,Świętego Floriana
+0176437,48377,Św. Huberta,Świętego Huberta
+0176510,48377,Św. Huberta,Świętego Huberta
+0465288,52365,Św. Józefa,Świętego Józefa
+0935802,02047,św. Brata Alberta,Świętego Brata Alberta
+0322749,07113,św. Jana,Świętego Jana
+0322749,29695,św. Królowej Jadwigi,Świętej Królowej Jadwigi
+0243754,53260,Bronisława Wieczorkiewicza ps. Wilk,"Bronisława Wieczorkiewicza ps. ""Wilk"""
+0512450,11127,Eugeniusza Lipińskiego ps. Mrówka,"Eugeniusza Lipińskiego ps. ""Mrówka"""
+0921510,55054,Danuty Siedzikówny ps. Inka,"Danuty Siedzikówny ps. ""Inka"""
+0964650,55055,Hieronima Dekutowskiego ps. Zapora,"Hieronima Dekutowskiego ps. ""Zapora"""
+0964650,55056,Łukasza Cieplińskiego ps. Pług,"Łukasza Cieplińskiego ps. ""Pług"""
+0964650,55059,Kazimierza Kamieńskiego ps. Huzar,"Kazimierza Kamieńskiego ps. ""Huzar"""
+0964650,55060,Franciszka Niepokólczyckiego ps. Halny,"Franciszka Niepokólczyckiego ps. ""Halny"""
+0964650,55061,Jerzego Jaskulskiego ps.Zagończyk,"Jerzego Jaskulskiego ps. ""Zagończyk"""
+0972192,40305,Czesławy Puzon ps. Baśka,"Czesławy Puzon ps. ""Baśka"""
+0974133,20176,Władysława Skubisza ps. Pingwin,"Władysława Skubisza ps. ""Pingwin"""
+0976586,51325,Tadeusza Zawadzkiego ps. Zośka,"Tadeusza Zawadzkiego ps. ""Zośka"""
+0977456,51763,Podpułkownika Jerzego Dąbrowskiego ps. Łupaszka,"Podpułkownika Jerzego Dąbrowskiego ps. ""Łupaszka"""
+0977976,45818,Janiny Smoleńskiej ps. Jachna,"Janiny Smoleńskiej ps. ""Jachna"""
+0977976,50417,gen. Stanisława Sojczyńskiego ps. Warszyc,"Generała Stanisława Sojczyńskiego ps. ""Warszyc"""
+0967430,32090,gen. Leopolda Okulickiego ps. Niedźwiadek,"Generała Leopolda Okulickiego ps. ""Niedźwiadek"""
+0964650,55063,Mieczysława Dziemieszkiewicza ps. Rój,"Mieczysława Dziemieszkiewicza ps. ""Rój"""
+0956313,50323,St. Żeromskiego,Stefana Żeromskiego
+0972750,16376,mjr. Jana Piwnika-Ponurego,"Majora Jana Piwnika ""Ponurego"""
+0920380,35079,Wł. Reymonta,Władysława Reymonta
+0947225,20098,ks. Skorupki,Księdza Ignacego Jana Skorupki
+0847245,50527,Gen. Waraksiewicza,Generała Adolfa Mikołaja Waraksiewicza
+0965016,46302,płk. Witolda Pileckiego,Pułkownika Witolda Pileckiego
+0025170,31120,ks. Grzybowskiego,Księdza Pawła Grzybowskiego
+0977278,02293,ks. Brzóski,Księdza Stanisława Brzóski
+0935127,37275,ks. Wryczy,Księdza Józefa Wryczy
+0988075,33686,M. C. Skłodowskiej,Marii Skłodowskiej-Curie
+0613903,55827,Ojca Św. Jana Pawła II,Ojca Świętego Jana Pawła II
+0164670,24847,ks. ppłk. Józefa Wryczy,Księdza Podpułkownika Józefa Wryczy
+0291440,27399,gen. Grota Roweckiego,Generała Stefana Grota Roweckiego
+0613903,27399,gen. Grota Roweckiego,Generała Stefana Grota Roweckiego
+0959435,08254,plac św. Kazimierza,Plac Świętego Kazimierza
