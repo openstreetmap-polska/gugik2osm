@@ -142,10 +142,10 @@ docker run --name "postgis" --shm-size=4g -e MAINTAINANCE_WORK_MEM=512MB -p 2543
 #### Przywrócenie niezbędnych tabel:
 Najpierw tworzymy schematy „prg” i „teryt”:
 ```
-psql -d gis -h localhost -p 25432 -U postgres -c "create schema prg;"
+psql -d gis -h localhost -p 5432 -U postgres -c "create schema prg;"
 ```
 ```
-psql -d gis -h localhost -p 25432 -U postgres -c "create schema teryt;"
+psql -d gis -h localhost -p 5432 -U postgres -c "create schema teryt;"
 ```
 Następnie przywracamy kilka wybranych tabel i indeksów do schematów public i prg:
 ```
