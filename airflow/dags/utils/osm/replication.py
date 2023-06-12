@@ -1,3 +1,4 @@
+import json
 import logging
 import urllib.parse
 
@@ -21,6 +22,18 @@ class ReplicationSequence:
     timestamp: datetime
     number: int
     formatted: str
+
+    def as_json_str(self) -> str:
+        return json.dumps({
+            "timestamp": self.timestamp.isoformat(),
+            "number": self.number,
+            "formatted": self.formatted,
+        })
+
+
+def replication_sequence_from_json_str(value: str) -> ReplicationSequence:
+    data = json.loads(value)
+    return ReplicationSequence(**data)
 
 
 def format_replication_sequence(sequence: Union[int, str]) -> str:
