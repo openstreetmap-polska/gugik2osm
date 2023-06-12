@@ -47,8 +47,8 @@ def process_changesets(**kwargs) -> None:
     logger.info(f"Processing files from: {last_processed} to: {newest.formatted}")
     changesets = changesets_between_sequences(last_processed, newest.number)
     data = [changeset.transform_to_dict(tags_for_arrow_map=True) for changeset in changesets]
-    table = pa.Table.from_pylist(data, changeset_schema)
-    logger.info(f"Converted changesets to PyArrow Table with: {table.num_rows} rows.")
+    arrow_table = pa.Table.from_pylist(data, changeset_schema)
+    logger.info(f"Converted changesets to PyArrow Table with: {arrow_table.num_rows} rows.")
     conn = duckdb.connect()
 
     processed_datetime = ti.start_date
@@ -77,7 +77,7 @@ def process_changesets(**kwargs) -> None:
             f.write(date_str)
 
         conn.execute(
-            query="COPY (SELECT * FROM table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
+            query="COPY (SELECT * FROM arrow_table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
             parameters={"path": latest_temp_path.as_posix()}
         )
 
@@ -88,7 +88,7 @@ def process_changesets(**kwargs) -> None:
                 COPY (
                     WITH
                     raw as (
-                        SELECT * FROM table
+                        SELECT * FROM arrow_table
                         UNION ALL
                         SELECT * FROM last_hour_table
                     ),
@@ -101,7 +101,7 @@ def process_changesets(**kwargs) -> None:
                 parameters={"path": last_hour_temp_path.as_posix()})
         else:
             conn.execute(
-                query="COPY (SELECT * FROM table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
+                query="COPY (SELECT * FROM arrow_table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
                 parameters={"path": last_hour_temp_path.as_posix()}
             )
 
@@ -112,7 +112,7 @@ def process_changesets(**kwargs) -> None:
                 COPY (
                     WITH
                     raw as (
-                        SELECT * FROM table
+                        SELECT * FROM arrow_table
                         UNION ALL
                         SELECT * FROM last_24h_table
                     ),
@@ -125,7 +125,7 @@ def process_changesets(**kwargs) -> None:
                 parameters={"path": last_24h_temp_path.as_posix()})
         else:
             conn.execute(
-                query="COPY (SELECT * FROM table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
+                query="COPY (SELECT * FROM arrow_table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
                 parameters={"path": last_24h_temp_path.as_posix()}
             )
 
