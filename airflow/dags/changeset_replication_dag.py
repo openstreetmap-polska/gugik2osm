@@ -46,7 +46,7 @@ def process_changesets(**kwargs) -> None:
 
     logger.info(f"Processing files from: {last_processed} to: {newest.formatted}")
     changesets = changesets_between_sequences(last_processed, newest.number)
-    data = [changeset.transform_to_dict() for changeset in changesets]
+    data = [changeset.transform_to_dict(tags_for_arrow_map=True) for changeset in changesets]
     table = pa.Table.from_pylist(data, changeset_schema)
     logger.info(f"Converted changesets to PyArrow Table with: {table.num_rows} rows.")
     conn = duckdb.connect()
