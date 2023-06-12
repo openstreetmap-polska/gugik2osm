@@ -77,14 +77,12 @@ def process_changesets(**kwargs) -> None:
             f.write(date_str)
 
         conn.execute(
-            query="COPY (SELECT * FROM arrow_table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
-            parameters={"path": latest_temp_path.as_posix()}
+            f"COPY (SELECT * FROM arrow_table) TO '{latest_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)"
         )
 
         if last_hour_path.is_file():
             last_hour_table = pq.read_table(last_hour_path.as_posix())
-            conn.execute(
-                query="""
+            conn.execute(f"""
                 COPY (
                     WITH
                     raw as (
@@ -96,19 +94,17 @@ def process_changesets(**kwargs) -> None:
                         SELECT * FROM raw WHERE created_at > (CURRENT_TIMESTAMP - '1 hour'::interval)
                     )
                     SELECT DISTINCT ON (id) * FROM last_h ORDER BY closed_at DESC NULLS LAST
-                ) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)
-                """,
-                parameters={"path": last_hour_temp_path.as_posix()})
+                ) TO '{last_hour_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)
+                """
+            )
         else:
             conn.execute(
-                query="COPY (SELECT * FROM arrow_table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
-                parameters={"path": last_hour_temp_path.as_posix()}
+                f"COPY (SELECT * FROM arrow_table) TO '{last_hour_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)"
             )
 
         if last_24h_path.is_file():
             last_24h_table = pq.read_table(last_24h_path.as_posix())
-            conn.execute(
-                query="""
+            conn.execute(f"""
                 COPY (
                     WITH
                     raw as (
@@ -120,13 +116,12 @@ def process_changesets(**kwargs) -> None:
                         SELECT * FROM raw WHERE created_at > (CURRENT_TIMESTAMP - '24 hours'::interval)
                     )
                     SELECT DISTINCT ON (id) * FROM last_24h ORDER BY closed_at DESC NULLS LAST
-                ) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)
-                """,
-                parameters={"path": last_24h_temp_path.as_posix()})
+                ) TO '{last_24h_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)
+                """
+            )
         else:
             conn.execute(
-                query="COPY (SELECT * FROM arrow_table) TO $path (FORMAT PARQUET, COMPRESSION ZSTD)",
-                parameters={"path": last_24h_temp_path.as_posix()}
+                f"COPY (SELECT * FROM arrow_table) TO '{last_24h_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)"
             )
 
         logger.info("Temp files saved. Overwriting old files.")
