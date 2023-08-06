@@ -4,24 +4,19 @@ from functools import partial
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-import pyarrow as pa
-import pyarrow.parquet as pq
 from airflow import DAG, AirflowException
 from airflow.models import Variable, TaskInstance
 from airflow.models.baseoperator import chain
 from airflow.operators.python import PythonOperator, ShortCircuitOperator
-from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
+from utils.osm.changesets import find_newest_changeset_replication_sequence
 from utils.discord import send_dag_run_status
-from utils.osm.changesets import find_newest_changeset_replication_sequence, changesets_between_sequences
-from utils.parquet import changeset_schema
 
 logger = logging.getLogger()
 
 send_dag_run_status_to_discord = partial(send_dag_run_status, antispam=False)
 
 last_processed_sequence_variable_name = "last_processed_changeset_sequence"
-s3_bucket_name = "tt-osm-changesets"
 
 
 def check_if_anything_to_run(**kwargs) -> bool:
@@ -29,45 +24,114 @@ def check_if_anything_to_run(**kwargs) -> bool:
     if last_processed is None:
         raise AirflowException(f"Variable: {last_processed_sequence_variable_name} does not exist.")
     newest = find_newest_changeset_replication_sequence()
+    ti: TaskInstance = kwargs["ti"]
+    ti.xcom_push(key="changeset_replication_sequence", value=newest.as_json_str())
     return newest.formatted > last_processed
 
 
 def process_changesets(**kwargs) -> None:
-    last_processed: str = Variable.get(last_processed_sequence_variable_name, "")
-    newest = find_newest_changeset_replication_sequence()
+    import duckdb
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    from utils.osm.changesets import changesets_between_sequences
+    from utils.osm.replication import replication_sequence_from_json_str
+    from utils.parquet import changeset_schema
+
+    last_processed: str = Variable.get(last_processed_sequence_variable_name, "")  # we check if variable has value in previous task
+    ti: TaskInstance = kwargs["ti"]
+    newest = replication_sequence_from_json_str(
+        ti.xcom_pull(task_ids="check_if_anything_to_process", key="changeset_replication_sequence")
+    )
+
     logger.info(f"Processing files from: {last_processed} to: {newest.formatted}")
     changesets = changesets_between_sequences(last_processed, newest.number)
-    data = [changeset.transform_to_dict() for changeset in changesets]
-    table = pa.Table.from_pylist(data, changeset_schema)
-    logger.info(f"Converted changesets to PyArrow Table with: {table.num_rows} rows.")
-    ti: TaskInstance = kwargs["ti"]
+    data = [changeset.transform_to_dict(tags_for_arrow_map=True) for changeset in changesets]
+    arrow_table = pa.Table.from_pylist(data, changeset_schema)
+    logger.info(f"Converted changesets to PyArrow Table with: {arrow_table.num_rows} rows.")
+    conn = duckdb.connect()
+
     processed_datetime = ti.start_date
     date_str = processed_datetime.date().isoformat()
-    file_name = processed_datetime.strftime("%Y%m%d%H%M%S")
+    public_dir = Path("/var/www/data/changesets/")
+    opened_last_hour = "opened_last_hour"
+    last_hour_path = public_dir / f"{opened_last_hour}.parquet"
+    opened_last_24h = "opened_last_24h"
+    last_24h_path = public_dir / f"{opened_last_24h}.parquet"
+    state_path = public_dir / "state.txt"
+    processed_at_path = public_dir / "processed_at.txt"
+    latest_path = public_dir / "latest.parquet"
+
     with TemporaryDirectory() as temp_dir_name:
         temp_dir = Path(temp_dir_name)
-        parquet_file_path = temp_dir / f"{file_name}.parquet"
-        pq.write_table(table, parquet_file_path.as_posix())
-        logger.info("Temp file saved successfully.")
-        hook = S3Hook(aws_conn_id="aws_tt_s3")
-        hook.load_file(
-            filename=parquet_file_path,
-            bucket_name=s3_bucket_name,
-            key=f"replication/last.parquet",
-            replace=True,
+        latest_temp_path = temp_dir / "latest.parquet"
+        last_hour_temp_path = temp_dir / f"{opened_last_hour}.parquet"
+        last_24h_temp_path = temp_dir / f"{opened_last_24h}.parquet"
+        state_temp_path = temp_dir / "state.txt"
+        processed_at_temp_path = temp_dir / "processed_at.txt"
+
+        with open(state_temp_path, "w", encoding="utf-8") as f:
+            f.write(newest.formatted)
+
+        with open(processed_at_temp_path, "w", encoding="utf-8") as f:
+            f.write(date_str)
+
+        conn.execute(
+            f"COPY (SELECT * FROM arrow_table) TO '{latest_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)"
         )
-        hook.load_file(
-            filename=parquet_file_path,
-            bucket_name=s3_bucket_name,
-            key=f"replication/dag_run_date={date_str}/{file_name}.parquet",
-        )
-        hook.load_string(
-            string_data=newest.formatted,
-            bucket_name=s3_bucket_name,
-            key="replication/state.txt",
-            replace=True,
-        )
-        logger.info("Files uploaded to s3 successfully.")
+
+        if last_hour_path.is_file():
+            last_hour_table = pq.read_table(last_hour_path.as_posix())
+            conn.execute(f"""
+                COPY (
+                    WITH
+                    raw as (
+                        SELECT * FROM arrow_table
+                        UNION ALL
+                        SELECT * FROM last_hour_table
+                    ),
+                    last_h as (
+                        SELECT * FROM raw WHERE created_at > (CURRENT_TIMESTAMP - '1 hour'::interval)
+                    )
+                    SELECT DISTINCT ON (id) * FROM last_h ORDER BY closed_at DESC NULLS LAST
+                ) TO '{last_hour_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)
+                """
+            )
+        else:
+            conn.execute(
+                f"COPY (SELECT * FROM arrow_table) TO '{last_hour_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)"
+            )
+
+        if last_24h_path.is_file():
+            last_24h_table = pq.read_table(last_24h_path.as_posix())
+            conn.execute(f"""
+                COPY (
+                    WITH
+                    raw as (
+                        SELECT * FROM arrow_table
+                        UNION ALL
+                        SELECT * FROM last_24h_table
+                    ),
+                    last_24h as (
+                        SELECT * FROM raw WHERE created_at > (CURRENT_TIMESTAMP - '24 hours'::interval)
+                    )
+                    SELECT DISTINCT ON (id) * FROM last_24h ORDER BY closed_at DESC NULLS LAST
+                ) TO '{last_24h_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)
+                """
+            )
+        else:
+            conn.execute(
+                f"COPY (SELECT * FROM arrow_table) TO '{last_24h_temp_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)"
+            )
+
+        logger.info("Temp files saved. Overwriting old files.")
+        latest_temp_path.replace(latest_path)
+        last_hour_temp_path.replace(last_hour_path)
+        last_24h_temp_path.replace(last_24h_path)
+        state_temp_path.replace(state_path)
+        processed_at_temp_path.replace(processed_at_path)
+        logger.info("Files moved.")
+
     Variable.set(last_processed_sequence_variable_name, newest.formatted)
     logger.info(f"Variable: {last_processed_sequence_variable_name} set to: {newest.formatted}")
 

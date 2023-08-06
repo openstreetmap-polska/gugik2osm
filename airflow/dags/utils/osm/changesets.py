@@ -40,7 +40,7 @@ class Changeset:
     comments_count: int
     tags: Dict[str, str]
 
-    def transform_to_dict(self):
+    def transform_to_dict(self, tags_for_arrow_map: bool = False):
         data = self.__dict__
         data["created_by"] = self.tags.get("created_by")
         data["source"] = self.tags.get("source")
@@ -48,7 +48,8 @@ class Changeset:
         data["bot"] = self.tags.get("bot")
         data["review_requested"] = self.tags.get("review_requested")
         data["hashtags"] = self.tags.get("hashtags")
-        data["tags"] = json.dumps(data["tags"])
+        if tags_for_arrow_map:
+            data["tags"] = [(k, v) for k, v in data["tags"].items()]
         return data
 
 

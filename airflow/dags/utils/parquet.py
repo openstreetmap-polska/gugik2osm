@@ -19,5 +19,5 @@ changeset_schema = pa.schema([
     pa.field("bot", pa.string(), True),
     pa.field("review_requested", pa.string(), True),
     pa.field("hashtags", pa.string(), True),
-    pa.field("tags", pa.string(), False),
+    pa.field("tags", pa.map_(pa.string(), pa.string()), True),
 ])
