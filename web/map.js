@@ -949,7 +949,7 @@ function getBuildingPopupHTML(e) {
     if (e.features[0].properties.building_levels) {
         s += "building:levels=" + e.features[0].properties.building_levels + "<br>"
     }
-    s += "source=www.geoportal.gov.pl<br>"
+    s += "source:building=BDOT<br>"
 
     s += "      </div>"
     s += "    </div>"
