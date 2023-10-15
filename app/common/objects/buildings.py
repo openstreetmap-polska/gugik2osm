@@ -22,7 +22,7 @@ class ProposedBuilding:
     def id_tags_geom_tuple(self) -> Tuple[str, Dict[str, Any], Dict[str, Any]]:
         """Returns tuple with object id, dict with tags and dict with geometry."""
 
-        tags = {'source': 'www.geoportal.gov.pl'}
+        tags = {'source:building': 'BDOT'}
         if self.building:
             tags['building'] = self.building
         if self.amenity:
