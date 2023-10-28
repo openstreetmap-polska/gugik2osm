@@ -34,9 +34,7 @@ var map = new mapboxgl.Map({
             "raster-tiles": {
                 "type": "raster",
                 "tiles": [
-                    "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                    "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                    "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                 ],
                 "tileSize": 256,
                 "minzoom": 0,
