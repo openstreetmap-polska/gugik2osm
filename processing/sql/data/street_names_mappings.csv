@@ -3644,7 +3644,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0977338,09572,Kościuszki,Tadeusza Kościuszki
 0494172,09572,Kościuszki,Tadeusza Kościuszki
 0935334,09572,Kościuszki,Tadeusza Kościuszki
-0212529,09572,Kościuszki,Tadeusza Kościuszki
 0978852,09572,Kościuszki,Tadeusza Kościuszki
 0852163,09572,Kościuszki,Tadeusza Kościuszki
 0931454,09572,Kościuszki,Tadeusza Kościuszki
@@ -6789,7 +6788,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0988566,15524,Paderewskiego,Ignacego Paderewskiego
 0941748,15524,Paderewskiego,Ignacego Paderewskiego
 0977798,15524,Paderewskiego,Ignacego Paderewskiego
-0140675,15524,Paderewskiego,Ignacego Paderewskiego
 0932927,15524,Paderewskiego,Ignacego Paderewskiego
 0177371,15524,Paderewskiego,Ignacego Paderewskiego
 0921438,15524,Paderewskiego,Ignacego Paderewskiego
@@ -6923,7 +6921,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0209757,09344,plac ks. Augustyna Kordeckiego,Plac Księdza Augustyna Kordeckiego
 0977539,32285,plac ks. Bolesława Szkiłądzia,Plac Księdza Bolesława Szkiłądzia
 0966530,55713,plac ks. dr. Bolesława Domańskiego,Plac Księdza Doktora Bolesława Domańskiego
-0937474,50446,plac ks. Emila Szramka,Plac Księdza Emila Szramka
 0987130,23650,plac ks. Eugeniusza Waresiaka,Plac Księdza Eugeniusza Waresiaka
 0058821,54374,plac ks. Ferdynanda Sznajdrowicza,Plac Księdza Ferdynanda Sznajdrowicza
 0063940,28719,plac ks. Hanusiaka,Plac Księdza Stanisława Hanusiaka
@@ -7656,7 +7653,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0969103,18645,Reymonta,Władysława Reymonta
 0502003,18645,Reymonta,Władysława Reymonta
 0519475,18645,Reymonta,Władysława Reymonta
-0940890,18645,Reymonta,Władysława Reymonta
 0729882,18645,Reymonta,Władysława Reymonta
 0964749,18645,Reymonta,Władysława Reymonta
 0931945,18645,Reymonta,Władysława Reymonta
@@ -11034,7 +11030,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0954047,23017,św. Trójcy,Świętej Trójcy
 0936760,57872,Kard. Mieczysława Ledóchowskiego,Kardynała Mieczysława Ledóchowskiego
 0936760,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
-0140675,57863,plac im. marszałka Józefa Piłsudskiego,Plac im. Marszałka Józefa Piłsudskiego
 0246014,48123,Św. Wojciecha,Świętego Wojciecha
 0560213,46615,św. Jana Pawła II,Świętego Jana Pawła II
 0985734,57898,Gen. Słubickiego,Generała Augustyna Słubickiego
@@ -11716,3 +11711,95 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0929463,38718,ks. Jana Twardowskiego,Księdza Jana Twardowskiego
 0175120,60792,Św. Jadwigi Królowej,Świętej Jadwigi Królowej
 0074547,60704,św. Aleksego,Świętego Aleksego
+0212498,03690,Dąbrowskiej,Marii Dąbrowskiej
+0945232,03849,Długosza,Jana Długosza
+0945232,04314,Drzymały,Michała Drzymały
+0945232,05508,Gierymskiego,Maksymilian Gierymskiego
+0945232,05623,Głowackiego,Bartosza Głowackiego
+0945232,08147,Kasprowicza,Jana Kasprowicza
+0945232,09459,Kossaka,Wojciecha Kossaka
+0945232,10491,Kusocińskiego,Janusza Kusocińskiego
+0945232,13278,Morcinka,Gustawa Morcinka
+0945232,18091,Pułaskiego,Kazimierza Pułaskiego
+0945232,20431,Jana III Sobieskiego,Króla Jana III Sobieskiego
+0945232,21495,Sucharskiego,Majora Henryka Sucharskiego
+0937474,14310,Piotra Norblina,Jana Piotra Norblina
+0937474,48239,płk Henryka Kowalówki,Pułkownika Henryka Kowalówki
+0937474,33326,Tadeusza Boya Żeleńskiego,Tadeusza Boya-Żeleńskiego
+0940890,09405,Korzeniowskiego,Józefa Korzeniowskiego
+0940890,09869,Kraszewskiego,Józefa Ignacego Kraszewskiego
+0940890,11752,Łukasińskiego,Waleriana Łukasińskiego
+0940890,12023,Makuszyńskiego,Kornela Makuszyńskiego
+0940890,17574,Prusa,Bolesława Prusa
+0940890,20421,Sobieskiego,Jana III Sobieskiego
+0140675,08051,Karlińskiego,Kacpra Karlińskiego
+0140675,10340,Kuhna,Kazimierza Kühna
+0140675,17574,Prusa,Bolesława Prusa
+0140675,20421,Sobieskiego,Jana III Sobieskiego
+0140675,26608,Żwirki i Wigury,Franciszka Żwirki i Stanisława Wigury
+0220598,09353,Korfantego,Wojciecha Korfantego
+0942630,40873,plac Chopina,Plac Fryderyka Chopina
+0942630,37496,plac Jana Pawła II,Plac Jana Pawła II
+0942630,40865,plac Niepodległości,Plac Niepodległości
+0942630,48410,rotmistrza Witolda Pileckiego,Rotmistrza Witolda Pileckiego
+0942630,20421,Sobieskiego,Jana III Sobieskiego
+0942630,16264,Józefa Piłsudskiego,Marszałka Józefa Piłsudskiego
+0942765,02661,Chałubińskiego,Tytusa Chałubińskiego
+0942765,02704,Chełmońskiego,Józefa Chełmońskiego
+0942765,33922,Grota Roweckiego,Generała Stefana Grota-Roweckiego
+0942765,06203,Grottgera,Artura Grottgera
+0942765,08147,Kasprowicza,Jana Kasprowicza
+0942765,09807,osiedle Krakusa,Osiedle Krakusa
+0942765,17069,osiedle Południe,Osiedle Południe
+0942765,33926,Pełczyńskiego,Walentego Pełczyńskiego
+0942765,00430,plac Armii Krajowej,Plac Armii Krajowej
+0942765,09552,plac Kościelny,Plac Kościelny
+0942765,09281,plac Mikołaja Kopernika,Plac Mikołaja Kopernika
+0942765,16941,plac Pokoju,Plac Pokoju
+0942765,55016,plac Rodziny Machoczków,Plac Rodziny Machoczków
+0942765,24685,plac Wolności,Plac Wolności
+0942765,26500,plac Żołnierza,Plac Żołnierza
+0942765,21233,Stolarskiego,Błażeja Stolarskiego
+0942765,23315,Ujejskiego,Kornela Ujejskiego
+0943150,20427,Jana Sobieskiego,Jana III Sobieskiego
+0943150,18042,park Pszczelnik,Park Pszczelnik
+0943150,01687,plac Bohaterów Września,Plac Bohaterów Września
+0943150,20011,plac Piotra Skargi,Plac Piotra Skargi
+0943150,20150,plac Skrzeka i Wójcika,Plac Skrzeka i Wójcika
+0943150,24685,plac Wolności,Plac Wolności
+0944534,53282,aleja Bielska,Aleja Bielska
+0944534,37675,aleja Jana Pawła II,Aleja Jana Pawła II
+0944534,37721,aleja Marszałka Piłsudskiego,Aleja Marszałka Józefa Piłsudskiego
+0944534,14199,aleja Niepodległości,Aleja Niepodległości
+0944534,28103,Andrzeja Frycza Modrzewskiego,Frycza Modrzewskiego
+0944534,08725,Kochanowskiego,Jana Kochanowskiego
+0944534,13278,Morcinka,Gustawa Morcinka
+0944534,48098,plac Filipa Nowary,Plac Filipa Nowary
+0944534,00568,plac Krzysztofa Kamila Baczyńskiego,Plac Krzysztofa Kamila Baczyńskiego
+0944534,47957,plac Świętej Anny,Plac Świętej Anny
+0944534,09356,plac Wojciecha Korfantego,Plac Wojciecha Korfantego
+0944534,16414,plac Wolności,Plac Wolności
+0944534,25885,plac Zbawiciela,Plac Zbawiciela
+0945380,38293,aleja Bohaterów Monte Cassino,Aleja Bohaterów Monte Cassino
+0945380,38514,aleja Szczęście Ludwika,Aleja Szczęście Ludwika
+0945380,38509,aleja Wojciecha Korfantego,Aleja Wojciecha Korfantego
+0945380,38512,plac Bernarda Purkopa,Plac Bernarda Purkopa
+0945380,38506,plac Dworcowy,Plac Dworcowy
+0945380,38511,plac Ignacego Paderewskiego,Plac Ignacego Paderewskiego
+0945380,33786,plac Kazimierza Wielkiego,Plac Kazimierza Wielkiego
+0945380,38510,plac Krakowski,Plac Krakowski
+0945380,38508,plac Mikołaja Kopernika,Plac Mikołaja Kopernika
+0945380,38518,plac Norberta Kroczka,Plac Norberta Kroczka
+0945380,38516,plac Romualda Traugutta,Plac Romualda Traugutta
+0945380,38513,plac Słowiański,Plac Słowiański
+0945380,38515,plac Teatralny,Plac Teatralny
+0945380,38517,plac Warszawski,Plac Warszawski
+0945380,16414,plac Wolności,Plac Wolności
+0225302,13278,Morcinka,Gustawa Morcinka
+0225302,49187,Plac Miarki,Plac Karola Miarki
+0225302,11056,Ligonia,Juliusza Ligonia
+0212529,09572,Kościuszki,Generała Tadeusza Kościuszki
+0140675,15524,Paderewskiego,Ignacego Jana Paderewskiego
+0937474,50446,plac ks. Emila Szramka,Emila Szramka
+0940890,18645,Reymonta,Władysława Stanisława Reymonta
+0140675,57863,plac im. marszałka Józefa Piłsudskiego,Plac Marszałka Józefa Piłsudskiego
