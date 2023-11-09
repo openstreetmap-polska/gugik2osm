@@ -180,7 +180,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0928363,50190,aleja marsz. Józefa Piłsudskiego,Aleja Marszałka Józefa Piłsudskiego
 0929902,16270,aleja marsz. Józefa Piłsudskiego,Aleja Marszałka Józefa Piłsudskiego
 0609209,16270,aleja marsz. Józefa Piłsudskiego,Aleja Marszałka Józefa Piłsudskiego
-0940335,50016,aleja marsz. Józefa Piłsudskiego,Aleja Marszałka Józefa Piłsudskiego
 0954047,16270,aleja marsz. Józefa Piłsudskiego,Aleja Marszałka Józefa Piłsudskiego
 0957650,16270,aleja marsz. Józefa Piłsudskiego,Aleja Marszałka Józefa Piłsudskiego
 0934100,16267,aleja marsz. Piłsudskiego,Aleja Marszałka Józefa Piłsudskiego
@@ -10531,6 +10530,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0005351,12367,ks. Bronisława Markiewicza,Księdza Bronisława Markiewicza
 0918123,12367,ks. Bronisława Markiewicza,Księdza Bronisława Markiewicza
 0009478,15425,ks. Czesława Oszkiela,Księdza Czesława Oszkiela
+0215338,17574,Prusa,Bolesława Prusa
 0975285,55923,Ks. dr Antoniego Święcickiego,Księdza Doktora Antoniego Święcickiego
 0921591,51724,Ks. Eleonory Czartoryskiej,Księżnej Eleonory Czartoryskiej
 0513018,36147,ks. Eugeniusza Chylińskiego,Księdza Eugeniusza Chylińskiego
@@ -11803,3 +11803,23 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0937474,50446,plac ks. Emila Szramka,Emila Szramka
 0940890,18645,Reymonta,Władysława Stanisława Reymonta
 0140675,57863,plac im. marszałka Józefa Piłsudskiego,Plac Marszałka Józefa Piłsudskiego
+0940335,50016,aleja marsz. Józefa Piłsudskiego,Aleja marszałka Józefa Piłsudskiego
+0943428,15525,aleja Ignacego Paderewskiego,Aleja Ignacego Paderewskiego
+0943428,49828,Mjr Henryka Hubala-Dobrzańskiego,Majora Henryka Hubala-Dobrzańskiego
+0943428,49830,Mjr Henryka Sucharskiego,Majora Henryka Sucharskiego
+0943428,49829,Mjr Jana Piwnika-Ponurego,Majora Jana Piwnika-Ponurego
+0943428,30242,plac Medyków,Plac Medyków
+0940335,50017,aleja Tysiąclecia,Aleja Tysiąclecia
+0940335,04314,Drzymały,Michała Drzymały
+0940335,09003,Hugona Kołłątaja,Hugo Kołłątaja
+0940335,15529,Ignacego Paderewskiego,Ignacego Jana Paderewskiego
+0940335,22771,Kazimierza Tetmajera,Kazimierza Przerwy-Tetmajera
+0940335,50654,plac Górników,Plac Górników
+0940335,38504,rynek Główny,Rynek Główny
+0940335,19269,rynek Mały,Rynek Mały
+0215338,06315,Grzegorzewskiej,Marii Grzegorzewskiej
+0215338,08147,Kasprowicza,Jana Kasprowicza
+0215338,09826,Krasickiego,Ignacego Krasickiego
+0215338,10894,Leśmiana,Bolesława Leśmiana
+0215338,12672,Miarki,Karola Miarki
+0215338,25817,Zawadzkiego,Tadeusza Zawadzkiego
