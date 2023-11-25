@@ -1170,7 +1170,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0935140,39372,gen. Augusta Emila Fieldorfa-Nila,Generała Augusta Emila Fieldorfa-Nila
 0928363,31084,gen. Augusta Emila Fieldorfa Nila,Generała Augusta Emila Fieldorfa Nila
 0918123,31084,gen. Augusta Emila Fieldorfa Nila,Generała Augusta Emila Fieldorfa Nila
-0930868,35323,gen. Augusta Fieldorfa-Nila,"Generała Augusta Fieldorfa ""Nila"""
 0950463,35323,gen. Augusta Fieldorfa-Nila,"Generała Augusta Fieldorfa ""Nila"""
 0965855,04977,gen. Augusta Fieldorfa Nila,"Generała Augusta Fieldorfa ""Nila"""
 0985929,30014,gen. Augustyna Słubickiego,Generała Augustyna Słubickiego
@@ -1970,7 +1969,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0986283,00091,gen. Romana Abrahama,Generała Romana Abrahama
 0971637,00091,gen. Romana Abrahama,Generała Romana Abrahama
 0931678,31012,gen. Rómmla,Generała Janusza Rómmla
-0930868,22963,gen. Romualda Traugutta,Generała Romualda Traugutta
 0415936,22963,gen. Romualda Traugutta,Generała Romualda Traugutta
 0954120,22963,gen. Romualda Traugutta,Generała Romualda Traugutta
 0920539,22963,gen. Romualda Traugutta,Generała Romualda Traugutta
@@ -11823,3 +11821,49 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0215338,10894,Leśmiana,Bolesława Leśmiana
 0215338,12672,Miarki,Karola Miarki
 0215338,25817,Zawadzkiego,Tadeusza Zawadzkiego
+0930868,35323,gen. Augusta Fieldorfa-Nila,Generała Augusta Fieldorfa-Nila
+0930868,22963,gen. Romualda Traugutta,Romualda Traugutta
+0945746,00287,Andersena,Jana Christiana Andersena
+0945746,03667,Dąbrowskiego,Jarosława Dąbrowskiego 
+0945746,46950,osiedle 700-lecia Żor,Osiedle 700-lecia Żor
+0945746,46952,osiedle Korfantego,Osiedle Korfantego
+0945746,46953,osiedle Księcia Władysława,Osiedle Księcia Władysława
+0945746,46954,osiedle Pawlikowskiego,Osiedle Władysława Pawlikowskiego
+0945746,46955,osiedle Powstańców Śląskich,Osiedle Powstańców Śląskich
+0945746,46956,osiedle Sikorskiego,Osiedle Władysława Sikorskiego
+0945746,24122,Wieniawskiego,Henryka Wieniawskiego
+0945746,45084,Wolnego,Konstantego Wolnego
+0945746,45407,Sławika,Henryka Sławika
+0930868,55219,dra Ludwika Zamenhofa,Doktora Ludwika Zamenhofa
+0930868,39703,dra Tytusa Chałubińskiego,Doktora Tytusa Chałubińskiego
+0930868,55227,dra Witolda Orłowskiego,Doktora Witolda Orłowskiego
+0930868,38501,plac Bohaterów Getta,Plac Bohaterów Getta
+0930868,38550,plac Ignacego Daszyńskiego,Plac Ignacego Daszyńskiego
+0930868,38306,plac Walecznych,Plac Walecznych
+0930868,55217,rynek Prezydenta RP Gabriela Narutowicza,Rynek Prezydenta RP Gabriela Narutowicza
+0930868,21031,rynek Stary Rynek,Stary Rynek
+0930868,38307,rynek Wieluński,Rynek Wieluński
+0930868,53788,Bernarda Ludwika Hantkego,Bernarda Hantkego 
+0930868,22710,Władysława Tatarkiewicza,Profesora Władysława Tatarkiewicza
+0930868,12810,Ludwika Mierosławskiego,Generała Ludwika Mierosławskiego
+0930868,55228,mjra Henryka Dobrzańskiego-Hubala,Majora Henryka Dobrzańskiego-Hubala
+0930868,48236,mjra Henryka Sucharskiego,Majora Henryka Sucharskiego 
+0930868,55213,mjra Waleriana Łukasińskiego,Majora Waleriana Łukasińskiego
+0930868,09841,Krasińskiego,Zygmunta Krasińskiego
+0930868,08643,Kmicica,Andrzeja Kmicica
+0930868,20155,Skrzetuskiego,Jana Skrzetuskiego
+0939473,31183,aleja Róż,Aleja Róż
+0939473,38503,aleja za Remizą,Aleja za Remizą
+0939473,34033,aleja Zwycięstwa,Aleja Zwycięstwa
+0164180,61419,Płk. Dąbka,Pułkownika Stanisława Dąbka
+0966079,61551,dr. Jerzego Olszewskiego,Doktora Jerzego Olszewskiego
+0966079,31084,gen. Augusta Emila Fieldorfa Nila,Generała Augusta Emila Fieldorfa Nila
+0966079,61550,kpt. Józefa Kozłowskiego Lasa,Kapitana Józefa Kozłowskiego Lasa
+0966079,01397,ks. Franciszka Blachnickiego,Księdza Franciszka Blachnickiego
+0966079,09838,ks. bp. Ignacego Krasickiego,Księdza Biskupa Ignacego Krasickiego
+0169609,58463,Św. Michała Archanioła,Świętego Michała Archanioła
+0586098,00351,św. Antoniego,Świętego Antoniego
+0343786,10181,św. Krzyża,Świętego Krzyża
+0986283,23017,św. Trójcy,Świętej Trójcy
+0983681,24581,św. Wojciecha,Świętego Wojciecha
+0930868,15760,Blaise Pascala,Blaise'a Pascala
