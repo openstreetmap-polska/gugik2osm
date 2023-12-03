@@ -39,6 +39,7 @@
 20 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_teryt_ul.sh >> /opt/gugik2osm/log/exports.log 2>&1
 25 3 * * MON-FRI postgres /opt/gugik2osm/git/processing/bash/export_osm_buildings.sh >> /opt/gugik2osm/log/exports.log 2>&1
 0 23 * * SUN postgres /opt/gugik2osm/git/processing/bash/export_prg_addresses.sh >> /opt/gugik2osm/log/exports.log 2>&1
+0 22 * * SUN postgres /opt/gugik2osm/git/processing/bash/export_prg_pa.sh >> /opt/gugik2osm/log/exports.log 2>&1
 0 1 * * MON postgres /opt/gugik2osm/conf/export_db_backup.sh >> /opt/gugik2osm/log/exports.log 2>&1
 
 # clean old files
