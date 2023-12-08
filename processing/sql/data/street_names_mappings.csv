@@ -303,6 +303,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0947308,53140,Antoniego Hedy ps. Szary,"Antoniego Hedy ps. ""Szary"""
 0982641,00566,Baczyńskiego,Krzysztofa Kamila Baczyńskiego
 0977338,00761,Barlickiego,Norberta Barlickiego
+0984025,02844,Chopina,Fryderyka Chopina
 0988394,00761,Barlickiego,Norberta Barlickiego
 0975380,00761,Barlickiego,Norberta Barlickiego
 0941139,00761,Barlickiego,Norberta Barlickiego
@@ -596,7 +597,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0985734,02844,Chopina,Fryderyka Chopina
 0429016,02844,Chopina,Fryderyka Chopina
 0804193,02844,Chopina,Fryderyka Chopina
-0984025,02844,Chopina,Fryderyka Chopina
 0625444,02844,Chopina,Fryderyka Chopina
 0920404,02844,Chopina,Fryderyka Chopina
 0931589,02844,Chopina,Fryderyka Chopina
@@ -813,6 +813,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0950262,03767,Derdowskiego,Hieronima Derdowskiego
 0929724,03767,Derdowskiego,Hieronima Derdowskiego
 0164842,03767,Derdowskiego,Hieronima Derdowskiego
+0893742,05171,Fredry,Aleksandra Fredry
 0047042,37385,dh. Aleksandra Kamińskiego,Druha Aleksandra Kamińskiego
 0173367,38148,dh. J. Grzybka,Druha Józefa Grzybka
 0970885,40659,dh. Józefa Glinkowskiego,Druha Józefa Glinkowskiego
@@ -985,6 +986,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0942765,33927,dr. Mariana Różańskiego,Doktora Mariana Różańskiego
 0926677,06084,dr. Michała Grażyńskiego,Doktora Michała Grażyńskiego
 0294585,06874,dr. Michała Ilczyszyna,Doktora Michała Ilczyszyna
+0953409,05171,Fredry,Aleksandra Fredry
 0956810,34576,dr. Mieczysława Kowalskiego,Doktora Mieczysława Kowalskiego
 0983681,34865,dr. Mieczysława Orłowicza,Doktora Mieczysława Orłowicza
 0950463,52805,dr. Owcy-Orwicza,Doktora Mieczysława Owcy-Orwicza
@@ -1075,8 +1077,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0965364,05171,Fredry,Aleksandra Fredry
 0936931,05171,Fredry,Aleksandra Fredry
 0932790,05171,Fredry,Aleksandra Fredry
-0893742,05171,Fredry,Aleksandra Fredry
-0953409,05171,Fredry,Aleksandra Fredry
 0974618,05171,Fredry,Aleksandra Fredry
 0935558,05171,Fredry,Aleksandra Fredry
 0937280,05171,Fredry,Aleksandra Fredry
@@ -1988,6 +1988,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0002430,34242,gen. S. Grota-Roweckiego,Generała Stefana Grota-Roweckiego
 0950262,34242,gen. S. Grota-Roweckiego,Generała Stefana Grota-Roweckiego
 0920380,34448,gen. S. Maczka,Generała Stanisława Maczka
+0921792,12485,Matejki,Jana Matejki
 0957146,34448,gen. S. Maczka,Generała Stanisława Maczka
 0957146,37880,gen. S. Roweckiego Grota,Generała Stefana Roweckiego Grota
 0212110,19901,gen. Sikorskiego,Generała Władysława Sikorskiego
@@ -2144,6 +2145,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0964465,26970,gen. Stefana Grota Roweckiego,Generała Stefana Grota Roweckiego
 0980671,18912,gen. Stefana Grota Roweckiego,Generała Stefana Grota Roweckiego
 0959079,18912,gen. Stefana Grota Roweckiego,Generała Stefana Grota Roweckiego
+0954685,12485,Matejki,Jana Matejki
 0984657,26970,gen. Stefana Grota Roweckiego,Generała Stefana Grota Roweckiego
 0936546,18912,gen. Stefana Grota Roweckiego,Generała Stefana Grota Roweckiego
 0983333,08161,gen. Stefana Kasprzyckiego,Generała Stefana Kasprzyckiego
@@ -2532,6 +2534,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0980926,34349,gen. Żółkiewskiego-Lina,"Generała Antoniego Lina ""Żółkiewskiego"""
 0929902,35287,gen. Zygmunta Bohusz-Szyszko,Generała Zygmunta Bohusz-Szyszko
 0942104,48110,Gen. Zygmunta Jankego,Generała Zygmunta Jankego
+0916762,12485,Matejki,Jana Matejki
 0966079,15538,gen. Zygmunta Padlewskiego,Generała Zygmunta Padlewskiego
 0956810,15538,gen. Zygmunta Padlewskiego,Generała Zygmunta Padlewskiego
 0945380,15538,gen. Zygmunta Padlewskiego,Generała Zygmunta Padlewskiego
@@ -2715,6 +2718,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0983333,07040,Jagiełły,Władysława Jagiełły
 0970885,07040,Jagiełły,Władysława Jagiełły
 0985786,07040,Jagiełły,Władysława Jagiełły
+0967423,12485,Matejki,Jana Matejki
 0975434,07040,Jagiełły,Władysława Jagiełły
 0372931,07040,Jagiełły,Władysława Jagiełły
 0964850,07040,Jagiełły,Władysława Jagiełły
@@ -2801,6 +2805,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0922018,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
 0176437,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
 0922745,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
+0927642,12485,Matejki,Jana Matejki
 0977670,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
 0958714,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
 0198114,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
@@ -4046,6 +4051,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0933016,29214,kpt. Konstantego Maciejewicza,Kapitana Konstantego Maciejewicza
 0930868,31461,kpt. Leona Sabatowskiego,Kapitana Leona Sabatowskiego
 0164010,40832,kpt. Leonida Teligi,Kapitana Leonida Teligi
+0972447,18573,Rejtana,Tadeusza Rejtana
 0934100,40832,kpt. Leonida Teligi,Kapitana Leonida Teligi
 0942765,07158,kpt. Leopolda Janiego,Kapitana Leopolda Janiego
 0950026,43655,kpt. Leszka Wiktorowicza,Kapitana Leszka Wiktorowicza
@@ -4452,6 +4458,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0958826,09006,ks. Hugona Kołłątaja,Księdza Hugona Kołłątaja
 0920864,09006,ks. Hugona Kołłątaja,Księdza Hugona Kołłątaja
 0965016,09006,ks. Hugona Kołłątaja,Księdza Hugona Kołłątaja
+0482192,18573,Rejtana,Tadeusza Rejtana
 0977976,09006,ks. Hugona Kołłątaja,Księdza Hugona Kołłątaja
 0959263,09006,ks. Hugona Kołłątaja,Księdza Hugona Kołłątaja
 0928363,50182,Ks. Hugona Kołłątaja,Księdza Hugona Kołłątaja
@@ -4708,6 +4715,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0008993,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
 0918123,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
 0008639,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
+0005658,18573,Rejtana,Tadeusza Rejtana
 0966470,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
 0833415,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
 0976675,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
@@ -4793,6 +4801,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0974133,48523,ks. Józefa Sondeja,Księdza Józefa Sondeja
 0974133,46644,ks. Józefa Stafieja,Księdza Józefa Stafieja
 0443246,20839,ks. Józefa Stanka,Księdza Józefa Stanka
+0937132,18573,Rejtana,Tadeusza Rejtana
 0968664,20839,ks. Józefa Stanka,Księdza Józefa Stanka
 0937474,21720,ks. Józefa Szafranka,Księdza Józefa Szafranka
 0941286,21720,ks. Józefa Szafranka,Księdza Józefa Szafranka
@@ -5201,6 +5210,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0937110,55340,Ks. Prałata Kazimierza Nadstazika,Księdza Prałata Kazimierza Nadstazika
 0941139,36182,ks. Prałata Konrada Szwedy,Księdza Prałata Konrada Szwedy
 0950463,28298,ks. Prałata Mariana Łaczka,Księdza Prałata Mariana Łaczka
+0912824,18573,Rejtana,Tadeusza Rejtana
 0038965,35423,ks. Prałata Michała Badowskiego,Księdza Prałata Michała Badowskiego
 0928363,52634,ks. prałata Romualda Biniaka,Księdza Prałata Romualda Biniaka
 0927642,30109,ks. Prałata Stanisława Słonki,Księdza Stanisława Słonki
@@ -5444,6 +5454,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0986283,09776,ks. Wincentego Kraińskiego,Księdza Wincentego Kraińskiego
 0200035,40064,ks. Wincentego Rudy,Księdza Wincentego Rudy
 0324760,38922,ks. Wincentego Smoczyńskiego,Księdza Wincentego Smoczyńskiego
+0921438,18573,Rejtana,Tadeusza Rejtana
 0175449,56216,Ks. Wincentego Tomaszewskiego,Księdza Wincentego Tomaszewskiego
 0950463,29005,ks. Wincentego Turka,Księdza Wincentego Turka
 0165385,42528,ks. Witaszka,Księdza Kornela Witaszka
@@ -5718,11 +5729,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0965967,12485,Matejki,Jana Matejki
 0983652,12485,Matejki,Jana Matejki
 0926921,12485,Matejki,Jana Matejki
-0921792,12485,Matejki,Jana Matejki
-0954685,12485,Matejki,Jana Matejki
-0916762,12485,Matejki,Jana Matejki
-0967423,12485,Matejki,Jana Matejki
-0927642,12485,Matejki,Jana Matejki
 0977539,12734,Mickiewicza,Adama Mickiewicza
 0980352,12734,Mickiewicza,Adama Mickiewicza
 0964583,12734,Mickiewicza,Adama Mickiewicza
@@ -6720,6 +6726,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0045333,49770,osiedle Os. Szafarze,Osiedle Szafarze
 0045333,49771,osiedle Os. Szczęśniaki,Osiedle Szczęśniaki
 0045333,49781,osiedle Os. Urbanki,Osiedle Urbanki
+0949129,18573,Rejtana,Tadeusza Rejtana
 0045089,49848,osiedle Os. Wapiennik,Osiedle Wapiennik
 0045830,49780,osiedle Os. Wawrzynówka,Osiedle Wawrzynówka
 0045333,49773,osiedle Os. Za Kościołem,Osiedle Za Kościołem
@@ -6901,6 +6908,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0984700,32703,plac im. Jana Pawła II,Plac Jana Pawła II
 0977290,54640,plac im. Kardynała Stefana Wyszyńskiego,Plac Kardynała Stefana Wyszyńskiego
 0974280,39475,plac im. ks. Adolfa Kowala,Plac Księdza Adolfa Kowala
+0986283,14543,płk. Franciszka Nulla,Pułkownika Franciszka Nulla
 0970632,46528,plac im. ks. kan. Zbigniewa Kapturczaka,Plac Księdza Kanonika Zbigniewa Kapturczaka
 0954700,52078,plac im. Marii Curie-Skłodowskiej,Plac Marii Skłodowskiej-Curie
 0343674,55758,plac im. Marii Konopnickiej,Plac Marii Konopnickiej
@@ -7061,7 +7069,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0950463,14546,płk. Francesco Nullo,Pułkownika Francesco Nullo
 0982724,41808,płk. Franciszka Niepokólczyckiego,Pułkownika Franciszka Niepokólczyckiego
 0945380,41808,płk. Franciszka Niepokólczyckiego,Pułkownika Franciszka Niepokólczyckiego
-0986283,14543,płk. Franciszka Nulla,Pułkownika Franciszka Nulla
 0253907,53686,płk. Franciszka Żarnowskiego,Pułkownika Franciszka Żarnowskiego
 0924158,44485,płk. Gwido Langera,Pułkownika Gwido Langera
 0959079,53614,płk. Henryka Świetlickiego,Pułkownika Henryka Świetlickiego
@@ -7139,6 +7146,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0931945,45536,płk. Wacława Wilniewczyca,Pułkownika Wacława Wilniewczyca
 0933016,24302,płk. Wilka-Krzyżanowskiego,Pułkownika Aleksandra Wilka-Krzyżanowskiego
 0977670,46302,płk. Witolda Pileckiego,Pułkownika Witolda Pileckiego
+0969103,18573,Rejtana,Tadeusza Rejtana
 0954082,46302,płk. Witolda Pileckiego,Pułkownika Witolda Pileckiego
 0954484,46302,płk. Witolda Pileckiego,Pułkownika Witolda Pileckiego
 0928989,31086,płk. Witolda Roszkowskiego,Pułkownika Witolda Roszkowskiego
@@ -7221,6 +7229,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0587583,17379,Powstańców Wlkp.,Powstańców Wielkopolskich
 0937066,17379,Powstańców Wlkp.,Powstańców Wielkopolskich
 0929428,17379,Powstańców Wlkp.,Powstańców Wielkopolskich
+0930644,18573,Rejtana,Tadeusza Rejtana
 0971264,17379,Powstańców Wlkp.,Powstańców Wielkopolskich
 0971270,17379,Powstańców Wlkp.,Powstańców Wielkopolskich
 0207899,17379,Powstańców Wlkp.,Powstańców Wielkopolskich
@@ -7299,6 +7308,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0952410,51874,prof. dr. Jerzego Dmochowskiego,Profesora Doktora Jerzego Dmochowskiego
 0923584,12707,prof. dr. Mieczysława Michałowicza,Profesora Doktora Mieczysława Michałowicza
 0976675,38118,prof. dr. Tadeusza Kobusiewicza,Profesora Doktora Tadeusza Kobusiewicza
+0973613,18573,Rejtana,Tadeusza Rejtana
 0933016,55882,prof. Edmunda Cieślaka,Profesora Edmunda Cieślaka
 0976942,12078,prof. Edmunda Malinowskiego,Profesora Edmunda Malinowskiego
 0109949,51499,prof. Edwarda Olszewskiego,Profesora Edwarda Olszewskiego
@@ -7570,16 +7580,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0983333,18573,Rejtana,Tadeusza Rejtana
 0728517,18573,Rejtana,Tadeusza Rejtana
 0920404,18573,Rejtana,Tadeusza Rejtana
-0969103,18573,Rejtana,Tadeusza Rejtana
-0930644,18573,Rejtana,Tadeusza Rejtana
-0973613,18573,Rejtana,Tadeusza Rejtana
-0972447,18573,Rejtana,Tadeusza Rejtana
-0482192,18573,Rejtana,Tadeusza Rejtana
-0005658,18573,Rejtana,Tadeusza Rejtana
-0937132,18573,Rejtana,Tadeusza Rejtana
-0912824,18573,Rejtana,Tadeusza Rejtana
-0921438,18573,Rejtana,Tadeusza Rejtana
-0949129,18573,Rejtana,Tadeusza Rejtana
 0414530,18573,Rejtana,Tadeusza Rejtana
 0971614,18573,Rejtana,Tadeusza Rejtana
 0921668,18573,Rejtana,Tadeusza Rejtana
@@ -8695,6 +8695,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0982233,56622,Św. Brata Alberta,Świętego Brata Alberta
 0873515,30942,św. Brata Alberta Adama Chmielowskiego,Świętego Brata Alberta Adama Chmielowskiego
 0982167,30346,św. Brata Alberta Chmielowskiego,Świętego Brata Alberta Chmielowskiego
+0939409,23194,Tuwima,Juliana Tuwima
 0922277,30346,św. Brata Alberta Chmielowskiego,Świętego Brata Alberta Chmielowskiego
 0957650,53808,Św. Brata Alberta Chmielowskiego,Świętego Brata Alberta Chmielowskiego
 0940000,28281,św. Bronisławy,Świętej Bronisławy
@@ -9698,7 +9699,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0928854,23194,Tuwima,Juliana Tuwima
 0938982,23194,Tuwima,Juliana Tuwima
 0216622,23194,Tuwima,Juliana Tuwima
-0939409,23194,Tuwima,Juliana Tuwima
 0982233,23194,Tuwima,Juliana Tuwima
 0935334,23194,Tuwima,Juliana Tuwima
 0493439,23194,Tuwima,Juliana Tuwima
@@ -10564,6 +10564,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0683192,33869,ks. Józefa Rychlika,Księdza Józefa Rychlika
 0920806,30575,ks. Józefa Schabowskiego,Księdza Józefa Schabowskiego
 0977054,32612,ks. Józefa Wierzejskiego,Księdza Józefa Wierzejskiego
+0941139,12672,Miarki,Karola Miarki
 0918123,02895,ks. Juliana Chrościckiego,Księdza Juliana Chrościckiego
 0677926,39505,ks. K. R. Leszczyńskiego,Księdza Karola Rafała Leszczyńskiego
 0513538,32742,ks. kan. E. Sierbińskiego,Księdza Kanonika Eugeniusza Sierbińskiego
@@ -11311,6 +11312,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0923526,59269,Ks. Wacława Rabczyńskiego,Księdza Wacława Rabczyńskiego
 0097784,52542,Ks. Władysława Łęgi,Księdza Władysława Łęgi
 0929285,59271,Pl. Zwycięstwa,Plac Zwycięstwa
+0941984,12672,Miarki,Karola Miarki
 0937899,59382,Plac prof. Włodzimierza Wójcika,Plac Profesora Włodzimierza Wójcika
 0935802,59073,Plac św. Jana Apostoła,Plac Świętego Jana Apostoła
 0921237,49061,Płk. Ryszarda Kuklińskiego,Pułkownika Ryszarda Kuklińskiego
@@ -11394,6 +11396,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0934659,52930,Ks. Józefa Poniatowskiego,Księcia Józefa Poniatowskiego
 0954047,23601,Wały ks. Józefa Poniatowskiego,Wały Księcia Józefa Poniatowskiego
 0974328,33487,ks. Józefa Poniatowskiego,Księcia Józefa Poniatowskiego
+0218621,12672,Miarki,Karola Miarki
 0932353,54849,Aleja Ks. Kardynała Stefana Wyszyńskiego,Aleja Kardynała Stefana Wyszyńskiego
 0702720,33732,F. Chopina,Fryderyka Chopina
 0922923,59614,Gen. E. J. Godlewskiego,Generała Edwarda Józefa Godlewskiego
@@ -11478,6 +11481,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0981682,60283,Plac ks. Antoniego Czaplińskiego,Plac Księdza Antoniego Czaplińskiego
 0981682,60284,Plac św. Kingi,Plac Świętej Kingi
 0964643,32578,T. Kościuszki,Tadeusza Kościuszki
+0416781,60719,Aleja  AL. Bukowa,Aleja Bukowa
 0954567,22459,dr. Bronisława Świderskiego,Doktora Bronisława Świderskiego
 0966330,07314,gen. Jakuba Jasińskiego,Generała Jakuba Jasińskiego
 0325417,48921,Św. Floriana,Świętego Floriana
@@ -11563,7 +11567,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0581273,60636,Os. Mylin Południowy,Osiedle Mylin Południowy
 0935127,34244,W. Witosa,Wincentego Witosa
 0416769,60719,Aleja  AL. Bukowa,Aleja Bukowa
-0416781,60719,Aleja  AL. Bukowa,Aleja Bukowa
 0416628,60719,Aleja AL. Bukowa,Aleja Bukowa
 0935127,38806,B. Chrobrego,Bolesława Chrobrego
 0941984,60749,Bł. Ks. J. Popiełuszki,Błogosławionego księdza Jerzego Popiełuszki
@@ -11741,6 +11744,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0942630,40865,plac Niepodległości,Plac Niepodległości
 0942630,48410,rotmistrza Witolda Pileckiego,Rotmistrza Witolda Pileckiego
 0942630,20421,Sobieskiego,Jana III Sobieskiego
+0135556,12672,Miarki,Karola Miarki
 0942630,16264,Józefa Piłsudskiego,Marszałka Józefa Piłsudskiego
 0942765,02661,Chałubińskiego,Tytusa Chałubińskiego
 0942765,02704,Chełmońskiego,Józefa Chełmońskiego
@@ -11834,6 +11838,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0945746,24122,Wieniawskiego,Henryka Wieniawskiego
 0945746,45084,Wolnego,Konstantego Wolnego
 0945746,45407,Sławika,Henryka Sławika
+0931945,12672,Miarki,Karola Miarki
 0930868,55219,dra Ludwika Zamenhofa,Doktora Ludwika Zamenhofa
 0930868,39703,dra Tytusa Chałubińskiego,Doktora Tytusa Chałubińskiego
 0930868,55227,dra Witolda Orłowskiego,Doktora Witolda Orłowskiego
@@ -11934,11 +11939,6 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0214327,12672,Miarki,Karola Miarki
 0214362,12672,Miarki,Karola Miarki
 0944126,12672,Miarki,Karola Miarki
-0135556,12672,Miarki,Karola Miarki
-0931945,12672,Miarki,Karola Miarki
-0941139,12672,Miarki,Karola Miarki
-0941984,12672,Miarki,Karola Miarki
-0218621,12672,Miarki,Karola Miarki
 0218704,12672,Miarki,Karola Miarki
 0215500,12672,Miarki,Karola Miarki
 0215597,12672,Miarki,Karola Miarki
@@ -12060,3 +12060,50 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0075216,55618,mjr Kazimierza Czarkowskiego,Majora Kazimierza Czarkowskiego
 0931945,56759,74-go Górnośląskiego Pułku Piechoty,74 Górnośląskiego Pułku Piechoty
 0939473,60296,Porozumienia Dąbrowskiego 1980,Porozumienia Dąbrowskiego 1980 roku
+0977278,51983,dra Alfonsa Modrzejewskiego,Doktora Alfonsa Modrzejewskiego
+0052451,36461,dra Andrzeja Cinciały,Doktora Andrzeja Cinciały
+0977278,51982,dra Edmunda Biernackiego,Doktora Edmunda Biernackiego
+0954700,51951,Dra Gustawa Dolińskiego,Doktora Gustawa Dolińskiego
+0977278,51984,dra Jana Gellerta,Doktora Jana Gellerta
+0987673,42450,dra Jana Kowalskiego,Doktora Jana Kowalskiego
+0983681,59590,dra Judyma,Doktora Judyma
+0954700,51076,Dra Kazimierza Jaczewskiego,Doktora Kazimierza Jaczewskiego
+0968300,48561,dra Michała Biernackiego,Doktora Michała Biernackiego
+0983681,59589,dra Mieczysława Orłowicza,Doktora Mieczysława Orłowicza
+0928825,60915,dra Stanisława Krzysia,Doktora Stanisława Krzysia
+0954656,60514,dra Stanisława Skarzyńskiego,Doktora Stanisława Skarzyńskiego
+0954700,50829,Dra Witolda Chodźki,Doktora Witolda Chodźki
+0983681,59593,dra Wojciecha Oczki,Doktora Wojciecha Oczki
+0975010,57739,mjr Dobrzańskiego,Majora Dobrzańskiego
+0977120,55799,mjr Feliksa Kozubowskiego,Majora Feliksa Kozubowskiego
+0093562,51167,mjr Henryka Dobrzańskiego,Majora Henryka Dobrzańskiego
+0097784,37443,Mjr Henryka Dobrzańskiego,Majora Henryka Dobrzańskiego
+0935989,48347,mjr Henryka Sucharskiego,Majora Henryka Sucharskiego
+0928363,48347,mjr Henryka Sucharskiego,Majora Henryka Sucharskiego
+0974529,48347,mjr Henryka Sucharskiego,Majora Henryka Sucharskiego
+0930696,48347,mjr Henryka Sucharskiego,Majora Henryka Sucharskiego
+0958967,48347,mjr Henryka Sucharskiego,Majora Henryka Sucharskiego
+0932962,48347,mjr Henryka Sucharskiego,Majora Henryka Sucharskiego
+0977120,48347,mjr Henryka Sucharskiego,Majora Henryka Sucharskiego
+0956550,56197,mjr Hieronima Dekutowskiego Zapory,Majora Hieronima Dekutowskiego Zapory
+0249917,52450,mjr Hubala,Majora Hubala
+0975285,52450,mjr Hubala,Majora Henryka Dobrzańskiego Hubala
+0930696,52450,mjr Hubala,Majora Henryka Dobrzańskiego Hubala
+0981133,52450,mjr Hubala,Majora Hubala
+0630244,52450,mjr Hubala,Majora Henryka Hubala-Dobrzańskiego
+0954165,59054,Mjr Hubala,Majora Henryka Hubala
+0951876,53441,mjr Jana Żychonia,Majora Jana Żychonia
+0954700,51078,mjr Mariana Gołębiewskiego,Majora Mariana Gołębiewskiego
+0951675,48427,Mjr Mieczysława Malinowskiego,Majora Mieczysława Malinowskiego
+0954604,46824,Mjr Mieczysława Słabego,Majora Mieczysława Słabego
+0947930,56076,mjr Nurta,Majora Nurta
+0415787,55894,mjr Sucharskiego,Majora Henryka Sucharskiego
+0936776,49943,Mjr Zbigniewa Gorzeńskiego,Majora Zbigniewa Gorzeńskiego
+0988075,59453,mjra Franciszka Bartłomowicza Grzmota,Majora Franciszka Bartłomowicza Grzmota
+0937474,48236,mjra Henryka Sucharskiego,Majora Henryka Sucharskiego
+0977976,54391,Mjra Henryka Sucharskiego,Majora Henryka Sucharskiego
+0949833,48565,mjra Hubala,Majora Hubala
+0973346,48565,mjra Hubala,Majora Henryka Hubala
+0980636,48565,mjra Hubala,Majora Hubala
+0968300,48565,mjra Hubala,Majora Hubala
+0971672,59164,Mjra Hubala,Majora Henryka Hubala
