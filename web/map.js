@@ -572,7 +572,7 @@ function prepareUpdatesLayerPopupHTML(features) {
             osm_notification = 1;
             JSON.parse(f.properties.changesets).forEach(c => {
                 const ts = new Date(c.closed_at);
-                const formatted_ts = `${ts.getFullYear()}-${String(ts.getMonth()).padStart(2,'0')}-${String(ts.getDate()).padStart(2,'0')} ${String(ts.getHours()).padStart(2,'0')}:${String(ts.getMinutes()).padStart(2,'0')}`;
+                const formatted_ts = `${ts.getFullYear()}-${String(ts.getMonth()+1).padStart(2,'0')}-${String(ts.getDate()).padStart(2,'0')} ${String(ts.getHours()).padStart(2,'0')}:${String(ts.getMinutes()).padStart(2,'0')}`;
                 osm_changesets_links += `<tr><td><a href="https://osm.org/changeset/${c.changeset_id}" `
                 osm_changesets_links += `target="_blank" rel="noopener">${c.changeset_id}</a></td>`;
                 osm_changesets_links += `<td>${formatted_ts}</td>`
