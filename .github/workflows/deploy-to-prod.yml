@@ -5,8 +5,14 @@
 name: deploy-to-prod
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'processing/sql/data/street_names_mappings.csv'
+      - 'processing/miscellaneous/'
+      - '*.md'
+
 
 jobs:
   deploy:
