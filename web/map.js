@@ -877,19 +877,19 @@ function toggleMapLayer(params){
 function getBuildingPopupHTML(e) {
     var s = "<table>"
     s += "<tr><td>lokalnyid:</td><td>" + e.features[0].properties.lokalnyid + "</td></tr>"
-    s += "<tr><td>status_bdot:</td><td>" + e.features[0].properties.status_bdot + "</td></tr>"
-    s += "<tr><td>kategoria_bdot:</td><td>" + e.features[0].properties.kategoria_bdot + "</td></tr>"
+    s += "<tr><td>status bdot:</td><td>" + e.features[0].properties.status_bdot + "</td></tr>"
+    s += "<tr><td>kategoria bdot:</td><td>" + e.features[0].properties.kategoria_bdot + "</td></tr>"
     if (e.features[0].properties.funkcja_ogolna_budynku) {
-        s += "<tr><td>funkcja_ogolna_budynku:</td><td>" + e.features[0].properties.funkcja_ogolna_budynku + "</td></tr>"
+        s += "<tr><td>funkcja ogólna budynku:</td><td>" + e.features[0].properties.funkcja_ogolna_budynku + "</td></tr>"
     }
     if (e.features[0].properties.funkcja_szczegolowa_budynku) {
-        s += "<tr><td>funkcja_szczegolowa_budynku:</td><td>" + e.features[0].properties.funkcja_szczegolowa_budynku + "</td></tr>"
+        s += "<tr><td>funkcja szczegółowa budynku:</td><td>" + e.features[0].properties.funkcja_szczegolowa_budynku + "</td></tr>"
     }
     if (e.features[0].properties.aktualnosc_geometrii) {
-        s += "<tr><td>aktualnosc_geometrii:</td><td>" + e.features[0].properties.aktualnosc_geometrii + "</td></tr>"
+        s += "<tr><td>aktualność geometrii:</td><td>" + e.features[0].properties.aktualnosc_geometrii + "</td></tr>"
     }
     if (e.features[0].properties.aktualnosc_atrybutow) {
-        s += "<tr><td>aktualnosc_atrybutow:</td><td>" + e.features[0].properties.aktualnosc_atrybutow + "</td></tr>"
+        s += "<tr><td>aktualność atrybutów:</td><td>" + e.features[0].properties.aktualnosc_atrybutow + "</td></tr>"
     }
     if (e.features[0].properties.building) {
         s += "<tr><td>building:</td><td>" + e.features[0].properties.building + "</td></tr>"
@@ -967,7 +967,7 @@ function getAddressPopupHTML(element) {
     s += "<tr><td>kod miejscowości:</td><td>" + element.features[0].properties.teryt_simc + "</td></tr>"
     s += "<tr><td>miejscowość:</td><td>" + element.features[0].properties.teryt_msc + "</td></tr>"
     if (element.features[0].properties.teryt_ulica) {
-        s += "<tr><td>kod_ulic:</td><td>" + element.features[0].properties.teryt_ulic + "</td></tr>"
+        s += "<tr><td>kod ulicy:</td><td>" + element.features[0].properties.teryt_ulic + "</td></tr>"
         s += "<tr><td>ulica:</td><td>" + element.features[0].properties.teryt_ulica + "</td></tr>"
     }
     s += "<tr><td>numer porządkowy:</td><td>" + element.features[0].properties.nr + "</td></tr>"
