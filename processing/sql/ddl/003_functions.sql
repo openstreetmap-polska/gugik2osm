@@ -298,19 +298,19 @@ begin
                         and
                         st_dwithin(prg.geom, osm.geom, 150)
                 )
-                or
-                exists (
-                    select 1
-                    from prg.pa_hashed prg, osm_hashed osm
-                    where
-                        st_dwithin(prg.geom, ST_Transform(exp_bounds.geom, 2180), 150)
-                        and
-                        st_dwithin(osm.geom, ST_Transform(exp_bounds.geom, 2180), 150)
-                        and
-                        d.lokalnyid = prg.lokalnyid
-                        and
-                        st_dwithin(prg.geom, osm.geom, 2)
-                )
+                -- or
+                -- exists (
+                --     select 1
+                --     from prg.pa_hashed prg, osm_hashed osm
+                --     where
+                --         st_dwithin(prg.geom, ST_Transform(exp_bounds.geom, 2180), 150)
+                --         and
+                --         st_dwithin(osm.geom, ST_Transform(exp_bounds.geom, 2180), 150)
+                --         and
+                --         d.lokalnyid = prg.lokalnyid
+                --         and
+                --         st_dwithin(prg.geom, osm.geom, 2)
+                -- )
                 or
                 exists (
                     select 1
