@@ -54,10 +54,17 @@ file_name_no_of_rejected_addr_per_muni = "municipality_rejected_addr_count.csv"
 query_export_rejected_addresses = """
 COPY(
     select 
-        adm.idteryt as teryt_id,
+        adm.idteryt as teryt_id_gmina,
+        adm.nazwa as nazwa_gmina,
+        m.idteryt as teryt_id_miejscowosc,
+        m.nazwa as nazwa_miejscowosc,
+        ul.idteryt as teryt_id_ulica,
+        ul.nazwaglownaczesc as nazwa_ulica,
         pa.*
     from prg.punkty_adresowe pa
-    join prg.jednostki_administracyjne adm on pa.komponent_03=adm.gmlid
+    left join prg.jednostki_administracyjne adm on pa.komponent_03=adm.gmlid
+    left join prg.miejscowosci m on pa.komponent_04=m.gmlid
+    left join prg.ulice ul on pa.komponent_05=ul.gmlid
     left join addresses a on pa.lokalnyid::uuid=a.lokalnyid
     where 1=1
         and a.lokalnyid is null
