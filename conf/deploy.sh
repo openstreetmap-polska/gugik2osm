@@ -31,7 +31,7 @@ chmod 600 /etc/systemd/system/create_socket_folder.service
 
 systemctl daemon-reload
 
-sudo --preserve-env -u ttaras python3 git/processing/scripts/overpass2geojson.py \
+sudo --preserve-env=PATH -u ttaras python3 git/processing/scripts/overpass2geojson.py \
     --input-dir git/processing/overpass \
     --output-dir /var/www/overpass-layers \
     --skip-existing
