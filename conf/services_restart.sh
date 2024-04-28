@@ -1,14 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-service imposm stop
-service supervisor stop
-service airflow-webserver stop
-service airflow-scheduler stop
-service pgbouncer stop
-service postgresql stop
-service postgresql start
-service pgbouncer start
-service supervisor start
-service airflow-scheduler start
-service airflow-webserver start
-service imposm start
+systemctl stop imposm
+systemctl stop supervisor
+systemctl stop airflow-webserver
+systemctl stop airflow-scheduler
+systemctl stop pgbouncer
+systemctl stop postgresql
+
+systemctl start postgresql
+systemctl start pgbouncer
+systemctl start supervisor
+systemctl start airflow-scheduler
+systemctl start airflow-webserver
+systemctl start imposm

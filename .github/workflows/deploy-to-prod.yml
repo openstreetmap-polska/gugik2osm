@@ -9,21 +9,25 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'processing/sql/data/street_names_mappings.csv'
-      - 'processing/miscellaneous/'
-      - '*.md'
-
+      - "processing/miscellaneous/"
+      - "*.md"
 
 jobs:
   deploy:
     name: Deploy to prod env
     runs-on: ubuntu-latest
     steps:
-      - name: Install SSH Key
-        uses: kielabokkie/ssh-key-and-known-hosts-action@v1
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh-host: ${{ secrets.SSH_HOST_IP }}
-          ssh-port: ${{ secrets.SSH_HOST_PORT }}
-      - name: Run deploy script on host
-        run: ssh -t -p ${{ secrets.SSH_HOST_PORT }} -l ${{ secrets.SSH_USER }} ${{ secrets.SSH_HOST_IP }} /opt/gugik2osm/conf/deploy.sh
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519 && chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          echo "Host remote
+            User ${{ secrets.SSH_USER }}
+            HostName ${{ secrets.SSH_HOST }}
+            Port ${{ secrets.SSH_PORT }}
+            IdentityFile ~/.ssh/id_ed25519
+          " > ~/.ssh/config
+
+      - name: Deploy on remote
+        run: ssh remote

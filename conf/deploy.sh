@@ -1,38 +1,38 @@
-#!/bin/bash
-
-# exit on error in any command
+#!/usr/bin/env bash
 set -e
 
-cd /opt/gugik2osm/git/
+cd /opt/gugik2osm/git
 git pull
 
-source /opt/gugik2osm/venv/bin/activate
+cd /opt/gugik2osm
+source venv/bin/activate
+pip3 install -r git/requirements.txt
 
-pip3 install -r /opt/gugik2osm/git/requirements.txt
+rsync --verbose --recursive --delete --exclude "__pycache__" git/app app
+rsync --verbose --recursive --delete --exclude "__pycache__" git/web web
 
-rsync --verbose --recursive --delete --exclude "__pycache__" /opt/gugik2osm/git/app/ /opt/gugik2osm/app/
-rsync --verbose --recursive --delete --exclude "__pycache__" /opt/gugik2osm/git/web/ /opt/gugik2osm/web/
+cp git/conf/*.sh conf
+cp git/conf/*.service conf
 
-cp /opt/gugik2osm/git/conf/*.sh /opt/gugik2osm/conf/
-cp /opt/gugik2osm/git/conf/*.service /opt/gugik2osm/conf/
-chmod 775 /opt/gugik2osm/conf/*.sh
-chmod 775 /opt/gugik2osm/git/processing/bash/*.sh
-sudo cp /opt/gugik2osm/git/conf/cronfile /opt/gugik2osm/conf/
-cp /opt/gugik2osm/git/conf/nginx.conf /opt/gugik2osm/conf/
+chmod 775 conf/*.sh
+chmod 775 git/processing/bash/*.sh
 
-rsync --verbose --recursive --delete --exclude "__pycache__" /opt/gugik2osm/git/airflow/dags/ /opt/gugik2osm/airflow/dags/
-# rsync --verbose --recursive --delete --exclude "__pycache__" /opt/gugik2osm/git/airflow/plugins/ /opt/gugik2osm/airflow/plugins/
+rsync --verbose --recursive --delete --exclude "__pycache__" git/airflow/dags airflow/dags
+# rsync --verbose --recursive --delete --exclude "__pycache__" git/airflow/plugins airflow/plugins
 
-cp /opt/gugik2osm/git/imposm3/mapping.yaml /opt/gugik2osm/imposm3/
-cp /opt/gugik2osm/git/imposm3/poland.geojson /opt/gugik2osm/imposm3/
-cp /opt/gugik2osm/git/imposm3/imposm.service /opt/gugik2osm/imposm3/
-sudo cp /opt/gugik2osm/imposm3/imposm.service /etc/systemd/system/imposm.service
-sudo chmod 600 /etc/systemd/system/imposm.service
-sudo cp /opt/gugik2osm/conf/create_socket_folder.service /etc/systemd/system/create_socket_folder.service
-sudo chmod 600 /etc/systemd/system/create_socket_folder.service
-sudo systemctl daemon-reload
-sudo service nginx restart
+cp git/imposm3/mapping.yaml imposm3
+cp git/imposm3/poland.geojson imposm3
+cp git/imposm3/imposm.service /etc/systemd/system
+cp conf/create_socket_folder.service /etc/systemd/system
 
-python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/ --skip-existing
+chmod 600 /etc/systemd/system/imposm.service
+chmod 600 /etc/systemd/system/create_socket_folder.service
 
-bash /opt/gugik2osm/conf/deploy_street_names_mappings.sh
+systemctl daemon-reload
+
+sudo -u ttaras python3 git/processing/scripts/overpass2geojson.py \
+    --input-dir git/processing/overpass \
+    --output-dir /var/www/overpass-layers \
+    --skip-existing
+
+sudo -u ttaras bash conf/deploy_street_names_mappings.sh

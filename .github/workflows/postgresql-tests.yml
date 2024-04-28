@@ -2,7 +2,7 @@ name: tests-postgresql
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
     types: [opened, reopened]
 
@@ -12,7 +12,7 @@ jobs:
     # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
     # Docker Hub image that `test` executes in
-#    container: node:10.18-jessie
+    #    container: node:10.18-jessie
 
     # Service containers to run with `test`
     services:
@@ -41,8 +41,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install PSQL client
         run: |
-            sudo apt-get update
-            sudo apt-get install --yes --no-install-recommends postgresql-client
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends postgresql-client
       - name: Run SQL scripts
         env:
           PGDATABASE: gis

@@ -1,1 +1,2 @@
 AIRFLOW_HOME=/opt/gugik2osm/airflow/
+PATH=/opt/gugik2osm/venv_airflow/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin

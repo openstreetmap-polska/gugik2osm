@@ -1,10 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # exit on error in any command
 set -e
-
-cd /opt/gugik2osm/git/
-git pull
 
 set -a
 source /opt/gugik2osm/conf/.env
