@@ -21,11 +21,11 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519 && chmod 600 ~/.ssh/id_ed25519
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          echo "${{ vars.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
           echo "Host remote
-            User ${{ secrets.SSH_USER }}
-            HostName ${{ secrets.SSH_HOST }}
-            Port ${{ secrets.SSH_PORT }}
+            User ${{ vars.SSH_USER }}
+            HostName ${{ vars.SSH_HOST }}
+            Port ${{ vars.SSH_PORT }}
             IdentityFile ~/.ssh/id_ed25519
           " > ~/.ssh/config
 
