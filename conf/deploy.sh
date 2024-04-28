@@ -2,7 +2,8 @@
 set -e
 
 cd /opt/gugik2osm/git
-git pull
+git fetch origin main
+git reset --hard "origin/main"
 
 cd /opt/gugik2osm
 source venv/bin/activate
