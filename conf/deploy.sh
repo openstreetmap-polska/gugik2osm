@@ -9,8 +9,8 @@ cd /opt/gugik2osm
 source venv/bin/activate
 pip3 install -r git/requirements.txt
 
-rsync --verbose --recursive --delete --exclude "__pycache__" git/app app
-rsync --verbose --recursive --delete --exclude "__pycache__" git/web web
+rsync --verbose --recursive --delete --exclude "__pycache__" git/app/ app/
+rsync --verbose --recursive --delete --exclude "__pycache__" git/web/ web/
 
 cp git/conf/*.sh conf
 cp git/conf/*.service conf
@@ -18,8 +18,8 @@ cp git/conf/*.service conf
 chmod 775 conf/*.sh
 chmod 775 git/processing/bash/*.sh
 
-rsync --verbose --recursive --delete --exclude "__pycache__" git/airflow/dags airflow/dags
-# rsync --verbose --recursive --delete --exclude "__pycache__" git/airflow/plugins airflow/plugins
+rsync --verbose --recursive --delete --exclude "__pycache__" git/airflow/dags/ airflow/dags/
+# rsync --verbose --recursive --delete --exclude "__pycache__" git/airflow/plugins/ airflow/plugins/
 
 cp git/imposm3/mapping.yaml imposm3
 cp git/imposm3/poland.geojson imposm3
