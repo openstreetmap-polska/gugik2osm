@@ -7,26 +7,26 @@
 10 4 * *  TUE postgres psql -d gugik2osm -c "vacuum analyze"
 
 # keep some db tables in ram by continuously requesting data from them
-*/1 5-15 * * * ttaras curl -s localhost/random/ > /dev/null
+*/1 5-15 * * * root curl -s localhost/random/ > /dev/null
 
 # import or update data
 ## minutely
 # moved to airflow
-#*/1 * * * * ttaras /opt/gugik2osm/git/processing/bash/data_update.sh
-*/1 * * * * ttaras /opt/gugik2osm/git/processing/bash/osm_changesets.sh
-*/1 * * * * ttaras curl -s -f localhost/updates/ -o "/var/www/cache/updates.geojson"
-*/1 * * * * ttaras curl -s -f localhost/processes/ -o "/var/www/cache/processes.json"
+#*/1 * * * * root /opt/gugik2osm/git/processing/bash/data_update.sh
+*/1 * * * * root /opt/gugik2osm/git/processing/bash/osm_changesets.sh
+*/1 * * * * root curl -s -f localhost/updates/ -o "/var/www/cache/updates.geojson"
+*/1 * * * * root curl -s -f localhost/processes/ -o "/var/www/cache/processes.json"
 ## hourly
 # moved to airflow
-# 33 */1 * * * ttaras /opt/gugik2osm/git/processing/bash/low_lvl_zoom_tiles_update.sh
+# 33 */1 * * * root /opt/gugik2osm/git/processing/bash/low_lvl_zoom_tiles_update.sh
 ## daily
-#0 1 * * MON-FRI ttaras /opt/gugik2osm/git/processing/bash/teryt_processing.sh
-0 0 */1 * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
+#0 1 * * MON-FRI root /opt/gugik2osm/git/processing/bash/teryt_processing.sh
+0 0 */1 * * root /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/overpass2geojson.py --input-dir /opt/gugik2osm/git/processing/overpass/ --output-dir /var/www/overpass-layers/
 ## weekly
-0 10 * * WED ttaras /opt/gugik2osm/git/processing/bash/bdot10k_dl.sh
-0 20 * * WED ttaras /opt/gugik2osm/git/processing/bash/bdot10k_bubd_a_parse.sh
-0 20 * * THU ttaras /opt/gugik2osm/git/processing/bash/bdot10k_bubd_a_export.sh
-0 21 * * FRI ttaras /opt/gugik2osm/git/processing/bash/prg_processing_v2.sh
+0 10 * * WED root /opt/gugik2osm/git/processing/bash/bdot10k_dl.sh
+0 20 * * WED root /opt/gugik2osm/git/processing/bash/bdot10k_bubd_a_parse.sh
+0 20 * * THU root /opt/gugik2osm/git/processing/bash/bdot10k_bubd_a_export.sh
+0 21 * * FRI root /opt/gugik2osm/git/processing/bash/prg_processing_v2.sh
 
 # export data
 0 20 * * * postgres /opt/gugik2osm/git/processing/bash/export_osm_stats.sh >> /opt/gugik2osm/log/exports.log 2>&1
@@ -43,11 +43,11 @@
 0 1 * * MON postgres /opt/gugik2osm/conf/export_db_backup.sh >> /opt/gugik2osm/log/exports.log 2>&1
 
 # clean old files
-#0 1 * * * ttaras truncate -s 20000000 /opt/gugik2osm/log/data_update.log
-#0 1 * * * ttaras truncate -s 20000000 /opt/gugik2osm/log/osm_changesets.log
-#0 0 * * * ttaras find /opt/gugik2osm/imposm3/imposm_diff/0* -mtime +7 -type f -exec rm {} \;
-#2 0 * * * ttaras find /opt/gugik2osm/imposm3/imposm_diff/0* -empty -type d -delete
-#4 0 * * * ttaras find /opt/gugik2osm/temp_changesets/**/*.osm.gz -mtime +1 -type f -exec rm {} \;
-#6 0 * * * ttaras find /opt/gugik2osm/temp_changesets/ -empty -type d -delete
+#0 1 * * * root truncate -s 20000000 /opt/gugik2osm/log/data_update.log
+#0 1 * * * root truncate -s 20000000 /opt/gugik2osm/log/osm_changesets.log
+#0 0 * * * root find /opt/gugik2osm/imposm3/imposm_diff/0* -mtime +7 -type f -exec rm {} \;
+#2 0 * * * root find /opt/gugik2osm/imposm3/imposm_diff/0* -empty -type d -delete
+#4 0 * * * root find /opt/gugik2osm/temp_changesets/**/*.osm.gz -mtime +1 -type f -exec rm {} \;
+#6 0 * * * root find /opt/gugik2osm/temp_changesets/ -empty -type d -delete
 0 3 * *  TUE root journalctl --vacuum-time=10d
-#0 1 * * * ttaras /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
+#0 1 * * * root /opt/gugik2osm/venv/bin/python3 /opt/gugik2osm/git/processing/scripts/expired_tiles.py --remove-old-folders --dir /opt/gugik2osm/imposm3/exptiles/
