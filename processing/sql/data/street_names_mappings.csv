@@ -394,7 +394,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0067487,42666,ks. Stanisława Gawlasa,Księdza Stanisława Gawlasa
 0067613,30144,ks. Gołby,Księdza Franciszka Gołby
 0067613,58837,ppor. Jana Folgi,Podporucznika Jana Folgi
-0068073,57703,Plac Kościelny im. barona F. Kalisza,Plac Kościelny Imienia Barona Fryderyka Kalisza
+0068073,57703,Plac Kościelny im. barona F. Kalisza,Plac Kościelny imienia Barona Fryderyka Kalisza
 0068297,30105,ks. Ludwika Kojzara,Księdza Ludwika Kojzara
 0071840,49670,ks. bp Albina Małysiaka,Księdza Biskupa Albina Małysiaka
 0072063,37982,ks. Bogdana Kolinka,Księdza Bogdana Kolinka
@@ -612,6 +612,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0133451,23867,ks. Wenikajtysa,Księdza Antoniego Wenikajtysa
 0133451,24454,Witosa,Wincentego Witosa
 0133451,24869,mjr. Wrzoska,Majora Jana Wrzoska
+0133907,01014,gen. Józefa Bema,Generała Józefa Bema
 0134545,09572,Kościuszki,Tadeusza Kościuszki
 0134628,13023,ks. Misia,Księdza Pawła Misia
 0134657,08725,Kochanowskiego,Jana Kochanowskiego
@@ -875,6 +876,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0165681,34897,ks. Stanisława Szarafińskiego,Księdza Stanisława Szarafińskiego
 0166120,02224,Brzechwy,Jana Brzechwy
 0166120,03767,Derdowskiego,Hieronima Derdowskiego
+0166120,16225,rtm. Witolda Pileckiego,Rotmistrza Witolda Pileckiego
 0166120,24903,Wybickiego,Józefa Wybickiego
 0166120,27461,ks. Piotra Dunajskiego,Księdza Piotra Dunajskiego
 0166120,38478,ks. Z. Jutrzenka Trzebiatowskiego,Księdza Zbigniewa Jutrzenka Trzebiatowskiego
@@ -1032,6 +1034,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0173367,38148,dh. J. Grzybka,Druha Józefa Grzybka
 0173746,51291,Św. Antoniego,Świętego Antoniego
 0173806,55086,Ks. Bernarda Sychty,Księdza Bernarda Sychty
+0173976,58463,Św. Michała Archanioła,Świętego Michała Archanioła
 0174125,20286,Słowackiego,Juliusza Słowackiego
 0174125,34463,ks. bp. Michała Łaszewskiego,Księdza Biskupa Michała Łaszewskiego
 0174190,56793,Ks. Franciszka Motylewskiego,Księdza Franciszka Motylewskiego
@@ -1767,7 +1770,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0316499,48913,Św. Jana Pawła II,Świętego Jana Pawła II
 0316499,50531,Św. Franciszka,Świętego Franciszka
 0316499,55464,Św. Izydora,Świętego Izydora
-0316714,46346,rondo im. Tadeusza Piekarza,Rondo Imienia Tadeusza Piekarza
+0316714,46346,rondo im. Tadeusza Piekarza,Rondo imienia Tadeusza Piekarza
 0320526,48221,Św. Rocha,Świętego Rocha
 0320555,00339,św. Anny,Świętej Anny
 0320673,18705,św. Rocha,Świętego Rocha
@@ -2044,6 +2047,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0416781,60791,AL. Bukowa,Aleja Bukowa
 0416864,02293,ks. Brzóski,Księdza Stanisława Brzóski
 0416960,28555,Obrońców z 1939 r.,Obrońców z 1939 roku
+0417065,06783,św. Huberta,Świętego Huberta
 0417071,06783,św. Huberta,Świętego Huberta
 0417148,02844,Chopina,Fryderyka Chopina
 0417310,02844,Chopina,Fryderyka Chopina
@@ -2463,6 +2467,8 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0522939,00145,św. Agnieszki,Świętej Agnieszki
 0523212,12885,św. Mikołaja,Świętego Mikołaja
 0523212,29830,3-go Maja,3 Maja
+0523459,34144,Wł. St. Reymonta,Władysława Stanisława Reymonta
+0523459,48377,Św. Huberta,Świętego Huberta
 0523502,31077,C. K. Norwida,Cypriana Kamila Norwida
 0523502,48221,Św. Rocha,Świętego Rocha
 0523502,50323,St. Żeromskiego,Stefana Żeromskiego
@@ -2674,7 +2680,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0585897,43303,prof. Jana Kozłowskiego,Profesora Jana Kozłowskiego
 0585957,55802,kpt. Antoniego Szyftera,Kapitana Antoniego Szyftera
 0586023,20286,Słowackiego,Juliusza Słowackiego
-0586069,01481,park im. Adolfa Bnińskiego,Park Imienia Adolfa Bnińskiego
+0586069,01481,park im. Adolfa Bnińskiego,Park imienia Adolfa Bnińskiego
 0586098,00351,św. Antoniego,Świętego Antoniego
 0586098,00729,św. Barbary,Świętej Barbary
 0586098,06783,św. Huberta,Świętego Huberta
@@ -2686,7 +2692,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0586098,22846,św. Tomasza,Świętego Tomasza
 0586098,58717,św. Łucji,Świętej Łucji
 0586098,60194,św. Tymoteusza,Świętego Tymoteusza
-0586106,12799,park im. Mielżyńskich,Park Imienia Mielżyńskich
+0586106,12799,park im. Mielżyńskich,Park imienia Mielżyńskich
 0586394,12021,św. Maksymiliana Kolbe,Świętego Maksymiliana Kolbe
 0586649,12885,św. Mikołaja,Świętego Mikołaja
 0586690,06783,św. Huberta,Świętego Huberta
@@ -2936,6 +2942,8 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0679144,12734,Mickiewicza,Adama Mickiewicza
 0679144,48913,Św. Jana Pawła II,Świętego Jana Pawła II
 0679167,53968,Al. Heleny i Ignacego Paderewskich,Aleja Heleny i Ignacego Paderewskich
+0679457,02294,ks. Stanisława Brzóski,Księdza Stanisława Brzóski
+0679457,61708,ks. Feliksa Rokity,Księdza Feliksa Rokity
 0680503,16332,ks. Grzegorza Piramowicza,Księdza Grzegorza Piramowicza
 0680503,28399,ks. Lucjana Antoniaka,Księdza Lucjana Antoniaka
 0680503,28401,por. Eugeniusza Goliszewskiego,Porucznika Eugeniusza Goliszewskiego
@@ -3777,6 +3785,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0918123,49711,gen. Milana Štefánika,Generała Milana Štefánika
 0918123,52322,gen. Klemensa Stanisława Rudnickiego,Generała Klemensa Stanisława Rudnickiego
 0918123,60352,J. R. Tolkiena,Johna Ronalda Tolkiena
+0918123,61867,J.R. Tolkiena,Johna Ronalda Tolkiena
 0920249,00467,Asnyka,Adama Asnyka
 0920249,08431,Kilińskiego,Jana Kilińskiego
 0920249,09182,Konopnickiej,Marii Konopnickiej
@@ -3811,7 +3820,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0920321,31819,11-go Listopada,11 Listopada
 0920321,39615,por. Jana Białka,Porucznika Jana Białka
 0920321,52906,Rtm. Witolda Pileckiego,Rotmistrza Witolda Pileckiego
-0920321,56307,plac Rynek im. Biskupa Stefana Wierzbowskiego,Rynek im. Biskupa Stefana Wierzbowskiego
+0920321,56307,plac Rynek im. Biskupa Stefana Wierzbowskiego,Rynek imienia Biskupa Stefana Wierzbowskiego
 0920380,27339,H. Sienkiewicza,Henryka Sienkiewicza
 0920380,27348,M. Konopnickiej,Marii Konopnickiej
 0920380,27349,J. I. Kraszewskiego,Józefa Ignacego Kraszewskiego
@@ -4207,6 +4216,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0922018,34495,ks. Walentego Jankowskiego,Księdza Walentego Jankowskiego
 0922018,52927,Generała W. Sikorskiego,Generała Władysława Sikorskiego
 0922018,52929,St. Brzóski,Stanisława Brzóski
+0922018,62045,S. Wyrzykowskiego-Zenona,"Stefana Wyrzykowskiego ""Zenona"""
 0922120,08431,Kilińskiego,Jana Kilińskiego
 0922120,09572,Kościuszki,Tadeusza Kościuszki
 0922120,13242,Moniuszki,Stanisława Moniuszki
@@ -4222,6 +4232,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0922254,15209,Orzeszkowej,Elizy Orzeszkowej
 0922254,24454,Witosa,Wincentego Witosa
 0922254,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
+0922254,44986,dr. Zygmunta Tomaszunasa,Doktora Zygmunta Tomaszunasa
 0922277,02844,Chopina,Fryderyka Chopina
 0922277,08499,gen. Franciszka Kleeberga,Generała Franciszka Kleeberga
 0922277,13242,Moniuszki,Stanisława Moniuszki
@@ -4608,7 +4619,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0928363,51327,ks. Józefa Kutermaka,Księdza Józefa Kutermaka
 0928363,52634,ks. prałata Romualda Biniaka,Księdza Prałata Romualda Biniaka
 0928363,52635,Ks. Stanisława Konarskiego,Księdza Stanisława Konarskiego
-0928363,52674,park Ludowy im. Wincentego Witosa,Park Ludowy Imienia Wincentego Witosa
+0928363,52674,park Ludowy im. Wincentego Witosa,Park Ludowy imienia Wincentego Witosa
 0928363,53229,mjr. Jana Henryka Żychonia,Majora Jana Henryka Żychonia
 0928363,53236,ppor. Danuty Siedzikówny Inki,Podporucznik Danuty Siedzikówny Inki
 0928363,53237,gen. Tadeusza Jordana-Rozwadowskiego,Generała Tadeusza Jordana-Rozwadowskiego
@@ -5024,6 +5035,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0930851,38429,St. Augusta Poniatowskiego,Stanisława Augusta Poniatowskiego
 0930851,38806,B. Chrobrego,Bolesława Chrobrego
 0930851,39284,Biskupa L. Wetmańskiego,Biskupa Leona Wetmańskiego
+0930851,45934,ks. Stanisława Malinowskiego,Księdza Stanisława Malinowskiego
 0930868,00285,gen. Władysława Andersa,Generała Władysława Andersa
 0930868,00303,św. Andrzeja,Świętego Andrzeja
 0930868,00339,św. Anny,Świętej Anny
@@ -5184,6 +5196,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0931678,09345,ks. Augustyna Kordeckiego,Augustyna Kordeckiego
 0931678,11862,gen. Stanisława Maczka,Generała Stanisława Maczka
 0931678,20100,ks. Ignacego Skorupki,Ignacego Skorupki
+0931678,22290,ks. Piotra Ściegiennego,Księdza Piotra Ściegiennego
 0931678,25107,kard. Stefana Wyszyńskiego,Kardynała Stefana Wyszyńskiego
 0931678,26525,Hetmana Żółkiewskiego,Hetmana Stanisława Żółkiewskiego
 0931678,31012,gen. Rómmla,Generała Juliusza Rómmla
@@ -5511,6 +5524,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0933016,59067,Plac ks. Prałata Jana Gustkowicza,Plac Księdza Prałata Jana Gustkowicza
 0933016,59073,Plac św. Jana Apostoła,Plac Świętego Jana Apostoła
 0933016,59098,kpt. ż.w. Witolda Poinca,Kapitana Zeglugi Wielkiej Witolda Poinca
+0933016,61722,kpt. Józefa Dambka,Kapitana Józefa Dambka
 0934100,00351,św. Antoniego,Świętego Antoniego
 0934100,01620,Boh. Starówki Warszawskiej,Bohaterów Starówki Warszawskiej
 0934100,03390,kadm. X. Czernickiego,Kontradmirała Xawerego Czernickiego
@@ -6230,7 +6244,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0937280,35079,Wł. Reymonta,Władysława Reymonta
 0937280,35080,L. Solskiego,Ludwika Solskiego
 0937280,35082,H. Wieniawskiego,Henryka Wieniawskiego
-0937280,36994,Plac Wolności im.Jana Pawła II,Plac Wolności Imienia Jana Pawła II
+0937280,36994,Plac Wolności im.Jana Pawła II,Plac Wolności imienia Jana Pawła II
 0937280,52436,św.Brata Alberta,ŚwiętegoBrata Alberta
 0937280,57876,Plac Wolności im. Jana Pawła II,Plac Wolności imienia Jana Pawła II
 0937333,02996,osiedle A. B. Ciechańskiego,Osiedle Adama Bronisława Ciechańskiego
@@ -6895,7 +6909,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0942765,53226,ks. Henryka Jośki,Księdza Henryka Jośki
 0942765,53567,prof. Tomasza Strzembosza,Profesora Tomasza Strzembosza
 0942765,55016,plac Rodziny Machoczków,Plac Rodziny Machoczków
-0942765,57229,plac Teatralny im. Kazimierza Kutza,Plac Teatralny Imienia Kazimierza Kutza
+0942765,57229,plac Teatralny im. Kazimierza Kutza,Plac Teatralny imienia Kazimierza Kutza
 0943121,01014,gen. Józefa Bema,Generała Józefa Bema
 0943121,06996,św. Jacka,Świętego Jacka
 0943121,09346,o. Augustyna Kordeckiego,Ojca Augustyna Kordeckiego
@@ -7685,6 +7699,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0951876,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
 0951876,31818,Józefa I. Kraszewskiego,Józefa Ignacego Kraszewskiego
 0951876,35668,gen. Fieldorfa Nila,"Generała Augusta Emila Fieldorfa ""Nila"""
+0951876,40283,gen. Emila Fieldorfa Nila,"Generała Emila Fieldorfa ""Nila"""
 0951876,40782,o. Adama F. Studzińskiego,Ojca Adama Franciszka Studzińskiego
 0951876,41480,ks. Walentego Troski,Księdza Walentego Troski
 0951876,45192,płk. Andrzeja Hałacińskiego,Pułkownika Andrzeja Hałacińskiego
@@ -7745,7 +7760,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0953059,11170,płk. Leopolda Lisa-Kuli,Pułkownika Leopolda Lisa-Kuli
 0953059,15915,bp. Józefa Sebastiana Pelczara,Biskupa Józefa Sebastiana Pelczara
 0953059,20010,ks. Piotra Skargi,Księdza Piotra Skargi
-0953059,21033,rynek im. Bartłomieja Stary Rynek,Rynek Imienia Bartłomieja Stary Rynek
+0953059,21033,rynek im. Bartłomieja Stary Rynek,Rynek imienia Bartłomieja Stary Rynek
 0953059,29783,św. Jana z Dukli,Świętego Jana z Dukli
 0953059,32839,ks. Józefa Tischnera,Księdza Józefa Tischnera
 0953059,33390,ks. Stanisława Bełcha,Księdza Stanisława Bełcha
@@ -7756,7 +7771,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0953059,48128,płk. Józefa Modrzejewskiego,Pułkownika Józefa Modrzejewskiego
 0953059,48209,s. Hiacynty Joanny Luli,Siostry Hiacynty Joanny Luli
 0953059,48993,ks. Alfreda Solarskiego,Księdza Alfreda Solarskiego
-0953059,58876,Rynek Stary Rynek im. Bartłomieja z Jasła,Stary Rynek Imienia Bartłomieja z Jasła
+0953059,58876,Rynek Stary Rynek im. Bartłomieja z Jasła,Stary Rynek imienia Bartłomieja z Jasła
 0953237,34413,St. i Wł. Janochów,Stanisława i Władysława Janochów
 0953237,49608,Kpt. Stanisława Betleja,Kapitana Stanisława Betleja
 0953237,49609,Dr Michała Drozdowicza,Doktora Michała Doktoraozdowicza
@@ -7910,6 +7925,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0954225,09345,ks. Augustyna Kordeckiego,Księdza Augustyna Kordeckiego
 0954225,10495,gen. Józefa Kustronia,Generała Józefa Kustronia
 0954225,12021,św. Maksymiliana Kolbe,Świętego Maksymiliana Kolbe
+0954225,12809,gen. Ludwika Mierosławskiego,Generała Ludwika Mierosławskiego
 0954225,19907,gen. Władysława Sikorskiego,Generała Władysława Sikorskiego
 0954225,20100,ks. Ignacego Skorupki,Księdza Ignacego Skorupki
 0954225,21068,ks. Stanisława Staszica,Księdza Stanisława Staszica
@@ -8461,7 +8477,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0960390,06380,ks. Władysława Gurgacza,Księdza Władysława Gurgacza
 0960390,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
 0960390,22469,prof. Henryka Świdzińskiego,Profesora Henryka Świdzińskiego
-0960390,40530,Park Sportowy im. dra Juliana Zawadowskiego,Park Sportowy Imienia Doktora Juliana Zawadowskiego
+0960390,40530,Park Sportowy im. dra Juliana Zawadowskiego,Park Sportowy imienia Doktora Juliana Zawadowskiego
 0960390,48852,św. Włodzimierza,Świętego Włodzimierza
 0960390,52106,aleja inż. Nowotarskiego,Aleja Inżyniera Leona Nowotarskiego
 0960510,07599,ks. płk. Józefa Jońca,Księdza Pułkownika Józefa Jońca
@@ -9075,6 +9091,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0966079,52189,gen. Stefana Roweckiego-Grota,Generała Stefana Roweckiego-Grota
 0966079,61550,kpt. Józefa Kozłowskiego Lasa,Kapitana Józefa Kozłowskiego Lasa
 0966079,61551,dr. Jerzego Olszewskiego,Doktora Jerzego Olszewskiego
+0966079,61615,1. Dywizji Pancernej,1 Dywizji Pancernej
 0966270,01016,dr. Wacława Bendowskiego,Doktora Wacława Bendowskiego
 0966270,08027,por. Mieczysława Karczewskiego,Porucznika Mieczysława Karczewskiego
 0966300,08431,Kilińskiego,Jana Kilińskiego
@@ -9380,6 +9397,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0967943,11759,św. Łukasza,Świętego Łukasza
 0967943,12351,św. Marii Magdaleny,Świętej Marii Magdaleny
 0967943,12358,św. Marka,Świętego Marka
+0967943,15858,św. Pawła,Świętego Pawła
 0967943,16303,św. Piotra,Świętego Piotra
 0967943,17146,ks. Popiełuszki,Księdza Jerzego Popiełuszki
 0967943,20827,św. Stanisława,Świętego Stanisława
@@ -9871,7 +9889,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0972192,45847,aleja im. Pułkownika Wojciecha Szczepańskiego,Aleja Pułkownika Wojciecha Szczepańskiego
 0972192,45848,osiedle im. Wincentego Witosa,Osiedle Wincentego Witosa
 0972192,45852,osiedle im. Armii Krajowej,Osiedle Armii Krajowej
-0972192,45861,osiedle im. Generała Kazimierza Pułaskiego,Osiedle Imienia Generała Kazimierza Pułaskiego
+0972192,45861,osiedle im. Generała Kazimierza Pułaskiego,Osiedle imienia Generała Kazimierza Pułaskiego
 0972192,45868,osiedle im. Wojska Polskiego,Osiedle Wojska Polskiego
 0972192,48208,Gen. Józefa Bema,Generała Józefa Bema
 0972192,49099,Gen. Jana Skrzyneckiego,Generała Jana Skrzyneckiego
@@ -10295,7 +10313,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0975380,46615,św. Jana Pawła II,Świętego Jana Pawła II
 0975434,00282,gen. Andersa,Generała Władysława Andersa
 0975434,02844,Chopina,Fryderyka Chopina
-0975434,04422,rynek Duży im. J. Piłsudskiego,Rynek Duży Imienia Józefa Piłsudskiego
+0975434,04422,rynek Duży im. J. Piłsudskiego,Rynek Duży imienia Józefa Piłsudskiego
 0975434,06480,gen. Hallera,Generała Józefa Hallera
 0975434,07040,Jagiełły,Władysława Jagiełły
 0975434,08431,Kilińskiego,Jana Kilińskiego
@@ -10434,6 +10452,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0976675,38118,prof. dr. Tadeusza Kobusiewicza,Profesora Doktora Tadeusza Kobusiewicza
 0976675,38718,ks. Jana Twardowskiego,Księdza Jana Twardowskiego
 0976675,56343,św. Alojzego Orione,Świętego Alojzego Orione
+0976675,61577,ks. płk. Józefa Balcerczyka,Księdza Pułkownika Józefa Balcerczyka
 0976830,60444,Plac im. Andrzeja Ruszkowskiego,Plac imienia Andrzeja Ruszkowskiego
 0976942,02882,prof. Emila Chroboczka,Profesora Emila Chroboczka
 0976942,05082,plac św. Floriana,Plac Świętego Floriana
@@ -10520,6 +10539,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0977120,52910,Mjr. Władysława Starzyka,Majora Władysława Starzyka
 0977120,52911,Gen. Jana Tomickiego,Generała Jana Tomickiego
 0977120,55799,mjr Feliksa Kozubowskiego,Majora Feliksa Kozubowskiego
+0977120,60659,Pasaż im. Wacława Duplickiego,Pasaż imienia Wacława Duplickiego
 0977210,22961,Traugutta,Romualda Traugutta
 0977210,42241,aleja Aleje Partyzantów,Aleje Partyzantów
 0977210,48104,Gen. Józefa Hallera,Generała Józefa Hallera
@@ -11429,12 +11449,12 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0984752,14659,Obrońców Wisły 1920 r.,Obrońców Wisły 1920 roku
 0984752,16256,bulwar im. marsz. Józefa Piłsudskiego,Bulwar Marszałka Józefa Piłsudskiego
 0984752,17147,aleja ks. Jerzego Popiełuszki,Aleja Księdza Jerzego Popiełuszki
-0984752,19835,park im. Henryka Sienkiewicza,Park Imienia Henryka Sienkiewicza
+0984752,19835,park im. Henryka Sienkiewicza,Park imienia Henryka Sienkiewicza
 0984752,20101,ks. Ignacego Jana Skorupki,Księdza Ignacego Jana Skorupki
 0984752,21499,mjr. Henryka Sucharskiego,Majora Henryka Sucharskiego
 0984752,37284,Aleja ks. Jerzego Popiełuszki,Aleja Księdza Jerzego Popiełuszki
 0984752,51291,Św. Antoniego,Świętego Antoniego
-0984752,58214,Bulwary im. Marszałka Józefa Piłsudskiego,Bulwary Imienia Marszałka Józefa Piłsudskiego
+0984752,58214,Bulwary im. Marszałka Józefa Piłsudskiego,Bulwary imienia Marszałka Józefa Piłsudskiego
 0985384,19907,gen. Władysława Sikorskiego,Generała Władysława Sikorskiego
 0985384,41275,inż. Witolda Marczewskiego,Inżyniera Witolda Marczewskiego
 0985384,48849,ks. Franciszka Szczygłowskiego,Księdza Franciszka Szczygłowskiego
