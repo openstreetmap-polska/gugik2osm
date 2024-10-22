@@ -392,6 +392,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0065726,12284,św. Marcina,Świętego Marcina
 0067205,35513,św. Ojca Pio,Świętego Ojca Pio
 0067487,42666,ks. Stanisława Gawlasa,Księdza Stanisława Gawlasa
+0067487,62201,Ks. Stanisława Gawlasa,Księdza Stanisława Gawlasa
 0067613,30144,ks. Gołby,Księdza Franciszka Gołby
 0067613,58837,ppor. Jana Folgi,Podporucznika Jana Folgi
 0068073,57703,Plac Kościelny im. barona F. Kalisza,Plac Kościelny imienia Barona Fryderyka Kalisza
@@ -554,6 +555,10 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0115039,20354,gen. Smoleńskiego,Generała Józefa Smoleńskiego
 0115039,26068,gen. Zielińskiego,Generała Karola Zielińskiego
 0115039,34244,W. Witosa,Wincentego Witosa
+0115039,62128,Ks. St. Pilitowskiego,Księdza Stanisława Pilitowskiego
+0115039,62129,Gen. Zielińskiego,Generała Karola Zielińskiego
+0115039,62130,Gen. Smoleńskiego,Generała Józefa Smoleńskiego
+0115039,62131,Ks. Michalaka,Księdza Kazimierza Michalaka
 0115499,09182,Konopnickiej,Marii Konopnickiej
 0115499,19830,Sienkiewicza,Henryka Sienkiewicza
 0115499,26464,Żeromskiego,Stefana Żeromskiego
@@ -794,6 +799,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0160235,12734,Mickiewicza,Adama Mickiewicza
 0160235,18645,Reymonta,Władysława Reymonta
 0160235,34892,Fr. Kowalewskiego,Franciszka Kowalewskiego
+0160531,59793,Św. Haliny,Świętej Haliny
 0160614,09276,Kopernika,Mikołaja Kopernika
 0160614,09572,Kościuszki,Tadeusza Kościuszki
 0160614,24903,Wybickiego,Józefa Wybickiego
@@ -1274,6 +1280,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0209757,59233,Plac ks. Augustyna Kordeckiego,Plac Księdza Augustyna Kordeckiego
 0210252,33774,ks. St. Stoińskiego,Księdza Stanisława Stoińskiego
 0210401,31316,ks. Białka,Księdza Stanisława Białka
+0210602,18705,św. Rocha,Świętego Rocha
 0210973,02844,Chopina,Fryderyka Chopina
 0211808,07626,św. Józefa,Świętego Józefa
 0211808,29830,3-go Maja,3 Maja
@@ -1668,6 +1675,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0284003,18645,Reymonta,Władysława Reymonta
 0284753,12734,Mickiewicza,Adama Mickiewicza
 0284753,31933,plac ks. abp. Bronisława Dąbrowskiego,Plac Księdza Arcybiskupa Bronisława Dąbrowskiego
+0284753,62206,Plac Ks. Abp Bronisława Dąbrowskiego,Plac Księdza Arcybiskupa Bronisława Dąbrowskiego
 0285178,20909,ks. Szczęsnego Starkiewicza,Księdza Szczęsnego Starkiewicza
 0285860,08431,Kilińskiego,Jana Kilińskiego
 0285860,09182,Konopnickiej,Marii Konopnickiej
@@ -1771,6 +1779,24 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0316499,50531,Św. Franciszka,Świętego Franciszka
 0316499,55464,Św. Izydora,Świętego Izydora
 0316714,46346,rondo im. Tadeusza Piekarza,Rondo imienia Tadeusza Piekarza
+0317889,31078,J. Słowackiego,Juliusza Słowackiego
+0317889,32579,A. Mickiewicza,Adama Mickiewicza 
+0317889,33285,S. Staszica,Stanisława Staszica
+0317889,33468,gen. J. Bema,Generała Józefa Bema
+0317889,33619,A. Asnyka,Adama Asnyka
+0317889,33621,J. Kasprowicza,Jana Kasprowicza
+0317889,33625,S. Wyspiańskiego,Stanisława Wyspiańskiego
+0317889,33734,J. Matejki,Jana Matejki
+0317889,34244,W. Witosa,Wincentego Witosa
+0317889,37861,J. Chełmońskiego,Józefa Chełmońskiego
+0317889,37876,J. Fałata,Juliana Fałata
+0317889,52404,B. Głowackiego,Bartosza Głowackiego
+0317889,61974,E. Dembowskiego,Edwarda Dembowskiego
+0317889,61978,gen. K. Pułaskiego,Generała Kazimierza Pułaskiego
+0317889,61981,W. Pola,Wincentego Pola
+0317889,61983,M. Grażyńskiego,Michała Grażyńskiego
+0317889,61986,B. Krzywoustego,Bolesława Krzywoustego
+0317889,61987,W. Warneńczyka,Władysława Warneńczyka
 0320526,48221,Św. Rocha,Świętego Rocha
 0320555,00339,św. Anny,Świętej Anny
 0320673,18705,św. Rocha,Świętego Rocha
@@ -1779,6 +1805,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0322092,29695,św. Królowej Jadwigi,Świętej Królowej Jadwigi
 0322169,32936,św. Faustyny,Świętej Faustyny
 0322347,29695,św. Królowej Jadwigi,Świętej Królowej Jadwigi
+0322488,59953,św. Otylii,Świętej Otylii
 0322583,50942,kard. Adama Sapiehy,Kardynała Adama Sapiehy
 0322695,59953,św. Otylii,Świętej Otylii
 0322749,07113,św. Jana,Świętego Jana
@@ -1838,10 +1865,13 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0329705,09572,Kościuszki,Tadeusza Kościuszki
 0329705,19830,Sienkiewicza,Henryka Sienkiewicza
 0334617,54276,ks. Piotra Bugaja,Księdza Piotra Bugaja
+0335090,06485,gen. Józefa Hallera,Generała Józefa Hallera
+0335090,62069,prof. Marii Dzielskiej,Profesor Marii Dzielskiej
 0335166,05083,św. Floriana,Świętego Floriana
 0335166,12885,św. Mikołaja,Świętego Mikołaja
 0335166,31614,św. Stanisława Biskupa,Świętego Stanisława Biskupa
 0335628,46615,św. Jana Pawła II,Świętego Jana Pawła II
+0336674,18266,prof. Mariana Raciborskiego,Profesora Mariana Raciborskiego
 0337231,49246,ks. bpa Miłosława Kołodziejczyka,Księdza Biskupa Miłosława Kołodziejczyka
 0337774,20827,św. Stanisława,Świętego Stanisława
 0337774,29300,ks. Stanisława Koniecznego,Księdza Stanisława Koniecznego
@@ -2003,6 +2033,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0413050,18916,gen. Stefana Roweckiego Grota,Generała Stefana Roweckiego Grota
 0413096,27889,ks. Kanonika Bronisława Ciesielskiego,Księdza Kanonika Bronisława Ciesielskiego
 0413110,19907,gen. Władysława Sikorskiego,Generała Władysława Sikorskiego
+0413140,62165,Al. Róż,Aleja Róż
 0414530,02294,ks. Stanisława Brzóski,Księdza Stanisława Brzóski
 0414530,02844,Chopina,Fryderyka Chopina
 0414530,02886,Chrobrego,Bolesława Chrobrego
@@ -2418,6 +2449,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0514408,33686,M. C. Skłodowskiej,Marii Skłodowskiej-Curie
 0514928,05149,św. Franciszka,Świętego Franciszka
 0514928,48208,Gen. Józefa Bema,Generała Józefa Bema
+0514928,50531,Św. Franciszka,Świętego Franciszka
 0514928,56012,plac Pl. Konstantego Rynarzewskiego,Plac Konstantego Rynarzewskiego
 0514928,56013,Dr. Stanisława Pawłowskiego,Doktora Stanisława Pawłowskiego
 0515738,01485,św. Andrzeja Boboli,Świętego Andrzeja Boboli
@@ -2690,6 +2722,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0586098,12697,św. Michała,Świętego Michała
 0586098,16303,św. Piotra,Świętego Piotra
 0586098,22846,św. Tomasza,Świętego Tomasza
+0586098,36222,św. Macieja,Świętego Macieja
 0586098,58717,św. Łucji,Świętej Łucji
 0586098,60194,św. Tymoteusza,Świętego Tymoteusza
 0586106,12799,park im. Mielżyńskich,Park imienia Mielżyńskich
@@ -2965,6 +2998,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0683743,19830,Sienkiewicza,Henryka Sienkiewicza
 0683743,26464,Żeromskiego,Stefana Żeromskiego
 0683884,29073,Kol. Gocław,Kolonia Gocław
+0684004,57409,Św. Andrzeja Boboli,Świętego Andrzeja Boboli
 0684286,31700,M. Kopernika,Mikołaja Kopernika
 0684369,37314,ks. Wł. Skonieckiego,Księdza Włodzimierza Skonieckiego
 0684582,09572,Kościuszki,Tadeusza Kościuszki
@@ -3287,6 +3321,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0805040,12734,Mickiewicza,Adama Mickiewicza
 0805910,35204,inż. Jana Chołocińskiego,Inżyniera Jana Chołocińskiego
 0807412,09614,plac ks. Romana Kotlarza,Plac Księdza Romana Kotlarza
+0807412,62216,Plac ks. Romana Kotlarza,Plac Księdza Romana Kotlarza
 0807932,53401,Plac im. 100-lecia Odzyskania Niepodległości,Plac 100-lecia Odzyskania Niepodległości
 0808914,48913,Św. Jana Pawła II,Świętego Jana Pawła II
 0808937,24581,św. Wojciecha,Świętego Wojciecha
@@ -3493,6 +3528,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0852022,31924,św. Piotra i Pawła,Świętych Piotra i Pawła
 0852163,09572,Kościuszki,Tadeusza Kościuszki
 0852631,27093,ks. Tadeusza Rojka,Księdza Tadeusza Rojka
+0852631,62163,Ks. Tadeusza Rojka,Księdza Tadeusza Rojka
 0852803,55189,ks. Jana Kani,Księdza Jana Kani
 0855109,09182,Konopnickiej,Marii Konopnickiej
 0855109,09572,Kościuszki,Tadeusza Kościuszki
@@ -3543,6 +3579,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0873739,01014,gen. Józefa Bema,Generała Józefa Bema
 0873739,23703,Waryńskiego,Ludwika Waryńskiego
 0873751,45183,św. Judy Tadeusza,Świętego Judy Tadeusza
+0874302,35521,W. A. Mozarta,Wolfganga Amadeusza Mozarta
 0874710,22484,gen. Świerczewskiego,Generała Karola Świerczewskiego
 0874816,09572,Kościuszki,Tadeusza Kościuszki
 0875187,05083,św. Floriana,Świętego Floriana
@@ -3616,6 +3653,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0897421,28169,B. Prusa,Bolesława Prusa
 0901140,35450,ks. Boguty,Księdza Tadeusza Boguty
 0901849,00339,św. Anny,Świętej Anny
+0901849,48374,Św. Anny,Świętej Anny
 0902330,12734,Mickiewicza,Adama Mickiewicza
 0902493,02047,św. Brata Alberta,Świętego Brata Alberta
 0902493,20098,ks. Skorupki,Księdza Ignacego Jana Skorupki
@@ -4054,6 +4092,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0921237,52635,Ks. Stanisława Konarskiego,Księdza Stanisława Konarskiego
 0921237,52905,prof. Stefana Kazimierza Malawskiego,Profesora Stefana Kazimierza Malawskiego
 0921237,60856,Dr. Józefa Geislera,Doktora Józefa Geislera
+0921237,61764,prof. Stefana Malawskiego,Profesora Stefana Malawskiego
 0921415,03673,gen. Henryka Dąbrowskiego,Generała Henryka Dąbrowskiego
 0921415,18095,gen. Kazimierza Pułaskiego,Generała Kazimierza Pułaskiego
 0921415,28169,B. Prusa,Bolesława Prusa
@@ -4119,6 +4158,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0921591,56043,Św. Augustyna,Świętego Augustyna
 0921645,00729,św. Barbary,Świętej Barbary
 0921645,06784,gen. Stefana Hubickiego,Generała Stefana Hubickiego
+0921645,17149,ks. Jerzego Popiełuszki,Księdza Jerzego Popiełuszki
 0921645,20010,ks. Piotra Skargi,Księdza Piotra Skargi
 0921645,24581,św. Wojciecha,Świętego Wojciecha
 0921645,29830,3-go Maja,3 Maja
@@ -4291,6 +4331,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0922410,54654,Ks. Aleksandra Tomkowida,Księdza Aleksandra Tomkowida
 0922410,54656,Ks. Arcybiskupa Edwarda Kisiela,Księdza Arcybiskupa Edwarda Kisiela
 0922410,56570,prof. Andrzeja Kalicińskiego,Profesora Andrzeja Kalicińskiego
+0922410,56776,płk. Czesława Hake,Pułkownika Czesława Hake
 0922685,16225,rtm. Witolda Pileckiego,Rotmistrza Witolda Pileckiego
 0922685,38143,bł. ks. Antoniego Beszty-Borowskiego,Błogosławionego Księdza Antoniego Beszty-Borowskiego
 0922745,22290,ks. Piotra Ściegiennego,Księdza Piotra Ściegiennego
@@ -4825,6 +4866,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0929664,59338,Ks. Stanisława Krausego,Księdza Stanisława Krausego
 0929664,59339,Ks. Bernarda Sychta,Księdza Bernarda Sychta
 0929664,59340,Św. Wincentego,Świętego Wincentego
+0929664,60308,Ks. Kazimierza Grajewskiego,Księdza Kazimierza Grajewskiego
 0929701,03673,gen. Henryka Dąbrowskiego,Generała Henryka Dąbrowskiego
 0929701,04346,św. Ducha,Świętego Ducha
 0929701,07113,św. Jana,Świętego Jana
@@ -6075,6 +6117,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0936776,49943,Mjr Zbigniewa Gorzeńskiego,Majora Zbigniewa Gorzeńskiego
 0936776,49944,Kpt. Bronisława Kirchnera,Kapitana Bronisława Kirchnera
 0936776,49945,Dr Jordana,Doktora Henryka Jordana
+0936776,55280,ks. Ignacego Niedźwiedzińskiego,Księdza Ignacego Niedźwiedzińskiego
 0936871,00285,gen. Władysława Andersa,Generała Władysława Andersa
 0936871,02120,Broniewskiego,Władysława Broniewskiego
 0936871,02844,Chopina,Fryderyka Chopina
@@ -8026,6 +8069,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0954604,45730,płk. Łukasza Cieplińskiego,Pułkownika Łukasza Cieplińskiego
 0954604,46824,Mjr Mieczysława Słabego,Majora Mieczysława Słabego
 0954604,49121,Wały Księcia J. Poniatowskiego,Wały Księcia Józefa Poniatowskiego
+0954604,61181,prof. dr hab. Jana Mariana Hasika,Profesora Doktora Habilitowanego Jana Mariana Hasika
 0954633,20286,Słowackiego,Juliusza Słowackiego
 0954640,03635,Daszyńskiego,Ignacego Daszyńskiego
 0954640,19830,Sienkiewicza,Henryka Sienkiewicza
@@ -8767,6 +8811,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0965252,15209,Orzeszkowej,Elizy Orzeszkowej
 0965252,18645,Reymonta,Władysława Reymonta
 0965252,19901,gen. Sikorskiego,Generała Władysława Sikorskiego
+0965252,19907,gen. Władysława Sikorskiego,Generała Władysława Sikorskiego
 0965252,20064,Skłodowskiej,Marii Skłodowskiej-Curie
 0965252,20286,Słowackiego,Juliusza Słowackiego
 0965252,22770,Tetmajera,Kazimierza Tetmajera
@@ -10232,6 +10277,7 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0974966,45723,ks. Mieczysława Wajdy,Księdza Mieczysława Wajdy
 0974966,45724,ks. Michała Gądka,Księdza Michała Gądka
 0974966,45726,o. Damiana Stachowicza,Ojca Damiana Stachowicza
+0974966,45727,ks. Franciszka Stankiewicza,Księdza Franciszka Stankiewicza
 0974966,45729,ks. Józefa Cieślika,Księdza Józefa Cieślika
 0974966,45730,płk. Łukasza Cieplińskiego,Pułkownika Łukasza Cieplińskiego
 0974966,45731,ks. Leona Stokowskiego,Księdza Leona Stokowskiego
@@ -10922,9 +10968,13 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0980085,33301,por. Sarny,Porucznika Józefa Sarny
 0980085,33468,gen. J. Bema,Generała Józefa Bema
 0980085,38142,dr Olgi Lilien,Doktor Olgi Lilien
+0980085,48119,Św. Barbary,Świętej Barbary
 0980085,49961,Kś. Tadeusza Chrobaka,Księdza Tadeusza Chrobaka
 0980085,49963,M.C.Skłodowskiej,Marii Skłodowskiej-Curie
 0980085,52042,Dr Michała Marczaka,Doktora Michała Marczaka
+0980085,52365,Św. Józefa,Świętego Józefa
+0980085,55313,Św. Kingi,Świętej Kingi
+0980085,62170,Św. Onufrego,Świętego Onufrego
 0980352,08431,Kilińskiego,Jana Kilińskiego
 0980352,09572,Kościuszki,Tadeusza Kościuszki
 0980352,09828,bp. Ignacego Krasickiego,Biskupa Ignacego Krasickiego
@@ -11790,6 +11840,8 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0988075,15209,Orzeszkowej,Elizy Orzeszkowej
 0988075,18562,Reja,Mikołaja Reja
 0988075,19166,dr. Józefa Rybickiego,Doktora Józefa Rybickiego
+0988075,19907,gen. Władysława Sikorskiego,Generała Władysława Sikorskiego
+0988075,20010,ks. Piotra Skargi,Księdza Piotra Skargi
 0988075,20100,ks. Ignacego Skorupki,Księdza Ignacego Skorupki
 0988075,20286,Słowackiego,Juliusza Słowackiego
 0988075,20797,Staffa,Leopolda Staffa
@@ -11800,17 +11852,23 @@ teryt_simc_code,teryt_ulic_code,teryt_street_name,osm_street_name
 0988075,25081,Wyspiańskiego,Stanisława Wyspiańskiego
 0988075,27399,gen. Grota Roweckiego,Generała Stefana Grota Roweckiego
 0988075,31700,M. Kopernika,Mikołaja Kopernika
+0988075,32580,J. Poniatowskiego,Józefa Poniatowskiego
 0988075,33686,M. C. Skłodowskiej,Marii Skłodowskiej-Curie
 0988075,34069,E. Plater,Emilii Plater
 0988075,34991,St. Moniuszki,Stanisława Moniuszki
 0988075,35414,J. III Sobieskiego,Jana III Sobieskiego
+0988075,39723,St. Staszica,Stanisława Staszica
 0988075,48702,Ks. Kardynała Stefana Wyszyńskiego,Księdza Kardynała Stefana Wyszyńskiego
+0988075,49652,Ks. Ściegiennego,Księdza Piotra Ściegiennego
 0988075,59445,Al. Grunwaldzkie,Aleje Grunwaldzkie
 0988075,59449,Króla Wł. Łokietka,Króla Władysława Łokietka
 0988075,59450,Króla Wł. Jagiełły,Króla Władysława Jagiełły
 0988075,59453,mjra Franciszka Bartłomowicza Grzmota,Majora Franciszka Bartłomowicza Grzmota
 0988075,59490,K. Walenroda,Konrada Wallenroda
 0988075,59954,K. Wallenroda,Konrada Wallenroda
+0988075,62179,dr. Janusza Petera,Doktora Janusza Petera
+0988075,62180,Al. Sportowa,Aleja Sportowa
+0988075,62181,gen. T. Piskora,Generała Tadeusza Piskora
 0988253,20286,Słowackiego,Juliusza Słowackiego
 0988253,21065,Staszica,Stanisława Staszica
 0988253,51561,mjr T. Kuncewicza,Majora Tadeusza Kuncewicza
