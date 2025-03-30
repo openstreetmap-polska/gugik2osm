@@ -43,7 +43,7 @@ def prepare_url_and_filepath(teryt_code: str) -> Tuple[str, str]:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--output_dir', help='File path to the directory where files are to be placed.', nargs=1)
+    parser.add_argument('--output_dir', help='File path to the directory where files are to be placed.', nargs=1, required=True)
     parser.add_argument('--only', help='Download only this county\'s file. (provide 4 digit TERYT code)', nargs='?')
     parser.add_argument('--dsn', help='Connection string for PostgreSQL database with data about counties loaded by teryt_dl script.', nargs='?')
     parser.add_argument('--dotenv', help='Path to .env file with credentials for PostgreSQL DB.', nargs='?')

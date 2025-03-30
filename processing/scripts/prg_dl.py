@@ -23,7 +23,7 @@ def download_file(url: str, file_path: str):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--output_dir', help='File path to the directory where files are to be placed.', nargs=1)
+    parser.add_argument('--output_dir', help='File path to the directory where files are to be placed.', nargs=1, required=True)
     parser.add_argument('--only', help='Download only this voivodeship\'s file. (provide 2 digit TERYT code)', nargs='?')
     args = vars(parser.parse_args())
 
