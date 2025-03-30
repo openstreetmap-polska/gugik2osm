@@ -610,11 +610,20 @@ if __name__ == '__main__':
     if args['writer'][0] == 'stdout':
         StdOutWriter(args['input'][0]).run(limit=args['limit'][0] if args['limit'] else None)
     elif args['writer'][0] == 'csv':
+        if args['csv_directory'] is None:
+            print('The CSV writer requires a csv_directory argument')
+            exit(1)
         CSVWriter(args['input'][0], args['csv_directory'][0]).run(
             headers=args['csv_headers'][0] if args['csv_headers'] is not None else True)
     elif args['writer'][0] == 'sqlite':
+        if args['sqlite_file'] is None:
+            print('The SQLite writer requires a sqlite_file argument')
+            exit(1)
         SQLiteWriter(args['input'][0], args['sqlite_file'][0]).run(**sqlparams)
     elif args['writer'][0] == 'postgresql':
+        if args['dsn'] is None:
+            print('The PostgreSQL writer requires a dsn argument')
+            exit(1)
         PostgreSQLWriter(args['input'][0], args['dsn'][0]).run(**sqlparams)
     else:
         print(args)
