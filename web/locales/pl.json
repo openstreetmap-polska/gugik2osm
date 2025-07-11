@@ -56,5 +56,16 @@
         "no-of-tiles-to-process": "Kafle pozostałe do przetworzenia:",
         "last-status": "Status ostatniego wykonania:"
     },
+    "layer-menu": {
+        "header": "Warstwy:",
+        "addresses": "Adresy",
+        "buildings": "Budynki",
+        "orto": "Ortofotomapa (zdj. lotnicze)",
+        "updates": "Aktualizacje OSM i eksporty danych"
+    },
+    "bottom-alert": {
+        "hosting": "Hosting dzięki: ",
+        "info-text": "Strona nie jest rozwijana/naprawiana i wymaga przepisania od nowa."
+    },
     "close": "Zamknij"
 }

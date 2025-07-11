@@ -56,5 +56,16 @@
         "no-of-tiles-to-process": "Tiles remaining to process:",
         "last-status": "Last execution status:"
     },
+    "layer-menu": {
+        "header": "Layers:",
+        "addresses": "Addresses",
+        "buildings": "Buildings",
+        "orto": "Orthophoto (aerial images)",
+        "updates": "OSM updates and data exports"
+    },
+    "bottom-alert": {
+        "hosting": "Hosting thanks to: ",
+        "info-text": "The site is not being developed/maintained and requires a complete rewrite."
+    },
     "close": "Close"
 }

@@ -290,7 +290,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5>Warstwy:</h5>
+                    <h5 i18n="layer-menu.header"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -300,29 +300,29 @@
                         <input id="addressesLayerToggle" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
-                    <label for="addressesLayerToggle">Adresy</label>
+                    <label for="addressesLayerToggle" i18n="layer-menu.addresses"></label>
                     <br>
                     <label class="switch">
                         <input id="buildingsLayerToggle" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
-                    <label for="buildingsLayerToggle">Budynki</label>
+                    <label for="buildingsLayerToggle" i18n="layer-menu.buildings"></label>
                     <br>
                     <label class="switch">
                         <input id="ortoLayerToggle" type="checkbox">
                         <span class="slider round"></span>
                     </label>
-                    <label for="ortoLayerToggle">Ortofotomapa (zdj. lotnicze)</label>
+                    <label for="ortoLayerToggle" i18n="layer-menu.orto"></label>
                     <br>
                     <label class="switch">
                         <input id="updatesLayerToggle" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
-                    <label for="updatesLayerToggle">Aktualizacje OSM i eksporty danych</label>
+                    <label for="updatesLayerToggle" i18n="layer-menu.updates"></label>
                     <div id="overpass-layers-placeholder"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
             </div>
         </div>
@@ -340,12 +340,10 @@
         }
     </script>
     <div id="bottomAlert" class="alert text-center cookiealert show" role="alert">
-        <span>Hosting dzięki: </span>
+        <span i18n="bottom-alert.hosting"></span>
         <a class="mx-1" href="https://cloudferro.com" rel="noreferrer" target="_blank" title="CloudFerro"><img style="max-height: 35px" alt="CloudFerro" src="./cloudferro_logo.png"></a>
-        <button type="button" class="btn btn-primary btn-sm mx-1" aria-label="Close" onclick="closeBottomAlert()">
-            Zamknij
-        </button>
-        <span>Strona nie jest rozwijana/naprawiana i wymaga przepisania od nowa.</span>
+        <button type="button" class="btn btn-primary btn-sm mx-1" aria-label="Close" onclick="closeBottomAlert()" i18n="close"></button>
+        <span i18n="bottom-alert.info-text"></span>
     </div>
 
     <script src="./map.js"></script>
