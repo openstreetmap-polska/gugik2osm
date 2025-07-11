@@ -16,12 +16,15 @@
         "osm-link-edit-remote": "Edit this area in external editor (JOSM, Potlatch, Merkaartor)"
     },
     "modal": {
-        "download": {
+        "download-selected": {
             "title": "Download Data",
             "alert": "Remember to verify that the objects exist in reality or do not duplicate existing ones in the OSM database before sending data to OSM.",
             "select-text": "Select layers to download:",
             "download": "Download",
-            "success": "Close"
+            "report-button": "If objects do not exist or are not suitable for import, report them:",
+            "report-address": "Report only addresses",
+            "report-building": "Report only buildings",
+            "report-both": "Report addresses and buildings"
         },
         "status": {
             "title": "Status",

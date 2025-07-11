@@ -135,18 +135,18 @@
         <div class="modal-dialog" role="document" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" i18n="modal.download.title"></h5>
+                    <h5 class="modal-title" i18n="modal.download-selected.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger" role="alert" i18n="modal.download.alert"></div>
-                    <p><b i18n="modal.download.select-text"></b></p>
+                    <div class="alert alert-danger" role="alert" i18n="modal.download-selected.alert"></div>
+                    <p><b i18n="modal.download-selected.select-title"></b></p>
                     <div>
                         <div id="layerPicker"></div>
                         <a class="btn btn-success btn-lg btn-block mt-4" id="downloadButton" target="_blank" href="#">
-                            <i class="fas fa-file-download"></i><div class="button-text" i18n="modal.download.download"></div></a>
+                            <i class="fas fa-file-download"></i><div class="button-text" i18n="modal.download-selected.download"></div></a>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -237,44 +237,39 @@
         <div class="modal-dialog" role="document" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Pobieranie danych</h5>
+                    <h5 class="modal-title" i18n="modal.download-selected.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger" role="alert">
-                        Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości
-                        albo, czy nie dublują już istniejących w bazie OSM.
-                    </div>
-                    <p><b>Wybierz warstwy do pobrania:</b></p>
+                    <div class="alert alert-danger" role="alert" i18n="modal.download-selected.alert"></div>
+                    <p><b i18n="modal.download-selected.select-title"></b></p>
                     <div>
                         <div id="layerPicker2"></div>
                         <a class="btn btn-success btn-lg btn-block mt-4" id="downloadButton2" target="_blank" href="#">
-                            <i class="fas fa-file-download"></i> Pobierz</a>
+                            <i class="fas fa-file-download"></i><div class="button-text" i18n="modal.download-selected.download"></div></a>
                     </div>
                     <br>
                     <div class="accordion" id="accordionReportButtons">
                       <div class="card my-2">
                         <div class="card-header p-0" id="headingReportButtons">
                           <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseReportButtons" aria-expanded="true" aria-controls="collapseReportButtons">
-                              Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:
-                            </button>
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseReportButtons" aria-expanded="true" aria-controls="collapseReportButtons" i18n="modal.download-selected.report-button"></button>
                           </h2>
                         </div>
                         <div id="collapseReportButtons" class="collapse" aria-labelledby="headingReportButtons" data-parent="#accordionReportButtons">
                           <div class="card-body">
-                            <button type="button" class="btn btn-primary" onclick="reportAddressUsingGeom()">Zgłoś tylko adresy</button>
-                            <button type="button" class="btn btn-primary" onclick="reportBuildingUsingGeom()">Zgłoś tylko budynki</button>
-                            <button type="button" class="btn btn-primary" onclick="reportBothUsingGeom()">Zgłoś adresy i budynki</button>
+                            <button type="button" class="btn btn-primary" onclick="reportAddressUsingGeom()" i18n="modal.download-selected.report-address"></button>
+                            <button type="button" class="btn btn-primary" onclick="reportBuildingUsingGeom()" i18n="modal.download-selected.report-building"></button>
+                            <button type="button" class="btn btn-primary" onclick="reportBothUsingGeom()" i18n="modal.download-selected.report-both"></button>
                           </div>
                         </div>
                       </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
 
 <!--                <div class="modal-header">-->
