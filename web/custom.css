@@ -125,3 +125,8 @@ input:checked + .slider:before {
 .mapboxgl-ctrl-bottom-right {
   position: fixed !important
 }
+
+.button-text {
+  display: inline-block;
+  margin-left: 6px;
+}
