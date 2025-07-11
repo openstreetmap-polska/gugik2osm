@@ -26,6 +26,13 @@
         "status": {
             "title": "Status",
             "body": "Status of data loading processes"
+        },
+        "budynki": {
+            "title": "Information Clause",
+            "bdot10k-title": "Information about the used BDOT10k dataset",
+            "bdot10k-text": "BDOT10k data is part of the state geodetic and cartographic resource (Article 4(1a)(8) of the Geodetic and Cartographic Law of May 17, 1989 (Journal of Laws of 2020, item 276, as amended). According to Article 40a(2)(1)(h), (j) and Article 40c(5) of the mentioned law, no fees are charged for this data and no licenses are issued. Thus, BDOT10k data can be used for any purpose without restrictions.",
+            "prg-title": "Information about the used PRG dataset",
+            "prg-text": "PRG data is part of the state geodetic and cartographic resource (Article 4(1a)(4) of the Geodetic and Cartographic Law of May 17, 1989 (Journal of Laws of 2020, item 276, as amended). According to Article 40a(2)(1)(a) and Article 40c(5) of the mentioned law, no fees are charged for this data and no licenses are issued. Thus, PRG data can be used for any purpose without restrictions."
         }
     },
     "processes": {
