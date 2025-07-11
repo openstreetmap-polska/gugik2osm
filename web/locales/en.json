@@ -22,6 +22,21 @@
             "select-text": "Select layers to download:",
             "download": "Download",
             "success": "Close"
+        },
+        "status": {
+            "title": "Status",
+            "body": "Status of data loading processes"
         }
-    }
+    },
+    "processes": {
+        "name": "Name:",
+        "in-progress": "In progress:",
+        "yes": "Yes",
+        "no": "No",
+        "start-time": "Start time:",
+        "end-time": "End time:",
+        "no-of-tiles-to-process": "Tiles remaining to process:",
+        "last-status": "Last execution status:"
+    },
+    "close": "Close"
 }

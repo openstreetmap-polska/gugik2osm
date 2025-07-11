@@ -20,8 +20,22 @@
             "title": "Pobieranie danych",
             "alert": "Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości albo, czy nie dublują już istniejących w bazie OSM.",
             "select-text": "Wybierz warstwy do pobrania:",
-            "download": "Pobierz",
-            "success": "Zamknij"
+            "download": "Pobierz"
+        },
+        "status": {
+            "title": "Status",
+            "body": "Status procesów ładowania danych"
         }
-    }
+    },
+    "processes": {
+        "name": "Nazwa:",
+        "in-progress": "Czy w trakcie:",
+        "yes": "Tak",
+        "no": "Nie",
+        "start-time": "Czas rozpoczęcia:",
+        "end-time": "Czas zakończenia:",
+        "no-of-tiles-to-process": "Kafle pozostałe do przetworzenia:",
+        "last-status": "Status ostatniego wykonania:"
+    },
+    "close": "Zamknij"
 }
