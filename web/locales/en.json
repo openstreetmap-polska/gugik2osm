@@ -33,6 +33,14 @@
             "bdot10k-text": "BDOT10k data is part of the state geodetic and cartographic resource (Article 4(1a)(8) of the Geodetic and Cartographic Law of May 17, 1989 (Journal of Laws of 2020, item 276, as amended). According to Article 40a(2)(1)(h), (j) and Article 40c(5) of the mentioned law, no fees are charged for this data and no licenses are issued. Thus, BDOT10k data can be used for any purpose without restrictions.",
             "prg-title": "Information about the used PRG dataset",
             "prg-text": "PRG data is part of the state geodetic and cartographic resource (Article 4(1a)(4) of the Geodetic and Cartographic Law of May 17, 1989 (Journal of Laws of 2020, item 276, as amended). According to Article 40a(2)(1)(a) and Article 40c(5) of the mentioned law, no fees are charged for this data and no licenses are issued. Thus, PRG data can be used for any purpose without restrictions."
+        },
+        "exclude": {
+            "title": "Reported",
+            "body": "Thank you for your report! The object should be removed during the next incremental update.<br>Information about updates can be found in the 'Status' tab."
+        },
+        "exclude-fail": {
+            "title": "Oops..",
+            "body": "Something went wrong while reporting. Please try again.<br>If the problem persists, report it <a href=\"\"https://github.com/openstreetmap-polska/gugik2osm/issues\" target=\"_blank\" rel=\"noopener\">on GitHub</a>"
         }
     },
     "processes": {
