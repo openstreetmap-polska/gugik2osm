@@ -128,5 +128,8 @@ input:checked + .slider:before {
 
 .button-text {
   display: inline-block;
-  margin-left: 6px;
+}
+
+.button-text:before {
+    content: "\00a0";
 }

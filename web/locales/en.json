@@ -1,5 +1,14 @@
 {
-  "current-language": "English",
-  "title": "OpenStreetMap Buildings",
-  "download-data-for-josm": "Download data for JOSM"
+    "current-language": "English",
+    "title": "OpenStreetMap Buildings",
+    "navbar": {
+        "download-data-for-josm": "Download data for JOSM",
+        "random-location": "Random Location",
+        "information-clause": "Information Clause",
+        "status": "Status",
+        "faq": "FAQ/Help",
+        "gis-data": "GIS Data",
+        "osm-link-edit-id": "Edit this area in iD",
+        "osm-link-edit-remote": "Edit this area in external editor (JOSM, Potlatch, Merkaartor)"
+    }
 }

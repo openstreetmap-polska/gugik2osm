@@ -57,26 +57,26 @@
         <div id="header" class="collapse navbar-collapse">
             <button type="button" class="btn btn-light py-1 px-2 mx-2" data-toggle="modal"
                     id="downloadDataForJOSM" title="Limit do 50k obiektów">
-                <i class="fas fa-file-download"></i><div i18n="download-data-for-josm" class="button-text"></div>
+                <i class="fas fa-file-download"></i><div i18n="navbar.download-data-for-josm" class="button-text"></div>
             </button>
             <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2">
-                <i class="fas fa-random"></i> Losuj lokalizację</button>
+                <i class="fas fa-random"></i><div i18n="navbar.random-location" class="button-text"></div></button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-2">
                     <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki">
-                        <i class="fas fa-align-left"></i> Klauzula informacyjna</a>
+                        <i class="fas fa-align-left"></i><div i18n="navbar.information-clause" class="button-text"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="status-info" class="nav-link" data-toggle="modal" data-target="#modalStatus"
-                        onclick="processesInfo()"><i class="fas fa-info-circle"></i> Status</a>
+                        onclick="processesInfo()"><i class="fas fa-info-circle"></i><div i18n="navbar.status" class="button-text"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="faq" class="nav-link" href="/help.html" target="_blank"><i
-                            class="fas fa-question-circle"></i> FAQ/Pomoc</a>
+                            class="fas fa-question-circle"></i><div i18n="navbar.faq" class="button-text"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="data-info" class="nav-link" href="/opis_danych.html" target="_blank">
-                        <i class="fas fa-download"></i> Dane GIS</a>
+                        <i class="fas fa-download"></i><div i18n="navbar.gis-data" class="button-text"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="gh-link" class="nav-link" href="https://github.com/openstreetmap-polska/gugik2osm"
@@ -106,18 +106,17 @@
                             data-toggle='dropdown' href="#"  aria-label="Openstreetmap Edit Select"></a>
                         <ul class='dropdown-menu dropdown-menu-right'>
                             <li>
-                                <a id="osm-link-edit-id" target="_blank" class="dropdown-item"
-                                    href="https://www.openstreetmap.org/edit?editor=id"  rel="noopener" >Edytuj ten obszar w iD</a>
+                                <a id="osm-link-edit-id" target="_blank" class="dropdown-item" i18n="navbar.osm-link-edit-id"
+                                    href="https://www.openstreetmap.org/edit?editor=id"  rel="noopener" ></a>
                             </li>
                             <li>
-                                <a id="osm-link-edit-remote" target="_blank" class="dropdown-item"
-                                    href="https://www.openstreetmap.org/edit?editor=remote"  rel="noopener" >Edytuj ten obszar w
-                                    zewnętrznym edytorze (JOSM, Potlatch, Merkaartor)</a>
+                                <a id="osm-link-edit-remote" target="_blank" class="dropdown-item" i18n="navbar.osm-link-edit-remote"
+                                    href="https://www.openstreetmap.org/edit?editor=remote"  rel="noopener" ></a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item px-2 ml-auto"></li>
+                <li class="nav-item px-2"></li>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-globe"></i><div i18n="current-language" class="button-text"></div>

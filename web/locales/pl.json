@@ -1,5 +1,14 @@
 {
-  "current-language": "Polski",
-  "title": "Budynki OpenStreetMap",
-  "download-data-for-josm": "Pobierz dane dla JOSM"
+    "current-language": "Polski",
+    "title": "Budynki OpenStreetMap",
+    "navbar": {
+        "download-data-for-josm": "Pobierz dane dla JOSM",
+        "random-location": "Losuj lokalizację",
+        "information-clause": "Klauzula informacyjna",
+        "status": "Status",
+        "faq": "FAQ/Pomoc",
+        "gis-data": "Dane GIS",
+        "osm-link-edit-id": "Edytuj ten obszar w iD",
+        "osm-link-edit-remote": "Edytuj ten obszar w zewnętrznym edytorze (JOSM, Potlatch, Merkaartor)"
+    }
 }
