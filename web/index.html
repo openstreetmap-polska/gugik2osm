@@ -57,49 +57,49 @@
         <div id="header" class="collapse navbar-collapse">
             <button type="button" class="btn btn-light py-1 px-2 mx-2" data-toggle="modal"
                     id="downloadDataForJOSM" title="Limit do 50k obiektów">
-                <i class="fas fa-file-download"></i><div i18n="navbar.download-data-for-josm" class="button-text"></div>
+                <i class="fas fa-file-download"></i><div class="button-text" i18n="navbar.download-data-for-josm"></div>
             </button>
             <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2">
-                <i class="fas fa-random"></i><div i18n="navbar.random-location" class="button-text"></div></button>
+                <i class="fas fa-random"></i><div class="button-text" i18n="navbar.random-location"></div></button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-2">
                     <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki">
-                        <i class="fas fa-align-left"></i><div i18n="navbar.information-clause" class="button-text"></div></a>
+                        <i class="fas fa-align-left"></i><div class="button-text" i18n="navbar.information-clause"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="status-info" class="nav-link" data-toggle="modal" data-target="#modalStatus"
-                        onclick="processesInfo()"><i class="fas fa-info-circle"></i><div i18n="navbar.status" class="button-text"></div></a>
+                        onclick="processesInfo()"><i class="fas fa-info-circle"></i><div class="button-text" i18n="navbar.status"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="faq" class="nav-link" href="/help.html" target="_blank"><i
-                            class="fas fa-question-circle"></i><div i18n="navbar.faq" class="button-text"></div></a>
+                            class="fas fa-question-circle"></i><div class="button-text" i18n="navbar.faq"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="data-info" class="nav-link" href="/opis_danych.html" target="_blank">
-                        <i class="fas fa-download"></i><div i18n="navbar.gis-data" class="button-text"></div></a>
+                        <i class="fas fa-download"></i><div class="button-text" i18n="navbar.gis-data"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="gh-link" class="nav-link" href="https://github.com/openstreetmap-polska/gugik2osm"
-                        target="_blank" rel="noopener">
-                        <i class="fab fa-github fa-lg" title="Link do GitHub"></i>
+                        target="_blank" rel="noopener" i18n-title="navbar.github-link">
+                        <i class="fab fa-github fa-lg"></i>
                     </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a id="discord-link" class="nav-link" href="https://discord.gg/HvQWsMeQzT" rel="noopener" target="_blank">
-                        <i class="fab fa-discord fa-lg" title="Link do kanału na czacie Discord"></i>
+                    <a id="discord-link" class="nav-link" href="https://discord.gg/HvQWsMeQzT" rel="noopener" target="_blank" i18n-title="navbar.discord-link">
+                        <i class="fab fa-discord fa-lg"></i>
                     </a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="wiki-link" class="nav-link"
-                        href="https://wiki.openstreetmap.org/wiki/Pl:Importowanie_adres%C3%B3w" rel="noopener" target="_blank">
-                        <i class="fab fa-wikipedia-w fa-lg" title="Link do Wiki OpenStreetMap"></i>
+                        href="https://wiki.openstreetmap.org/wiki/Pl:Importowanie_adres%C3%B3w" rel="noopener" target="_blank" i18n-title="navbar.wiki-link">
+                        <i class="fab fa-wikipedia-w fa-lg"></i>
                     </a>
                 </li>
                 <li class="nav-item px-2">
                     <div class="btn-group ">
                         <a id="osm-link" class="btn btn-outline-secondary" href="https://www.openstreetmap.org/"
                             target="_blank" rel="noopener">
-                            <img height="26px" width="26px" alt="" title="Link do tej lokalizacji w OpenStreetMap"
+                            <img height="26px" width="26px" alt="" i18n-title="navbar.localization-link"
                                 src="https://wiki.openstreetmap.org/w/images/7/79/Public-images-osm_logo.svg" />
                         </a>
                         <a class='btn btn-outline-secondary dropdown-toggle dropdown-toggle-split'
@@ -135,25 +135,22 @@
         <div class="modal-dialog" role="document" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Pobieranie danych</h5>
+                    <h5 class="modal-title" i18n="modal.download.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger" role="alert">
-                        Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości
-                        albo, czy nie dublują już istniejących w bazie OSM.
-                    </div>
-                    <p><b>Wybierz warstwy do pobrania:</b></p>
+                    <div class="alert alert-danger" role="alert" i18n="modal.download.alert"></div>
+                    <p><b i18n="modal.download.select-text"></b></p>
                     <div>
                         <div id="layerPicker"></div>
                         <a class="btn btn-success btn-lg btn-block mt-4" id="downloadButton" target="_blank" href="#">
-                            <i class="fas fa-file-download"></i> Pobierz</a>
+                            <i class="fas fa-file-download"></i><div class="button-text" i18n="modal.download.download"></div></a>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="modal.download.success">Zamknij</button>
                 </div>
             </div>
         </div>

@@ -47,6 +47,10 @@ function updateContent() {
         const key = el.getAttribute('i18n');
         el.innerHTML = i18next.t(key);
     });
+    document.querySelectorAll('[i18n-title]').forEach(el => {
+        const key = el.getAttribute('i18n-title');
+        el['title'] = i18next.t(key);
+    });
 }
 
 function updateLanguage(lang) {

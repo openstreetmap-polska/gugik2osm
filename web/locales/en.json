@@ -8,7 +8,20 @@
         "status": "Status",
         "faq": "FAQ/Help",
         "gis-data": "GIS Data",
+        "github-link": "GitHub link",
+        "discord-link": "Discord chat channel link",
+        "wiki-link": "OpenStreetMap Wiki link",
+        "localization-link": "Link to this location in OpenStreetMap",
         "osm-link-edit-id": "Edit this area in iD",
         "osm-link-edit-remote": "Edit this area in external editor (JOSM, Potlatch, Merkaartor)"
+    },
+    "modal": {
+        "download": {
+            "title": "Download Data",
+            "alert": "Remember to verify that the objects exist in reality or do not duplicate existing ones in the OSM database before sending data to OSM.",
+            "select-text": "Select layers to download:",
+            "download": "Download",
+            "success": "Close"
+        }
     }
 }

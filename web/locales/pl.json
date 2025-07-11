@@ -8,7 +8,20 @@
         "status": "Status",
         "faq": "FAQ/Pomoc",
         "gis-data": "Dane GIS",
+        "github-link": "Link do GitHub",
+        "discord-link": "Link do kanału na czacie Discord",
+        "wiki-link": "Link do Wiki OpenStreetMap",
+        "localization-link": "Link do tej lokalizacji w OpenStreetMap",
         "osm-link-edit-id": "Edytuj ten obszar w iD",
         "osm-link-edit-remote": "Edytuj ten obszar w zewnętrznym edytorze (JOSM, Potlatch, Merkaartor)"
+    },
+    "modal": {
+        "download": {
+            "title": "Pobieranie danych",
+            "alert": "Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości albo, czy nie dublują już istniejących w bazie OSM.",
+            "select-text": "Wybierz warstwy do pobrania:",
+            "download": "Pobierz",
+            "success": "Zamknij"
+        }
     }
 }
