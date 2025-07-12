@@ -1,0 +1,71 @@
+{
+    "current-language": "Polski",
+    "title": "Budynki OpenStreetMap",
+    "navbar": {
+        "download-data-for-josm": "Pobierz dane dla JOSM",
+        "random-location": "Losuj lokalizację",
+        "information-clause": "Klauzula informacyjna",
+        "status": "Status",
+        "faq": "FAQ/Pomoc",
+        "gis-data": "Dane GIS",
+        "github-link": "Link do GitHub",
+        "discord-link": "Link do kanału na czacie Discord",
+        "wiki-link": "Link do Wiki OpenStreetMap",
+        "localization-link": "Link do tej lokalizacji w OpenStreetMap",
+        "osm-link-edit-id": "Edytuj ten obszar w iD",
+        "osm-link-edit-remote": "Edytuj ten obszar w zewnętrznym edytorze (JOSM, Potlatch, Merkaartor)"
+    },
+    "modal": {
+        "download-selected": {
+            "title": "Pobieranie danych",
+            "alert": "Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości albo, czy nie dublują już istniejących w bazie OSM.",
+            "select-title": "Wybierz warstwy do pobrania:",
+            "download": "Pobierz",
+            "report-button": "Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:",
+            "report-address": "Zgłoś tylko adresy",
+            "report-building": "Zgłoś tylko budynki",
+            "report-both": "Zgłoś adresy i budynki"
+        },
+        "status": {
+            "title": "Status",
+            "body": "Status procesów ładowania danych"
+        },
+        "budynki": {
+            "title": "Klauzula informacyjna",
+            "bdot10k-title":"Informacja o wykorzystanym zbiorze BDOT10k",
+            "bdot10k-text": "Dane BDOT10k są elementem państwowego zasobu geodezyjnego i kartograficznego (art. 4 ust. 1a pkt 8 ustawy z dnia 17 maja 1989 r. Prawo geodezyjne i kartograficzne (Dz. U. z 2020 r. poz. 276 z późn. zm.). Zgodnie natomiast z art. 40a ust. 2 pkt 1 lit. h, j oraz 40c ust. 5 wymienionej ustawy nie pobiera się za te dane opłat i nie wydaje licencji. Tym samym dane BDOT10k mogą być wykorzystywane do dowolnego celu bez ograniczeń.",
+            "prg-title": "Informacja o wykorzystanym zbiorze PRG",
+            "prg-text": "Dane PRG są elementem państwowego zasobu geodezyjnego i kartograficznego (art. 4 ust. 1a pkt 4 ustawy z dnia 17 maja 1989 r. Prawo geodezyjne i kartograficzne (Dz. U. z 2020 r. poz. 276 z późn. zm.). Zgodnie natomiast z art. 40a ust. 2 pkt 1 lit. a oraz 40c ust. 5 wymienionej ustawy nie pobiera się za te dane opłat i nie wydaje licencji. Tym samym dane PRG mogą być wykorzystywane do dowolnego celu bez ograniczeń."
+        },
+        "exclude": {
+            "title": "Zgłoszono",
+            "body": "Dziękujemy za zgłoszenie! Podczas kolejnej aktualizacji cominutowej obiekt powinien zostać usunięty.<br>Informacje o aktualizacjach są w zakładce \"Status\"."
+        },
+        "exclude-fail": {
+            "title": "Ups..",
+            "body": "Coś poszło nie tak podczas zgłaszania. Spróbuj jeszcze raz.<br>Jeżeli problem będzie się powtarzać zgłoś go <a href=\"https://github.com/openstreetmap-polska/gugik2osm/issues\" target=\"_blank\" rel=\"noopener\">na GitHubie</a>"
+        }
+    },
+    "processes": {
+        "name": "Nazwa:",
+        "in-progress": "Czy w trakcie:",
+        "yes": "Tak",
+        "no": "Nie",
+        "start-time": "Czas rozpoczęcia:",
+        "end-time": "Czas zakończenia:",
+        "no-of-tiles-to-process": "Kafle pozostałe do przetworzenia:",
+        "last-status": "Status ostatniego wykonania:"
+    },
+    "layer-menu": {
+        "header": "Warstwy:",
+        "addresses": "Adresy",
+        "buildings": "Budynki",
+        "orto": "Ortofotomapa (zdj. lotnicze)",
+        "updates": "Aktualizacje OSM i eksporty danych"
+    },
+    "bottom-alert": {
+        "hosting": "Hosting dzięki: ",
+        "info-text": "Strona nie jest rozwijana/naprawiana i wymaga przepisania od nowa."
+    },
+    "close": "Zamknij"
+}

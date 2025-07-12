@@ -4,7 +4,7 @@
 <head>
 
     <meta charset='utf-8' />
-    <title>Budynki OpenStreetMap</title>
+    <title i18n="title"></title>
     <!--    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Importuj budynki i adresy do bazy OpenStreetMap">
@@ -38,6 +38,10 @@
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
 
+    <!-- Add internationalization -->
+    <script src="https://unpkg.com/i18next@16.0.0/dist/umd/i18next.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend@2.2.1/i18nextHttpBackend.min.js"></script>
+
     <link href="./custom.css" rel="stylesheet">
     <style>
         #map {
@@ -53,64 +57,74 @@
         <div id="header" class="collapse navbar-collapse">
             <button type="button" class="btn btn-light py-1 px-2 mx-2" data-toggle="modal"
                     id="downloadDataForJOSM" title="Limit do 50k obiektów">
-                <i class="fas fa-file-download"></i> Pobierz dane dla JOSM
+                <i class="fas fa-file-download"></i><div class="button-text" i18n="navbar.download-data-for-josm"></div>
             </button>
             <button type="button" id="randomLocationButton" class="btn btn-light py-1 px-2 mx-2">
-                <i class="fas fa-random"></i> Losuj lokalizację</button>
+                <i class="fas fa-random"></i><div class="button-text" i18n="navbar.random-location"></div></button>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-2">
                     <a id="buildings-info" class="nav-link" data-toggle="modal" data-target="#modalBudynki">
-                        <i class="fas fa-align-left"></i> Klauzula informacyjna</a>
+                        <i class="fas fa-align-left"></i><div class="button-text" i18n="navbar.information-clause"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="status-info" class="nav-link" data-toggle="modal" data-target="#modalStatus"
-                        onclick="processesInfo()"><i class="fas fa-info-circle"></i> Status</a>
+                        onclick="processesInfo()"><i class="fas fa-info-circle"></i><div class="button-text" i18n="navbar.status"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="faq" class="nav-link" href="/help.html" target="_blank"><i
-                            class="fas fa-question-circle"></i> FAQ/Pomoc</a>
+                            class="fas fa-question-circle"></i><div class="button-text" i18n="navbar.faq"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="data-info" class="nav-link" href="/opis_danych.html" target="_blank">
-                        <i class="fas fa-download"></i> Dane GIS</a>
+                        <i class="fas fa-download"></i><div class="button-text" i18n="navbar.gis-data"></div></a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="gh-link" class="nav-link" href="https://github.com/openstreetmap-polska/gugik2osm"
-                        target="_blank" rel="noopener">
-                        <i class="fab fa-github fa-lg" title="Link do GitHub"></i>
+                        target="_blank" rel="noopener" i18n-title="navbar.github-link">
+                        <i class="fab fa-github fa-lg"></i>
                     </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a id="discord-link" class="nav-link" href="https://discord.gg/HvQWsMeQzT" rel="noopener" target="_blank">
-                        <i class="fab fa-discord fa-lg" title="Link do kanału na czacie Discord"></i>
+                    <a id="discord-link" class="nav-link" href="https://discord.gg/HvQWsMeQzT" rel="noopener" target="_blank" i18n-title="navbar.discord-link">
+                        <i class="fab fa-discord fa-lg"></i>
                     </a>
                 </li>
                 <li class="nav-item px-2">
                     <a id="wiki-link" class="nav-link"
-                        href="https://wiki.openstreetmap.org/wiki/Pl:Importowanie_adres%C3%B3w" rel="noopener" target="_blank">
-                        <i class="fab fa-wikipedia-w fa-lg" title="Link do Wiki OpenStreetMap"></i>
+                        href="https://wiki.openstreetmap.org/wiki/Pl:Importowanie_adres%C3%B3w" rel="noopener" target="_blank" i18n-title="navbar.wiki-link">
+                        <i class="fab fa-wikipedia-w fa-lg"></i>
                     </a>
                 </li>
                 <li class="nav-item px-2">
                     <div class="btn-group ">
                         <a id="osm-link" class="btn btn-outline-secondary" href="https://www.openstreetmap.org/"
                             target="_blank" rel="noopener">
-                            <img height="26px" width="26px" alt="" title="Link do tej lokalizacji w OpenStreetMap"
+                            <img height="26px" width="26px" alt="" i18n-title="navbar.localization-link"
                                 src="https://wiki.openstreetmap.org/w/images/7/79/Public-images-osm_logo.svg" />
                         </a>
                         <a class='btn btn-outline-secondary dropdown-toggle dropdown-toggle-split'
                             data-toggle='dropdown' href="#"  aria-label="Openstreetmap Edit Select"></a>
                         <ul class='dropdown-menu dropdown-menu-right'>
                             <li>
-                                <a id="osm-link-edit-id" target="_blank" class="dropdown-item"
-                                    href="https://www.openstreetmap.org/edit?editor=id"  rel="noopener" >Edytuj ten obszar w iD</a>
+                                <a id="osm-link-edit-id" target="_blank" class="dropdown-item" i18n="navbar.osm-link-edit-id"
+                                    href="https://www.openstreetmap.org/edit?editor=id"  rel="noopener" ></a>
                             </li>
                             <li>
-                                <a id="osm-link-edit-remote" target="_blank" class="dropdown-item"
-                                    href="https://www.openstreetmap.org/edit?editor=remote"  rel="noopener" >Edytuj ten obszar w
-                                    zewnętrznym edytorze (JOSM, Potlatch, Merkaartor)</a>
+                                <a id="osm-link-edit-remote" target="_blank" class="dropdown-item" i18n="navbar.osm-link-edit-remote"
+                                    href="https://www.openstreetmap.org/edit?editor=remote"  rel="noopener" ></a>
                             </li>
                         </ul>
+                    </div>
+                </li>
+                <li class="nav-item px-2"></li>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-globe"></i><div i18n="current-language" class="button-text"></div>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <button class="dropdown-item" type="button" onclick="updateLanguage('pl')">Polski</button>
+                            <button class="dropdown-item" type="button" onclick="updateLanguage('en')">English</button>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -121,25 +135,22 @@
         <div class="modal-dialog" role="document" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Pobieranie danych</h5>
+                    <h5 class="modal-title" i18n="modal.download-selected.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger" role="alert">
-                        Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości
-                        albo, czy nie dublują już istniejących w bazie OSM.
-                    </div>
-                    <p><b>Wybierz warstwy do pobrania:</b></p>
+                    <div class="alert alert-danger" role="alert" i18n="modal.download-selected.alert"></div>
+                    <p><b i18n="modal.download-selected.select-title"></b></p>
                     <div>
                         <div id="layerPicker"></div>
                         <a class="btn btn-success btn-lg btn-block mt-4" id="downloadButton" target="_blank" href="#">
-                            <i class="fas fa-file-download"></i> Pobierz</a>
+                            <i class="fas fa-file-download"></i><div class="button-text" i18n="modal.download-selected.download"></div></a>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
             </div>
         </div>
@@ -149,17 +160,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Status</h5>
+                    <h5 class="modal-title" i18n="modal.status.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p><b>Status procesów ładowania danych</b></p>
+                    <p><b i18n="modal.status.body"></b></p>
                     <dl id="procinfo"></dl>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
             </div>
         </div>
@@ -169,28 +180,20 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Klauzula informacyjna</h5>
+                    <h5 class="modal-title" i18n="modal.budynki.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p><b>Informacja o wykorzystanym zbiorze BDOT10k</b></p>
-                    <p>Dane BDOT10k są elementem państwowego zasobu geodezyjnego i kartograficznego (art. 4 ust. 1a pkt
-                        8 ustawy z dnia 17 maja 1989 r. Prawo geodezyjne i kartograficzne (Dz. U. z 2020 r. poz. 276 z
-                        późn. zm.). Zgodnie natomiast z art. 40a ust. 2 pkt 1 lit. h, j oraz 40c ust. 5 wymienionej
-                        ustawy nie pobiera się za te dane opłat i nie wydaje licencji. Tym samym dane BDOT10k mogą być
-                        wykorzystywane do dowolnego celu bez ograniczeń.</p>
+                    <p><b i18n="modal.budynki.bdot10k-title"></b></p>
+                    <p i18n="modal.budynki.bdot10k-text"></p>
                     <br>
-                    <p><b>Informacja o wykorzystanym zbiorze PRG</b></p>
-                    <p>Dane PRG są elementem państwowego zasobu geodezyjnego i kartograficznego (art. 4 ust. 1a pkt 4
-                        ustawy z dnia 17 maja 1989 r. Prawo geodezyjne i kartograficzne (Dz. U. z 2020 r. poz. 276 z
-                        późn. zm.). Zgodnie natomiast z art. 40a ust. 2 pkt 1 lit. a oraz 40c ust. 5 wymienionej ustawy
-                        nie pobiera się za te dane opłat i nie wydaje licencji. Tym samym dane PRG mogą być
-                        wykorzystywane do dowolnego celu bez ograniczeń.</p>
+                    <p><b i18n="modal.budynki.prg-title"></b></p>
+                    <p i18n="modal.budynki.prg-text"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
             </div>
         </div>
@@ -200,18 +203,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Zgłoszono</h5>
+                    <h5 class="modal-title" i18n="modal.exclude.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    Dziękujemy za zgłoszenie! Podczas kolejnej aktualizacji cominutowej obiekt powinien zostać usunięty.
-                    <br>
-                    Informacje o aktualizacjach są w zakładce "Status".
-                </div>
+                <div class="modal-body" i18n="modal.exclude.body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
             </div>
         </div>
@@ -221,19 +220,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Ups..</h5>
+                    <h5 class="modal-title" i18n="modal.exclude-fail.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    Coś poszło nie tak podczas zgłaszania. Spróbuj jeszcze raz.
-                    <br>
-                    Jeżeli problem będzie się powtarzać zgłoś go <a
-                        href="https://github.com/openstreetmap-polska/gugik2osm/issues" target="_blank" rel="noopener">na GitHubie</a>
-                </div>
+                <div class="modal-body" i18n="modal.exclude-fail.body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
             </div>
         </div>
@@ -243,44 +237,39 @@
         <div class="modal-dialog" role="document" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Pobieranie danych</h5>
+                    <h5 class="modal-title" i18n="modal.download-selected.title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger" role="alert">
-                        Pamiętaj, aby przed wysłaniem danych do OSM zweryfikować czy obiekty istnieją w rzeczywistości
-                        albo, czy nie dublują już istniejących w bazie OSM.
-                    </div>
-                    <p><b>Wybierz warstwy do pobrania:</b></p>
+                    <div class="alert alert-danger" role="alert" i18n="modal.download-selected.alert"></div>
+                    <p><b i18n="modal.download-selected.select-title"></b></p>
                     <div>
                         <div id="layerPicker2"></div>
                         <a class="btn btn-success btn-lg btn-block mt-4" id="downloadButton2" target="_blank" href="#">
-                            <i class="fas fa-file-download"></i> Pobierz</a>
+                            <i class="fas fa-file-download"></i><div class="button-text" i18n="modal.download-selected.download"></div></a>
                     </div>
                     <br>
                     <div class="accordion" id="accordionReportButtons">
                       <div class="card my-2">
                         <div class="card-header p-0" id="headingReportButtons">
                           <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseReportButtons" aria-expanded="true" aria-controls="collapseReportButtons">
-                              Jeżeli obiekty nie istnieją lub nie nadają się do importu zgłoś je:
-                            </button>
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseReportButtons" aria-expanded="true" aria-controls="collapseReportButtons" i18n="modal.download-selected.report-button"></button>
                           </h2>
                         </div>
                         <div id="collapseReportButtons" class="collapse" aria-labelledby="headingReportButtons" data-parent="#accordionReportButtons">
                           <div class="card-body">
-                            <button type="button" class="btn btn-primary" onclick="reportAddressUsingGeom()">Zgłoś tylko adresy</button>
-                            <button type="button" class="btn btn-primary" onclick="reportBuildingUsingGeom()">Zgłoś tylko budynki</button>
-                            <button type="button" class="btn btn-primary" onclick="reportBothUsingGeom()">Zgłoś adresy i budynki</button>
+                            <button type="button" class="btn btn-primary" onclick="reportAddressUsingGeom()" i18n="modal.download-selected.report-address"></button>
+                            <button type="button" class="btn btn-primary" onclick="reportBuildingUsingGeom()" i18n="modal.download-selected.report-building"></button>
+                            <button type="button" class="btn btn-primary" onclick="reportBothUsingGeom()" i18n="modal.download-selected.report-both"></button>
                           </div>
                         </div>
                       </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
 
 <!--                <div class="modal-header">-->
@@ -301,7 +290,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5>Warstwy:</h5>
+                    <h5 i18n="layer-menu.header"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -311,29 +300,29 @@
                         <input id="addressesLayerToggle" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
-                    <label for="addressesLayerToggle">Adresy</label>
+                    <label for="addressesLayerToggle" i18n="layer-menu.addresses"></label>
                     <br>
                     <label class="switch">
                         <input id="buildingsLayerToggle" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
-                    <label for="buildingsLayerToggle">Budynki</label>
+                    <label for="buildingsLayerToggle" i18n="layer-menu.buildings"></label>
                     <br>
                     <label class="switch">
                         <input id="ortoLayerToggle" type="checkbox">
                         <span class="slider round"></span>
                     </label>
-                    <label for="ortoLayerToggle">Ortofotomapa (zdj. lotnicze)</label>
+                    <label for="ortoLayerToggle" i18n="layer-menu.orto"></label>
                     <br>
                     <label class="switch">
                         <input id="updatesLayerToggle" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
-                    <label for="updatesLayerToggle">Aktualizacje OSM i eksporty danych</label>
+                    <label for="updatesLayerToggle" i18n="layer-menu.updates"></label>
                     <div id="overpass-layers-placeholder"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Zamknij</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" i18n="close"></button>
                 </div>
             </div>
         </div>
@@ -351,16 +340,15 @@
         }
     </script>
     <div id="bottomAlert" class="alert text-center cookiealert show" role="alert">
-        <span>Hosting dzięki: </span>
+        <span i18n="bottom-alert.hosting"></span>
         <a class="mx-1" href="https://cloudferro.com" rel="noreferrer" target="_blank" title="CloudFerro"><img style="max-height: 35px" alt="CloudFerro" src="./cloudferro_logo.png"></a>
-        <button type="button" class="btn btn-primary btn-sm mx-1" aria-label="Close" onclick="closeBottomAlert()">
-            Zamknij
-        </button>
-        <span>Strona nie jest rozwijana/naprawiana i wymaga przepisania od nowa.</span>
+        <button type="button" class="btn btn-primary btn-sm mx-1" aria-label="Close" onclick="closeBottomAlert()" i18n="close"></button>
+        <span i18n="bottom-alert.info-text"></span>
     </div>
 
-    <script src="/map.js"></script>
-    <script src="/misc.js"></script>
+    <script src="./map.js"></script>
+    <script src="./i18n.js"></script>
+    <script src="./misc.js"></script>
 </body>
 
 </html>
