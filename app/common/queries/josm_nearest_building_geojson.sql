@@ -21,7 +21,7 @@ building as (
 )
 SELECT json_build_object(
     'type', 'FeatureCollection',
-    'features', json_agg(ST_AsGeoJSON(building.*, 'geom_4326', 6)::json)
+    'features', coalesce(json_agg(ST_AsGeoJSON(building.*, 'geom_4326', 6)::json), '[]'::json)
 )
 FROM building
 ;
