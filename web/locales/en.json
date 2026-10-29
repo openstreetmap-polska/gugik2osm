@@ -1,0 +1,71 @@
+{
+    "current-language": "English",
+    "title": "OpenStreetMap Buildings",
+    "navbar": {
+        "download-data-for-josm": "Download data for JOSM",
+        "random-location": "Random Location",
+        "information-clause": "Information Clause",
+        "status": "Status",
+        "faq": "FAQ/Help",
+        "gis-data": "GIS Data",
+        "github-link": "GitHub link",
+        "discord-link": "Discord chat channel link",
+        "wiki-link": "OpenStreetMap Wiki link",
+        "localization-link": "Link to this location in OpenStreetMap",
+        "osm-link-edit-id": "Edit this area in iD",
+        "osm-link-edit-remote": "Edit this area in external editor (JOSM, Potlatch, Merkaartor)"
+    },
+    "modal": {
+        "download-selected": {
+            "title": "Download Data",
+            "alert": "Remember to verify that the objects exist in reality or do not duplicate existing ones in the OSM database before sending data to OSM.",
+            "select-text": "Select layers to download:",
+            "download": "Download",
+            "report-button": "If objects do not exist or are not suitable for import, report them:",
+            "report-address": "Report only addresses",
+            "report-building": "Report only buildings",
+            "report-both": "Report addresses and buildings"
+        },
+        "status": {
+            "title": "Status",
+            "body": "Status of data loading processes"
+        },
+        "budynki": {
+            "title": "Information Clause",
+            "bdot10k-title": "Information about the used BDOT10k dataset",
+            "bdot10k-text": "BDOT10k data is part of the state geodetic and cartographic resource (Article 4(1a)(8) of the Geodetic and Cartographic Law of May 17, 1989 (Journal of Laws of 2020, item 276, as amended). According to Article 40a(2)(1)(h), (j) and Article 40c(5) of the mentioned law, no fees are charged for this data and no licenses are issued. Thus, BDOT10k data can be used for any purpose without restrictions.",
+            "prg-title": "Information about the used PRG dataset",
+            "prg-text": "PRG data is part of the state geodetic and cartographic resource (Article 4(1a)(4) of the Geodetic and Cartographic Law of May 17, 1989 (Journal of Laws of 2020, item 276, as amended). According to Article 40a(2)(1)(a) and Article 40c(5) of the mentioned law, no fees are charged for this data and no licenses are issued. Thus, PRG data can be used for any purpose without restrictions."
+        },
+        "exclude": {
+            "title": "Reported",
+            "body": "Thank you for your report! The object should be removed during the next incremental update.<br>Information about updates can be found in the 'Status' tab."
+        },
+        "exclude-fail": {
+            "title": "Oops..",
+            "body": "Something went wrong while reporting. Please try again.<br>If the problem persists, report it <a href=\"\"https://github.com/openstreetmap-polska/gugik2osm/issues\" target=\"_blank\" rel=\"noopener\">on GitHub</a>"
+        }
+    },
+    "processes": {
+        "name": "Name:",
+        "in-progress": "In progress:",
+        "yes": "Yes",
+        "no": "No",
+        "start-time": "Start time:",
+        "end-time": "End time:",
+        "no-of-tiles-to-process": "Tiles remaining to process:",
+        "last-status": "Last execution status:"
+    },
+    "layer-menu": {
+        "header": "Layers:",
+        "addresses": "Addresses",
+        "buildings": "Buildings",
+        "orto": "Orthophoto (aerial images)",
+        "updates": "OSM updates and data exports"
+    },
+    "bottom-alert": {
+        "hosting": "Hosting thanks to: ",
+        "info-text": "The site is not being developed/maintained and requires a complete rewrite."
+    },
+    "close": "Close"
+}

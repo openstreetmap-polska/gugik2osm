@@ -125,3 +125,11 @@ input:checked + .slider:before {
 .mapboxgl-ctrl-bottom-right {
   position: fixed !important
 }
+
+.button-text {
+  display: inline-block;
+}
+
+.button-text:before {
+    content: "\00a0";
+}
